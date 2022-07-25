@@ -1,0 +1,42 @@
+import { createSlice } from '@reduxjs/toolkit';
+
+// Authentication 관련 슬라이스
+// 슬라이스 - 이름, 초깃값, 리듀서 함수들 필요
+// 리듀서의 이름이 액션타입이 됨
+const initialuserState = {
+  // 유저관련(로그인 처리용)  
+  user: null,
+  checkError: null,
+};
+
+const userSlice = createSlice({
+  name: 'user',
+  initialState: initialuserState,
+  reducers: {
+    // 새로고침 이후 임시 로그인 처리용
+    tempSetUser(state, action) {
+      const {user} = action.payload;
+      state.user = action.payload;
+    },
+    // 회원 정보 확인
+    checkStart(state) {      
+      console.log('체크 스타트');
+    },    
+    checkSuccess(state, action) {
+      const {user} = action.payload;
+      state.user = action.payload;
+      state.checkError = null;
+    },
+    checkFailure(state, action) {
+      const {error} = action.payload;
+      state.user = null;
+      state.checkError = error;
+    },  
+  }
+});
+
+// 액션s 안에 액션오브젝트랑 타입이랑 다있음
+// 그래서 순수 redux쓸 때처럼 액션타입, 액션객체 선언 필요없음
+export const userActions = userSlice.actions;
+
+export default userSlice.reducer;

@@ -1,0 +1,41 @@
+import {
+  take,
+  takeEvery,
+  takeLatest,
+  put,
+  all,
+  delay,
+  fork,
+  call,
+} from "redux-saga/effects";
+
+import { userActions } from './user-slice';
+
+// api import
+// import { createUserApi } from './api';
+
+function* onCreateUserStartAsync ({payload}) {
+  const { createUserSuccess, createUserError } = authActions;
+  try {
+    const response = yield call(createUserApi, payload);
+    console.log(response)
+    if(response.status === 201){      
+      // 201 created!
+      yield put(createUserSuccess(response.data)) ;
+    }
+  } catch(error) {
+    yield put(createUserError(error.response.data));
+  }  
+}
+
+function* onCreateUser() {
+  const { checkStart } = userActions;
+  yield takeLatest(checkStart, onCreateUserStartAsync);
+}
+
+export const authSagas = [
+  // fork(onLoadUsers),
+  fork(onCreateUser),
+  // fork(onDeleteUser),
+  // fork(onUpdateUser),
+];
