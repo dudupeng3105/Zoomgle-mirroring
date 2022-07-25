@@ -37,6 +37,7 @@ const authSlice = createSlice({
   reducers: {
     // form 업데이트
     changeField(state, action) {
+      // register, email, abc@naver.com
       const {form, key, value} = action.payload;
       state[form][key] = value; 
       // ex > state.register.userId 변경

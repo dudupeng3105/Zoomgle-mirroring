@@ -16,9 +16,11 @@ import { createUserApi, loginUserApi } from './api';
 
 function* onCreateUserStartAsync ({payload}) {
   const { createUserSuccess, createUserError } = authActions;
+
   try {
+    console.log("회원가입 form", payload)
     const response = yield call(createUserApi, payload);
-    // console.log(response)
+    console.log("회원가입 응답데이터", response.data)    
     if(response.status === 201){      
       // 201 created!
       yield put(createUserSuccess(response.data)) ;
@@ -30,10 +32,8 @@ function* onCreateUserStartAsync ({payload}) {
 
 function* onLoginUserStartAsync ({payload}) {
   const { loginUserSuccess, loginUserError } = authActions;
-  try {
-    // console.log(payload)
-    const response = yield call(loginUserApi, payload);
-    // console.log(response)
+  try {    
+    const response = yield call(loginUserApi, payload);    
     if(response.status === 200){      
       // 201 created!
       yield put(loginUserSuccess(response.data)) ;

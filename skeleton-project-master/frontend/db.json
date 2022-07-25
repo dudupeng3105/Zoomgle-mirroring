@@ -55,6 +55,22 @@
       "name": "김동욱",
       "nickName": "1234",
       "id": 7
+    },
+    {
+      "email": "test10@naver.com",
+      "password": "$2a$10$ZAK6Kqrhqy1kIQWO9zGfD.ZE/FJz3AG2QbuGAZvDUD7lag6RmcZia",
+      "userId": "test10",
+      "name": "김동욱",
+      "nickName": "enen",
+      "id": 8
+    },
+    {
+      "email": "fdsfd@naver.com",
+      "password": "$2a$10$Dph6Jdw2OoldzmdoU8.JEuVcaENPWnIufCI5f8xVxc78/178D54ey",
+      "userId": "test11",
+      "name": "refsf",
+      "nickName": "sdfsfsf",
+      "id": 9
     }
   ]
 }
