@@ -1,7 +1,10 @@
 import styled from "styled-components";
-import background from '../media/images/StartPageImage.jpg'
+import background from '../media/images/StartPageImage.png'
+import background1 from '../media/images/startback_3.png'
+import arrow from '../media/images/arrow.png'
 import Button from "../components/common/Button";
 import StartPageModal from "../components/display/StartPageModal";
+import StartStoryBoardBlock from "../components/display/StartStoryBoardBlock";
 
 const StartPageBlock = styled.div`
   width: 100%;
@@ -35,8 +38,8 @@ const StartStoryBoard = styled.div`
   /* position: absolute; */
   /* top: 0;   */
   color: white;
-  background-color: #352208;
-  /* background: url(${background}) no-repeat center;   */
+  /* background-color: #352208; */
+  /* background: url(${background1}) no-repeat center;   */
   /* border: 3px solid white; */
   display: flex;   
   justify-content: center;
@@ -44,7 +47,7 @@ const StartStoryBoard = styled.div`
   /* background-size: auto auto; */
 `;
 
-const StartPage = () => {
+const StartPage = (props) => {
   const handleClickEvent = (chapter) => {
     console.log(chapter)
     // console.log(chapter * 100 * window.innerHeight/100)
@@ -53,10 +56,13 @@ const StartPage = () => {
 
   return (
     <StartPageBlock>
-      <StartPageContent onClick={() => handleClickEvent(1)}><h2>싸만지</h2></StartPageContent> 
-      <StartStoryBoard onClick={() => handleClickEvent(2)}></StartStoryBoard> 
-      <StartStoryBoard onClick={() => handleClickEvent(3)}></StartStoryBoard> 
-      <StartStoryBoard onClick={() => handleClickEvent(4)}></StartStoryBoard> 
+      <StartPageContent onClick={() => handleClickEvent(1)}><button>skip</button></StartPageContent>
+      <StartStoryBoardBlock>
+        <StartStoryBoard onClick={() => handleClickEvent(2)}><h1>평범하게 살던 여섯 친구들이</h1></StartStoryBoard> 
+        <StartStoryBoard onClick={() => handleClickEvent(3)}><h1>이러쿵 저러쿵 정글에 떨어지게 된다</h1></StartStoryBoard> 
+        <StartStoryBoard onClick={() => handleClickEvent(4)}><h1>살아남으러 가보자</h1></StartStoryBoard> 
+      </StartStoryBoardBlock>
+      
       <StartPageContent>
         <StartPageModal></StartPageModal>
       </StartPageContent> 

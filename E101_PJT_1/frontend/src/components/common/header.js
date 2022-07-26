@@ -2,6 +2,7 @@ import styled from "styled-components";
 // import Responsive from "./Responsive";
 // import Button from './Button';
 import HeaderMenu from "./headerMenu";
+import logo from '../../media/images/logo.png'
 import background from '../../media/images/headerMenuBackGround.png'
 import { Link } from "react-router-dom";
 
@@ -15,13 +16,14 @@ const HeaderBlock = styled.div`
   /* background: black; */  
   background: url(${background});  
   border:10px solid #352208;
-  background-size: cover; 
+  background-size: contain; 
 `;
 
 const ProfileBox = styled.div` 
   margin: 2px 0.5rem;
   height: 30%;
   border: 3px solid yellow;
+  background: url(${logo});  
   /* background: blue;   */
 `
 
