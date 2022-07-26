@@ -22,7 +22,7 @@ const StartPageContent = styled.div`
   color: white;
   background: url(${background}) no-repeat center;
   background-size: contain;
-  border: 3px solid white;
+  /* border: 3px solid white; */
   display: flex;   
   justify-content: center;
   align-items: center;
@@ -37,7 +37,7 @@ const StartStoryBoard = styled.div`
   color: white;
   background-color: #352208;
   /* background: url(${background}) no-repeat center;   */
-  border: 3px solid white;
+  /* border: 3px solid white; */
   display: flex;   
   justify-content: center;
   align-items: center;

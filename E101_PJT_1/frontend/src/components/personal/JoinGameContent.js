@@ -5,6 +5,7 @@ const JoinGameContentBlock = styled.div`
   background: url(${background});
   width: 100%;
   margin: 10px;
+  padding: 10px;
 `;
 
 const JoinGameContent = () => {
