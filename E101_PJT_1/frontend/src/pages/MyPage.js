@@ -4,8 +4,8 @@ import MyPageContent from "../components/personal/MyPageContent";
 
 const MyPageBlock = styled.div`
   display: flex;
-  height: 100%;
-  width: 100%;
+  height: 100vh;
+  width: 100vw;
   background-color: #352208;
 `;
 

@@ -8,10 +8,25 @@ import Button from '../common/Button';
  */
 
 const AuthFormBlock = styled.div`
+  display: flex;  
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 60%;  
+  height: 100%;
   h3 {
     margin: 0;
-    color: gray;
+    color: black;
+    text-decoration: underline;
+    font-size: 3rem;
     margin-bottom: 1rem;
+  }
+  form {    
+    display: flex;
+    flex-direction: column;
+    width: 100%;   
+    /* justify-content: center; */
+    align-items: center;
   }
 `;
 
@@ -19,15 +34,22 @@ const AuthFormBlock = styled.div`
  * 스타일링된 input
  */
 const StyledInput = styled.input`
-  font-size: 1rem;
-  border: none;
-  border-bottom: 1px solid blue;
-  padding-bottom: 0.5rem;
-  outline: none;
-  width: 100%;
+  background: #E2D6BA;
+  border: 3px solid #000000;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  padding: 1rem 0.5rem;
+  width: 100%;    
+  height: 100%;
+  ::placeholder {
+    font-size: 1.2rem;    
+  }
   &:focus {
-    color: $oc-teal-7;
-    border-bottom: 1px solid yellow;
+    border: 3px solid white;
+    ::placeholder {
+      color: transparent;
+    }
+    /* border-bottom: 1px solid yellow; */
   }
   & + & {
     margin-top: 1rem;
@@ -37,17 +59,17 @@ const StyledInput = styled.input`
 /**
  * 폼 하단에 로그인 혹은 회원가입 링크를 보여줌
  */
-const Footer = styled.div`
-  margin-top: 2rem;
-  text-align: right;
-  a {
-    color: lightcyan;
-    text-decoration: underline;
-    &:hover {
-      color: cyan;
-    }
-  }
-`;
+// const Footer = styled.div`
+//   margin-top: 2rem;
+//   text-align: right;
+//   a {
+//     color: lightcyan;
+//     text-decoration: underline;
+//     &:hover {
+//       color: cyan;
+//     }
+//   }
+// `;
 
 const ButtonWithMarginTop = styled(Button)`
   margin-top: 1rem;
@@ -64,7 +86,7 @@ const textMap = {
 const ErrorMessage = styled.div`
   color: red;
   text-align: center;
-  font-size: 0.875rem;
+  font-size: 2rem;
   margin-top: 1rem;
 `;
 
@@ -123,11 +145,8 @@ const AuthForm = ({ type, form, onChange, onSubmit, error }) => {
           />
         )} */}
         {/* 에러 출력 */}
-        {error && <ErrorMessage>{error}</ErrorMessage>}
-        <button>제출</button>
-        {/* <ButtonWithMarginTop cyan fullWidth style={{ marginTop: '1rem' }}>
-          {text}
-        </ButtonWithMarginTop> */}
+        {error && <ErrorMessage>{error}</ErrorMessage>}        
+        <ButtonWithMarginTop>{text}</ButtonWithMarginTop>        
       </form>
       {/* <Footer>
         {type === 'login' ? (

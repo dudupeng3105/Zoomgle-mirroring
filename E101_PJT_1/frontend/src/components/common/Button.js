@@ -1,19 +1,19 @@
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 
-const buttonStyle = css`
-  border: none;
-  border-radius: 4px;
-  font-size: 1rem;
+const buttonStyle = css`  
+  font-size: 1.5rem;
   font-weight: bold;
-  padding: 0.25rem 1rem;
-  color: white;
-  outline: none;
+  padding: 1rem 3rem;
+  color: white;  
   cursor: pointer;
-
-  background: black;
+  background: #29231C;
+  border: 3px solid #b39860;
+  border-radius: 5px;  
   &:hover {
-    background: #adff45;
+    background: #E2D6BA;
+    color: black;
+    border: 3px solid #29231C;
   }  
 `;
 
