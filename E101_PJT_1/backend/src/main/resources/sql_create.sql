@@ -13,7 +13,7 @@ CREATE TABLE `user` (
 
 DROP TABLE IF EXISTS `freind`;
 
-CREATE TABLE `freind` (
+CREATE TABLE friend (
 	`relation_seq`	INT	NOT NULL	COMMENT 'Auto Increment',
 	`my`	INT	NOT NULL	COMMENT 'Auto Increment',
 	`friend`	INT	NOT NULL	COMMENT 'Auto Increment',
@@ -82,7 +82,7 @@ ALTER TABLE `user` ADD CONSTRAINT `PK_USER` PRIMARY KEY (
 	`user_seq`
 );
 
-ALTER TABLE `freind` ADD CONSTRAINT `PK_FREIND` PRIMARY KEY (
+ALTER TABLE friend ADD CONSTRAINT `PK_FREIND` PRIMARY KEY (
 	`relation_seq`
 );
 

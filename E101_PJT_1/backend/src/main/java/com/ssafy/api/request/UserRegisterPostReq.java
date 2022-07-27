@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Column;
+
 /**
  * 유저 회원가입 API ([POST] /api/v1/users) 요청에 필요한 리퀘스트 바디 정의.
  */
@@ -12,8 +14,18 @@ import lombok.Setter;
 @Setter
 @ApiModel("UserRegisterPostRequest")
 public class UserRegisterPostReq {
-	@ApiModelProperty(name="유저 ID", example="ssafy_web")
-	String id;
-	@ApiModelProperty(name="유저 Password", example="your_password")
+	@ApiModelProperty(name="유저 id", example="kimssafy")
+	String userId;
+
+	@ApiModelProperty(name="유저 password", example="kimssafy")
 	String password;
+
+	@ApiModelProperty(name="유저 name", example="kimssafy")
+	private String name;
+
+	@ApiModelProperty(name="유저 nickname", example="kimssafy")
+	private String nickname;
+
+	@ApiModelProperty(name="유저 ID", example="kimssafy@ssafy.com")
+	private String email;
 }

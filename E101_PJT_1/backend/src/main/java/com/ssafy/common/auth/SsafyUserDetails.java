@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,9 +37,7 @@ public class SsafyUserDetails implements UserDetails {
 		return this.user.getPassword();
 	}
 	@Override
-	public String getUsername() {
-		return this.user.getUserId();
-	}
+	public String getUsername() { return this.user.getUserId(); }
 	@Override
 	public boolean isAccountNonExpired() {
 		return this.accountNonExpired;
