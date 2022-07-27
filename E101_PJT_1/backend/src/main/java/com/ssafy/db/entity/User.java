@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "user")
-public class User{
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long user_seq;
@@ -39,6 +39,9 @@ public class User{
     @Column(name = "email", nullable = false)
     private String email;
 
+    @Column(name = "profile_img_num", nullable = false)
+    private long profileImgNum;
+
     @CreationTimestamp
     @Column(name = "REG_DTM", nullable = false)
     private LocalDateTime REG_DTM;
@@ -52,3 +55,4 @@ public class User{
     @Column(name = "password", nullable = false)
     String password;
 }
+

@@ -36,6 +36,7 @@ public class UserServiceImpl implements UserService {
 		user.setNickname(userRegisterInfo.getNickname());
 		user.setName(userRegisterInfo.getName());
 		user.setEmail(userRegisterInfo.getEmail());
+		user.setProfileImgNum(userRegisterInfo.getProfileImgNum());
 		return userRepository.save(user);
 	}
 
@@ -54,6 +55,8 @@ public class UserServiceImpl implements UserService {
 			updatedUser.get().setName(user.getName());
 			updatedUser.get().setNickname(user.getNickname());
 			updatedUser.get().setPassword(user.getPassword());
+			updatedUser.get().setProfileImgNum(user.getProfileImgNum());
+			updatedUser.get().setEmail(user.getEmail());
 		}
 		userRepository.save(updatedUser.get());
 		return updatedUser.get();
@@ -78,5 +81,10 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<User> getAllUsers() {
 		return userRepository.findAll();
+	}
+
+	@Override
+	public Boolean deleteUser(String userId) {
+		return userRepository.deleteByUserId(userId);
 	}
 }

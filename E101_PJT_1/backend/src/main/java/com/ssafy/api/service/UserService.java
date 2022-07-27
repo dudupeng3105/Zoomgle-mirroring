@@ -18,4 +18,6 @@ public interface UserService {
 	Boolean checkNicknameDuplicated(String nickname);
 
 	List<User> getAllUsers();
+
+	Boolean deleteUser(String userId);
 }
