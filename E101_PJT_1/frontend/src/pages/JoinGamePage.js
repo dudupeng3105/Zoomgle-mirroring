@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import Header from "../components/common/header";
-import JoinGameContent from "../components/personal/JoinGameContent";
+import background from '../media/images/headerMenuBackGround.png'
+import PlannedGameList from "../components/common/PlannedGameList";
+import PlanGameDetail from "../components/personal/PlanGameDetail";
 
 const JoinGamePageBlock = styled.div`
   display: flex;
@@ -9,11 +11,23 @@ const JoinGamePageBlock = styled.div`
   background-color: #352208;  
 `;
 
+const JoinGameContent = styled.div`
+  background: url(${background});
+  width: 100%;
+  margin: 10px;
+  padding: 10px;
+`;
+
 const JoinGamePage = () => {
   return (
     <JoinGamePageBlock>
       <Header></Header>
-      <JoinGameContent></JoinGameContent>
+      <JoinGameContent>
+        {/* 1. PlannedGameList */}
+        <PlannedGameList></PlannedGameList>
+        {/* 2. PlanGameDetail */}
+        <PlanGameDetail></PlanGameDetail>
+      </JoinGameContent>
     </JoinGamePageBlock>
   );
 };

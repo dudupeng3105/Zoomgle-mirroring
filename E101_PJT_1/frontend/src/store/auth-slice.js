@@ -11,7 +11,7 @@ const initialAuthState = {
     name: '',
     email: '',
     password: '',
-    nickName: '',
+    nickname: '',
   },
   // 로그인관련
   login: {
@@ -46,7 +46,7 @@ const authSlice = createSlice({
       console.log(action.payload)
       const type = action.payload;      
       // state[type] = initialAuthState[type];
-      console.log(state.user)
+      console.log(state.user) 
       state.error = null;
     },
     // 회원가입

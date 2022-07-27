@@ -33,7 +33,8 @@ function* onCreateUserStartAsync ({payload}) {
 function* onLoginUserStartAsync ({payload}) {
   const { loginUserSuccess, loginUserError } = authActions;
   try {    
-    const response = yield call(loginUserApi, payload);    
+    const response = yield call(loginUserApi, payload);
+    console.log(response);    
     if(response.status === 200){      
       // 201 created!
       yield put(loginUserSuccess(response.data)) ;

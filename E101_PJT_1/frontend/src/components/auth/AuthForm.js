@@ -96,13 +96,13 @@ const AuthForm = ({ type, form, onChange, onSubmit, error }) => {
     <AuthFormBlock>
       <h3>{text}</h3>
       <form onSubmit={onSubmit}>
-        {type=== 'register' && <StyledInput
+        <StyledInput
           autoComplete="userId"
           name="userId"
           placeholder="아이디"
           onChange={onChange}
           value={form.userId}
-        />}
+        />
         {type=== 'register' && <StyledInput
           autoComplete="name"
           name="name"
@@ -110,14 +110,14 @@ const AuthForm = ({ type, form, onChange, onSubmit, error }) => {
           onChange={onChange}
           value={form.name}
         />}        
-        <StyledInput
+        {type=== 'register' && <StyledInput
           autoComplete="email"
           name="email"
           placeholder="이메일"
           type="email"
           onChange={onChange}
           value={form.email}
-        />
+        />}
         <StyledInput
           autoComplete="password"
           name="password"
@@ -127,12 +127,12 @@ const AuthForm = ({ type, form, onChange, onSubmit, error }) => {
           value={form.password}
         />
         {type=== 'register' && <StyledInput
-          autoComplete="nickName"
-          name="nickName"
-          placeholder="nickName"  
+          autoComplete="nickname"
+          name="nickname"
+          placeholder="nickname"  
           type="text"        
           onChange={onChange}
-          value={form.nickName}
+          value={form.nickname}
         />}
         {/* {type === 'register' && (
           <StyledInput

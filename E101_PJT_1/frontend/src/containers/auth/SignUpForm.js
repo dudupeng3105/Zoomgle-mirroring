@@ -38,8 +38,8 @@ const SignUpForm = () => {
   // 2. 폼 등록 이벤트 핸들러
   const onSubmit = (e) => {
     e.preventDefault();
-    const { userId, name, email, password, nickName } = form;
-    if(userId && name && email && password && nickName) {
+    const { userId, name, email, password, nickname } = form;
+    if(userId && name && email && password && nickname) {
       dispatch(authActions.createUserStart(form));
       // console.log("디스패치 성공!!")
       // 마이페이지로 보내버림

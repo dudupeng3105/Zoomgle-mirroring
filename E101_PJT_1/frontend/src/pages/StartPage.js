@@ -2,12 +2,13 @@ import styled from "styled-components";
 import background from '../media/images/StartPageImage.png'
 import background1 from '../media/images/startback_3.png'
 import arrow from '../media/images/arrow.png'
-import Button from "../components/common/Button";
+// import Button from "../components/common/Button";
+import { useNavigate } from "../../node_modules/react-router-dom/index";
 import StartPageModal from "../components/display/StartPageModal";
 import StartStoryBoardBlock from "../components/display/StartStoryBoardBlock";
 
 const StartPageBlock = styled.div`
-  width: 100%;
+  width: 100vw;
   height: 500vh;
   display: flex;
   flex-direction: column;
@@ -47,6 +48,25 @@ const StartStoryBoard = styled.div`
   /* background-size: auto auto; */
 `;
 
+const StartPageSkipBtn = styled.div`
+  width: 20vmin;
+  height: 20vmin; // vmin = min(vw, vh)
+  font-size: 2rem;
+  background: url(${arrow}) no-repeat center;
+  background-size: contain;
+  /* border: 2px solid white; */
+  text-align: center;
+  cursor: pointer;
+  position: absolute;
+  bottom: 0;
+  right: 4vmin;
+  padding-top: 3vmin;  
+  :hover {
+    transform: scale(1.1);
+    transition: transform .2s;
+  }
+`;
+
 const StartPage = (props) => {
   const handleClickEvent = (chapter) => {
     console.log(chapter)
@@ -54,9 +74,14 @@ const StartPage = (props) => {
     window.scrollTo(0, chapter * 100 * window.innerHeight/100);
   } 
 
+  const navigate = useNavigate();
+
   return (
     <StartPageBlock>
-      <StartPageContent onClick={() => handleClickEvent(1)}><button>skip</button></StartPageContent>
+      {/* 최상단 페이지 */}
+      <StartPageContent onClick={() => handleClickEvent(1)}>
+        <StartPageSkipBtn onClick={() => navigate('/login')}>건너뛰기</StartPageSkipBtn>
+      </StartPageContent>
       <StartStoryBoardBlock>
         <StartStoryBoard onClick={() => handleClickEvent(2)}><h1>평범하게 살던 여섯 친구들이</h1></StartStoryBoard> 
         <StartStoryBoard onClick={() => handleClickEvent(3)}><h1>이러쿵 저러쿵 정글에 떨어지게 된다</h1></StartStoryBoard> 
