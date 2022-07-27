@@ -1,5 +1,7 @@
 import styled from "styled-components";
+// import background from '../../media/images/profile_back.jpg'
 import background from '../../media/images/headerMenuBackGround.png'
+import AuthPageModal from "../auth/AuthPageModal";
 
 const ProfileContentBlock = styled.div`
   background: url(${background});
@@ -43,30 +45,8 @@ const ProfileContent = () => {
   return (
     <ProfileContentBlock>
       <h1>회원 정보</h1>
-      <StyledInput
-        autoComplete="userId"
-        name="userId"
-        placeholder="아이디"
-        // onChange={onChange}
-        // value={form.userId}
-      />
-
-      <StyledInput
-        autoComplete="userId"
-        name="userId"
-        placeholder="아이디"
-        // onChange={onChange}
-        // value={form.userId}
-      />
-
-      <StyledInput
-        autoComplete="userId"
-        name="userId"
-        placeholder="아이디"
-        // onChange={onChange}
-        // value={form.userId}
-      />
-
+    <AuthPageModal>
+    </AuthPageModal>
     </ProfileContentBlock>
   );
 };
