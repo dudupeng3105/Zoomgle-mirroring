@@ -12,15 +12,29 @@ import {
 import { authActions } from './auth-slice';
 
 // api import
-import { createUserApi, loginUserApi } from './api';
+import { createUserApi, checkNickname, checkUserId, loginUserApi } from './api';
 
 function* onCreateUserStartAsync ({payload}) {
   const { createUserSuccess, createUserError } = authActions;
 
   try {
     console.log("회원가입 form", payload)
-    const response = yield call(createUserApi, payload);
-    console.log("회원가입 응답데이터", response.data)    
+    // 아이디, 닉네임 중복 체크
+    const { userId, nickname } = payload
+    console.log(userId, nickname)
+    const response = yield call(checkUserId, userId);
+    console.log(response);
+    if (!checkUserId.data) {
+      console.log("아이디가 중복이에여")
+    }
+    
+    // const checkNickname = yield call(checkNickname, nickname);
+    // if (!checkNickname) {
+    //   console.log("닉네임이 중복이에여")
+    // }
+
+    // const response = yield call(createUserApi, payload);
+    // console.log("회원가입 응답데이터", response.data)    
     if(response.status === 201){      
       // 201 created!
       yield put(createUserSuccess(response.data)) ;
@@ -48,7 +62,7 @@ function* onCreateUser() {
   const { createUserStart } = authActions;
   // console.log(authActions);
   // console.log(createUserStart);
-  yield takeLatest(createUserStart, onCreateUserStartAsync);
+  yield takeLatest(createUserStart, onCreateUserStartAsync);  
 }
 
 function* onLoginUser() {

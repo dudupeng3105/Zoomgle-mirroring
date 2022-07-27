@@ -12,6 +12,7 @@ const initialAuthState = {
     email: '',
     password: '',
     nickname: '',
+    profileImgNum: 1,
   },
   // 로그인관련
   login: {
@@ -19,9 +20,9 @@ const initialAuthState = {
     password: '',
   },
   loading: false, // 로딩중/끝
-  isAuth: null,  // 로그인 유무
+  isAuth: null, // 로그인 유무
   error: null, // 에러 유무
-  user: null // 유저 정보 저장
+  user: null, // 유저 정보 저장
 };
 
 // 참조
@@ -38,15 +39,15 @@ const authSlice = createSlice({
     // form 업데이트
     changeField(state, action) {
       // register, email, abc@naver.com
-      const {form, key, value} = action.payload;
-      state[form][key] = value; 
+      const { form, key, value } = action.payload;
+      state[form][key] = value;
       // ex > state.register.userId 변경
     },
     initializeForm(state, action) {
-      console.log(action.payload)
-      const type = action.payload;      
+      console.log(action.payload);
+      const type = action.payload;
       // state[type] = initialAuthState[type];
-      console.log(state.user) 
+      console.log(state.user);
       state.error = null;
     },
     // 회원가입
@@ -55,7 +56,7 @@ const authSlice = createSlice({
     },
     createUserSuccess(state, action) {
       state.loading = false;
-      const {user, accessToken} = action.payload;
+      const { user, accessToken } = action.payload;
       state.user = user;
       localStorage.setItem('token', accessToken);
       localStorage.setItem('user', JSON.stringify(user));
@@ -63,8 +64,8 @@ const authSlice = createSlice({
     },
     createUserError(state, action) {
       state.loading = false;
-      state.error =  action.payload;
-    }, 
+      state.error = action.payload;
+    },
     // 로그인
     loginUserStart(state) {
       state.loading = true;
@@ -72,23 +73,25 @@ const authSlice = createSlice({
     loginUserSuccess(state, action) {
       state.loading = false;
       // console.log("페이로드", action.payload);
-      const {user, accessToken} = action.payload;
-      state.user = user;
+      const { user, accessToken } = action.payload;
+      console.log(user);
+      const { email, name, nickname, profileImgNum } = user;
+      state.user = { email, name, nickname, profileImgNum };
       localStorage.setItem('token', accessToken);
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('user', JSON.stringify(state.user));
       state.isAuth = true;
     },
     loginUserError(state, action) {
       state.loading = false;
-      state.isAuth = false; 
-      state.error = action.payload;   
-    }, 
-    // setUser  
+      state.isAuth = false;
+      state.error = action.payload;
+    },
+    // setUser
     setUser(state, action) {
       state.user = action.payload;
       state.isAuth = true;
-    } 
-  }
+    },
+  },
 });
 
 // 액션s 안에 액션오브젝트랑 타입이랑 다있음

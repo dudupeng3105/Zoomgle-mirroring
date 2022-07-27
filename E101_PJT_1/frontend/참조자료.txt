@@ -3,3 +3,8 @@
 How to set up user authentication using React, Redux, and Redux Saga
 ---- https://medium.com/free-code-camp/login-using-react-redux-redux-saga-86b26c8180e
 
+
+package.json
+
+proxy : https://i7e101.p.ssafy.io:8080
+
