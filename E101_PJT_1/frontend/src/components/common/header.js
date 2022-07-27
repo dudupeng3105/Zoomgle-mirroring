@@ -2,9 +2,9 @@ import styled from "styled-components";
 // import Responsive from "./Responsive";
 // import Button from './Button';
 import HeaderMenu from "./headerMenu";
-import logo from '../../media/images/logo.png'
+import logo from '../../media/images/smallLogo.png'
 import background from '../../media/images/headerMenuBackGround.png'
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 const HeaderBlock = styled.div`
@@ -20,11 +20,20 @@ const HeaderBlock = styled.div`
 `;
 
 const ProfileBox = styled.div` 
-  margin: 2px 0.5rem;
-  height: 30%;
+  height: 30vh;
   border: 3px solid yellow;
-  background: url(${logo});  
+  display: flex;  
+  justify-content: center;
+  align-items: center;
   /* background: blue;   */
+`
+
+const ProfileLogo = styled.div`
+  height: 50%;
+  width: 100%; 
+  background: url(${logo}) no-repeat center;
+  background-size: contain;
+  cursor: pointer;
 `
 
 const MenuBox = styled.div`    
@@ -35,7 +44,7 @@ const MenuBox = styled.div`
   margin: 0px 0.5rem;
   margin-bottom: 2rem;
   border: 3px solid skyblue;
-  height: 70%;
+  height: 70vh;
   /* background: yellow;   */
 `
 
@@ -55,10 +64,14 @@ const Separator = styled.div`
 `;
 
 const Header = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       <HeaderBlock>
-        <ProfileBox></ProfileBox>
+        <ProfileBox>
+          <ProfileLogo onClick={() => navigate('/mypage')}></ProfileLogo>
+        </ProfileBox>
         <MenuBox>
         <HeaderMenu to="/joingame/" MenuName={'모험참여/생성'}></HeaderMenu>
         <HeaderMenu to="/friends/" MenuName={'동료명단'}></HeaderMenu>

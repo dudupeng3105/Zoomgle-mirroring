@@ -37,8 +37,8 @@ const LoginForm = () => {
   // 2. 폼 등록 이벤트 핸들러
   const onSubmit = (e) => {
     e.preventDefault();
-    const { email, password } = form;
-    dispatch(authActions.loginUserStart({ email, password }));
+    const { userId, password } = form;
+    dispatch(authActions.loginUserStart({ userId, password }));
   };
 
 

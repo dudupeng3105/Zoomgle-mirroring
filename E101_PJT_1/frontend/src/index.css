@@ -12,19 +12,19 @@ body {
   align-items: center;
   justify-content: center;   */
   min-height: 100vh;
-  min-width: 100vh;
+  min-width: 100vw;
 }
 
 #root {
   height: 100vh;
-  min-width: 100vh;
+  min-width: 100vw;
 }
 
 /* 추후 회원 인증 페이지에서
 배경화면을 페이지의 전체 영역에 채우기 위한 용도 */
 html {
   height: 100vh;  
-  min-width: 100vh;
+  min-width: 100vw;
   scroll-behavior: smooth;
 }
 

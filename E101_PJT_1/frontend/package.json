@@ -8,7 +8,6 @@
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
     "axios": "^0.27.2",
-    "json-server-auth": "^2.1.0",
     "react": "^17.0.2",
     "react-dom": "17.0.2",
     "react-redux": "^8.0.2",
@@ -23,8 +22,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "server": "json-server --watch db.json --port 5000 -m ./node_modules/json-server-auth"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
@@ -44,8 +42,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:5000",
-  "devDependencies": {
-    "json-server": "^0.17.0"
-  }
+  "proxy": "http://localhost:8080/"
 }
