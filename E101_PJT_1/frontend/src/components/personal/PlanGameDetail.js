@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import CustomDatePicker from "../utils/CustomDatePicker";
 
 const PlanGameDetailBlock = styled.div`
   border: 3px solid white;
@@ -8,7 +9,8 @@ const PlanGameDetailBlock = styled.div`
 
 const PlanGameDetail = () => {
   return (
-    <PlanGameDetailBlock>      
+    <PlanGameDetailBlock>
+      <CustomDatePicker></CustomDatePicker>      
     </PlanGameDetailBlock>
   );
 };

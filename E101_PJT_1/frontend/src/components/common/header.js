@@ -5,6 +5,7 @@ import HeaderMenu from "./headerMenu";
 import logo from '../../media/images/smallLogo.png'
 import background from '../../media/images/headerMenuBackGround.png'
 import { useNavigate } from "react-router-dom";
+import { useSelector } from 'react-redux';
 
 
 const HeaderBlock = styled.div`
@@ -65,12 +66,15 @@ const Separator = styled.div`
 
 const Header = () => {
   const navigate = useNavigate();
+  const { nickname } = useSelector((state) => ({
+    nickname: state.auth.user.nickname
+  }));  
 
   return (
     <>
       <HeaderBlock>
         <ProfileBox>
-          <ProfileLogo onClick={() => navigate('/mypage')}></ProfileLogo>
+          <ProfileLogo onClick={() => navigate('/mypage')}><h2>닉네임: {nickname}</h2></ProfileLogo>
         </ProfileBox>
         <MenuBox>
         <HeaderMenu to="/joingame/" MenuName={'모험참여/생성'}></HeaderMenu>

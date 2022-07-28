@@ -54,17 +54,17 @@ const authSlice = createSlice({
     createUserStart(state) {
       state.loading = true;
     },
-    createUserSuccess(state, action) {
-      state.loading = false;
-      const { user, accessToken } = action.payload;
-      state.user = user;
-      localStorage.setItem('token', accessToken);
-      localStorage.setItem('user', JSON.stringify(user));
-      state.isAuth = true;
-    },
+    // createUserSuccess(state, action) {
+    //   state.loading = false;
+    //   const { user, accessToken } = action.payload;
+    //   state.user = user;
+    //   localStorage.setItem('token', accessToken);
+    //   localStorage.setItem('user', JSON.stringify(user));
+    //   state.isAuth = true;
+    // },
     createUserError(state, action) {
-      state.loading = false;
-      state.error = action.payload;
+      state.loading = false;      
+      state.error = action.payload.error;      
     },
     // 로그인
     loginUserStart(state) {
