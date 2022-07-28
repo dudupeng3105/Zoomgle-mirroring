@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import background from '../../media/images/StartPageImage.png'
+import background from '../../media/images/StartPageImage_long.png'
 import Formbackground from '../../media/images/Papyrus.png'
 
 /**
@@ -13,7 +13,7 @@ const AuthTemplateBlock = styled.div`
   width: 100vw;
   height: 100vh; 
   background: url(${background}) no-repeat center;
-  background-size: contain;
+  background-size: cover;
   /* flex로 내부 내용 중앙 정렬 */
   display: flex;
   flex-direction: column;
