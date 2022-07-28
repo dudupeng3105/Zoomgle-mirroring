@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import background from '../media/images/StartPageImage.png'
+import background from '../media/images/StartPageImage_long.png'
 import background1 from '../media/images/startback_3.png'
 import arrow from '../media/images/arrow.png'
 // import Button from "../components/common/Button";
@@ -25,7 +25,7 @@ const StartPageContent = styled.div`
   /* top: 0;   */
   color: white;
   background: url(${background}) no-repeat center;
-  background-size: contain;
+  background-size: cover;
   /* border: 3px solid white; */
   display: flex;   
   justify-content: center;
@@ -74,13 +74,18 @@ const StartPage = (props) => {
     window.scrollTo(0, chapter * 100 * window.innerHeight/100);
   } 
 
+  const moveDownHandler = () => {
+    window.scrollTo(0, 500);
+    console.log( `to : ${window.innerHeight}`)
+  }
   const navigate = useNavigate();
 
   return (
     <StartPageBlock>
       {/* 최상단 페이지 */}
       <StartPageContent onClick={() => handleClickEvent(1)}>
-        <StartPageSkipBtn onClick={() => navigate('/login')}>건너뛰기</StartPageSkipBtn>
+        {/* <StartPageSkipBtn onClick={() => navigate('/login')}>건너뛰기</StartPageSkipBtn> */}
+        <StartPageSkipBtn onClick={() => moveDownHandler}>건너뛰기</StartPageSkipBtn>
       </StartPageContent>
       <StartStoryBoardBlock>
         <StartStoryBoard onClick={() => handleClickEvent(2)}><h1>평범하게 살던 여섯 친구들이</h1></StartStoryBoard> 
