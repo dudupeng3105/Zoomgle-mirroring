@@ -52,6 +52,7 @@ const StartPageSkipBtn = styled.div`
   width: 20vmin;
   height: 20vmin; // vmin = min(vw, vh)
   font-size: 2rem;
+  color : white;
   background: url(${arrow}) no-repeat center;
   background-size: contain;
   /* border: 2px solid white; */
@@ -74,18 +75,15 @@ const StartPage = (props) => {
     window.scrollTo(0, chapter * 100 * window.innerHeight/100);
   } 
 
-  const moveDownHandler = () => {
-    window.scrollTo(0, 500);
-    console.log( `to : ${window.innerHeight}`)
-  }
   const navigate = useNavigate();
 
   return (
     <StartPageBlock>
       {/* 최상단 페이지 */}
+      <StartPageSkipBtn onClick={() => handleClickEvent(4)}>건너뛰기</StartPageSkipBtn>
       <StartPageContent onClick={() => handleClickEvent(1)}>
         {/* <StartPageSkipBtn onClick={() => navigate('/login')}>건너뛰기</StartPageSkipBtn> */}
-        <StartPageSkipBtn onClick={() => moveDownHandler}>건너뛰기</StartPageSkipBtn>
+        
       </StartPageContent>
       <StartStoryBoardBlock>
         <StartStoryBoard onClick={() => handleClickEvent(2)}><h1>평범하게 살던 여섯 친구들이</h1></StartStoryBoard> 

@@ -3,6 +3,7 @@ import background from '../../media/images/album.png'
 import { Link } from "react-router-dom";
 import ProfileContent from "../personal/ProfileContent";
 import ProfileInfoBox from "./ProfileInfoBox.js";
+import { useSelector } from "react-redux";
 
 const AuthPageModalBlock = styled.div`
   width: 70vw;
@@ -50,13 +51,17 @@ const AuthPageModalBackGround = styled.div`
 // `;
 
 const AuthPageModal = () => {
+  // 1. state 에서 user 가져오기
+  const {email, name, nickname, profileImgNum} = useSelector((state) => state.auth.user );
+  
+  // 2. props 시키기
   return (
     <AuthPageModalBlock>
       <AuthPageModalBackGround>
-        <ProfileInfoBox info='image'/>
-        <ProfileInfoBox info='ID'/>
-        <ProfileInfoBox info='E-mail'/>
-        <ProfileInfoBox info='password'/>
+        <ProfileInfoBox info={profileImgNum}/>
+        <ProfileInfoBox info={nickname}/>
+        <ProfileInfoBox info={email}/>
+        <ProfileInfoBox info={name}/>
       </AuthPageModalBackGround>
     </AuthPageModalBlock>
   );
