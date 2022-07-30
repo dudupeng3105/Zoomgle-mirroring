@@ -92,6 +92,14 @@ const authSlice = createSlice({
       state.user = action.payload;
       state.isAuth = true;
     },
+    // logout
+    logout(state) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');   
+      state.isAuth = false;      
+      state.login.userId = ''; 
+      state.login.password = ''; 
+    },
   },
 });
 

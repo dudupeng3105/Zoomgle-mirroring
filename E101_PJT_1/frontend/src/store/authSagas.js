@@ -48,8 +48,9 @@ function* onCreateUserStartAsync({ payload }) {
 function* onLoginUserStartAsync({ payload }) {
   const { loginUserSuccess, loginUserError } = authActions;
   try {
+    console.log("로그인인풋", payload)
     const response = yield call(loginUserApi, payload);
-    console.log(response);
+    console.log("로그인응답", response.data);
     if (response.status === 200) {      
       yield put(loginUserSuccess(response.data));
     }

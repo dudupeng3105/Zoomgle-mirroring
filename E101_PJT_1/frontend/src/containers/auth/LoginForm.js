@@ -17,10 +17,10 @@ const LoginForm = () => {
     // user: user.user,
   }));
 
-  // 0. 컴포넌트가 처음 렌더링 될 때 form 을 초기화함
-  useEffect(() => {
-    dispatch(authActions.initializeForm('login'));
-  }, [dispatch]);
+  // // 0. 컴포넌트가 처음 렌더링 될 때 form 을 초기화함
+  // useEffect(() => {
+  //   dispatch(authActions.initializeForm('login'));
+  // }, [dispatch]);
 
   // 1. 인풋 변경 이벤트 핸들러
   const onChange = (e) => {
@@ -37,6 +37,7 @@ const LoginForm = () => {
   // 2. 폼 등록 이벤트 핸들러
   const onSubmit = (e) => {
     e.preventDefault();
+    console.log("form", form)
     const { userId, password } = form;
     dispatch(authActions.loginUserStart({ userId, password }));
   };
