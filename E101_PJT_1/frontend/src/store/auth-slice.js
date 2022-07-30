@@ -53,6 +53,7 @@ const authSlice = createSlice({
     // 회원가입
     createUserStart(state) {
       state.loading = true;
+      state.error = null;
     },
     // createUserSuccess(state, action) {
     //   state.loading = false;
