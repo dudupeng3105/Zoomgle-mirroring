@@ -1,43 +1,44 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 // import Responsive from "./Responsive";
 // import Button from './Button';
-import HeaderMenu from "./headerMenu";
-import logo from '../../media/images/smallLogo.png'
-import background from '../../media/images/headerMenuBackGround.png'
-import { useNavigate } from "react-router-dom";
-import { useSelector } from 'react-redux';
-
+import HeaderMenu from './headerMenu';
+import logo from '../../media/images/smallLogo.png';
+import background from '../../media/images/headerMenuBackGround.png';
+import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { authActions } from '../../store/auth-slice';
 
 const HeaderBlock = styled.div`
   position: fixed;
-  display: flex;  
+  display: flex;
   flex-direction: column;
   width: 15vw;
   height: 100vh;
-  /* background: black; */  
-  background: url(${background});  
-  border:10px solid #352208;
-  background-size: contain; 
+  /* background: black; */
+  background: url(${background});
+  border: 10px solid #352208;
+  background-size: contain;
 `;
 
-const ProfileBox = styled.div` 
+const ProfileBox = styled.div`
   height: 30vh;
   border: 3px solid yellow;
-  display: flex;  
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   /* background: blue;   */
-`
+`;
 
 const ProfileLogo = styled.div`
   height: 50%;
-  width: 100%; 
+  width: 100%;
   background: url(${logo}) no-repeat center;
   background-size: contain;
   cursor: pointer;
-`
+`;
 
-const MenuBox = styled.div`    
+const MenuBox = styled.div`
   /* padding: 2rem;   */
   display: flex;
   flex-direction: column;
@@ -47,41 +48,72 @@ const MenuBox = styled.div`
   border: 3px solid skyblue;
   height: 70vh;
   /* background: yellow;   */
-`
+`;
+
+const LogoutButton = styled.div`
+  display: flex;
+  width: 90%;
+  justify-content: center;
+  align-items: center;
+  font-size: 4vmin;
+  height: 20%;
+  text-align: center;
+  background-color: #352208;
+  border: 3px solid #b39860;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  &:hover {
+    background: #e2d6ba;
+    color: black;
+    border: 3px solid #29231c;
+  }
+`;
 
 /*
   헤더가 fixed로 되어 있기 때문에 페이지의 콘텐츠가 4rem 아래에 나타나도록 해 주는 컴포넌트
 */
-const Spacer = styled.div`  
-  width: 17vw;  
+const Spacer = styled.div`
+  width: 17vw;
   height: 100vh;
   background: #e2d6ba;
 `;
 
-const Separator = styled.div`  
-  width: 20px;  
+const Separator = styled.div`
+  width: 20px;
   height: 100vh;
   background: #e2d6ba;
 `;
 
 const Header = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { nickname } = useSelector((state) => ({
-    nickname: state.auth.user.nickname
-  }));  
+    nickname: state.auth.user.nickname,
+  }));
 
   return (
     <>
       <HeaderBlock>
         <ProfileBox>
-          <ProfileLogo onClick={() => navigate('/mypage')}><h2>닉네임: {nickname}</h2></ProfileLogo>
+          <ProfileLogo onClick={() => navigate('/mypage')}>
+            <h2>닉네임: {nickname}</h2>
+          </ProfileLogo>
+          <LogoutButton onClick={() => 
+            {
+              dispatch(authActions.logout())
+              navigate('/')
+            }
+          }>
+            로그아웃
+          </LogoutButton>
         </ProfileBox>
         <MenuBox>
-        <HeaderMenu to="/joingame/" MenuName={'모험참여/생성'}></HeaderMenu>
-        <HeaderMenu to="/friends/" MenuName={'동료명단'}></HeaderMenu>
-        <HeaderMenu to="/pictures/" MenuName={'사진첩'}></HeaderMenu>
-        <HeaderMenu to="/profile/" MenuName={'내 정보'}></HeaderMenu>
-        </MenuBox>        
+          <HeaderMenu to="/joingame/" MenuName={'모험참여/생성'}></HeaderMenu>
+          <HeaderMenu to="/friends/" MenuName={'동료명단'}></HeaderMenu>
+          <HeaderMenu to="/pictures/" MenuName={'사진첩'}></HeaderMenu>
+          <HeaderMenu to="/profile/" MenuName={'내 정보'}></HeaderMenu>
+        </MenuBox>
       </HeaderBlock>
       <Spacer />
       <Separator />
