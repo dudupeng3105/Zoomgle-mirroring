@@ -7,11 +7,13 @@ import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 
-const Wrapper = styled.div`  
+const Wrapper = styled.div`
   input {
     font-family: 'East Sea Dokdo', cursive;
-    padding: 1rem 2rem;
-    font-size:2rem ;
+    width: 40vmin;
+    padding: 5% 2vmin;
+    font-size: 3.5vmin ;
+    text-align: center;
     border: 3px solid black;
     border-radius: 10px;
     background-color: #E2D6BA;    
