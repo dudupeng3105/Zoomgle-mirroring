@@ -1,34 +1,36 @@
 // 사가 관련
-import { applyMiddleware } from 'redux';
+// import { applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import logger from 'redux-logger';
-import { authSagas } from './authSagas';
-import { all } from "redux-saga/effects";
+import { all } from 'redux-saga/effects';
 
 // 스토어 통합관련(리듀서들, 사가들)
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 
+// saga 관리
+import { authSagas } from './authSagas';
+import { friendSagas } from './friendSagas';
+
 // 관리하는 슬라이스들
-// import authSlice from './auth-slice';
-// import counterReducer from './counter-slice';
 import authReducer from './auth-slice';
+import friendReducer from './friends-slice';
 
 // rootReducers by using combineReducers
 const rootReducers = combineReducers({
-  auth: authReducer
-  // counter: counterReducer,
+  auth: authReducer,
+  friend: friendReducer,
 });
-// rootSaga
-function *rootSaga() {
-  yield all([...authSagas])
-}
 
+// rootSaga
+function* rootSaga() {
+  yield all([...authSagas, ...friendSagas]);
+}
 
 const sagaMiddleware = createSagaMiddleware();
 const middlewares = [sagaMiddleware];
 
-if(process.env.NODE_ENV === 'development') {
-  middlewares.push(logger)
+if (process.env.NODE_ENV === 'development') {
+  middlewares.push(logger);
 }
 
 // Store 구성 -> configureStore
@@ -37,16 +39,13 @@ if(process.env.NODE_ENV === 'development') {
 const store = configureStore({
   // 여러 슬라이서의 리듀서를 합침
   reducer: rootReducers,
-  middleware: middlewares
+  middleware: middlewares,
 });
 
 sagaMiddleware.run(rootSaga);
 
 // 외부에서 쓰려고
 export default store;
-
-
-
 
 // react-redux 라이브러리를 깔면
 // 귀찮게 subscribe 함수 쓸 필요없음
