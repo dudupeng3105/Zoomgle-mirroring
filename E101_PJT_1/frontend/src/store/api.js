@@ -15,3 +15,10 @@ export const createUserApi = async (user) =>
 
 export const loginUserApi = async (user) => 
   await customAxios.post("api/auth/login", user);
+
+// 친구 - 친구 리스트, 친구 추가
+export const getFriendsListApi = async (userId) => 
+  await customAxios.get(`api/friends/${userId}`);
+
+export const addFriendApi = async (infoId) => 
+  await customAxios.post("api/friends", infoId);

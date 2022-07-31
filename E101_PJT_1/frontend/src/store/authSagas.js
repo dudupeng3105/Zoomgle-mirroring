@@ -50,12 +50,19 @@ function* onLoginUserStartAsync({ payload }) {
   try {
     console.log("로그인인풋", payload)
     const response = yield call(loginUserApi, payload);
-    console.log("로그인응답", response.data);
+    console.log("로그인응답", response.status);
     if (response.status === 200) {      
       yield put(loginUserSuccess(response.data));
     }
   } catch (error) {
-    yield put(loginUserError(error.response.data));
+    console.log(error)
+    if (error.response.status === 401) {
+      yield put(loginUserError("비밀번호가 틀렸습니다."));
+    } else if (error.response.status === 500) {
+      yield put(loginUserError("등록되지 않은 아이디 입니다."));
+    } else {
+      yield put(loginUserError("서버 오류나 기타 오류입니다."));
+    }
   }
 }
 

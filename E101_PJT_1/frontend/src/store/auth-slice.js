@@ -76,8 +76,8 @@ const authSlice = createSlice({
       // console.log("페이로드", action.payload);
       const { user, accessToken } = action.payload;
       console.log(user);
-      const { email, name, nickname, profileImgNum } = user;
-      state.user = { email, name, nickname, profileImgNum };
+      const { userId, email, name, nickname, profileImgNum } = user;
+      state.user = { userId, email, name, nickname, profileImgNum };
       localStorage.setItem('token', accessToken);
       localStorage.setItem('user', JSON.stringify(state.user));
       state.isAuth = true;
