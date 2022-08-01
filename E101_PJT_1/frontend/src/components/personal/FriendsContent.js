@@ -9,15 +9,20 @@ import profile3 from '../../media/images/profile3.png';
 import profile4 from '../../media/images/profile4.png';
 import profile5 from '../../media/images/profile5.png';
 import profile6 from '../../media/images/profile6.png';
+import backboard from '../../media/images/board1-2.png';
+import papyrus from '../../media/images/Papyrus.png';
 
 const FriendsContentBlock = styled.div`
   background: url(${background});
   width: 100%;
   margin: 10px;
-  padding-left: 3vmin;  
-  h2 {
-    font-size: 3rem;     
-    text-decoration: underline;
+  /* padding-left: 3vmin;   */
+  h3 {
+    font-size: 3rem; 
+    margin-top: 1rem; 
+    margin-left: 3.5rem;
+    /* display: inline; */
+    /* text-decoration: underline; */
   }
 `;
 
@@ -56,9 +61,12 @@ const FriendsList = styled.div`
 const TitleButtonBlock = styled.div`
   display: flex;
   justify-content: space-between;
-  padding-right: 20vmin;
-  padding-left: 7vmin;  
+  padding-right: 1vmin;
+  /* padding-left: 7vmin;   */
   align-items: center;
+  /* border: solid 5px red; */
+  width: 60vw;
+  margin-left: 8vw;
 `;
 
 const FriendAddButton = styled.div`
@@ -94,45 +102,28 @@ const FriendCard = styled.div`
 const StyledCard = styled.div`
   background-color: wheat;
   border-radius: 5px;
+  
   width: 100%;
   display: flex;
-  .profileImg1 {
-    background: url(${profile1}) no-repeat center;
-    background-size: cover;
-  }
-  .profileImg2 {
-    background: url(${profile2}) no-repeat center;
-    background-size: cover;
-  }
-  .profileImg3 {
-    background: url(${profile3}) no-repeat center;
-    background-size: cover;
-  }
-  .profileImg4 {
-    background: url(${profile4}) no-repeat center;
-    background-size: cover;
-  }
-  .profileImg5 {
-    background: url(${profile5}) no-repeat center;
-    background-size: cover;
-  }
-  .profileImg6 {
-    background: url(${profile6}) no-repeat center;
-    background-size: cover;
-  }
 `;
 
 const ProfileImg = styled.div`    
-  width: 10vw;
-  margin-right: 1rem;
+  width: 90%;
+  height: 90%;
+  margin-top: 0.1rem;
+  /* margin-right: 1rem;
   border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
+  border-bottom-left-radius: 5px; */
+  /* padding-top: 15px; */
 `;
 
 const NameNicknameEl = styled.div`
   font-size: 3vmin;
   display: flex;
   flex-direction: column;
+  /* border: 5px solid red; */
+  margin-top: 1rem;
+  margin-left: 0.8rem;
 `
 
 const AddFriendModal = styled.div`
@@ -142,6 +133,7 @@ const AddFriendModal = styled.div`
   top: 20%;
   left: 35vw;
   background-color: #5dbb63;
+  /* background-image: url(${papyrus}); */
   z-index: 1;
   border: 3px solid black;
   border-radius: 5px;
@@ -168,7 +160,7 @@ const StyledInput = styled.input`
   border-radius: 5px;
   font-size: 1.8rem;
   padding: 1rem 0.5rem;
-  width: 90%;    
+  width: 80%;    
   height: 10vmin;
   ::placeholder {
     font-size: 1.8rem;    
@@ -180,6 +172,58 @@ const StyledInput = styled.input`
     }
   }
 `;
+
+const ImageContainer = styled.div`
+  width: 40%;
+  height: 13vh;
+  margin-right: 1rem;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border: solid black 5px; */
+  .profileImg1 {
+    background: url(${profile1}) no-repeat center;
+    background-size: cover;
+    /* padding-top: 30px; */
+    
+  }
+  .profileImg2 {
+    background: url(${profile2}) no-repeat center;
+    background-size: cover;
+  }
+  .profileImg3 {
+    background: url(${profile3}) no-repeat center;
+    background-size: cover;
+  }
+  .profileImg4 {
+    background: url(${profile4}) no-repeat center;
+    background-size: cover;
+  }
+  .profileImg5 {
+    background: url(${profile5}) no-repeat center;
+    background-size: cover;
+  }
+  .profileImg6 {
+    background: url(${profile6}) no-repeat center;
+    background-size: contain;
+  }
+
+`
+
+const BoardImageContainer = styled.div`
+  background: url(${backboard}) no-repeat;
+  background-size: 20vw 15vh ;
+  /* background-size: cover; */
+  color: white;
+  /* padding-left: 1rem; */
+  width: 20vw;
+  /* padding-right: 0; */
+  /* border: solid blue 1px; */
+  margin-top: 1rem;
+
+`
 
 const FriendsContent = () => {
   const [error, setError] = useState(null);
@@ -242,7 +286,7 @@ const FriendsContent = () => {
     <FriendsContentBlock>
       {modalToggle ? (
         <AddFriendModal>
-          <h2>친애하는 모험가를 추가하세요</h2>
+          <h1>친애하는 모험가를 추가하세요</h1>
           <StyledInput             
             name="friendId"
             placeholder="모험가의 아이디를 입력하세요."            
@@ -257,7 +301,9 @@ const FriendsContent = () => {
         ''
       )}
       <TitleButtonBlock>
-        <h2>모험단 명단</h2>        
+        <BoardImageContainer>
+          <h3>모험가 명단</h3>  
+        </BoardImageContainer>      
         <FriendAddButton
           onClick={() => {
             setmodalToggle(!modalToggle);
@@ -271,10 +317,12 @@ const FriendsContent = () => {
         {friendsArr.map((friend, idx) => (
           <FriendCard key={idx}>
             <StyledCard>
-              <ProfileImg
-                // className={'profileImg' + friend.profileImgNum}
-                className={'profileImg' + 1}
-              ></ProfileImg>
+              <ImageContainer>
+                <ProfileImg
+                  // className={'profileImg' + friend.profileImgNum}
+                  className={'profileImg' + 1}
+                ></ProfileImg>
+              </ImageContainer>
               <NameNicknameEl>
                 <div>이름: {friend.friendId}</div>
                 <div>닉네임(seq): {friend.friendSeq}</div>
