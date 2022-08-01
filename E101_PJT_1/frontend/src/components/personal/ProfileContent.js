@@ -1,7 +1,7 @@
 import styled from "styled-components";
 // import background from '../../media/images/profile_back.jpg'
 import background from '../../media/images/headerMenuBackGround.png'
-import AuthPageModal from "../auth/AuthPageModal";
+import ProfileContentModal from "../auth/ProfileContentModal";
 
 const ProfileContentBlock = styled.div`
   background: url(${background});
@@ -45,8 +45,8 @@ const ProfileContent = () => {
   return (
     <ProfileContentBlock>
       {/* <h1>회원 정보</h1> */}
-    <AuthPageModal>
-    </AuthPageModal>
+      <ProfileContentModal>
+      </ProfileContentModal>
     </ProfileContentBlock>
   );
 };
