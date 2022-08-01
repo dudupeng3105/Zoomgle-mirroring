@@ -44,7 +44,7 @@ const ProfileContentBlock = styled.div`
 const ProfileContent = () => {
   return (
     <ProfileContentBlock>
-      <h1>회원 정보</h1>
+      {/* <h1>회원 정보</h1> */}
     <AuthPageModal>
     </AuthPageModal>
     </ProfileContentBlock>
