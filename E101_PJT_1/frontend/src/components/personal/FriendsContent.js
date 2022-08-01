@@ -61,6 +61,7 @@ const FriendsList = styled.div`
 const TitleButtonBlock = styled.div`
   display: flex;
   justify-content: space-between;
+  /* justify-content: center; */
   padding-right: 1vmin;
   /* padding-left: 7vmin;   */
   align-items: center;
@@ -128,16 +129,20 @@ const NameNicknameEl = styled.div`
 
 const AddFriendModal = styled.div`
   position: absolute;
-  width: 45vw;
-  /* height: 30vmin; */
+  width: 40vw;
+  height: 70vh;
   top: 20%;
   left: 35vw;
-  background-color: #5dbb63;
-  /* background-image: url(${papyrus}); */
+  /* background-color: #5dbb63; */
+  background: url(${papyrus}) no-repeat;
+  background-size: 100%;
   z-index: 1;
-  border: 3px solid black;
+  /* border: 3px solid black; */
   border-radius: 5px;
   padding: 3vmin;
+  h1{
+    margin-top: 80px;
+  }
   h2 {
     margin: 0px;
   }
@@ -158,10 +163,10 @@ const StyledInput = styled.input`
   background: #E2D6BA;
   border: 3px solid #000000;
   border-radius: 5px;
-  font-size: 1.8rem;
+  font-size: 1.8em;
   padding: 1rem 0.5rem;
   width: 80%;    
-  height: 10vmin;
+  height: 8vmin;
   ::placeholder {
     font-size: 1.8rem;    
   }
@@ -222,7 +227,8 @@ const BoardImageContainer = styled.div`
   /* padding-right: 0; */
   /* border: solid blue 1px; */
   margin-top: 1rem;
-
+  margin-left: 3rem;
+  display: flex;
 `
 
 const FriendsContent = () => {
@@ -289,7 +295,7 @@ const FriendsContent = () => {
           <h1>친애하는 모험가를 추가하세요</h1>
           <StyledInput             
             name="friendId"
-            placeholder="모험가의 아이디를 입력하세요."            
+            placeholder="아이디를 입력하세요."            
             onChange={inputChange}            
           />
           <h3>{addMessage}</h3>

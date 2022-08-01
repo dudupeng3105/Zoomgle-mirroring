@@ -93,7 +93,7 @@ const LogoutButton = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 4vmin;
-  height: 15%;
+  height: 10%;
   text-align: center;
   background: url(${logout}) no-repeat center;
   /* background-color: #352208; */
@@ -101,12 +101,14 @@ const LogoutButton = styled.div`
   /* border: 3px solid #b39860; */
   color: white;
   border-radius: 5px;
+  /* border: 2px red solid; */
+  padding:0;
   cursor: pointer;
-  &:hover {
+  /* &:hover {
     background: #e2d6ba;
     color: black;
     border: 3px solid #29231c;
-  }
+  } */
 `;
 
 /*
@@ -143,6 +145,13 @@ const Header = () => {
           </ProfileLogo>
         </ProfileBox>
         <MenuBox>
+       
+          <HeaderMenu to="/joingame/" MenuName={'모험참여/생성'}></HeaderMenu>
+          <HeaderMenu to="/friends/" MenuName={'동료명단'}></HeaderMenu>
+          <HeaderMenu to="/pictures/" MenuName={'사진첩'}></HeaderMenu>
+          <HeaderMenu to="/profile/" MenuName={'내 정보'}></HeaderMenu>
+         
+        </MenuBox>
         <LogoutButton onClick={() => 
             {
               dispatch(authActions.logout())
@@ -150,12 +159,6 @@ const Header = () => {
             }
           }>
           </LogoutButton>
-          <HeaderMenu to="/joingame/" MenuName={'모험참여/생성'}></HeaderMenu>
-          <HeaderMenu to="/friends/" MenuName={'동료명단'}></HeaderMenu>
-          <HeaderMenu to="/pictures/" MenuName={'사진첩'}></HeaderMenu>
-          <HeaderMenu to="/profile/" MenuName={'내 정보'}></HeaderMenu>
-
-        </MenuBox>
         
       </HeaderBlock>
       <Spacer />
