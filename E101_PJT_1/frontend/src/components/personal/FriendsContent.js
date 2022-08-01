@@ -3,10 +3,12 @@ import { useEffect, useState } from 'react';
 import background from '../../media/images/headerMenuBackGround.png';
 import { useSelector, useDispatch } from 'react-redux';
 import { friendActions } from '../../store/friends-slice';
-import profile1 from '../../media/images/profile1.JPG';
-import profile2 from '../../media/images/profile2.JPG';
-import profile3 from '../../media/images/profile3.JPG';
-import profile4 from '../../media/images/profile4.JPG';
+import profile1 from '../../media/images/profile1.png';
+import profile2 from '../../media/images/profile2.png';
+import profile3 from '../../media/images/profile3.png';
+import profile4 from '../../media/images/profile4.png';
+import profile5 from '../../media/images/profile5.png';
+import profile6 from '../../media/images/profile6.png';
 
 const FriendsContentBlock = styled.div`
   background: url(${background});
@@ -31,7 +33,7 @@ const FriendsList = styled.div`
   /* border: 3px black solid; */
   /* SCROLL */
   &::-webkit-scrollbar { 
-    width: 10px; 
+    width: 15px; 
   }
   /* 스크롤바의 width */
   &::-webkit-scrollbar-track { 
@@ -108,6 +110,14 @@ const StyledCard = styled.div`
   }
   .profileImg4 {
     background: url(${profile4}) no-repeat center;
+    background-size: cover;
+  }
+  .profileImg5 {
+    background: url(${profile5}) no-repeat center;
+    background-size: cover;
+  }
+  .profileImg6 {
+    background: url(${profile6}) no-repeat center;
     background-size: cover;
   }
 `;
