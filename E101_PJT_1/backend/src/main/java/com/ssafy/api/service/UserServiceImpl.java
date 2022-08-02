@@ -49,14 +49,14 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User updateUserInfo(String userId, User user) {
+	public User updateUserInfo(String userId, UserRegisterPostReq updateInfo) {
 		Optional<User> updatedUser = userRepositorySupport.findUserByUserId(userId);
 		if (updatedUser.isPresent()) {
-			updatedUser.get().setName(user.getName());
-			updatedUser.get().setNickname(user.getNickname());
-			updatedUser.get().setPassword(user.getPassword());
-			updatedUser.get().setProfileImgNum(user.getProfileImgNum());
-			updatedUser.get().setEmail(user.getEmail());
+			updatedUser.get().setName(updateInfo.getName());
+			updatedUser.get().setNickname(updateInfo.getNickname());
+			updatedUser.get().setPassword(passwordEncoder.encode(updateInfo.getPassword()));
+			updatedUser.get().setProfileImgNum(updateInfo.getProfileImgNum());
+			updatedUser.get().setEmail(updateInfo.getEmail());
 		}
 		userRepository.save(updatedUser.get());
 		return updatedUser.get();

@@ -11,7 +11,7 @@ import java.util.List;
 public interface UserService {
 	User createUser(UserRegisterPostReq userRegisterInfo);
 	User getUserByUserId(String userId);
-	User updateUserInfo(String userId, User user);
+	User updateUserInfo(String userId, UserRegisterPostReq updateInfo);
 
 	Boolean checkIdDuplicated(String userId);
 
