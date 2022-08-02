@@ -4,6 +4,15 @@ import styled from 'styled-components';
 import HeaderMenu from './headerMenu';
 import logo from '../../media/images/smallLogo.png';
 import background from '../../media/images/headerMenuBackGround.png';
+import profile1 from '../../media/images/profile1.png';
+import profile2 from '../../media/images/profile2.png';
+import profile3 from '../../media/images/profile3.png';
+import profile4 from '../../media/images/profile4.png';
+import profile5 from '../../media/images/profile5.png';
+import profile6 from '../../media/images/profile6.png';
+import logout from '../../media/images/logout.png';
+
+
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { authActions } from '../../store/auth-slice';
@@ -27,15 +36,44 @@ const ProfileBox = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* background: blue;   */
+  .profileImg1 {
+    background: url(${profile1}) no-repeat center;
+    background-size: contain;
+    /* padding-top: 30px; */
+  }
+  .profileImg2 {
+    background: url(${profile2}) no-repeat center;
+    background-size: cover;
+  }
+  .profileImg3 {
+    background: url(${profile3}) no-repeat center;
+    background-size: cover;
+  }
+  .profileImg4 {
+    background: url(${profile4}) no-repeat center;
+    background-size: cover;
+  }
+  .profileImg5 {
+    background: url(${profile5}) no-repeat center;
+    background-size: cover;
+  }
+  .profileImg6 {
+    background: url(${profile6}) no-repeat center;
+    background-size: contain;
+  }
 `;
 
 const ProfileLogo = styled.div`
-  height: 50%;
-  width: 100%;
-  background: url(${logo}) no-repeat center;
-  background-size: contain;
+  height: 90%;
+  width: 90%;
   cursor: pointer;
+  /* background-color: #352208; */
+  border: 3px solid #b39860;
+  /* #352208 */
+  
+  border-radius: 5px;
+  
+
 `;
 
 const MenuBox = styled.div`
@@ -52,22 +90,25 @@ const MenuBox = styled.div`
 
 const LogoutButton = styled.div`
   display: flex;
-  width: 90%;
   justify-content: center;
   align-items: center;
   font-size: 4vmin;
-  height: 20%;
+  height: 10%;
   text-align: center;
-  background-color: #352208;
-  border: 3px solid #b39860;
+  background: url(${logout}) no-repeat center;
+  /* background-color: #352208; */
+  background-size: contain;
+  /* border: 3px solid #b39860; */
   color: white;
   border-radius: 5px;
+  /* border: 2px red solid; */
+  padding:0;
   cursor: pointer;
-  &:hover {
+  /* &:hover {
     background: #e2d6ba;
     color: black;
     border: 3px solid #29231c;
-  }
+  } */
 `;
 
 /*
@@ -85,35 +126,40 @@ const Separator = styled.div`
   background: #e2d6ba;
 `;
 
+
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { nickname } = useSelector((state) => ({
+  const { nickname,profileImgNum } = useSelector((state) => ({
     nickname: state.auth.user.nickname,
+    profileImgNum: state.auth.user.profileImgNum
   }));
 
   return (
     <>
       <HeaderBlock>
         <ProfileBox>
-          <ProfileLogo onClick={() => navigate('/mypage')}>
-            <h2>닉네임: {nickname}</h2>
+          <ProfileLogo onClick={() => navigate('/mypage')} className={`profileImg${profileImgNum}`}>
+            {/* <h2>이미지 : {profileImgNum}</h2> */}
+            {/* <h2>닉네임: {nickname}</h2> */}
           </ProfileLogo>
-          <LogoutButton onClick={() => 
+        </ProfileBox>
+        <MenuBox>
+       
+          <HeaderMenu to="/joingame/" MenuName={'모험참여/생성'}></HeaderMenu>
+          <HeaderMenu to="/friends/" MenuName={'동료명단'}></HeaderMenu>
+          <HeaderMenu to="/pictures/" MenuName={'사진첩'}></HeaderMenu>
+          <HeaderMenu to="/profile/" MenuName={'내 정보'}></HeaderMenu>
+         
+        </MenuBox>
+        <LogoutButton onClick={() => 
             {
               dispatch(authActions.logout())
               navigate('/')
             }
           }>
-            로그아웃
           </LogoutButton>
-        </ProfileBox>
-        <MenuBox>
-          <HeaderMenu to="/joingame/" MenuName={'모험참여/생성'}></HeaderMenu>
-          <HeaderMenu to="/friends/" MenuName={'동료명단'}></HeaderMenu>
-          <HeaderMenu to="/pictures/" MenuName={'사진첩'}></HeaderMenu>
-          <HeaderMenu to="/profile/" MenuName={'내 정보'}></HeaderMenu>
-        </MenuBox>
+        
       </HeaderBlock>
       <Spacer />
       <Separator />
