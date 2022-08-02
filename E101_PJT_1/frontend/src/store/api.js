@@ -1,5 +1,5 @@
 // import axios from "axios";
-import { customAxios } from "./customAxios";
+import { customAxios, customJWTAxios } from "./customAxios";
 
 // 회원가입 관련 - 아이디 중복 체크
 export const checkUserId = async (userId) => (  
@@ -15,6 +15,15 @@ export const createUserApi = async (user) =>
 
 export const loginUserApi = async (user) => 
   await customAxios.post("api/auth/login", user);
+  
+// 회원정보 수정(UPDATE)
+export const updateUserApi = async (user) => 
+  await customJWTAxios.put("api/users/my-info", user);
+
+// 회원정보 겟(GET)
+export const getUserApi = async () => 
+  await customJWTAxios.get("api/users/my-info");
+
 
 // 친구 - 친구 리스트, 친구 추가
 export const getFriendsListApi = async (userId) => 
