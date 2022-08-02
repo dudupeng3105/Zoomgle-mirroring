@@ -236,7 +236,7 @@ const ProfileContentModal = () => {
         email: form.email,
         password: form.password,        
         nickname: form.nickname,
-        profileImgNum: form.profileImgNum,
+        profileImgNum: imgNum,
       }
       dispatch(authActions.updateUser(paylodForm));
       // 수정 완료 처리(이거 순서대로되게 해야함)
