@@ -8,6 +8,7 @@ import PicturesPage from "./pages/PicturesPage";
 import JoinGamePage from "./pages/JoinGamePage";
 import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
+import MainGamePage from "./pages/MainGamePage";
 
 
 const App = () => {
@@ -21,6 +22,7 @@ const App = () => {
       <Route path='/friends/' element={<FriendsPage />} />
       <Route path='/pictures/' element={<PicturesPage />} />
       <Route path='/joingame/' element={<JoinGamePage />} />
+      <Route path='/maingame/' element={<MainGamePage />} />
     </Routes>
   );
 };
