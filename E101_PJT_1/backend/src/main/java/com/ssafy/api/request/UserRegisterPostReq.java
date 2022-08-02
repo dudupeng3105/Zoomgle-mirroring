@@ -21,14 +21,14 @@ public class UserRegisterPostReq {
 	String password;
 
 	@ApiModelProperty(name="유저 name", example="kimssafy")
-	private String name;
+	String name;
 
 	@ApiModelProperty(name="유저 nickname", example="kimssafy")
-	private String nickname;
+	String nickname;
 
 	@ApiModelProperty(name="유저 Email", example="kimssafy@ssafy.com")
-	private String email;
+	String email;
 
 	@ApiModelProperty(name="유저 ProfileImgNum", example="1")
-	private int profileImgNum;
+	int profileImgNum;
 }
