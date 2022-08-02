@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
 		Optional<User> updatedUser = userRepositorySupport.findUserByUserId(userId);
 		if (updatedUser.isPresent()) {
 			updatedUser.get().setName(updateInfo.getName());
-//			updatedUser.get().setNickname(updateInfo.getNickname());
+			updatedUser.get().setNickname(updateInfo.getNickname());
 			updatedUser.get().setPassword(passwordEncoder.encode(updateInfo.getPassword()));
 			updatedUser.get().setProfileImgNum(updateInfo.getProfileImgNum());
 			updatedUser.get().setEmail(updateInfo.getEmail());
