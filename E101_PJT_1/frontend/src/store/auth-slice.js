@@ -112,6 +112,24 @@ const authSlice = createSlice({
     updateUserError(state, action){
       state.loading = false;
       state.error = action.payload.error;
+    },
+    // GET user
+    getUser(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    getUserSuccess(state, action){
+      console.log(action.payload);
+      const user = action.payload;
+      // console.log(user);
+      const { userId, email, name, nickname, profileImgNum } = user;
+      state.user = { userId, email, name, nickname, profileImgNum };
+      localStorage.setItem('user', JSON.stringify(state.user));
+      state.loading = false;
+    },
+    getUserError(state, action){
+      state.loading = false;
+      state.error = action.payload.error;
     }
   },
 });

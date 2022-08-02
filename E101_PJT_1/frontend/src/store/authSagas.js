@@ -12,7 +12,14 @@ import {
 import { authActions } from './auth-slice';
 
 // api import
-import { createUserApi, checkNickname, checkUserId, loginUserApi } from './api';
+import {
+  createUserApi,
+  checkNickname,
+  checkUserId,
+  loginUserApi,
+  updateUserApi,
+  getUserApi,
+} from './api';
 
 function* onCreateUserStartAsync({ payload }) {
   const { createUserError, loginUserStart } = authActions;
@@ -65,6 +72,34 @@ function* onLoginUserStartAsync({ payload }) {
     }
   }
 }
+// 밑에 함수는 여기저기 아직 고칠 곳이 많습니다!!
+function* onUpdateUserStartAsync({ payload }) {
+  const { updateUserSuccess, updateUserError, getUser} = authActions;  
+  try {
+    console.log("업데이트유저인풋", payload)
+    const response = yield call(updateUserApi, payload);
+    console.log("업데이트유저응답(현재미완성이라성공해도500이올수있음)", response);
+    // if (response.status === 200) {      
+    //   yield put(loginUserSuccess(response.data));
+    // }
+  } catch (error) {
+    yield put(getUser());
+    console.log(error)     
+  }
+}
+// 유저정보 가져오기!!
+function* ongetUserStartAsync() {
+  const { getUserSuccess, getUserError } = authActions;  
+  try {
+    // console.log("들어왔어요");
+    const response = yield call(getUserApi);
+    // console.log(response);
+    yield put(getUserSuccess(response.data));    
+  } catch (error) {
+    console.log(error);
+    yield put(getUserError(error.response.data));
+  }
+}
 
 function* onCreateUser() {
   const { createUserStart } = authActions;
@@ -80,9 +115,19 @@ function* onLoginUser() {
   yield takeLatest(loginUserStart, onLoginUserStartAsync);
 }
 
+function* onUpdateUser() {
+  const { updateUser } = authActions;  
+  yield takeLatest(updateUser, onUpdateUserStartAsync);
+}
+
+function* onGetUser() {
+  const { getUser } = authActions;  
+  yield takeLatest(getUser, ongetUserStartAsync);
+}
+
 export const authSagas = [
   fork(onLoginUser),
   fork(onCreateUser),
-  // fork(onDeleteUser),
-  // fork(onUpdateUser),
+  fork(onUpdateUser),
+  fork(onGetUser),
 ];

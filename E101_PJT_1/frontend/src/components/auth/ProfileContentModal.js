@@ -3,6 +3,7 @@ import background from '../../media/images/albumSmaller.png';
 import ProfileInfoBox from './ProfileInfoBox.js';
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { authActions } from '../../store/auth-slice';
 import profile0 from '../../media/images/profile1.png';
 import profile1 from '../../media/images/profile2.png';
 import profile2 from '../../media/images/profile3.png';
@@ -229,7 +230,16 @@ const ProfileContentModal = () => {
     if (form.password === form.validPassword) {
       // 통과 시 요청하고 수정완료
       // dispatch
-      // 수정 완료 처리
+      const paylodForm = {
+        userId: form.userId,
+        name: form.name,
+        email: form.email,
+        password: form.password,        
+        nickname: form.nickname,
+        profileImgNum: form.profileImgNum,
+      }
+      dispatch(authActions.updateUser(paylodForm));
+      // 수정 완료 처리(이거 순서대로되게 해야함)
       setError(''); // 에러초기화
       setpasswordChangeToggle(!passwordChangeToggle);
     } else {
