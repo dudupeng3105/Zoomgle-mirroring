@@ -19,5 +19,5 @@ public interface UserService {
 
 	List<User> getAllUsers();
 
-	Boolean deleteUser(String userId);
+	void deleteUser(User user);
 }
