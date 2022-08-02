@@ -100,6 +100,19 @@ const authSlice = createSlice({
       state.login.userId = ''; 
       state.login.password = ''; 
     },
+    // UPDATE user
+    updateUser(state, action) {
+      state.loading = true;
+      state.error = null;
+    },
+    updateUserSuccess(state, action){
+      console.log(action.payload);
+      state.loading = false;
+    },
+    updateUserError(state, action){
+      state.loading = false;
+      state.error = action.payload.error;
+    }
   },
 });
 

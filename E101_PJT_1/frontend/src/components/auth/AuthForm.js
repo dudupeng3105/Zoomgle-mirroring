@@ -34,10 +34,13 @@ const AuthFormBlock = styled.div`
  * 스타일링된 input
  */
 const StyledInput = styled.input`
-  height: 14vh;
-  display: flex;  
-  align-items: center;
-  border: 2px solid blue;
+  background: #E2D6BA;
+  border: 3px solid #000000;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  padding: 1rem 0.5rem;
+  width: 100%;    
+  height: 100%;
   ::placeholder {
     font-size: 1.2rem;    
   }

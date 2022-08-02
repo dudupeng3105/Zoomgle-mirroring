@@ -81,7 +81,7 @@ public class UserController {
 			@ApiResponse(code = 404, message = "사용자 없음"),
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
-	public ResponseEntity<UserRes> updateUserInfo(@ApiIgnore Authentication authentication,
+	public void updateUserInfo(@ApiIgnore Authentication authentication,
 												  @RequestBody @ApiParam(value="회원가입 정보", required = true) UserRegisterPostReq updateInfo) {
 		/**
 		 * 요청 헤더 액세스 토큰이 포함된 경우에만 실행되는 인증 처리이후, 리턴되는 인증 정보 객체(authentication) 통해서 요청한 유저 식별.
@@ -91,7 +91,7 @@ public class UserController {
 		String userId = userDetails.getUsername();
 		User user = userService.updateUserInfo(userId, updateInfo);
 
-		return ResponseEntity.status(200).body(UserRes.of(user));
+//		return ResponseEntity.status(200).body(user);
 	}
 
 	@DeleteMapping(value="my-info")

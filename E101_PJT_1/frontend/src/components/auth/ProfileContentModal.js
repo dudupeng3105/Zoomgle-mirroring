@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import background from '../../media/images/albumSmaller.png';
 import ProfileInfoBox from './ProfileInfoBox.js';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import profile0 from '../../media/images/profile1.png';
 import profile1 from '../../media/images/profile2.png';
 import profile2 from '../../media/images/profile3.png';
@@ -27,7 +27,7 @@ const ProfileContentModalBackGround = styled.div`
   height: 100vh;
   justify-content: center;
   align-items: center;
-  border: 3px solid black;
+  /* border: 3px solid black; */
   background: url(${background}) no-repeat center;
   background-size: 80vw 100vh;
   /* border: solid black 3px; */
@@ -37,14 +37,14 @@ const ProfileContentBox = styled.div`
   display: flex;
   width: 80%;
   height: 80vh;
-  border: 3px solid yellow;
+  /* border: 3px solid yellow; */
   background-size: contain;
 `;
 
 const ProfileImgBox = styled.div`
   width: 40vmin;
   height: 30vmin;
-  border: 2px solid black;
+  /* border: 2px solid black; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -74,7 +74,7 @@ const ProfileImgBox = styled.div`
   }
 `;
 
-const ProfileInfoBoxContainer = styled.div`
+const ProfileInfoBoxContainer = styled.form`
   margin-left: 5vmin;
   width: 100%;
   display: flex;
@@ -88,7 +88,7 @@ const PasswordChangeButton = styled.div`
   align-items: center;
   height: 10vh;
   width: 20vw;
-  margin-left: 25vw;
+  /* margin-left: 25vw; */
   font-size: 5vmin;
   background-color: #352208;
   border: 3px solid #b39860;
@@ -107,7 +107,7 @@ const ProfileLeftBtn = styled.div`
   border-radius: 10px;
   border-top: 1rem solid transparent;
   border-bottom: 1rem solid transparent;
-  border-right: 1rem solid grey;
+  border-right: 1rem solid black;
 `;
 
 const ProfileRightBtn = styled.div`
@@ -116,7 +116,7 @@ const ProfileRightBtn = styled.div`
   border-radius: 10px;
   border-top: 1rem solid transparent;
   border-bottom: 1rem solid transparent;
-  border-left: 1rem solid grey;
+  border-left: 1rem solid black;
 `;
 
 const ProfileCenter = styled.div`
@@ -124,19 +124,50 @@ const ProfileCenter = styled.div`
   height: 100%;
 `;
 
-/**
- * 스타일링된 input
- */
-const StyledInput = styled.input`
-  background: transparent;
-  border: 3px solid #000000;
-  border-radius: 5px;
-  font-size: 1.2rem;
-  padding: 1rem 0.5rem;
-  width: 100%;
+const InputNameBox = styled.div`
+  /* width: 20vw; */
+  display: flex;
   height: 13vh;
+  /* border: 1px solid blue; */
+`;
+
+const InputName = styled.div`
+  width: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.8rem;
+`;
+
+const ErrorBox = styled.div`
+  height: 10vh;
+  width: 20vw;  
+  font-size: 4vmin;
+  color: red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const ErrorButtonBlock = styled.div`
+  display: flex;
+  width: 45vw;
+  justify-content: space-between;
+  text-align: center;
+`
+
+const StyledInput = styled.input`
+  font-family: 'East Sea Dokdo', cursive;
+  background: transparent;
+  border: 2px solid #000000;
+  border-radius: 5px;
+  font-size: 5vmin;
+  padding: 1rem 0.5rem;
+  width: 80%;
+  height: 9vh;
+  margin-top: 2vh;
   ::placeholder {
-    font-size: 1.2rem;
+    font-size: 2.5rem;
   }
   &:focus {
     border: 3px solid white;
@@ -149,83 +180,146 @@ const StyledInput = styled.input`
 
 const ProfileContentModal = () => {
   // 1. state 에서 user 가져오기
-  const { email, name, nickname, profileImgNum } = useSelector(
+  const { userId, email, name, nickname, profileImgNum } = useSelector(
     (state) => state.auth.user,
   );
+  const dispatch = useDispatch();
   const [passwordChangeToggle, setpasswordChangeToggle] = useState(false);
   const [imgNum, setImgNum] = useState(1);
+  const [error, setError] = useState(null);
+  const [form, setForm] = useState({
+    userId: userId,
+    name: name,
+    email: email,
+    password: '',
+    validPassword: '',
+    nickname: nickname,
+    profileImgNum: profileImgNum,
+  });
 
-  // 2. props 시키기
+  // 1. 인풋 변경 이벤트 핸들러
+  const onChange = (e) => {
+    let { name, value } = e.target;
+    const changeValue = {
+      ...form,
+      [name]: value,
+    };
+    setForm(changeValue);
+    // console.log(form);
+  };
+
+  // 2. 프로필 변경 요청
+  const profileChangeSubmit = () => {
+    console.log(form);
+    // 요청전에 유효성 체크(필드 다 있는지)
+    // 통과못하면 error 띄워주고 수정완료 안됨
+    // 이메일 유효성 검사
+    const regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+
+    if (!(regExp.test(form.email))) {
+      setError('이메일 형식을 확인해주세요');
+      return;
+    }
+    if (!(form.nickname && form.password)) {
+      console.log('칸을 모두 채워주세요')
+      setError('칸을 모두 채워주세요');
+      return;
+    }
+    // 비번 일치한지
+    if (form.password === form.validPassword) {
+      // 통과 시 요청하고 수정완료
+      // dispatch
+      // 수정 완료 처리
+      setError(''); // 에러초기화
+      setpasswordChangeToggle(!passwordChangeToggle);
+    } else {
+      console.log('비밀번호를 확인해주세요')
+      setError('비밀번호를 확인해주세요');
+    }
+  };
+
   return (
     <ProfileContentModalBlock>
       <ProfileContentModalBackGround>
         <ProfileContentBox>
           <ProfileImgBox>
             <ProfileLeftBtn onClick={() => setImgNum((imgNum - 1) % 6)} />
-            <ProfileCenter className={'profileImg' + imgNum}>
-              안녕
-            </ProfileCenter>
+            <ProfileCenter className={'profileImg' + imgNum}></ProfileCenter>
             <ProfileRightBtn onClick={() => setImgNum((imgNum + 1) % 6)} />
           </ProfileImgBox>
-          <ProfileInfoBoxContainer>
-            {!passwordChangeToggle ? (
-              <ProfileInfoBox title={'닉네임'} info={nickname} />
-            ) : (
-              ''
-            )}
-            {passwordChangeToggle ? (
-              <StyledInput value={nickname}></StyledInput>
-            ) : (
-              ''
-            )}
-            {!passwordChangeToggle ? (
-              <ProfileInfoBox title={'이메일'} info={email} />
-            ) : (
-              ''
-            )}
-            {passwordChangeToggle ? (
-              <StyledInput value={email}></StyledInput>
-            ) : (
-              ''
-            )}
-            {!passwordChangeToggle ? (
-              <ProfileInfoBox title={'비밀번호'} info={'********'} />
-            ) : (
-              ''
-            )}
-            {passwordChangeToggle ? (
-              ''
-            ) : (
+          {!passwordChangeToggle ? (
+            <ProfileInfoBoxContainer>
+              <InputNameBox>
+                <InputName>닉네임:</InputName>
+                <ProfileInfoBox info={nickname} />
+              </InputNameBox>
+              <InputNameBox>
+                <InputName>이메일:</InputName>
+                <ProfileInfoBox info={email} />
+              </InputNameBox>
+              <InputNameBox>
+                <InputName>비밀번호:</InputName>
+                <ProfileInfoBox info={'********'} />
+              </InputNameBox>
               <PasswordChangeButton
                 onClick={() => setpasswordChangeToggle(!passwordChangeToggle)}
               >
                 회원정보 수정
               </PasswordChangeButton>
-            )}
-            {passwordChangeToggle ? (
-              <StyledInput
-                placeholder='새 비밀번호'
-              ></StyledInput>
-            ) : (
-              ''
-            )}
-            {passwordChangeToggle ? (
-              <StyledInput
-              placeholder='비밀번호 확인'
-              ></StyledInput>
-            ) : (
-              ''
-            )}
-            {!passwordChangeToggle ? (
-              ''
-            ) : (
-              <PasswordChangeButton
-                onClick={() => setpasswordChangeToggle(!passwordChangeToggle)}
-              >
-                수정 완료
-              </PasswordChangeButton>
-            )}
-          </ProfileInfoBoxContainer>
+            </ProfileInfoBoxContainer>
+          ) : (
+            <ProfileInfoBoxContainer>
+              <InputNameBox>
+                <InputName>닉네임:</InputName>
+                <StyledInput
+                  value={form.nickname}
+                  name="nickname"
+                  placeholder="닉네임"
+                  onChange={onChange}
+                ></StyledInput>
+              </InputNameBox>
+              <InputNameBox>
+                <InputName>이메일:</InputName>
+                <StyledInput
+                  value={form.email}
+                  name="email"
+                  placeholder="이메일"
+                  type="email"
+                  onChange={onChange}
+                ></StyledInput>
+              </InputNameBox>
+              <InputNameBox>
+                <InputName>새 비밀번호:</InputName>
+                <StyledInput
+                  placeholder="새 비밀번호"
+                  value={form.password}
+                  type="password"
+                  name="password"
+                  autoComplete="off"
+                  onChange={onChange}
+                ></StyledInput>
+              </InputNameBox>
+              <InputNameBox>
+                <InputName>비밀번호 확인:</InputName>
+                <StyledInput
+                  placeholder="비밀번호 확인"
+                  value={form.validPassword}
+                  name="validPassword"
+                  type="password"
+                  autoComplete="off"
+                  onChange={onChange}
+                ></StyledInput>
+              </InputNameBox>
+              <ErrorButtonBlock>
+                <ErrorBox>{error}</ErrorBox>
+                <PasswordChangeButton
+                  onClick={() => profileChangeSubmit()}
+                >
+                  수정 완료
+                </PasswordChangeButton>                
+              </ErrorButtonBlock>
+            </ProfileInfoBoxContainer>
+          )}
         </ProfileContentBox>
       </ProfileContentModalBackGround>
     </ProfileContentModalBlock>

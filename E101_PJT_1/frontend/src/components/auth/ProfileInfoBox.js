@@ -1,17 +1,18 @@
 import styled from "styled-components";
 
 const ProfileInfoBoxBlock = styled.div`
-  height: 14vh;
+  height: 13vh;
   display: flex;  
   align-items: center;
-  border: 2px solid blue;
+  font-size: 5vmin;  
+  /* border: 2px solid blue; */
 `
 
 
 const ProfileInfoBox = (props) => {
   return (
     <ProfileInfoBoxBlock>
-      <h1>{props.title}: {props.info}</h1>
+      {props.info}
     </ProfileInfoBoxBlock>
   );
 };
