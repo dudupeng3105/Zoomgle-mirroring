@@ -13,7 +13,7 @@ import lombok.Setter;
 @ApiModel("CreateRoomPostReq")
 public class CreateRoomPostReq {
 
-	@ApiModelProperty(name = "게임 날짜", example = "2022-01-01")
+	@ApiModelProperty(name = "게임 날짜", example = "2022-01-01 09:00:00")
 	String date;
 
 	@ApiModelProperty(name = "최대 인원 수", example = "6")
