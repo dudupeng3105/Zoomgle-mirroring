@@ -75,8 +75,8 @@ const FriendAddButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 6vmin;  
-  width: 18vmin;
+  height: 8vh;  
+  width: 15vw;
   font-size: 5vmin;
   background-color: #352208;
   border: 3px solid #b39860;
@@ -135,21 +135,23 @@ const AddFriendModal = styled.div`
   left: 35vw;
   /* background-color: #5dbb63; */
   background: url(${papyrus}) no-repeat;
-  background-size: 100%;
+  background-size: 40vw 70vh;
   z-index: 1;
   /* border: 3px solid black; */
   border-radius: 5px;
   padding: 3vmin;
   h1{
-    margin-top: 80px;
+    margin:0;
+    margin-top: 15vh;
   }
   h2 {
     margin: 0px;
   }
   h3 {
-    color: yellow;
-    font-size: 2.5rem;
+    color: #432616;
+    font-size: 2rem;
     margin: 0px;
+    margin-bottom: 3vh
   }
   display: flex;
   flex-direction: column;
@@ -166,7 +168,7 @@ const StyledInput = styled.input`
   font-size: 1.8em;
   padding: 1rem 0.5rem;
   width: 80%;    
-  height: 8vmin;
+  height: 9vh;
   ::placeholder {
     font-size: 1.8rem;    
   }
@@ -218,17 +220,18 @@ const ImageContainer = styled.div`
 `
 
 const BoardImageContainer = styled.div`
+  width: 20vw;
+  height: 15vh;
   background: url(${backboard}) no-repeat;
   background-size: 20vw 15vh ;
-  /* background-size: cover; */
-  color: white;
-  /* padding-left: 1rem; */
-  width: 20vw;
-  /* padding-right: 0; */
-  /* border: solid blue 1px; */
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  font-size: 2.5rem; 
+  color: white;  
   margin-top: 1rem;
   margin-left: 3rem;
-  display: flex;
+  margin-bottom: 5vh;  
 `
 
 const FriendsContent = () => {
@@ -272,6 +275,7 @@ const FriendsContent = () => {
     }
     dispatch(friendActions.AddFriendStart(infoId))  
     // 성공하면 모달 닫음    
+    console.log("성공여부", addResult)
     if (addResult) {
       setTimeout(() => {
         setmodalToggle(!modalToggle);
@@ -308,7 +312,8 @@ const FriendsContent = () => {
       )}
       <TitleButtonBlock>
         <BoardImageContainer>
-          <h3>모험가 명단</h3>  
+          모험가 명단
+          {/* <h3>모험가 명단</h3>   */}
         </BoardImageContainer>      
         <FriendAddButton
           onClick={() => {
