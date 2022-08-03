@@ -10,20 +10,23 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit';
 // saga 관리
 import { authSagas } from './authSagas';
 import { friendSagas } from './friendSagas';
+import { gamePlanSagas } from './gamePlanSagas';
 
 // 관리하는 슬라이스들
 import authReducer from './auth-slice';
 import friendReducer from './friends-slice';
+import gamePlanReducer from './gamePlan-slice';
 
 // rootReducers by using combineReducers
 const rootReducers = combineReducers({
   auth: authReducer,
   friend: friendReducer,
+  gamePlan: gamePlanReducer,
 });
 
 // rootSaga
 function* rootSaga() {
-  yield all([...authSagas, ...friendSagas]);
+  yield all([...authSagas, ...friendSagas, ...gamePlanSagas]);
 }
 
 const sagaMiddleware = createSagaMiddleware();

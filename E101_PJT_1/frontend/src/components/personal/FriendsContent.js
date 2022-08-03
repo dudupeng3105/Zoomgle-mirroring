@@ -89,7 +89,7 @@ const FriendAddButton = styled.div`
   }
 `
 
-const FriendCard = styled.div`
+export const FriendCard = styled.div`
   width: 40vmin;
   height: 15vh;
   background-color: white;
@@ -100,7 +100,7 @@ const FriendCard = styled.div`
   display: flex;
 `;
 
-const StyledCard = styled.div`
+export const StyledCard = styled.div`
   background-color: wheat;
   border-radius: 5px;
   
@@ -108,7 +108,7 @@ const StyledCard = styled.div`
   display: flex;
 `;
 
-const ProfileImg = styled.div`    
+export const ProfileImg = styled.div`    
   width: 90%;
   height: 90%;
   margin-top: 0.1rem;
@@ -118,7 +118,7 @@ const ProfileImg = styled.div`
   /* padding-top: 15px; */
 `;
 
-const NameNicknameEl = styled.div`
+export const NameNicknameEl = styled.div`
   font-size: 3vmin;
   display: flex;
   flex-direction: column;
@@ -180,7 +180,7 @@ const StyledInput = styled.input`
   }
 `;
 
-const ImageContainer = styled.div`
+export const ImageContainer = styled.div`
   width: 40%;
   height: 13vh;
   margin-right: 1rem;

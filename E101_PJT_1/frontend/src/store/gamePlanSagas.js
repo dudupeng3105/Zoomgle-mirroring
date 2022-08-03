@@ -1,0 +1,126 @@
+import {
+  take,
+  takeEvery,
+  takeLatest,
+  put,
+  all,
+  delay,
+  fork,
+  call,
+} from 'redux-saga/effects';
+
+import { gamePlanActions } from './gamePlan-slice';
+
+// api import
+import {
+  createGamePlanApi,
+  getGamePlanListApi,
+  getInvitaionListApi,
+  checkInvitaionApi,
+  sendInvitaionApi,
+} from './api';
+
+function* oncreateGamePlanAsync({ payload }) {
+  const { getGamePlanListStart, getError } = gamePlanActions;
+  try {
+    console.log('게임예약인풋', payload);
+    const response = yield call(createGamePlanApi, payload);
+    console.log('게임예약응답', response.data);
+    if (response.status === 200) {
+      yield put(getGamePlanListStart());
+    }
+  } catch (error) {
+    yield put(getError(error.response.data));
+  }
+}
+
+function* getGamePlanListAsync({ payload }) {
+  const { getGamePlanListSuccess, getError } = gamePlanActions;
+  try {
+    const response = yield call(getGamePlanListApi);
+    console.log('게임플랜리스트응답', response.data);
+    if (response.status === 200) {
+      // 게임플랜리스트가져오기 성공
+      yield put(getGamePlanListSuccess(response.data));
+    }
+  } catch (error) {
+    yield put(getError(error.response.data));
+  }
+}
+
+function* getInvitaionListAsync({ payload }) {
+  const { getInvitaionListSuccess, getError } = gamePlanActions;
+  try {    
+    const response = yield call(getInvitaionListApi);
+    console.log('초대장플랜리스트응답', response.data);
+    if (response.status === 200) {
+      // 초대장리스트가져오기 성공
+      yield put(getInvitaionListSuccess(response.data));
+    }
+  } catch (error) {
+    yield put(getError(error.response.data));
+  }
+}
+
+function* SendInvitationAsync({ payload }) {
+  const { sendInvitaionSuccess, getError } = gamePlanActions;
+  try {
+    console.log('초대장보내기인풋', payload);
+    const response = yield call(sendInvitaionApi, payload);
+    console.log('초대장보내기응답', response.data);
+    if (response.status === 200) {
+      // 초대장보내기 성공
+      yield put(sendInvitaionSuccess(response.data));
+    }
+  } catch (error) {
+    yield put(getError(error.response.data));
+  }
+}
+
+function* CheckInvitationAsync({ payload }) {
+  const { checkInvitaionSuccess, getError } = gamePlanActions;
+  try {
+    console.log('초대장승락인풋', payload);
+    const response = yield call(checkInvitaionApi, payload);
+    console.log('초대장승락응답', response.data);
+    if (response.status === 200) {
+      // 초대장보내기 성공
+      yield put(checkInvitaionSuccess(response.data));
+    }
+  } catch (error) {
+    yield put(getError(error.response.data));
+  }
+}
+
+function* oncreateGamePlan() {
+  const { createGamePlanStart } = gamePlanActions;
+  yield takeLatest(createGamePlanStart, oncreateGamePlanAsync);
+}
+
+function* onGamePlanList() {
+  const { getGamePlanListStart } = gamePlanActions;
+  yield takeLatest(getGamePlanListStart, getGamePlanListAsync);
+}
+
+function* onInvitationList() {
+  const { getInvitaionListStart } = gamePlanActions;
+  yield takeLatest(getInvitaionListStart, getInvitaionListAsync);
+}
+
+function* onSendInvitation() {
+  const { sendInvitaionStart } = gamePlanActions;
+  yield takeLatest(sendInvitaionStart, SendInvitationAsync);
+}
+
+function* oncheckInvitaion() {
+  const { checkInvitaionStart } = gamePlanActions;
+  yield takeLatest(checkInvitaionStart, CheckInvitationAsync);
+}
+
+export const gamePlanSagas = [
+  fork(oncreateGamePlan),
+  fork(onGamePlanList),
+  fork(onInvitationList),
+  fork(onSendInvitation),
+  fork(oncheckInvitaion)
+];
