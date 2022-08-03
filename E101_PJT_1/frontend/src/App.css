@@ -1,3 +1,8 @@
 .App {
-  min-height: 100%;
+  min-height: 100vh;
+}
+
+@font-face {
+  font-family: 'East Sea Dokdo';
+  src: url('./fonts/EastSeaDokdo-Regular.ttf')
 }
