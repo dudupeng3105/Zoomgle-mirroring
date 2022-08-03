@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from "styled-components";
-import { useState } from 'react';
-import setHours from "date-fns/setHours";
-import setMinutes from "date-fns/setMinutes";
+// import { useState } from 'react';
+// import setHours from "date-fns/setHours";
+// import setMinutes from "date-fns/setMinutes";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -110,15 +110,14 @@ const Wrapper = styled.div`
 // 도입할 것 : Custom Input (input 모양 이쁘게)
 // 
 
-const CustomDatePicker = () => {
-  const [startDate, setStartDate] = useState(
-    setHours(setMinutes(new Date(), 30), 16)
-  );
+const CustomDatePicker = ({startDate, onDateChangeHandler}) => {  
+
+  
   return (
     <Wrapper>
       <DatePicker
         selected={startDate}
-        onChange={(date) => setStartDate(date)}
+        onChange={(date) => {onDateChangeHandler(date)}}
         showTimeSelect
         timeFormat="HH:mm"
         timeIntervals={15}
@@ -128,7 +127,7 @@ const CustomDatePicker = () => {
         //   setHours(setMinutes(new Date(), 30), 19),
         //   setHours(setMinutes(new Date(), 30), 17),
         // ]}
-        dateFormat="MMMM d, yyyy h:mm aa"
+        dateFormat="yyyy/MM/dd   h:mm aa"
       ></DatePicker>
     </Wrapper>
   );
