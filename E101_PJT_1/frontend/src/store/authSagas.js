@@ -56,6 +56,7 @@ function* onLoginUserStartAsync({ payload }) {
   const { loginUserSuccess, loginUserError } = authActions;
   try {
     console.log('로그인인풋', payload);
+    // api 호출
     const response = yield call(loginUserApi, payload);
     console.log('로그인응답', response.status);
     if (response.status === 200) {

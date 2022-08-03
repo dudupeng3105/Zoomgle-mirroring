@@ -31,3 +31,18 @@ export const getFriendsListApi = async (userId) =>
 
 export const addFriendApi = async (infoId) => 
   await customAxios.post("api/friends", infoId);
+
+// 게임예약 - 게임 예약 만들기, 게임 리스트 가져오기
+// 초대장 get, 초대장 승락
+export const createGamePlanApi = async (planInfo) => {  
+  return await customJWTAxios.post('api/rooms', planInfo);
+}
+
+export const getGamePlanListApi = async () => 
+  await customJWTAxios.get('api/invitations/list');
+
+export const getInvitaionListApi = async (inviteInfo) => 
+  await customJWTAxios.post('api/invitations', inviteInfo);
+
+export const checkInvitaionApi = async (invitationInfo) => 
+  await customJWTAxios.post('api/invitations/manager', invitationInfo);

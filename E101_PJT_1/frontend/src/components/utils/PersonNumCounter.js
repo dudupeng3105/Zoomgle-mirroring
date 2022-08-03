@@ -32,22 +32,28 @@ const PersonNumCounterRightBtn = styled.div`
   border-left: 1rem solid grey;
 `;
 
-const PersonNumCounter = () => {
-  const [count, setCount] = useState(0);
-  const PersonNum = [2, 3, 4, 5, 6];
+const PersonNumCounter = ({count, setCount}) => { 
 
   const onIncrease = () => {
-    setCount((count) => count + 1);
+    if (count === 6) {
+      setCount(2)
+    } else {
+      setCount(count + 1)
+    }
   };
 
   const onDecrease = () => {
-    setCount((count) => count - 1);
+    if (count === 2) {
+      setCount(6)
+    } else {
+      setCount(count - 1)
+    }
   };
 
   return (
     <PersonNumCounterBlock>
       <PersonNumCounterLeftBtn onClick={onDecrease} />
-      <p>{PersonNum[count % 5]}명</p>
+      <p>{count}명</p>
       <PersonNumCounterRightBtn onClick={onIncrease} />
     </PersonNumCounterBlock>
   );
