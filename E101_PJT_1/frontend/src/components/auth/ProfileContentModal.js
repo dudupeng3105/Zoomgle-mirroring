@@ -252,13 +252,23 @@ const ProfileContentModal = () => {
     <ProfileContentModalBlock>
       <ProfileContentModalBackGround>
         <ProfileContentBox>
-          <ProfileImgBox>
+          {/* <ProfileImgBox>
+              <ProfileCenter className={'profileImg' + imgNum}></ProfileCenter>
+            </ProfileImgBox> */}
+
+          {/* <ProfileImgBox>
             <ProfileLeftBtn onClick={() => setImgNum((imgNum - 1) % 6)} />
             <ProfileCenter className={'profileImg' + imgNum}></ProfileCenter>
             <ProfileRightBtn onClick={() => setImgNum((imgNum + 1) % 6)} />
-          </ProfileImgBox>
+          </ProfileImgBox> */}
           {!passwordChangeToggle ? (
+            
             <ProfileInfoBoxContainer>
+              <ProfileImgBox>
+                {/* <ProfileLeftBtn onClick={() => setImgNum((imgNum - 1) % 6)} /> */}
+                <ProfileCenter className={'profileImg' + imgNum}></ProfileCenter>
+                {/* <ProfileRightBtn onClick={() => setImgNum((imgNum + 1) % 6)} /> */}
+              </ProfileImgBox>
               <InputNameBox>
                 <InputName>닉네임:</InputName>
                 <ProfileInfoBox info={nickname} />
@@ -279,6 +289,11 @@ const ProfileContentModal = () => {
             </ProfileInfoBoxContainer>
           ) : (
             <ProfileInfoBoxContainer>
+              <ProfileImgBox>
+                <ProfileLeftBtn onClick={() => setImgNum((imgNum - 1) % 6)} />
+                <ProfileCenter className={'profileImg' + imgNum}></ProfileCenter>
+                <ProfileRightBtn onClick={() => setImgNum((imgNum + 1) % 6)} />
+              </ProfileImgBox>
               <InputNameBox>
                 <InputName>닉네임:</InputName>
                 <StyledInput

@@ -35,15 +35,18 @@ const WhiteBox = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 40vw;
+  width: 50vw;
   height: 100vh;
   /* border: 2px solid white; 자리확인용*/
   /* background: white; */
   background: url(${Formbackground}) no-repeat center;
-  background-size: contain;  
+  background-size: 50vw 100vh;  
+  /* background-size: contain; */
 `;
 
 const AuthTemplate = ({ children }) => {
+  // const dispatch = useDispatch(); 
+
   return (
     <AuthTemplateBlock>
       <WhiteBox>

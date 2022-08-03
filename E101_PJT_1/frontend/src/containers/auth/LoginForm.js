@@ -15,12 +15,7 @@ const LoginForm = () => {
     isAuth: state.auth.isAuth,
     authError: state.auth.error,
     // user: user.user,
-  }));
-
-  // // 0. 컴포넌트가 처음 렌더링 될 때 form 을 초기화함
-  // useEffect(() => {
-  //   dispatch(authActions.initializeForm('login'));
-  // }, [dispatch]);
+  }));  
 
   // 1. 인풋 변경 이벤트 핸들러
   const onChange = (e) => {

@@ -23,25 +23,14 @@ const StartPageModalBackGround = styled.div`
   width: 100%;
   height: 100%;  
   background: url(${background}) no-repeat center;
-  background-size: contain;
+  background-size: 36vw 70vh;
 `;
 
-const StartPageModalMenu1 = styled(Link)`
-  width: 20vw;
+const StartPageModalMenu = styled(Link)`
+  width: 30vw;
   height: 15vh;    
-  background: url(${menuImage1}) no-repeat center;
-  background-size: contain;
-  :hover {
-    transform: scale(1.1);
-    transition: transform .2s;
-  }    
-`;
-
-const StartPageModalMenu2 = styled(Link)`
-  width: 20vw;
-  height: 15vh;    
-  background: url(${menuImage2}) no-repeat center;
-  background-size: contain;
+  background: url(${(props) => (props.backImgName)}) no-repeat center;
+  background-size: 25vw 15vh;
   :hover {
     transform: scale(1.1);
     transition: transform .2s;
@@ -52,8 +41,8 @@ const StartPageModal = () => {
   return (
     <StartPageModalBlock>
       <StartPageModalBackGround>
-        <StartPageModalMenu1 to="/signup/"></StartPageModalMenu1>
-        <StartPageModalMenu2 to="/login/"></StartPageModalMenu2>
+        <StartPageModalMenu backImgName={menuImage1} to="/signup/"></StartPageModalMenu>
+        <StartPageModalMenu backImgName={menuImage2} to="/login/"></StartPageModalMenu>
       </StartPageModalBackGround>
     </StartPageModalBlock>
   );

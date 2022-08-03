@@ -8,6 +8,7 @@ import com.ssafy.api.response.UserLoginPostRes;
 import com.ssafy.api.service.FriendService;
 import com.ssafy.api.service.UserService;
 import com.ssafy.common.model.response.BaseResponseBody;
+import com.ssafy.common.myObject.FriendInfo;
 import com.ssafy.common.util.JwtTokenUtil;
 import com.ssafy.db.entity.Friend;
 import com.ssafy.db.entity.User;
@@ -17,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,11 +46,21 @@ public class FriendController {
 	public ResponseEntity<FriendRes> friendList(@PathVariable String userId) {
 
 		List<Friend> list = friendService.getAllFriend(userId);
-		if(list.size() == 0){
-			return ResponseEntity.status(401).body(FriendRes.of(401, "친구가 없습니다.", list));
+		List<FriendInfo> friendList = new ArrayList<>();
+		for ( Friend friend : list ){
+			User user = userService.getUserByUserId(friend.getFriendId());
+			FriendInfo insert = new FriendInfo();
+			insert.setUserId(user.getUserId());
+			insert.setNickname(user.getNickname());
+			insert.setProfileImgNum(user.getProfileImgNum());
+			friendList.add(insert);
 		}
 
-		return ResponseEntity.status(200).body(FriendRes.of(200, "친구가 " + list.size() + "명 있습니다.", list));
+		if(list.size() == 0){
+			return ResponseEntity.status(401).body(FriendRes.of(401, "친구가 없습니다.", friendList));
+		}
+
+		return ResponseEntity.status(200).body(FriendRes.of(200, "친구가 " + list.size() + "명 있습니다.", friendList));
 
 	}
 	
