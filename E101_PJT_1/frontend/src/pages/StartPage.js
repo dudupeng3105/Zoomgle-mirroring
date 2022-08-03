@@ -6,6 +6,9 @@ import arrow from '../media/images/arrow.png'
 import { useNavigate } from "../../node_modules/react-router-dom/index";
 import StartPageModal from "../components/display/StartPageModal";
 import StartStoryBoardBlock from "../components/display/StartStoryBoardBlock";
+import { authActions } from '../store/auth-slice';
+import { useEffect } from 'react';
+import { useDispatch } from "react-redux";
 
 const StartPageBlock = styled.div`
   width: 100vw;
@@ -69,13 +72,20 @@ const StartPageSkipBtn = styled.div`
 `;
 
 const StartPage = (props) => {
+  const dispatch = useDispatch();
+
   const handleClickEvent = (chapter) => {
     console.log(chapter)
     // console.log(chapter * 100 * window.innerHeight/100)
     window.scrollTo(0, chapter * 100 * window.innerHeight/100);
   } 
 
-  const navigate = useNavigate();
+  // 0. 컴포넌트가 처음 렌더링 될 때 form 을 초기화함
+  useEffect(() => {
+    dispatch(authActions.reset());
+  }, []);
+
+  // const navigate = useNavigate();
 
   return (
     <StartPageBlock>

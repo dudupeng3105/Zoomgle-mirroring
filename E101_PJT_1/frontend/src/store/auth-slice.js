@@ -43,32 +43,22 @@ const authSlice = createSlice({
       state[form][key] = value;
       // ex > state.register.userId 변경
     },
-    initializeForm(state, action) {
-      console.log(action.payload);
-      const type = action.payload;
-      // state[type] = initialAuthState[type];
-      console.log(state.user);
-      state.error = null;
-    },
     // 회원가입
     createUserStart(state) {
       state.loading = true;
       state.error = null;
     },
-    // createUserSuccess(state, action) {
-    //   state.loading = false;
-    //   const { user, accessToken } = action.payload;
-    //   state.user = user;
-    //   localStorage.setItem('token', accessToken);
-    //   localStorage.setItem('user', JSON.stringify(user));
-    //   state.isAuth = true;
-    // },
+    reset(state) {
+      Object.assign(state, initialAuthState);
+    },
     createUserError(state, action) {
       state.loading = false;      
       state.error = action.payload.error;      
     },
     // 로그인
     loginUserStart(state) {
+      state.error = false;
+      state.isAuth = false;
       state.loading = true;
     },
     loginUserSuccess(state, action) {
@@ -96,9 +86,7 @@ const authSlice = createSlice({
     logout(state) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');   
-      state.isAuth = false;      
-      state.login.userId = ''; 
-      state.login.password = ''; 
+      Object.assign(state, initialAuthState); // 초기화     
     },
     // UPDATE user
     updateUser(state, action) {
