@@ -36,28 +36,28 @@ const ProfileBox = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  .profileImg1 {
+  .profileImg0 {
     background: url(${profile1}) no-repeat center;
     background-size: contain;
     /* padding-top: 30px; */
   }
-  .profileImg2 {
+  .profileImg1 {
     background: url(${profile2}) no-repeat center;
     background-size: cover;
   }
-  .profileImg3 {
+  .profileImg2 {
     background: url(${profile3}) no-repeat center;
     background-size: cover;
   }
-  .profileImg4 {
+  .profileImg3 {
     background: url(${profile4}) no-repeat center;
     background-size: cover;
   }
-  .profileImg5 {
+  .profileImg4 {
     background: url(${profile5}) no-repeat center;
     background-size: cover;
   }
-  .profileImg6 {
+  .profileImg5 {
     background: url(${profile6}) no-repeat center;
     background-size: contain;
   }
@@ -139,7 +139,7 @@ const Header = () => {
     <>
       <HeaderBlock>
         <ProfileBox>
-          <ProfileLogo onClick={() => navigate('/mypage')} className={`profileImg${profileImgNum}`}>
+          <ProfileLogo onClick={() => navigate('/mypage')} className={`profileImg${profileImgNum%6}`}>
             {/* <h2>이미지 : {profileImgNum}</h2> */}
             {/* <h2>닉네임: {nickname}</h2> */}
           </ProfileLogo>

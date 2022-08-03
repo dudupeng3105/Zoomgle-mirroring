@@ -33,9 +33,14 @@ const friendSlice = createSlice({
     },
     AddFriendResultMessage(state, action) {      
       state.loading = false;      
-      state.addMessage = action.payload.message;      
+      state.addMessage = action.payload.message;
+      console.log(action.payload.statusCode);
       if (action.payload.statusCode === 200) {
-        state.addResult = true
+        state.addResult = true;
+        return;
+      } else {
+        state.addResult = false;
+        return;
       }
     },
   },
