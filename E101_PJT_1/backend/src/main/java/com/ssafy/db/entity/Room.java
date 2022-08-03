@@ -35,7 +35,7 @@ public class Room {
     private String date;
 
     // 최대 인원 수
-    @Column(name = "maxCapacity", nullable = false)
+    @Column(name = "max_capacity", nullable = false)
     private int maxCapacity;
 
     // 현재 인원 수 <- default value로 0을 주고싶음.
