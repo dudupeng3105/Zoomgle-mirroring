@@ -17,6 +17,7 @@ import {
   getGamePlanListApi,
   getInvitaionListApi,
   checkInvitaionApi,
+  sendInvitaionApi,
 } from './api';
 
 function* oncreateGamePlanAsync({ payload }) {
@@ -47,6 +48,50 @@ function* getGamePlanListAsync({ payload }) {
   }
 }
 
+function* getInvitaionListAsync({ payload }) {
+  const { getInvitaionListSuccess, getError } = gamePlanActions;
+  try {    
+    const response = yield call(getInvitaionListApi);
+    console.log('초대장플랜리스트응답', response.data);
+    if (response.status === 200) {
+      // 초대장리스트가져오기 성공
+      yield put(getInvitaionListSuccess(response.data));
+    }
+  } catch (error) {
+    yield put(getError(error.response.data));
+  }
+}
+
+function* SendInvitationAsync({ payload }) {
+  const { sendInvitaionSuccess, getError } = gamePlanActions;
+  try {
+    console.log('초대장보내기인풋', payload);
+    const response = yield call(sendInvitaionApi, payload);
+    console.log('초대장보내기응답', response.data);
+    if (response.status === 200) {
+      // 초대장보내기 성공
+      yield put(sendInvitaionSuccess(response.data));
+    }
+  } catch (error) {
+    yield put(getError(error.response.data));
+  }
+}
+
+function* CheckInvitationAsync({ payload }) {
+  const { checkInvitaionSuccess, getError } = gamePlanActions;
+  try {
+    console.log('초대장승락인풋', payload);
+    const response = yield call(checkInvitaionApi, payload);
+    console.log('초대장승락응답', response.data);
+    if (response.status === 200) {
+      // 초대장보내기 성공
+      yield put(checkInvitaionSuccess(response.data));
+    }
+  } catch (error) {
+    yield put(getError(error.response.data));
+  }
+}
+
 function* oncreateGamePlan() {
   const { createGamePlanStart } = gamePlanActions;
   yield takeLatest(createGamePlanStart, oncreateGamePlanAsync);
@@ -57,7 +102,25 @@ function* onGamePlanList() {
   yield takeLatest(getGamePlanListStart, getGamePlanListAsync);
 }
 
+function* onInvitationList() {
+  const { getInvitaionListStart } = gamePlanActions;
+  yield takeLatest(getInvitaionListStart, getInvitaionListAsync);
+}
+
+function* onSendInvitation() {
+  const { sendInvitaionStart } = gamePlanActions;
+  yield takeLatest(sendInvitaionStart, SendInvitationAsync);
+}
+
+function* oncheckInvitaion() {
+  const { checkInvitaionStart } = gamePlanActions;
+  yield takeLatest(checkInvitaionStart, CheckInvitationAsync);
+}
+
 export const gamePlanSagas = [
   fork(oncreateGamePlan),
-  fork(onGamePlanList)
+  fork(onGamePlanList),
+  fork(onInvitationList),
+  fork(onSendInvitation),
+  fork(oncheckInvitaion)
 ];
