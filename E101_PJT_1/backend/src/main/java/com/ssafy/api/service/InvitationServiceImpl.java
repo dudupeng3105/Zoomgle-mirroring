@@ -2,6 +2,7 @@ package com.ssafy.api.service;
 
 import com.ssafy.db.entity.Invitation;
 import com.ssafy.db.entity.Player;
+import com.ssafy.db.entity.Room;
 import com.ssafy.db.repository.InvitationRepository;
 import com.ssafy.db.repository.PlayerRepository;
 import com.ssafy.db.repository.RoomRepository;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service("invitationService")
 public class InvitationServiceImpl implements InvitationService {
@@ -57,7 +59,11 @@ public class InvitationServiceImpl implements InvitationService {
         playerRepository.save(player);
 
         // 게임방 cnt++
-
+        Optional<Room> updatedRoom = roomRepository.findByRoomSeq(roomCode);
+        if ( updatedRoom.isPresent() ) {
+            updatedRoom.get().setCnt(updatedRoom.get().getCnt() + 1);
+        }
+        roomRepository.save(updatedRoom.get());
     }
 
     @Override
