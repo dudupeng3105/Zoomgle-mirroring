@@ -1,6 +1,7 @@
 package com.ssafy.api.response;
 
 import com.ssafy.common.model.response.BaseResponseBody;
+import com.ssafy.common.myObject.FriendInfo;
 import com.ssafy.db.entity.Friend;
 import com.ssafy.db.entity.User;
 import io.swagger.annotations.ApiModel;
@@ -18,13 +19,15 @@ import java.util.List;
 @ApiModel("FriendResponse")
 public class FriendRes extends BaseResponseBody {
 	@ApiModelProperty(name="User ID")
-	List<Friend> friendList;
+	// 이름 프로필이미지 닉네임
+	List<FriendInfo> friendList;
 	
-	public static FriendRes of(Integer statusCode, String message, List<Friend> list)  {
+	public static FriendRes of(Integer statusCode, String message, List<FriendInfo> list)  {
 		FriendRes res = new FriendRes();
 		res.setStatusCode(statusCode);
 		res.setMessage(message);
 		res.setFriendList(list);
 		return res;
 	}
+
 }
