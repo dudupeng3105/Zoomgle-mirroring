@@ -22,11 +22,11 @@ public class FriendRes extends BaseResponseBody {
 	// 이름 프로필이미지 닉네임
 	List<FriendInfo> friendList;
 	
-	public static FriendRes of(Integer statusCode, String message, List<FriendInfo> list)  {
+	public static FriendRes of(Integer statusCode, String message, List<FriendInfo> friendList)  {
 		FriendRes res = new FriendRes();
 		res.setStatusCode(statusCode);
 		res.setMessage(message);
-		res.setFriendList(list);
+		res.setFriendList(friendList);
 		return res;
 	}
 
