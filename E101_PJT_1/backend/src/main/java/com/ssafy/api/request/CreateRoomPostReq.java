@@ -17,5 +17,5 @@ public class CreateRoomPostReq {
 	String date;
 
 	@ApiModelProperty(name = "최대 인원 수", example = "6")
-	int max;
+	int maxCapacity;
 }

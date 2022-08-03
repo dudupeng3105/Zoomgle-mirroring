@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface InvitationService {
 	// 게임 초대장 만들기
-	public void createInvitationPostReq(long roomCode, String sender, String receiver);
+	void createInvitationPostReq(long roomCode, String sender, String receiver);
 
 	// user의 모든 초대
 	List<Invitation> getAllInvite(String user);
