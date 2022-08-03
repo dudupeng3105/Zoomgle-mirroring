@@ -8,14 +8,13 @@ import com.ssafy.db.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service("roomService")
 public class RoomServiceImpl implements RoomService{
 
     @Autowired
     RoomRepository roomRepository;
-    
-    @Autowired
-    InvitationRepository invitationRepository;
 
     @Autowired
     PlayerRepository playerRepository;
@@ -24,11 +23,11 @@ public class RoomServiceImpl implements RoomService{
     /**
      * 게임방을 생성하는 메서드
      */
-    public void createRoom(String host, String date, int max) {
+    public void createRoom(String host, String date, int maxCapacity) {
         Room room = new Room();
         room.setHost(host);
         room.setDate(date);
-        room.setMax(max);
+        room.setMaxCapacity(maxCapacity);
         room.setCnt(1);
 
         roomRepository.save(room);
@@ -40,5 +39,13 @@ public class RoomServiceImpl implements RoomService{
         player.setUser(host);
 
         playerRepository.save(player);
+    }
+
+    /**
+     * user의 모든 게임방 리스트를 확인하는 메서드
+     */
+    @Override
+    public List<Player> getAllPlayer(String user) {
+        return playerRepository.findAllByUser(user);
     }
 }
