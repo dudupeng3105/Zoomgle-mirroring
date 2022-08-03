@@ -123,7 +123,7 @@ const NameNicknameEl = styled.div`
   display: flex;
   flex-direction: column;
   /* border: 5px solid red; */
-  margin-top: 1rem;
+  margin-top: 0.2rem;
   margin-left: 0.8rem;
 `
 
@@ -190,29 +190,29 @@ const ImageContainer = styled.div`
   justify-content: center;
   align-items: center;
   /* border: solid black 5px; */
-  .profileImg1 {
+  .profileImg0 {
     background: url(${profile1}) no-repeat center;
     background-size: cover;
     /* padding-top: 30px; */
     
   }
-  .profileImg2 {
+  .profileImg1 {
     background: url(${profile2}) no-repeat center;
     background-size: cover;
   }
-  .profileImg3 {
+  .profileImg2 {
     background: url(${profile3}) no-repeat center;
     background-size: cover;
   }
-  .profileImg4 {
+  .profileImg3 {
     background: url(${profile4}) no-repeat center;
     background-size: cover;
   }
-  .profileImg5 {
+  .profileImg4 {
     background: url(${profile5}) no-repeat center;
     background-size: cover;
   }
-  .profileImg6 {
+  .profileImg5 {
     background: url(${profile6}) no-repeat center;
     background-size: contain;
   }
@@ -262,6 +262,13 @@ const FriendsContent = () => {
     }
   }, [friendError, dispatch]);
 
+  useEffect(() => {
+
+    if (addResult) {
+      setTimeout(() => {setmodalToggle(!modalToggle)}, 1000);
+    }     
+  }, [addResult]);
+
   const inputChange = (e) => {
     setFriendIdInput(e.target.value);       
   }
@@ -275,12 +282,7 @@ const FriendsContent = () => {
     }
     dispatch(friendActions.AddFriendStart(infoId))  
     // 성공하면 모달 닫음    
-    console.log("성공여부", addResult)
-    if (addResult) {
-      setTimeout(() => {
-        setmodalToggle(!modalToggle);
-      }, 500);
-    }    
+    console.log("성공여부", addResult)       
   }
 
   // console.log(userId);
@@ -330,13 +332,13 @@ const FriendsContent = () => {
             <StyledCard>
               <ImageContainer>
                 <ProfileImg
-                  // className={'profileImg' + friend.profileImgNum}
-                  className={'profileImg' + 1}
+                  className={'profileImg' + (friend.profileImgNum%6)}
+                  // className={'profileImg' + 1}
                 ></ProfileImg>
               </ImageContainer>
               <NameNicknameEl>
-                <div>이름: {friend.friendId}</div>
-                <div>닉네임(seq): {friend.friendSeq}</div>
+                <div>이름: {friend.userId}</div>
+                <div>닉네임(seq): {friend.nickname}</div>
               </NameNicknameEl>
             </StyledCard>
           </FriendCard>
