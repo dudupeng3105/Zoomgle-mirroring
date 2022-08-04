@@ -1,10 +1,11 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.request.CreateRoomPostReq;
-import com.ssafy.api.response.PlayerListRes;
+import com.ssafy.api.response.RoomInfoListRes;
 import com.ssafy.api.service.RoomService;
 import com.ssafy.api.service.UserService;
 import com.ssafy.common.auth.SsafyUserDetails;
+import com.ssafy.common.myObject.RoomInfo;
 import com.ssafy.db.entity.*;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Api(value = "게임 방 API", tags = {"Room"})
 @RestController
@@ -44,6 +47,15 @@ public class RoomController {
         String userId = userDetails.getUsername();
 
         roomService.createRoom(userId, createRoomPostReq.getDate(), createRoomPostReq.getMaxCapacity());
+
+
+
+//        if(playerList.size() == 0){
+//            return ResponseEntity.status(401).body(PlayerListRes.of(401, "예정된 게임이 없습니다.", playerList));
+//        }
+//
+//        return ResponseEntity.status(200).body(PlayerListRes.of(200, "게임이 " + playerList.size() + "개 있습니다.", playerList));
+
     }
 
     // 내 게임 조회
@@ -55,18 +67,39 @@ public class RoomController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<PlayerListRes> getRoomList(@ApiIgnore Authentication authentication) {
+    public ResponseEntity<RoomInfoListRes> getRoomList(@ApiIgnore Authentication authentication) {
         SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
         String user = userDetails.getUser().getUserId();
-        System.out.println(user);
 
+        List<RoomInfo> roomInfoList = new ArrayList<>();
+
+        // 내 게임 리스트 확인 -> roomCode 가지고 와서
         List<Player> playerList = roomService.getAllPlayer(user);
+        System.out.println("1>>"+playerList.get(0).getRoomCode());
 
-        if(playerList.size() == 0){
-            return ResponseEntity.status(401).body(PlayerListRes.of(401, "예정된 게임이 없습니다.", playerList));
+        for ( Player player : playerList ) {
+            System.out.println(player.getRoomCode());
+            // roomCode로 room 정보 가지고 오기
+            Optional<Room> room = roomService.getRoomByRoomCode(player.getRoomCode());
+
+            System.out.println("2>>"+room.get().getHost());
+
+            // roomCode로 playerList에서 같은 게임하는 user 가져와서 list로 담기
+            List<Player> roomPlayerList = roomService.getPlayerByRoomCode(player.getRoomCode());
+            System.out.println("3>>"+roomPlayerList.get(0).getUser());
+
+            RoomInfo insert = new RoomInfo();
+            insert.setRoomCode(room.get().getRoomSeq());
+            insert.setHost(room.get().getHost());
+            insert.setDate(room.get().getDate());
+            insert.setPlayerList(roomPlayerList);
+            roomInfoList.add(insert);
         }
 
-        return ResponseEntity.status(200).body(PlayerListRes.of(200, "게임이 " + playerList.size() + "개 있습니다.", playerList));
+        if(roomInfoList.size() == 0){
+            return ResponseEntity.status(401).body(RoomInfoListRes.of(401, "예정된 게임이 없습니다.", roomInfoList));
+        }
 
+        return ResponseEntity.status(200).body(RoomInfoListRes.of(200, "게임이 " + roomInfoList.size() + "개 있습니다.", roomInfoList));
     }
 }
