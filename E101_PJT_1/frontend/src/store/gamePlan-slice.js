@@ -40,8 +40,11 @@ const gamePlanSlice = createSlice({
     },
     // 초대장리스트 성공
     getInvitaionListSuccess(state, action) {
+      // gamePlanSagas의 getInvitaionListAsync의 
+      // getInvitaionListSuccess(response.data)가 들어감
       console.log(action.payload);
       state.loading = false;
+      // 받은 값을 state에 담음
       state.invitationList = action.payload.invitationList;
       
     },
