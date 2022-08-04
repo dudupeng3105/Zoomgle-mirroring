@@ -2,13 +2,13 @@ package com.ssafy.api.service;
 
 import com.ssafy.db.entity.Player;
 import com.ssafy.db.entity.Room;
-import com.ssafy.db.repository.InvitationRepository;
 import com.ssafy.db.repository.PlayerRepository;
 import com.ssafy.db.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service("roomService")
 public class RoomServiceImpl implements RoomService{
@@ -30,15 +30,28 @@ public class RoomServiceImpl implements RoomService{
         room.setMaxCapacity(maxCapacity);
         room.setCnt(1);
 
-        roomRepository.save(room);
+        long roomCode = roomRepository.save(room).getRoomSeq();
 
         // 방장은 자동으로 게임 초대
+
         Player player = new Player();
 
-        player.setRoomCode( roomRepository.findByHostAndDate(host, date).getRoomSeq());
+        player.setRoomCode(roomCode);
         player.setUser(host);
 
         playerRepository.save(player);
+    }
+
+
+
+    @Override
+    public Optional<Room> getRoomByRoomCode(long roomCode) {
+        return roomRepository.findByRoomSeq(roomCode);
+    }
+
+    @Override
+    public List<Player> getPlayerByRoomCode(long roomCode) {
+        return playerRepository.findAllByRoomCode(roomCode);
     }
 
     /**
