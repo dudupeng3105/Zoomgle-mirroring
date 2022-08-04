@@ -20,6 +20,7 @@ import {
   sendInvitaionApi,
 } from './api';
 
+// 비동기처리 함수
 function* oncreateGamePlanAsync({ payload }) {
   const { getGamePlanListStart, getError } = gamePlanActions;
   try {
@@ -55,6 +56,7 @@ function* getInvitaionListAsync({ payload }) {
     console.log('초대장플랜리스트응답', response.data);
     if (response.status === 200) {
       // 초대장리스트가져오기 성공
+      // getInvitaionListSuccess을 디스패치함(slice가서 확인)
       yield put(getInvitaionListSuccess(response.data));
     }
   } catch (error) {
@@ -78,20 +80,25 @@ function* SendInvitationAsync({ payload }) {
 }
 
 function* CheckInvitationAsync({ payload }) {
-  const { checkInvitaionSuccess, getError } = gamePlanActions;
+  const { checkInvitaionSuccess, getError, getInvitaionListStart } = gamePlanActions;
   try {
     console.log('초대장승락인풋', payload);
+    // checkInvitaionApi로 요청
+    // call은 api call
     const response = yield call(checkInvitaionApi, payload);
     console.log('초대장승락응답', response.data);
     if (response.status === 200) {
-      // 초대장보내기 성공
-      yield put(checkInvitaionSuccess(response.data));
+      // 초대장 승낙 성공
+      // 초대 리스트를 한번 더 들고옴
+      yield put(getInvitaionListStart());
     }
   } catch (error) {
+    // put은 액션을 디스패치
     yield put(getError(error.response.data));
   }
 }
 
+// on : 바라보고 있는 함수
 function* oncreateGamePlan() {
   const { createGamePlanStart } = gamePlanActions;
   yield takeLatest(createGamePlanStart, oncreateGamePlanAsync);
@@ -112,6 +119,8 @@ function* onSendInvitation() {
   yield takeLatest(sendInvitaionStart, SendInvitationAsync);
 }
 
+// checkInvitaionStart를 보고 있다가 checkInvitaionStart이 실행되면 
+// 그때 가로채서 CheckInvitationAsync을 실행한다.
 function* oncheckInvitaion() {
   const { checkInvitaionStart } = gamePlanActions;
   yield takeLatest(checkInvitaionStart, CheckInvitationAsync);
