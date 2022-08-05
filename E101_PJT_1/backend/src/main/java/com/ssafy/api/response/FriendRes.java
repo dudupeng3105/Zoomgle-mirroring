@@ -1,9 +1,7 @@
 package com.ssafy.api.response;
 
 import com.ssafy.common.model.response.BaseResponseBody;
-import com.ssafy.common.myObject.FriendInfo;
-import com.ssafy.db.entity.Friend;
-import com.ssafy.db.entity.User;
+import com.ssafy.common.myObject.FriendInfoInterface;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -20,9 +18,9 @@ import java.util.List;
 public class FriendRes extends BaseResponseBody {
 	@ApiModelProperty(name="User ID")
 	// 이름 프로필이미지 닉네임
-	List<FriendInfo> friendList;
+	List<FriendInfoInterface> friendList;
 	
-	public static FriendRes of(Integer statusCode, String message, List<FriendInfo> friendList)  {
+	public static FriendRes of(Integer statusCode, String message, List<FriendInfoInterface> friendList)  {
 		FriendRes res = new FriendRes();
 		res.setStatusCode(statusCode);
 		res.setMessage(message);
