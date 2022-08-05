@@ -1,24 +1,18 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.request.FriendPostReq;
-import com.ssafy.api.request.UserLoginPostReq;
 import com.ssafy.api.response.FriendPostRes;
 import com.ssafy.api.response.FriendRes;
-import com.ssafy.api.response.UserLoginPostRes;
 import com.ssafy.api.service.FriendService;
 import com.ssafy.api.service.UserService;
 import com.ssafy.common.model.response.BaseResponseBody;
-import com.ssafy.common.myObject.FriendInfo;
-import com.ssafy.common.util.JwtTokenUtil;
-import com.ssafy.db.entity.Friend;
+import com.ssafy.common.myObject.FriendInfoInterface;
 import com.ssafy.db.entity.User;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,27 +39,20 @@ public class FriendController {
 	})
 	public ResponseEntity<FriendRes> friendList(@PathVariable String userId) {
 
-		List<Friend> list = friendService.getAllFriend(userId);
-		List<FriendInfo> friendList = new ArrayList<>();
-		for ( Friend friend : list ){
-			User user = userService.getUserByUserId(friend.getFriendId());
-			FriendInfo insert = new FriendInfo();
-			insert.setUserId(user.getUserId());
-			insert.setNickname(user.getNickname());
-			insert.setProfileImgNum(user.getProfileImgNum());
-			friendList.add(insert);
-		}
+		// 유저 아이디를 받아서 유저 닉네임을 얻고 닉네임을 통해서 친구 리스트를 받아온다.
+		User my = userService.getUserByUserId(userId);
+		List<FriendInfoInterface> friendList = friendService.getAllFriendInfo(my.getNickname());
 
-		if(list.size() == 0){
+		if(friendList.size() == 0){
 			return ResponseEntity.status(401).body(FriendRes.of(401, "친구가 없습니다.", friendList));
 		}
 
-		return ResponseEntity.status(200).body(FriendRes.of(200, "친구가 " + list.size() + "명 있습니다.", friendList));
+		return ResponseEntity.status(200).body(FriendRes.of(200, "친구가 " + friendList.size() + "명 있습니다.", friendList));
 
 	}
 	
 	@PostMapping()
-	@ApiOperation(value = "친구 추가", notes = "아이디를 통해서 친구를 팔로우 할 수 있다.")
+	@ApiOperation(value = "친구 추가", notes = "닉네임을 통해서 친구를 팔로우 할 수 있다.")
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공", response = FriendPostRes.class),
         @ApiResponse(code = 401, message = "유저 없음", response = BaseResponseBody.class),
@@ -74,19 +61,19 @@ public class FriendController {
         @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
 	public ResponseEntity<FriendPostRes> addFriend(@RequestBody @ApiParam(value="친구 추가 정보", required = true) FriendPostReq friendInfo) {
-		String myId = friendInfo.getMyId();
-		String friendId = friendInfo.getFriendId();
+		String myNickname = friendInfo.getMyNickname();
+		String friendNickname = friendInfo.getFriendNickname();
 
 		try { // 찾는 친구가 없다면
-			User friend = userService.getUserByUserId(friendId);
+			User friend = userService.getUserByNickname(friendNickname);
 		} catch (Exception e) {
 			return ResponseEntity.status(401).body(FriendPostRes.of(401, "찾는 친구가 없습니다."));
 		}
 
 		// 친구 추가
-		if(!friendService.alreadyFriend(myId, friendId)){
-			friendService.createFriend(myId, friendId);
-			return ResponseEntity.status(200).body(FriendPostRes.of(200, friendId + "를 팔로워했습니다."));
+		if(!friendService.alreadyFriend(myNickname, friendNickname)){
+			friendService.createFriend(myNickname, friendNickname);
+			return ResponseEntity.status(200).body(FriendPostRes.of(200, friendNickname + "를 팔로워했습니다."));
 		} else { // 이미 있으면 안됨
 			return ResponseEntity.status(402).body(FriendPostRes.of(402, "이미 친구 관계입니다."));
 		}
