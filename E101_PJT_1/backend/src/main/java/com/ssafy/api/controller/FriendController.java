@@ -65,7 +65,7 @@ public class FriendController {
 		String friendNickname = friendInfo.getFriendNickname();
 
 		try { // 찾는 친구가 없다면
-			User friend = userService.getUserByUserId(friendNickname);
+			User friend = userService.getUserByNickname(friendNickname);
 		} catch (Exception e) {
 			return ResponseEntity.status(401).body(FriendPostRes.of(401, "찾는 친구가 없습니다."));
 		}
