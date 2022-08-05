@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 게임 초대장 관리 API ([POST] /invitations) 요청에 필요한 리퀘스트 바디 정의.
+ * 게임 초대장 관리 API ([POST] /invitations/manager) 요청에 필요한 리퀘스트 바디 정의.
  */
 @Getter
 @Setter

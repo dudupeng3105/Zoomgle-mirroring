@@ -30,12 +30,16 @@ public class InvitationServiceImpl implements InvitationService {
      */
     public void createInvitationPostReq(long roomCode, String sender, String receiver) {
 
-        Invitation invitation = new Invitation();
-        invitation.setRoomCode(roomCode);
-        invitation.setSender(sender);
-        invitation.setReceiver(receiver);
+        // 게임 초대 중복 검색
+        if (playerRepository.findByRoomCodeAndUser(roomCode, receiver) == null) {
+            // 초대된 게임이 아닌 경우에만 초대장 생성 가능
+            Invitation invitation = new Invitation();
+            invitation.setRoomCode(roomCode);
+            invitation.setSender(sender);
+            invitation.setReceiver(receiver);
 
-        invitationRepository.save(invitation);
+            invitationRepository.save(invitation);
+        }
     }
 
     /**
