@@ -12,8 +12,8 @@ import lombok.Setter;
 @Setter
 @ApiModel("FriendPostRequest")
 public class FriendPostReq {
-	@ApiModelProperty(name="내 id", example="MyId")
-	String myId;
-	@ApiModelProperty(name="친구 id", example="FriendId")
-	String friendId;
+	@ApiModelProperty(name="내 닉네임", example="MyNickname")
+	String myNickname;
+	@ApiModelProperty(name="친구 닉네임", example="FriendNickname")
+	String friendNickname;
 }

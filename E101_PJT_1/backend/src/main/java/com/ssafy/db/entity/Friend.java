@@ -26,11 +26,11 @@ public class Friend {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long friendSeq;
 
-    @Column(name = "my_id", nullable = false)
-    private String myId;
+    @Column(name = "my_nickname", nullable = false)
+    private String myNickname;
 
-    @Column(name = "friend_id", nullable = false)
-    private String friendId;
+    @Column(name = "friend_nickname", nullable = false)
+    private String friendNickname;
 
     @CreationTimestamp
     @Column(name = "REG_DTM", nullable = false)

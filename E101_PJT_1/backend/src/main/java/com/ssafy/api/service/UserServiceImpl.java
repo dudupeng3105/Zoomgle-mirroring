@@ -49,6 +49,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public User getUserByNickname(String nickname) {
+		User user = userRepositorySupport.findUserByNickname(nickname).get();
+		return user;
+	}
+
+	@Override
 	public User updateUserInfo(String userId, UserRegisterPostReq updateInfo) {
 		Optional<User> updatedUser = userRepositorySupport.findUserByUserId(userId);
 		if (updatedUser.isPresent()) {
