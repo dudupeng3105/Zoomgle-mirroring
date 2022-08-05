@@ -44,9 +44,9 @@ public class RoomController {
             @RequestBody @ApiParam(value = "방 생성 정보", required = true) CreateRoomPostReq createRoomPostReq) {
 
         SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
-        String userId = userDetails.getUsername();
+        String user = userDetails.getUser().getNickname();
 
-        roomService.createRoom(userId, createRoomPostReq.getDate(), createRoomPostReq.getMaxCapacity());
+        roomService.createRoom(user, createRoomPostReq.getDate(), createRoomPostReq.getMaxCapacity());
 
 
 
@@ -69,30 +69,37 @@ public class RoomController {
     })
     public ResponseEntity<RoomInfoListRes> getRoomList(@ApiIgnore Authentication authentication) {
         SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
-        String user = userDetails.getUser().getUserId();
+        String user = userDetails.getUser().getNickname();
 
         List<RoomInfo> roomInfoList = new ArrayList<>();
 
         // 내 게임 리스트 확인 -> roomCode 가지고 와서
         List<Player> playerList = roomService.getAllPlayer(user);
-        System.out.println("1>>"+playerList.get(0).getRoomCode());
 
         for ( Player player : playerList ) {
-            System.out.println(player.getRoomCode());
             // roomCode로 room 정보 가지고 오기
             Optional<Room> room = roomService.getRoomByRoomCode(player.getRoomCode());
 
-            System.out.println("2>>"+room.get().getHost());
-
             // roomCode로 playerList에서 같은 게임하는 user 가져와서 list로 담기
             List<Player> roomPlayerList = roomService.getPlayerByRoomCode(player.getRoomCode());
-            System.out.println("3>>"+roomPlayerList.get(0).getUser());
 
             RoomInfo insert = new RoomInfo();
             insert.setRoomCode(room.get().getRoomSeq());
             insert.setHost(room.get().getHost());
-            insert.setDate(room.get().getDate());
             insert.setPlayerList(roomPlayerList);
+
+            String[] str = room.get().getDate().split(" ");
+            String[] dateInfo = str[0].split("/");
+            String[] timeInfo = str[1].split(":");
+
+            insert.setMonth(Integer.parseInt( dateInfo[0] ));
+            insert.setDay(Integer.parseInt( dateInfo[1] ));
+            insert.setYear(Integer.parseInt( dateInfo[2] ));
+
+            insert.setHour(Integer.parseInt( timeInfo[0] ));
+            insert.setMinute(Integer.parseInt( timeInfo[1] ));
+            insert.setSecond(Integer.parseInt( timeInfo[2] ));
+
             roomInfoList.add(insert);
         }
 
