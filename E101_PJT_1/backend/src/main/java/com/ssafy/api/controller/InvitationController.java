@@ -41,7 +41,7 @@ public class InvitationController {
         SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
 
         long roomCode = createInvitationPostReq.getRoomCode();
-        String sender = userDetails.getUser().getUserId();
+        String sender = userDetails.getUser().getNickname();
         String receiver = createInvitationPostReq.getReceiver();
 
         invatationService.createInvitationPostReq(roomCode, sender, receiver);
@@ -58,7 +58,7 @@ public class InvitationController {
     })
     public ResponseEntity<InvitationListRes> getInvitationList(@ApiIgnore Authentication authentication) {
         SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
-        String user = userDetails.getUser().getUserId();
+        String user = userDetails.getUser().getNickname();
         System.out.println(user);
 
         List<Invitation> invitationList = invatationService.getAllInvite(user);
@@ -75,7 +75,7 @@ public class InvitationController {
     @PostMapping("/manager")
     public void InvitationManager(@ApiIgnore Authentication authentication, @RequestBody @ApiParam(value = "초대장 관리", required = true) UpdateInvitationPostReq updateInvitationPostReq) {
         SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
-        String user = userDetails.getUser().getUserId();
+        String user = userDetails.getUser().getNickname();
 
         long roomCode = updateInvitationPostReq.getRoomCode();
         long invitationSeq = updateInvitationPostReq.getInvitationSeq();
