@@ -3,6 +3,9 @@ import background from '../../media/images/headerMenuBackGround.png'
 import inviteIcon from '../../media/images/closeletter.png'
 import openedinviteIcon from '../../media/images/openletter.png'
 import letter from '../../media/images/letter.png'
+import reject from '../../media/images/reject.png'
+import accept from '../../media/images/accept.png'
+
 import { useSelector } from "react-redux";
 import { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
@@ -43,9 +46,10 @@ const GivenInvitationModal = styled.div`
 
   z-index: 1;
   display: flex;  
-  flex-direction: column;
+  flex-direction: row;
   /* justify-content: center; */
-  padding-top: 40vh;
+  /* padding-top: 10vh; */
+  padding-left: 10vw;
   align-items: center;
 
 `;
@@ -53,10 +57,10 @@ const GivenInvitationModal = styled.div`
 const InvitationBlock = styled.div`
   width: 25vw;
   height: 10vh;
-  /* margin-top: 20vh; */
+  margin-top: 10vh;
   /* margin-bottom: 0vh; */
   display: flex;
-  align-items: center;
+  align-items: space-between;
   margin-left: 2rem;
   /* background-color: #2d2911; */
   color: #2d2911;
@@ -64,20 +68,45 @@ const InvitationBlock = styled.div`
   font-size: 2rem;
   /* border: 3px red solid; */
   display: flex;
-  justify-content: space-between;
+  /* flex-direction: row; */
+`
+const AcceptRejectButton = styled.div`
+  display: flex;
+  /* flex-direction: row; */
 `
 
+const AcceptButton = styled.div`
+width: 15vw;
+height: 20vh;
+background: url(${accept}) center no-repeat;
+background-size: 15vw 10vh;
+padding: 0;
+display: inline;
+border: 3px red solid;
+
+`
+
+const RejectButton = styled.div`
+width: 15vw;
+height: 20vh;
+background: url(${reject}) center no-repeat;
+background-size: 15vw 10vh;
+padding: 0;
+display: inline;
+border: 3px red solid;
+`
 
 const MyPageContent = () => {
   const dispatch = useDispatch();
 
+  // 초대장 아이콘을 누르면 실행
   const myinvitationList = useSelector((state) => (state.gamePlan.invitationList))
-  console.log("안녕", myinvitationList)
+  console.log("초대장 아이콘 누름", myinvitationList)
     
   const [modalToggle, setModalToggle] = useState(false);
 
   const onClickDecision = (decision, invitationSeq, roomCode) => {
-    console.log(decision, Number(invitationSeq), Number(roomCode));
+    console.log('onClickDecision =', decision, Number(invitationSeq), Number(roomCode));
     const invitationInfo = {
       roomCode: Number(roomCode),
       invitationSeq: Number(invitationSeq),
@@ -98,12 +127,16 @@ const MyPageContent = () => {
         <GivenInvitationModal>
           {myinvitationList.map((invitation, idx) => (
             <InvitationBlock key={idx}>
-              {invitation.sender}<br></br>
-               {/* 방 번호 : {' '}
+              {invitation.sender}
                <br />
-              {invitation.roomCode} */}
-              <div>
-                <button
+              {invitation.reg_DTM}
+              <br />
+              {invitation.roomCode}
+              <br />
+              {invitation.receiver}
+              <br />
+              <AcceptRejectButton>
+                <AcceptButton
                   onClick={() => {
                     onClickDecision(
                       true,
@@ -112,9 +145,8 @@ const MyPageContent = () => {
                     );
                   }}
                 >
-                  승낙
-                </button>
-                <button
+                </AcceptButton>
+                <RejectButton
                   onClick={() => {
                     onClickDecision(
                       false,
@@ -124,8 +156,8 @@ const MyPageContent = () => {
                   }}
                 >
                   거절
-                </button>
-              </div>
+                </RejectButton>
+              </AcceptRejectButton>
             </InvitationBlock>
           ))}
         </GivenInvitationModal>

@@ -97,6 +97,7 @@ const PlannedGameList = () => {
   return (
     <PlannedGameListBlock>
       {modalToggle && (
+        // 모험참여/생성 -> 초대장 보내기 모달
         <GameInvitationModal>
           <button onClick={onClickModalCloser}>닫기</button>
           {myFriendsList.map((friend, idx) => (
@@ -119,12 +120,15 @@ const PlannedGameList = () => {
         </GameInvitationModal>
       )}
       <PlanGameDetailTitle>예정된 모험(4개만 보여줌)</PlanGameDetailTitle>
-      {myGamePlanList.slice(0, 4).map((GamePlan) => (
-        <PlannedGameBlock>
-          방 번호 {GamePlan.roomCode}의 게임
+      {myGamePlanList.map((Plan, idx) => (
+        <PlannedGameBlock key={idx}>
+          방 번호 {Plan.roomCode}의 게임
+          <p>{Plan.date}</p>
+          <p>{Plan.host}</p>
+          <p>{Plan.playerList[0].user}</p>
           <GameInvitationBtn
             onClick={() => {
-              onClickHandler(`${GamePlan.roomCode}`);
+              onClickHandler(`${Plan.roomCode}`);
             }}
           >
             초대장보내기
@@ -136,3 +140,6 @@ const PlannedGameList = () => {
 };
 
 export default PlannedGameList;
+
+// game plan index state 선언
+// 

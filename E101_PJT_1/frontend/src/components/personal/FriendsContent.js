@@ -273,6 +273,7 @@ const FriendsContent = () => {
     setFriendIdInput(e.target.value);       
   }
 
+  // 친구 추가 모달에서 아이디를 검색하고 추가를 누르면 일어나는 일
   const onClick = (e) => {
     e.preventDefault()
     console.log(userId, friendIdInput)
@@ -301,7 +302,7 @@ const FriendsContent = () => {
           <h1>친애하는 모험가를 추가하세요</h1>
           <StyledInput             
             name="friendId"
-            placeholder="아이디를 입력하세요."            
+            placeholder="닉네임을 입력하세요."            
             onChange={inputChange}            
           />
           <h3>{addMessage}</h3>
