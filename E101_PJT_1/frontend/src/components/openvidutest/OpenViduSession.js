@@ -42,11 +42,42 @@ const MainVideo = styled.div`
   color: white;
   font-size: 2rem;
   position: absolute;
-
+  top: 25vh;
+  left: 30vw;
+  width: 40vw;
+  height: 40vh;
   & video {
     cursor: initial;
   }
+`;
 
+const SwitchCameraBtn = styled.div`  
+  cursor: pointer;
+  width: 15vmin;
+  height: 5vh;
+  background-color: white;
+  border: 2px solid black;
+  color:black;
+  :hover {
+    background-color:#adff45;
+  }
+`
+
+const VideoContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  width: 80vw;
+  height: 50vh;
+  border: 3px solid white;
+
+`
+
+const UserVideoComponentContainer = styled.div`
+  width: 10vmin;
+  height: 10vmin;
+  border: 3px solid white;
+  cursor: pointer;
+  position: absolute;
   &.pos0 {
     top: 80vh;
     left: 8.5vw;
@@ -146,35 +177,12 @@ const MainVideo = styled.div`
     top: 50vh;
     left: 14vw;
   }
-`;
-
-const SwitchCameraBtn = styled.div`  
-  cursor: pointer;
-  width: 15vmin;
-  height: 5vh;
-  background-color: white;
-  border: 2px solid black;
-  color:black;
-  :hover {
-    background-color:#adff45;
+  &.testPos {
+    margin-left: 2vw;
   }
 `
 
-const VideoContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  width: 80vw;
-  height: 50vh;
-  border: 3px solid white;
 
-`
-
-const UserVideoComponentContainer = styled.div`
-  width: 10vmin;
-  height: 10vmin;
-  border: 3px solid white;
-  cursor: pointer;
-`
 
 const OpenViduSession = ({
   handleMainVideoStream,
@@ -184,13 +192,23 @@ const OpenViduSession = ({
   mainStreamManager,
   publisher,
   subscribers,
+  session
 }) => {
 
   const [posNum, setPosNum] = useState(1);
-
+  
+  session.on('signal:gameStateChanged', (data) => {
+    // {"nextPosNum":2} 스트링이라 parse해줌    
+    const nextPos = JSON.parse(data.data).nextPosNum;    
+    console.log("주사위바뀐거 받음", nextPos);
+    setPosNum(nextPos)
+  })
 
   return (
     <OpenViduSessionBlock>
+      {subscribers.map((sub, i) => (
+        <p key={i}>{sub.stream.connection.data}</p>
+      ))}
       <OpenViduSessionHeader>
         <p>{mySessionIdValue}번 방</p>
         <OpenViduSessionLeaveBtn
@@ -204,9 +222,9 @@ const OpenViduSession = ({
       </OpenViduSessionHeader>
       {/* 그 중심에 뜨는 사람 일단 필요없음*/}
       {mainStreamManager !== undefined ? (
-        <MainVideo className={"pos" + posNum}>
+        <MainVideo>
           {/* <p>메인스트리머</p> */}
-          <UserVideoComponent streamManager={mainStreamManager} />
+          <UserVideoComponent streamManager={mainStreamManager} mainStreamer={"mainStreamer"}/>
           
         </MainVideo>
       ) : null}
@@ -216,24 +234,28 @@ const OpenViduSession = ({
           switchCamera();
       }}>Switch Camera</SwitchCameraBtn>
       {/* 비디오 컨테이너 */}
-      <VideoContainer>
+      {/* <VideoContainer> */}
         {publisher !== undefined ? (
           <UserVideoComponentContainer            
             onClick={() => handleMainVideoStream(publisher)}
+            className={`pos${posNum} testPos`}
+            
           >
-            <UserVideoComponent streamManager={publisher} />
+            <UserVideoComponent streamManager={publisher} mainStreamer={"publisher"}/>
           </UserVideoComponentContainer>
         ) : null}
         {subscribers.map((sub, i) => (
           <UserVideoComponentContainer
+            className={"pos" + posNum}
             key={i}            
             onClick={() => handleMainVideoStream(sub)}
           >
-            <UserVideoComponent streamManager={sub} />
+            <UserVideoComponent streamManager={sub} mainStreamer={"sub"}/>
           </UserVideoComponentContainer>
         ))}
-      </VideoContainer>
-      <DiceRoller posNum={posNum} setPosNum={setPosNum}></DiceRoller>
+      {/* </VideoContainer> */}
+      {/* 주사위 */}
+      <DiceRoller session={session} posNum={posNum} setPosNum={setPosNum}></DiceRoller>
     </OpenViduSessionBlock>
   );
 };

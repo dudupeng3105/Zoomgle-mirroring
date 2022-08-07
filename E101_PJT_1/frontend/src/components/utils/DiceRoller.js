@@ -14,15 +14,29 @@ const DiceRollerBlock = styled.div`
   /* border: red 3px solid; */
 `;
 
-const DiceRoller = ({ posNum, setPosNum }) => {
+const DiceRoller = ({ posNum, setPosNum, session }) => {
   const [diceNum, setDiceNum] = useState();
+
+  
+  
   const onRollHandler = (value) => {
     // console.log(value);
     if (value > 3) {
       value = value - 3;
     }
     setDiceNum(value);
-    setPosNum((posNum + value) % 20);
+
+    const tempPosNum = (posNum + value) % 20
+    
+    setPosNum(tempPosNum);
+    const sendData = {
+      nextPosNum: tempPosNum
+    }
+    console.log("보냄", sendData);
+    session.signal({      
+      data: JSON.stringify(sendData),
+      type: 'gameStateChanged',
+    });
   };
 
   const faces = [dice1, dice2, dice3, dice1, dice2, dice3];

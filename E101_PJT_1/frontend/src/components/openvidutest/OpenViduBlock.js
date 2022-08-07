@@ -32,7 +32,7 @@ const OpenViduBlock = () => {
   // OV
   const [ov, setOv] = useState(null);
   const [mySessionId, setMySessionId] = useState('SessionDUDU');
-  const [myUserName, setMyUserName] = useState('두두펭');
+  const [myUserName, setMyUserName] = useState(`두두펭${Math.floor(Math.random() * 100) + 1}`);
   const [session, setSession] = useState(undefined);
   const [mainStreamManager, setMainStreamManager] = useState(undefined);
   const [publisher, setPublisher] = useState(undefined);
@@ -47,7 +47,7 @@ const OpenViduBlock = () => {
     window.addEventListener('beforeunload', onbeforeunload);
     // 게임 참여
     // console.log("값이있나", mySessionId, myUserName);
-    joinSession();
+    joinSession();    
     // WillUnmount()
     return window.removeEventListener('beforeunload', onbeforeunload);
   }, []);
@@ -152,7 +152,7 @@ const OpenViduBlock = () => {
           // --- 6) Publish your stream ---
 
           mySession.publish(tempPublisher);
-
+          console.log("마이세션", mySession);
           // Set the main video in the page to display our webcam and store our Publisher
 
           setCurrentVideoDevice(videoDevices[0]);
@@ -333,6 +333,7 @@ const OpenViduBlock = () => {
       {/* 입장했으면.. */}
       {session !== undefined ? (
         <OpenViduSession
+          session={session}
           handleMainVideoStream={handleMainVideoStream}
           switchCamera={switchCamera}
           leaveSession={leaveSession}
@@ -341,7 +342,7 @@ const OpenViduBlock = () => {
           publisher={publisher}
           subscribers={subscribers}
         >
-        </OpenViduSession>
+        </OpenViduSession>        
       ) : null}
     </OpenViduContainer>
   );
