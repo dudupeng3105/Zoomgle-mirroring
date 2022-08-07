@@ -32,24 +32,28 @@ const OpenViduBlock = () => {
   // OV
   const [ov, setOv] = useState(null);
   const [mySessionId, setMySessionId] = useState('SessionDUDU');
-  const [myUserName, setMyUserName] = useState(`두두펭${Math.floor(Math.random() * 100) + 1}`);
+  const [myUserName, setMyUserName] = useState(`펭두두-${Math.floor(Math.random() * 100) + 1}`);
   const [session, setSession] = useState(undefined);
   const [mainStreamManager, setMainStreamManager] = useState(undefined);
   const [publisher, setPublisher] = useState(undefined);
   const [subscribers, setSubscribers] = useState([]);
   // currentVideoDevice
-  const [currentVideoDevice, setCurrentVideoDevice] = useState(null);
+  const [currentVideoDevice, setCurrentVideoDevice] = useState(null);  
 
   // componentDidMount() ==
   //  useEffect(() => { 여기에 코드를 적자  }, [])
   useEffect(() => {
     // 창 닫을때 session 떠나게 해줌
     window.addEventListener('beforeunload', onbeforeunload);
+        
     // 게임 참여
-    // console.log("값이있나", mySessionId, myUserName);
-    joinSession();    
+    // console.error("아이디 뭐냐", myUserName)
+    // joinSession();
+
     // WillUnmount()
-    return window.removeEventListener('beforeunload', onbeforeunload);
+    return () => {
+      window.removeEventListener('beforeunload', onbeforeunload);
+    };
   }, []);
 
   // useEffect(() => {
@@ -58,10 +62,7 @@ const OpenViduBlock = () => {
   //   console.log("유저네임", myUserName);
   //   console.log("ov", ov);
   // }, [mySessionId, session, myUserName, ov]);
-
-  const onbeforeunload = (e) => {
-    leaveSession();
-  };
+  
   // 중앙에 오는놈을 설정하기 위한 아이(하위요소로 Props 필요함)
   const handleMainVideoStream = (stream) => {
     if (mainStreamManager !== stream) {
@@ -105,7 +106,7 @@ const OpenViduBlock = () => {
       tempSubscribers.push(tempSubscriber);
 
       // Update the state with the new subscribers
-      setSubscribers(tempSubscribers);
+      setSubscribers(tempSubscribers);      
     });
 
     // On every Stream destroyed...
@@ -168,6 +169,8 @@ const OpenViduBlock = () => {
         });
     });
   };
+
+
   // 방 나갈 때 필요한 아이(하위요소로 PROPS 필요함)
   const leaveSession = () => {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
@@ -313,6 +316,10 @@ const OpenViduBlock = () => {
     });
   };
 
+  const onbeforeunload = (e) => {    
+    leaveSession();    
+  };
+
   const mySessionIdValue = mySessionId;
   const myUserNameValue = myUserName;
   console.log("너 왜 없냐..", mySessionIdValue);
@@ -326,6 +333,7 @@ const OpenViduBlock = () => {
         그냥 자동입장으로 일단 바꿈 */}
       {session === undefined ? (
         <LoadingBlock>
+          <h1>내 이름 뭐로 되어있냐?{myUserName}</h1>
           <button onClick={()=>joinSession()}>참여하기</button>
         </LoadingBlock>
       ) : null}
@@ -338,6 +346,7 @@ const OpenViduBlock = () => {
           switchCamera={switchCamera}
           leaveSession={leaveSession}
           mySessionIdValue={mySessionIdValue}
+          myUserNameValue={myUserNameValue}
           mainStreamManager={mainStreamManager}
           publisher={publisher}
           subscribers={subscribers}

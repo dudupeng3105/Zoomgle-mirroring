@@ -63,13 +63,11 @@ const SwitchCameraBtn = styled.div`
   }
 `
 
-const VideoContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  width: 80vw;
-  height: 50vh;
-  border: 3px solid white;
-
+const TestContainer = styled.div`
+  color: white;
+  & p {
+    font-size: 2rem;
+  }
 `
 
 const UserVideoComponentContainer = styled.div`
@@ -189,6 +187,7 @@ const OpenViduSession = ({
   switchCamera,
   leaveSession,
   mySessionIdValue,
+  myUserNameValue,
   mainStreamManager,
   publisher,
   subscribers,
@@ -196,7 +195,8 @@ const OpenViduSession = ({
 }) => {
 
   const [posNum, setPosNum] = useState(1);
-  
+  console.error("구독자 누구있냐", subscribers[0])
+
   session.on('signal:gameStateChanged', (data) => {
     // {"nextPosNum":2} 스트링이라 parse해줌    
     const nextPos = JSON.parse(data.data).nextPosNum;    
@@ -206,9 +206,13 @@ const OpenViduSession = ({
 
   return (
     <OpenViduSessionBlock>
-      {subscribers.map((sub, i) => (
-        <p key={i}>{sub.stream.connection.data}</p>
-      ))}
+      <h1>{myUserNameValue}</h1>
+      <TestContainer>
+        {subscribers.map((sub, i) => (
+          <p key={i}>{sub.stream.connection.data} {i}번쨰 유저</p>
+        ))}
+        {/* <p>{publisher.stream.connection.data}</p> */}
+      </TestContainer>
       <OpenViduSessionHeader>
         <p>{mySessionIdValue}번 방</p>
         <OpenViduSessionLeaveBtn
@@ -246,7 +250,7 @@ const OpenViduSession = ({
         ) : null}
         {subscribers.map((sub, i) => (
           <UserVideoComponentContainer
-            className={"pos" + posNum}
+            className={`pos${posNum+i}`}
             key={i}            
             onClick={() => handleMainVideoStream(sub)}
           >
