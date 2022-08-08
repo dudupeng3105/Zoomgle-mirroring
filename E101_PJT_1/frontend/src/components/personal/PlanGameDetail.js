@@ -1,11 +1,20 @@
 import styled from "styled-components";
 import CustomDatePicker from "../utils/CustomDatePicker";
 import PersonNumCounter from "../utils/PersonNumCounter";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
 import { useDispatch } from "react-redux";
 import { gamePlanActions } from "../../store/gamePlan-slice";
+import { friendActions } from '../../store/friends-slice';
+import {
+  FriendCard,
+  StyledCard,
+  ImageContainer,
+  ProfileImg,
+  NameNicknameEl,
+} from '../personal/FriendsContent';
 
 const PlanGameDetailBlock = styled.div`
   border: 3px solid white;
@@ -64,6 +73,36 @@ const ErrorMessage = styled.div`
   color:red;
 `
 
+// 친구 초대하기 모달
+const GameInvitationModal = styled.div`
+  position: absolute;
+  border-radius: 10px;
+  padding: 2rem;
+  left: 30vw;
+  top: 10vh;
+  width: 60vw;
+  height: 80vh;
+  border: 1px solid black;
+  background-color: white;
+  z-index: 1;
+`;
+
+const GameInvitationBtn = styled.div`
+  font-size: 1.5rem;
+  width: 10vw;
+  text-align: center;
+  color: white;
+  cursor: pointer;
+  background: #29231c;
+  border: 3px solid #b39860;
+  border-radius: 5px;
+  &:hover {
+    background: #e2d6ba;
+    color: black;
+    border: 3px solid #29231c;
+  }
+`;
+
 const PlanGameDetail = () => {
   const dispatch = useDispatch();
   const [startDate, setStartDate] = useState(
@@ -73,7 +112,13 @@ const PlanGameDetail = () => {
   const [count, setCount] = useState(2);
   const [newDate, setNewDate] = useState(0);
   const [error, setError] = useState('');
+  // 친구 초대하기 모달 토글
+  const [modalToggle, setModalToggle] = useState(false);
+  const [inviteRoomCode, setInviteRoomCode] = useState(0);
 
+  const userId = useSelector((state) => state.auth.user.userId);
+  const myFriendsList = useSelector((state) => state.friend.friendList);  
+  const roomCode = inviteRoomCode;
   const onDateChangeHandler = (givenDate) => {
     setStartDate(givenDate);
     const temp =
@@ -101,10 +146,40 @@ const PlanGameDetail = () => {
         "date": newDate,
         "maxCapacity": count  
       };
-      dispatch(gamePlanActions.createGamePlanStart(planInfo));      
+      dispatch(gamePlanActions.createGamePlanStart(planInfo));
+      setInviteRoomCode(roomCode);
+      setModalToggle(!modalToggle);    
     }
     
   };
+
+
+  // 친구 초대 모달 닫기
+  const onClickModalCloser = () => {
+    setModalToggle(!modalToggle);
+  };
+
+  const onClickInviteHandler = (roomCode) => {
+    setInviteRoomCode(roomCode);
+    setModalToggle(!modalToggle);
+  };
+
+  // 친구 초대하기
+  const onClickSendInvitation = (friendId) => {
+    console.log(friendId, inviteRoomCode);
+    const inviteInfo = {
+      receiver: friendId,
+      roomCode: inviteRoomCode
+    }
+    dispatch(gamePlanActions.sendInvitaionStart(inviteInfo))
+  };
+
+  // useEffect(() => {
+  //   dispatch(friendActions.GetFriendListStart(userId))
+  //   dispatch(gamePlanActions.getGamePlanListStart());    
+  // }, []);
+
+
 
   return (
     <PlanGameDetailBlock>
@@ -127,8 +202,39 @@ const PlanGameDetail = () => {
           setCount={setCount}
         />
       </PlanGameDetailOption>
+
+      {/* 친구초대 모달 */}
+      {modalToggle && (<GameInvitationModal>
+          <button onClick={onClickModalCloser}>닫기</button>
+          {myFriendsList.map((friend, idx) => (
+            <FriendCard key={idx}>
+              <StyledCard>
+                <ImageContainer>
+                  <ProfileImg
+                    className={'profileImg' + (friend.profileImgNum % 6)}
+                    // className={'profileImg' + 1}
+                  ></ProfileImg>
+                </ImageContainer>
+                <NameNicknameEl>
+                  <div>이름: {friend.userId}</div>
+                  <div>닉네임(seq): {friend.nickname}</div>
+                </NameNicknameEl>
+              </StyledCard>
+              <button onClick={() => onClickSendInvitation(`${friend.userId}`)}>초대장보내기</button>
+            </FriendCard>
+          ))}
+        </GameInvitationModal>
+        )}
+      <GameInvitationBtn
+        onClick={() => {
+          onClickInviteHandler(`${roomCode}`);
+        }}
+        >
+        모험가 찾기
+      </GameInvitationBtn>
+
       <PlanGameApplyBtn
-        onClick={() => {onClickHandler()}}
+        onClick={() => {onClickHandler(`${roomCode}`)}}
       >게임 예약하기</PlanGameApplyBtn>
     </PlanGameDetailBlock>
   );

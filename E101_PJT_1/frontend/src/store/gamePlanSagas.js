@@ -39,7 +39,7 @@ function* getGamePlanListAsync({ payload }) {
   const { getGamePlanListSuccess, getError } = gamePlanActions;
   try {
     const response = yield call(getGamePlanListApi);
-    console.log('게임플랜리스트응답', response.data);
+    console.log('게임플랜리스트응답', response);
     if (response.status === 200) {
       // 게임플랜리스트가져오기 성공
       yield put(getGamePlanListSuccess(response.data));

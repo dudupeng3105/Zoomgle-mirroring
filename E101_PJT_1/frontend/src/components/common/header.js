@@ -10,7 +10,7 @@ import profile3 from '../../media/images/profile3.png';
 import profile4 from '../../media/images/profile4.png';
 import profile5 from '../../media/images/profile5.png';
 import profile6 from '../../media/images/profile6.png';
-import logout from '../../media/images/logout.png';
+import logout from '../../media/images/logout1.png';
 
 
 import { useNavigate } from 'react-router-dom';
@@ -81,8 +81,9 @@ const MenuBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin: 0px 0.5rem;
+  /* margin: 0px 0.5rem; */
   margin-bottom: 2rem;
+  /* margin-top: 1rem; */
   border: 3px solid skyblue;
   height: 70vh;
   /* background: yellow;   */
@@ -98,11 +99,12 @@ const LogoutButton = styled.div`
   background: url(${logout}) no-repeat center;
   /* background-color: #352208; */
   background-size: contain;
-  /* border: 3px solid #b39860; */
-  color: white;
+  border: 3px solid #b39860;
+  color: #352208;
   border-radius: 5px;
   /* border: 2px red solid; */
   padding:0;
+  margin-top: 0;
   cursor: pointer;
   /* &:hover {
     background: #e2d6ba;
@@ -145,19 +147,18 @@ const Header = () => {
           </ProfileLogo>
         </ProfileBox>
         <MenuBox>
-       
+          <HeaderMenu to="/mypage/" MenuName={'마이페이지'}></HeaderMenu>
           <HeaderMenu to="/joingame/" MenuName={'모험참여/생성'}></HeaderMenu>
           <HeaderMenu to="/friends/" MenuName={'동료명단'}></HeaderMenu>
           <HeaderMenu to="/pictures/" MenuName={'사진첩'}></HeaderMenu>
           <HeaderMenu to="/profile/" MenuName={'내 정보'}></HeaderMenu>
-         
         </MenuBox>
         <LogoutButton onClick={() => 
             {
               dispatch(authActions.logout())
               navigate('/')
             }
-          }>
+          }>로그아웃
           </LogoutButton>
         
       </HeaderBlock>
