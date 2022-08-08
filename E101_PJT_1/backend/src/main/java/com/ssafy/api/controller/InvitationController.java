@@ -88,7 +88,8 @@ public class InvitationController {
         }
 
         // 디비 드랍
-        invatationService.deleteInvitation(invitationSeq);
+        invatationService.deleteInvitation(roomCode);
+
 
     }
 }
