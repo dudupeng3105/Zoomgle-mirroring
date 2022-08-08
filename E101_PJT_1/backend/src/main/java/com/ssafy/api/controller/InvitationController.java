@@ -82,6 +82,8 @@ public class InvitationController {
 
         boolean join = updateInvitationPostReq.isJoin();
 
+        System.out.println(roomCode);
+
         if (join == true) {
             // player에 넣기
             invatationService.joinPlayer(user, roomCode, invitationSeq);

@@ -18,5 +18,7 @@ public interface RoomService {
 
 	// user의 게임 리스트
 	List<Player> getAllPlayer(String user);
+
+	void deleteRoom(long roomCode);
 }
 

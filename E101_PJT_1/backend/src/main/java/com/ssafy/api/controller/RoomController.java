@@ -2,6 +2,7 @@ package com.ssafy.api.controller;
 
 import com.ssafy.api.request.CreateRoomPostReq;
 import com.ssafy.api.response.RoomInfoListRes;
+import com.ssafy.api.service.InvitationService;
 import com.ssafy.api.service.RoomService;
 import com.ssafy.api.service.UserService;
 import com.ssafy.common.auth.SsafyUserDetails;
@@ -9,6 +10,7 @@ import com.ssafy.common.myObject.RoomInfo;
 import com.ssafy.db.entity.*;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +31,9 @@ public class RoomController {
 
     @Autowired // 의존성 주입
     RoomService roomService;
+
+    @Autowired // 의존성 주입
+    InvitationService invitationService;
 
     // 게임방 생성
     @PostMapping
@@ -108,5 +113,51 @@ public class RoomController {
         }
 
         return ResponseEntity.status(200).body(RoomInfoListRes.of(200, "게임이 " + roomInfoList.size() + "개 있습니다.", roomInfoList));
+    }
+
+    // 게임방 삭제
+    @DeleteMapping("{roomCode}")
+    @ApiOperation(value = "게임방 삭제", notes = "해당 roomCode 게임방을 삭제한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "삭제 성공"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 403, message = "토큰 없음"),
+            @ApiResponse(code = 404, message = "게임방 없음"),
+            @ApiResponse(code = 405, message = "삭제 실패"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> deleteRoom(@PathVariable("roomCode") long roomCode, @ApiIgnore Authentication authentication) {
+
+        // host가 맞는지 체크
+        /// 토큰의 nickName
+        SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
+        String user = userDetails.getUser().getNickname();
+
+        /// roomCode로 host 정보를 가지고 온다.
+        Optional<Room> deleteRoom;
+        try{
+            deleteRoom = roomService.getRoomByRoomCode(roomCode);
+        }catch (Exception e) {
+            return new ResponseEntity<>(roomCode + "의 게임방 정보가 없습니다", HttpStatus.valueOf(404));
+        }
+
+        String roomHost = deleteRoom.get().getHost();
+
+        /// host 체크
+        if (user.equals(roomHost)) {
+
+            // 해당 roomCode의 room, invitation, player 삭제
+            roomService.deleteRoom(roomCode);
+            System.out.println("@");
+            invitationService.deleteInvitation(roomCode);
+            System.out.println("@@");
+            invitationService.deletePlayer(roomCode);
+            System.out.println("@@@");
+        }
+        // roomCode로 room 조회
+        if (roomService.getRoomByRoomCode(roomCode) == null) {
+            return new ResponseEntity<>(roomCode + "의 게임방이 삭제되었습니다.", HttpStatus.valueOf(200));
+        }
+        return new ResponseEntity<>(roomCode + "의 게임방 삭제 도중 문제가 발생하였습니다.", HttpStatus.valueOf(405));
     }
 }

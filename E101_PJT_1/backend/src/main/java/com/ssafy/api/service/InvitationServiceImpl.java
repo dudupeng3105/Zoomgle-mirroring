@@ -82,4 +82,13 @@ public class InvitationServiceImpl implements InvitationService {
             invitationRepository.deleteById(invitationList.get(i).getInvitationSeq());
         }
     }
+
+    @Override
+    public void deletePlayer(long roomCode) {
+        List<Player> playerList = playerRepository.findAllByRoomCode(roomCode);
+
+        for (int i = 0; i < playerList.size(); i++) {
+            playerRepository.deleteById(playerList.get(i).getPlayerSeq());
+        }
+    }
 }

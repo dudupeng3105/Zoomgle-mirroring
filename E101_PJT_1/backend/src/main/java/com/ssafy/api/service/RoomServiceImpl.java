@@ -61,4 +61,9 @@ public class RoomServiceImpl implements RoomService{
     public List<Player> getAllPlayer(String user) {
         return playerRepository.findAllByUser(user);
     }
+
+    @Override
+    public void deleteRoom(long roomCode) {
+        roomRepository.deleteById(roomCode);
+    }
 }
