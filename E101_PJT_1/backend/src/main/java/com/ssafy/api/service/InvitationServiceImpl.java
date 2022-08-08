@@ -17,13 +17,13 @@ public class InvitationServiceImpl implements InvitationService {
 
     @Autowired
     RoomRepository roomRepository;
-    
+
     @Autowired
     InvitationRepository invitationRepository;
 
     @Autowired
     PlayerRepository playerRepository;
-    
+
     @Override
     /**
      * 게임 초대장을 생성하는 메서드
@@ -31,8 +31,10 @@ public class InvitationServiceImpl implements InvitationService {
     public void createInvitationPostReq(long roomCode, String sender, String receiver) {
 
         // 게임 초대 중복 검색
-        if (playerRepository.findByRoomCodeAndUser(roomCode, receiver) == null) {
-            // 초대된 게임이 아닌 경우에만 초대장 생성 가능
+        if (playerRepository.findByRoomCodeAndUser(roomCode, receiver) == null
+                && invitationRepository.findByRoomCodeAndReceiverAndSender(roomCode, receiver, sender) == null) {
+            // '초대된 게임이 아닌 경우' && '발송된 초대장이 없는 경우'에만 초대장 생성 가능
+
             Invitation invitation = new Invitation();
             invitation.setRoomCode(roomCode);
             invitation.setSender(sender);
@@ -68,11 +70,16 @@ public class InvitationServiceImpl implements InvitationService {
             updatedRoom.get().setCnt(updatedRoom.get().getCnt() + 1);
         }
         roomRepository.save(updatedRoom.get());
+
     }
 
     @Override
-    public void deleteInvitation(long invitationSeq) {
-        invitationRepository.deleteById(invitationSeq);
-    }
+    public void deleteInvitation(long roomCode) {
+        // roomCode로 invitationSeq를 찾고 삭제
+        List<Invitation> invitationList = invitationRepository.findAllByRoomCode(roomCode);
 
+        for (int i = 0; i < invitationList.size(); i++) {
+            invitationRepository.deleteById(invitationList.get(i).getInvitationSeq());
+        }
+    }
 }
