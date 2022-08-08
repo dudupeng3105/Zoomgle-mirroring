@@ -29,9 +29,9 @@ const gamePlanSlice = createSlice({
     },
     // 게임플랜리스트 성공 시 state 업데이트
     getGamePlanListSuccess(state, action) {
-      console.log(action.payload.playerList);
+      console.log(action.payload.roomInfoList);
       state.loading = false;
-      state.gamePlanList = action.payload.playerList;
+      state.gamePlanList = action.payload.roomInfoList;
     },
     // 초대장리스트 스타트
     getInvitaionListStart(state) {
