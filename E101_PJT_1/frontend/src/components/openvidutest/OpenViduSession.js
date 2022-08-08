@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from "styled-components";
 import UserVideoComponent from './UserVideoComponent';
 import DiceRoller from '../../components/utils/DiceRoller'
@@ -42,11 +42,49 @@ const MainVideo = styled.div`
   color: white;
   font-size: 2rem;
   position: absolute;
-
+  top: 25vh;
+  left: 30vw;
+  width: 40vw;
+  height: 40vh;
   & video {
     cursor: initial;
   }
+`;
 
+const SwitchCameraBtn = styled.div`  
+  cursor: pointer;
+  width: 15vmin;
+  height: 5vh;
+  background-color: white;
+  border: 2px solid black;
+  color:black;
+  :hover {
+    background-color:#adff45;
+  }
+`
+
+const TestContainer = styled.div`
+  color: white;  
+`;
+
+const PlayerList = styled.div`
+  width: 15vw;
+  height: 30vh;
+  font-size: 1rem;
+  color:black;
+  background-color: white;
+  & p {
+    font: 0.5rem;
+    margin: 0;
+  }
+`
+
+const UserVideoComponentContainer = styled.div`
+  width: 10vmin;
+  height: 10vmin;
+  border: 3px solid white;
+  cursor: pointer;
+  position: absolute;
   &.pos0 {
     top: 80vh;
     left: 8.5vw;
@@ -146,51 +184,80 @@ const MainVideo = styled.div`
     top: 50vh;
     left: 14vw;
   }
-`;
-
-const SwitchCameraBtn = styled.div`  
-  cursor: pointer;
-  width: 15vmin;
-  height: 5vh;
-  background-color: white;
-  border: 2px solid black;
-  color:black;
-  :hover {
-    background-color:#adff45;
+  &.testPos {
+    margin-left: 2vw;
   }
 `
 
-const VideoContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  width: 80vw;
-  height: 50vh;
-  border: 3px solid white;
 
-`
-
-const UserVideoComponentContainer = styled.div`
-  width: 10vmin;
-  height: 10vmin;
-  border: 3px solid white;
-  cursor: pointer;
-`
 
 const OpenViduSession = ({
+  nextPlayer,
+  setNextPlayer,
+  isRoll,
+  setIsRoll,
+  isVote,
+  setIsVote,
+  vote,
+  setVote,
+  minigameResult,
+  setMinigameResult,
+  minigameDone,
+  setMinigameDone,
   handleMainVideoStream,
   switchCamera,
   leaveSession,
   mySessionIdValue,
+  myUserNameValue,
   mainStreamManager,
   publisher,
+  players,
   subscribers,
+  session,
+  turnNum,
+  setTurnNum,
+  posList,
+  setPosList,
 }) => {
+  // const [posNum, setPosNum] = useState(1);
+  // 게임 진행 관련 변수들
+  // console.warn("퍼블리셔는?",publisher);
+  const playerNum = players.length; // 몇 명에서 하는지  
+  const myTurnNum = players.indexOf(myUserNameValue);
 
-  const [posNum, setPosNum] = useState(1);
+  useEffect(() => {
+    if (nextPlayer === myUserNameValue){
+      handleMainVideoStream(publisher)
+    } else {
+      const temp = subscribers.filter((sub) => JSON.parse(sub.stream.connection.data).clientData === nextPlayer)[0];
+      handleMainVideoStream(temp);
+    }
 
+  }, [nextPlayer])
 
   return (
     <OpenViduSessionBlock>
+      <h1>{myUserNameValue}</h1>
+      <TestContainer>
+        <PlayerList>
+          <p>내 턴번호: {myTurnNum}</p>
+          <p>포지션리스트: {posList}</p>
+          <p>플레이어 리스트</p>
+          <p>사람수: {playerNum}</p>
+          <p>누구턴: {turnNum}</p>
+          <p>니이름: {myUserNameValue}</p>
+          <p>누구냐:{players}</p>
+          {players.map((playerName, i) => (
+            <p key={i}>
+              {i}번쨰: {playerName}
+            </p>
+          ))}
+        </PlayerList>
+        {/* {subscribers.map((sub, i) => (
+          <p key={i}>{sub.stream.connection.data} {i}번쨰 유저</p>
+        ))} */}
+        {/* <p>{publisher.stream.connection.data}</p> */}
+      </TestContainer>
       <OpenViduSessionHeader>
         <p>{mySessionIdValue}번 방</p>
         <OpenViduSessionLeaveBtn
@@ -204,38 +271,61 @@ const OpenViduSession = ({
       </OpenViduSessionHeader>
       {/* 그 중심에 뜨는 사람 일단 필요없음*/}
       {mainStreamManager !== undefined ? (
-        <MainVideo className={"pos" + posNum}>
+        <MainVideo>
           {/* <p>메인스트리머</p> */}
-          <UserVideoComponent streamManager={mainStreamManager} />
-          
+          <UserVideoComponent
+            streamManager={mainStreamManager}
+            mainStreamer={'mainStreamer'}
+          />
         </MainVideo>
       ) : null}
 
-      <SwitchCameraBtn            
+      <SwitchCameraBtn
         onClick={() => {
           switchCamera();
-      }}>Switch Camera</SwitchCameraBtn>
+        }}
+      >
+        Switch Camera
+      </SwitchCameraBtn>
       {/* 비디오 컨테이너 */}
-      <VideoContainer>
-        {publisher !== undefined ? (
-          <UserVideoComponentContainer            
-            onClick={() => handleMainVideoStream(publisher)}
-          >
-            <UserVideoComponent streamManager={publisher} />
-          </UserVideoComponentContainer>
-        ) : null}
-        {subscribers.map((sub, i) => (
-          <UserVideoComponentContainer
-            key={i}            
-            onClick={() => handleMainVideoStream(sub)}
-          >
-            <UserVideoComponent streamManager={sub} />
-          </UserVideoComponentContainer>
-        ))}
-      </VideoContainer>
-      <DiceRoller posNum={posNum} setPosNum={setPosNum}></DiceRoller>
+      {/* <VideoContainer> */}
+      {publisher !== undefined ? (
+        <UserVideoComponentContainer
+          className={`pos${posList[myTurnNum]}`}
+        >
+          {/* onClick={() => handleMainVideoStream(publisher)} */}
+          <UserVideoComponent
+            streamManager={publisher}
+            mainStreamer={'publisher'}
+          />
+        </UserVideoComponentContainer>
+      ) : null}
+      {subscribers.map((sub, i) => (
+        <UserVideoComponentContainer
+          className={`pos${posList[players.indexOf(JSON.parse(sub.stream.connection.data).clientData)]}`}
+          key={i}
+        >
+          {/* onClick={() => handleMainVideoStream(sub) */}
+          <UserVideoComponent streamManager={sub} mainStreamer={'sub'} />
+        </UserVideoComponentContainer>
+      ))}
+      {/* </VideoContainer> */}
+      {/* 주사위 */}
+      {/* 턴 일 때만 보임 */}
+      {(!isRoll & myTurnNum===turnNum) ? <DiceRoller
+        players={players}
+        setIsRoll={setIsRoll}
+        isRoll={isRoll}
+        session={session}
+        posList={posList}
+        playerNum={playerNum}
+        myTurnNum={myTurnNum}
+        setPosList={setPosList}
+        setTurnNum={setTurnNum}
+        mySessionIdValue={mySessionIdValue}
+      ></DiceRoller>: ''}
     </OpenViduSessionBlock>
   );
-};
+};;;
 
 export default OpenViduSession;

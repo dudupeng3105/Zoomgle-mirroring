@@ -6,6 +6,7 @@ import OpenViduSession from './OpenViduSession';
 import styled from "styled-components";
 import gameboard from '../../media/images/gameboard.png';
 import loadingImage from '../../media/images/loadingImage.gif';
+import { nextDay } from 'date-fns';
 
 const OpenViduContainer = styled.div`
   width: 100vw;
@@ -32,36 +33,47 @@ const OpenViduBlock = () => {
   // OV
   const [ov, setOv] = useState(null);
   const [mySessionId, setMySessionId] = useState('SessionDUDU');
-  const [myUserName, setMyUserName] = useState('두두펭');
+  const [myUserName, setMyUserName] = useState(`펭두두-${Math.floor(Math.random() * 100) + 1}`);
   const [session, setSession] = useState(undefined);
   const [mainStreamManager, setMainStreamManager] = useState(undefined);
   const [publisher, setPublisher] = useState(undefined);
   const [subscribers, setSubscribers] = useState([]);
   // currentVideoDevice
-  const [currentVideoDevice, setCurrentVideoDevice] = useState(null);
+  const [currentVideoDevice, setCurrentVideoDevice] = useState(null);  
+  // 
+  // 게임관련 변수들
+  const [players, setPlayers] = useState([]); // 플레이어들
+  const [turnNum, setTurnNum] = useState(0); // 몇 번째 사람 차례인지(이번 턴 인 사람)
+  const [nextPlayer, setNextPlayer] = useState('') // 다음 사람(handlemainStreamer에 사용)
+  const [posList, setPosList] = useState([0, 0, 0, 0, 0, 0]); // 6명 max라 생각하고 각자의 포지션
+  const [vote, setVote] = useState([]); // 누가 뭘로 투표했는지
+  const [minigameResult , setMinigameResult] = useState(undefined);  // 미니게임 결과(통과, 실패)
+  const [minigameDone, setMinigameDone] = useState(false); // 미니게임이 끝났는지
+  const [isRoll, setIsRoll] = useState(false); // 굴렸는지
+  const [isVote, setIsVote] = useState(false); // 투표했는지
+
+  
 
   // componentDidMount() ==
   //  useEffect(() => { 여기에 코드를 적자  }, [])
   useEffect(() => {
     // 창 닫을때 session 떠나게 해줌
     window.addEventListener('beforeunload', onbeforeunload);
+        
     // 게임 참여
-    // console.log("값이있나", mySessionId, myUserName);
-    joinSession();
+    // console.error("아이디 뭐냐", myUserName)
+    // joinSession();
+
     // WillUnmount()
-    return window.removeEventListener('beforeunload', onbeforeunload);
+    return () => {
+      window.removeEventListener('beforeunload', onbeforeunload);
+    };
   }, []);
 
-  // useEffect(() => {
-  //   console.log("세션아이디", mySessionId);
-  //   console.log("세션", session);
-  //   console.log("유저네임", myUserName);
-  //   console.log("ov", ov);
-  // }, [mySessionId, session, myUserName, ov]);
-
-  const onbeforeunload = (e) => {
-    leaveSession();
-  };
+  useEffect(() => {
+    console.error("구성원바뀜",players);
+  }, [players]);
+  
   // 중앙에 오는놈을 설정하기 위한 아이(하위요소로 Props 필요함)
   const handleMainVideoStream = (stream) => {
     if (mainStreamManager !== stream) {
@@ -69,22 +81,32 @@ const OpenViduBlock = () => {
     }
   };
 
-  const deleteSubscriber = (streamManager) => {
+  // 나갈 때 작동함
+  const deleteSubscriber = (streamManager) => {    
     let targetSubscribers = subscribers;
     let index = targetSubscribers.indexOf(streamManager, 0);
+    const removeName = JSON.parse(targetSubscribers[index].stream.connection.data).clientData;
+    console.error("제거할 이름", removeName);
+
     if (index > -1) {
-      targetSubscribers.splice(index, 1);
+      targetSubscribers.splice(index, 1);      
       setSubscribers(targetSubscribers);
     }
+    let tempPlayers = targetSubscribers.map((tempsub) => JSON.parse(tempsub.stream.connection.data).clientData)
+    console.error("나간 후 리스트", tempPlayers); 
+    // 자기 자신 없으면 넣어야함
+    if (tempPlayers.includes(myUserName) === false) {
+      tempPlayers.push(myUserName);
+    }
+    setPlayers(tempPlayers.sort());
   };
 
-  const joinSession = async () => {
-    console.log(ov);
+  // 들어올 때
+  const joinSession = async () => {    
     // --- 1) Get an OpenVidu object ---
     // const temp = new OpenVidu();
     const tempOv = new OpenVidu();
-    setOv(tempOv);
-    console.log('아직반영X', ov);
+    setOv(tempOv);    
 
     // --- 2) Init a session ---
 
@@ -94,21 +116,40 @@ const OpenViduBlock = () => {
     setSession(tempSession);
 
     var mySession = tempSession;
-    // --- 3) Specify the actions when events take place in the session ---
 
-    // On every new Stream received...
+    // --- 3) Specify the actions when events take place in the session ---
+     // 게임 참여자 목록
+    // On every new Stream received...(새로운 사람이 들어올 때 마다...)
     mySession.on('streamCreated', (event) => {
       // Subscribe to the Stream to receive it. Second parameter is undefined
       // so OpenVidu doesn't create an HTML video by its own
-      var tempSubscriber = mySession.subscribe(event.stream, undefined);
-      var tempSubscribers = subscribers;
+      var tempSubscriber = mySession.subscribe(event.stream, undefined); // 새로운 참여자
+      var tempSubscribers = subscribers; // 참여자 목록(많은 정보 담고 있음)   
+      // 리액트에서 배열을 다른 변수에 바로 대입하는것은 참조되기 때문에 state가 즉각 변하지 않음
+      // 참고: https://stackoverflow.com/questions/25937369/react-component-not-re-rendering-on-state-change
+      // var tempPlayers = players; (이 방법은 잘못됨)
+      // console.error("플레이어는", players);
+      // let tempPlayers = [...players]; // 배열복사를 활용하자!!
+      // console.error("추가전", tempPlayers);
+      const addUserName = JSON.parse(tempSubscriber.stream.connection.data).clientData;
+      console.error("이름은", addUserName);
       tempSubscribers.push(tempSubscriber);
+      // tempPlayers.push(addUserName);
 
+      let tempPlayers = tempSubscribers.map((tempsub) => JSON.parse(tempsub.stream.connection.data).clientData)
+
+      // 자기 자신 없으면 넣어야함
+      if (tempPlayers.includes(myUserName) === false) {
+        tempPlayers.push(myUserName);
+      }
+
+      console.error("한명더들어왔어요!", tempPlayers);
       // Update the state with the new subscribers
-      setSubscribers(tempSubscribers);
+      setSubscribers(tempSubscribers);     
+      setPlayers(tempPlayers.sort());
     });
 
-    // On every Stream destroyed...
+    // On every Stream destroyed... (누가 나갈 때 마다)
     mySession.on('streamDestroyed', (event) => {
       // Remove the stream from 'subscribers' array
       deleteSubscriber(event.stream.streamManager);
@@ -117,6 +158,19 @@ const OpenViduBlock = () => {
     // On every asynchronous exception...
     mySession.on('exception', (exception) => {
       console.warn(exception);
+    });
+
+    // 주사위 동기화 ON
+    mySession.on('GAME_STATE_CHANGED', (data) => {
+      console.warn("시그널 왔다 받아라..", players);      
+      // {"nextPosNum":2} 스트링이라 parse해줌
+      // console.log(JSON.parse(data.data));
+      const {nextTurn, nextPosList, nextUserName} = JSON.parse(data.data);
+      // handleMainVideoStream(nextUserName);
+      setNextPlayer(nextUserName);
+      setTurnNum(nextTurn);
+      setPosList(nextPosList);
+      setIsRoll(false);
     });
 
     // --- 4) Connect to the session with a valid user token ---
@@ -151,13 +205,16 @@ const OpenViduBlock = () => {
 
           // --- 6) Publish your stream ---
 
-          mySession.publish(tempPublisher);
-
+          mySession.publish(tempPublisher);          
           // Set the main video in the page to display our webcam and store our Publisher
-
+          // 이름만 뽑아냄
+          // const publisherName = JSON.parse(tempPublisher.stream.connection.data).clientData; 
+          // console.log("퍼블리셔이름", publisherName)   
+          // tempPlayers.push(publisherName);               
           setCurrentVideoDevice(videoDevices[0]);
           setMainStreamManager(tempPublisher);
           setPublisher(tempPublisher);
+          // setPlayers(tempPlayers);
         })
         .catch((error) => {
           console.log(
@@ -168,6 +225,8 @@ const OpenViduBlock = () => {
         });
     });
   };
+
+
   // 방 나갈 때 필요한 아이(하위요소로 PROPS 필요함)
   const leaveSession = () => {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
@@ -187,6 +246,7 @@ const OpenViduBlock = () => {
     setMainStreamManager(undefined);
     setPublisher(undefined);
   };
+
   // 카메라 변경에 필요한 아이(하위요소로 PROPS 필요함)
   const switchCamera = async () => {
     try {
@@ -241,6 +301,7 @@ const OpenViduBlock = () => {
       createToken(sessionId),
     );
   };
+
   // join Session에 필요한 아이
   const createSession = (sessionId) => {
     return new Promise((resolve, reject) => {
@@ -313,6 +374,10 @@ const OpenViduBlock = () => {
     });
   };
 
+  const onbeforeunload = (e) => {    
+    leaveSession();    
+  };
+
   const mySessionIdValue = mySessionId;
   const myUserNameValue = myUserName;
   console.log("너 왜 없냐..", mySessionIdValue);
@@ -326,6 +391,7 @@ const OpenViduBlock = () => {
         그냥 자동입장으로 일단 바꿈 */}
       {session === undefined ? (
         <LoadingBlock>
+          <h1>내 이름 뭐로 되어있냐?{myUserName}</h1>
           <button onClick={()=>joinSession()}>참여하기</button>
         </LoadingBlock>
       ) : null}
@@ -333,15 +399,34 @@ const OpenViduBlock = () => {
       {/* 입장했으면.. */}
       {session !== undefined ? (
         <OpenViduSession
+          nextPlayer={nextPlayer}
+          setNextPlayer={setNextPlayer}
+          isRoll={isRoll}
+          setIsRoll={setIsRoll}
+          isVote={isVote}
+          setIsVote={setIsVote}
+          vote={vote}
+          setVote={setVote}
+          minigameResult={minigameResult}
+          setMinigameResult={setMinigameResult}
+          minigameDone={minigameDone}
+          setMinigameDone={setMinigameDone}
+          turnNum={turnNum}
+          setTurnNum={setTurnNum}
+          posList={posList}
+          setPosList={setPosList}
+          session={session}
           handleMainVideoStream={handleMainVideoStream}
           switchCamera={switchCamera}
           leaveSession={leaveSession}
           mySessionIdValue={mySessionIdValue}
+          myUserNameValue={myUserNameValue}
           mainStreamManager={mainStreamManager}
           publisher={publisher}
+          players={players}
           subscribers={subscribers}
         >
-        </OpenViduSession>
+        </OpenViduSession>        
       ) : null}
     </OpenViduContainer>
   );

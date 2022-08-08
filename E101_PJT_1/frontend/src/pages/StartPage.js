@@ -4,6 +4,7 @@ import background1 from '../media/images/startback_3.png'
 import arrow from '../media/images/arrow.png'
 // import Button from "../components/common/Button";
 import { useNavigate } from "../../node_modules/react-router-dom/index";
+import { Link } from "react-router-dom";
 import StartPageModal from "../components/display/StartPageModal";
 import StartStoryBoardBlock from "../components/display/StartStoryBoardBlock";
 import { authActions } from '../store/auth-slice';
@@ -91,6 +92,7 @@ const StartPage = (props) => {
     <StartPageBlock>
       {/* 최상단 페이지 */}
       <StartPageSkipBtn onClick={() => handleClickEvent(4)}>건너뛰기</StartPageSkipBtn>
+      <Link to="/openvidutest/">게임장가기</Link>
       <StartPageContent onClick={() => handleClickEvent(1)}>
         {/* <StartPageSkipBtn onClick={() => navigate('/login')}>건너뛰기</StartPageSkipBtn> */}
         
