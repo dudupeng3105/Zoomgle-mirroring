@@ -10,7 +10,7 @@ const StreamComponent = styled.div`
   flex-direction: column;
   color:white;
   align-items: center;
-
+  
   & video {
     width:10vmin;
     height:10vmin;
@@ -18,11 +18,21 @@ const StreamComponent = styled.div`
     /* float: left; */
     object-fit: cover;
     cursor: pointer;
-    border-radius: 50%;
+    border-radius: 50%;    
+  }
+
+  &.mainStreamer video{
+    width: 40vw;
+    height: 40vh;
+    /* padding-top: 25vmin;     */
+    /* float: left; */    
+    cursor: initial;
+    border-radius: 5%;
+    border: 2px yellow solid;    
   }
 `
 
-const UserVideoComponent = ({ streamManager }) => {
+const UserVideoComponent = ({ streamManager, mainStreamer }) => {
   const [userNickname, setUserNickname] = useState("");
   console.warn(streamManager);
   const getNicknameTag = (streamManager) => {
@@ -42,9 +52,9 @@ const UserVideoComponent = ({ streamManager }) => {
   return (
     <div>
       {streamManager !== undefined ? (
-        <StreamComponent>
+        <StreamComponent className={mainStreamer}>
           <OpenViduVideoComponent streamManager={streamManager} />
-          {/* <p>sdsds{userNickname}</p>           */}
+          <p>{userNickname}</p>          
         </StreamComponent>
       ) : null}
     </div>

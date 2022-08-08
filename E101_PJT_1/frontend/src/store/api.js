@@ -1,5 +1,5 @@
 // import axios from "axios";
-import { customAxios, customJWTAxios } from "./customAxios";
+import { customAxios, customJWTAxios, openViduAxios } from "./customAxios";
 
 // 회원가입 관련 - 아이디 중복 체크
 export const checkUserId = async (userId) => (  
@@ -49,3 +49,7 @@ export const getInvitaionListApi = async () =>
 
 export const checkInvitaionApi = async (invitationInfo) => 
   await customJWTAxios.post('api/invitations/manager', invitationInfo);
+
+// // 
+// export const getInvitaionListApi = async () => 
+//   await customJWTAxios.get('api/invitations/list');
