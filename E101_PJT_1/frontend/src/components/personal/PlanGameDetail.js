@@ -146,7 +146,9 @@ const PlanGameDetail = () => {
         "date": newDate,
         "maxCapacity": count  
       };
+      
       dispatch(gamePlanActions.createGamePlanStart(planInfo));
+      console.log(roomCode);
       setInviteRoomCode(roomCode);
       setModalToggle(!modalToggle);    
     }
