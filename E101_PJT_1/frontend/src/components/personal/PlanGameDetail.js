@@ -165,10 +165,10 @@ const PlanGameDetail = () => {
   };
 
   // 친구 초대하기
-  const onClickSendInvitation = (friendId) => {
-    console.log(friendId, inviteRoomCode);
+  const onClickSendInvitation = (friendNickname) => {
+    console.log(friendNickname, inviteRoomCode);
     const inviteInfo = {
-      receiver: friendId,
+      receiver: friendNickname,
       roomCode: inviteRoomCode
     }
     dispatch(gamePlanActions.sendInvitaionStart(inviteInfo))
@@ -205,33 +205,29 @@ const PlanGameDetail = () => {
 
       {/* 친구초대 모달 */}
       {modalToggle && (<GameInvitationModal>
-          <button onClick={onClickModalCloser}>닫기</button>
+          
           {myFriendsList.map((friend, idx) => (
             <FriendCard key={idx}>
               <StyledCard>
                 <ImageContainer>
                   <ProfileImg
-                    className={'profileImg' + (friend.profileImgNum % 6)}
+                    className={'profileImg' + (friend.profile_Img_Num % 6)}
                     // className={'profileImg' + 1}
                   ></ProfileImg>
                 </ImageContainer>
                 <NameNicknameEl>
-                  <div>이름: {friend.userId}</div>
+                  <div>이름: {friend.name}</div>
                   <div>닉네임(seq): {friend.nickname}</div>
                 </NameNicknameEl>
               </StyledCard>
-              <button onClick={() => onClickSendInvitation(`${friend.userId}`)}>초대장보내기</button>
+              <button onClick={() => onClickSendInvitation(`${friend.nickname}`)}>초대장보내기</button>
             </FriendCard>
+            
+    
           ))}
+          <button onClick={onClickModalCloser}>닫기</button>
         </GameInvitationModal>
         )}
-      <GameInvitationBtn
-        onClick={() => {
-          onClickInviteHandler(`${roomCode}`);
-        }}
-        >
-        모험가 찾기
-      </GameInvitationBtn>
 
       <PlanGameApplyBtn
         onClick={() => {onClickHandler(`${roomCode}`)}}

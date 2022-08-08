@@ -264,7 +264,7 @@ const BoardImageContainer = styled.div`
 
 const FriendsContent = () => {
   const [error, setError] = useState(null);
-  const [friendIdInput, setFriendIdInput] = useState('');
+  const [friendNicknameInput, setFriendNicknameInput] = useState('');
   const [modalToggle, setmodalToggle] = useState(false);
 
   const dispatch = useDispatch();
@@ -272,6 +272,7 @@ const FriendsContent = () => {
   const friendError = useSelector((state) => state.friend.error);
   const addMessage = useSelector((state) => state.friend.addMessage);
   const userId = useSelector((state) => state.auth.user.userId);
+  const userNickname = useSelector((state) => state.auth.user.nickname);
   const friendsArr = useSelector((state) => state.friend.friendList);
   const addResult = useSelector((state) => state.friend.addResult);
 
@@ -298,16 +299,16 @@ const FriendsContent = () => {
   }, [addResult]);
 
   const inputChange = (e) => {
-    setFriendIdInput(e.target.value);       
+    setFriendNicknameInput(e.target.value);       
   }
 
   // 친구 추가 모달에서 아이디를 검색하고 추가를 누르면 일어나는 일
   const onClick = (e) => {
     e.preventDefault()
-    console.log(userId, friendIdInput)
+    console.log(userNickname, friendNicknameInput)
     const infoId = {
-      "myId": userId,
-      "friendId": friendIdInput
+      "myNickname": userNickname,
+      "friendNickname": friendNicknameInput
     }
     dispatch(friendActions.AddFriendStart(infoId))  
     // 성공하면 모달 닫음    
@@ -334,7 +335,7 @@ const FriendsContent = () => {
           >닫기</FriendCloseButton>
           <h1>친애하는 모험가를 추가하세요</h1>
           <StyledInput             
-            name="friendId"
+            name="friendNickname"
             placeholder="닉네임을 입력하세요."            
             onChange={inputChange}            
           />
@@ -366,12 +367,12 @@ const FriendsContent = () => {
             <StyledCard>
               <ImageContainer>
                 <ProfileImg
-                  className={'profileImg' + (friend.profileImgNum%6)}
+                  className={'profileImg' + (friend.profile_Img_Num%6)}
                   // className={'profileImg' + 1}
                 ></ProfileImg>
               </ImageContainer>
               <NameNicknameEl>
-                <div>이름: {friend.userId}</div>
+                <div>이름: {friend.name}</div>
                 <div>닉네임(seq): {friend.nickname}</div>
               </NameNicknameEl>
             </StyledCard>
