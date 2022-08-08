@@ -40,9 +40,16 @@ const OpenViduBlock = () => {
   // currentVideoDevice
   const [currentVideoDevice, setCurrentVideoDevice] = useState(null);  
   // 게임관련 변수들
-  const [players, setPlayers] = useState([]);
+  const [players, setPlayers] = useState([]); // 플레이어들
   const [turnNum, setTurnNum] = useState(0); // 몇 번째 사람 차례인지(이번 턴 인 사람)
   const [posList, setPosList] = useState([0, 0, 0, 0, 0, 0]); // 6명 max라 생각하고 각자의 포지션
+  const [vote, setVote] = useState([]); // 누가 뭘로 투표했는지
+  const [minigameResult , setMinigameResult] = useState(undefined);  // 미니게임 결과(통과, 실패)
+  const [minigameDone, setMinigameDone] = useState(false); // 미니게임이 끝났는지
+  const [isRoll, setIsRoll] = useState(false); // 굴렸는지
+  const [isVote, setIsVote] = useState(false); // 투표했는지
+
+  
 
   // componentDidMount() ==
   //  useEffect(() => { 여기에 코드를 적자  }, [])
@@ -65,10 +72,23 @@ const OpenViduBlock = () => {
   }, [players]);
   
   // 중앙에 오는놈을 설정하기 위한 아이(하위요소로 Props 필요함)
-  const handleMainVideoStream = (stream) => {
-    if (mainStreamManager !== stream) {
-      setMainStreamManager(stream);
-    }
+  const handleMainVideoStream = (streamerName) => {
+    console.error("스트리머이름", streamerName);
+    const myTurnNum = players.indexOf(myUserNameValue);
+    if (players[myTurnNum] === streamerName) {
+      console.error("퍼블리셔", publisher);
+      if (mainStreamManager !== publisher){
+        setMainStreamManager(publisher);
+      }
+    } else {
+      const temp = subscribers.filter((sub) => 
+      JSON.parse(sub.stream.connection.data).clientData === streamerName
+      )[0];
+      console.error("서브스크라이버(필터후)", temp);
+      if (mainStreamManager !== temp){
+        setMainStreamManager(temp);
+      }
+    }    
   };
 
   // 나갈 때 작동함
@@ -152,12 +172,14 @@ const OpenViduBlock = () => {
 
     // 주사위 동기화 ON
     mySession.on('GAME_STATE_CHANGED', (data) => {
-      console.warn("시그널 왔다 받아라..");
+      console.warn("시그널 왔다 받아라..", players);
       // {"nextPosNum":2} 스트링이라 parse해줌
       // console.log(JSON.parse(data.data));
-      const {nextTurn, nextPosList} = JSON.parse(data.data);
+      const {nextTurn, nextPosList, nextUserName} = JSON.parse(data.data);
+      handleMainVideoStream(nextUserName);
       setTurnNum(nextTurn);
       setPosList(nextPosList);
+      setIsRoll(false);
     });
 
     // --- 4) Connect to the session with a valid user token ---
@@ -386,6 +408,16 @@ const OpenViduBlock = () => {
       {/* 입장했으면.. */}
       {session !== undefined ? (
         <OpenViduSession
+          isRoll={isRoll}
+          setIsRoll={setIsRoll}
+          isVote={isVote}
+          setIsVote={setIsVote}
+          vote={vote}
+          setVote={setVote}
+          minigameResult={minigameResult}
+          setMinigameResult={setMinigameResult}
+          minigameDone={minigameDone}
+          setMinigameDone={setMinigameDone}
           turnNum={turnNum}
           setTurnNum={setTurnNum}
           posList={posList}

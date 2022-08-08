@@ -15,6 +15,9 @@ const DiceRollerBlock = styled.div`
 `;
 
 const DiceRoller = ({
+  players,
+  setIsRoll,
+  isRoll,
   posList,
   setPosNum,
   session,
@@ -22,30 +25,30 @@ const DiceRoller = ({
   myTurnNum,
   setTurnNum,
   setPosList,
-  mySessionIdValue
+  mySessionIdValue,
 }) => {
-  const [diceNum, setDiceNum] = useState();  
+  const [diceNum, setDiceNum] = useState();
 
   const onRollHandler = (value) => {
-    console.warn("함정카드 발동")
-    console.warn("포지션정보", posList);
+    console.warn('함정카드 발동');
+    console.warn('포지션정보', posList);
     const myPos = posList[myTurnNum];
     // console.log(value);
     if (value > 3) {
       value = value - 3;
     }
     setDiceNum(value);
-
     const tempPosNum = (myPos + value) % 20;
-
     let nextPosList = [...posList];
     nextPosList[myTurnNum] = tempPosNum;
-    console.error("다음 포지션 정보", nextPosList)
-    const nextTurn = (myTurnNum+1)%playerNum;    
+    console.error('다음 포지션 정보', nextPosList);
+    const nextTurn = (myTurnNum + 1) % playerNum;
+    const nextUserName = players[nextTurn];
     const sendData = {
       session: mySessionIdValue,
       to: [], // all user
       data: JSON.stringify({
+        nextUserName: nextUserName, // 다음사람
         nextTurn: nextTurn, // 다음 턴
         nextPosList: nextPosList, // 자리 업데이트
       }),
@@ -53,20 +56,14 @@ const DiceRoller = ({
     };
     console.log(JSON.stringify(sendData));
     fetch('https://i7e101.p.ssafy.io:4443/openvidu/api/signal', {
-    method: 'POST',
-    headers: {
-      'Authorization': 'Basic ' + btoa('OPENVIDUAPP:e101ssafy71'),
-      'Content-type': 'application/json',
-    },
+      method: 'POST',
+      headers: {
+        Authorization: 'Basic ' + btoa('OPENVIDUAPP:e101ssafy71'),
+        'Content-type': 'application/json',
+      },
       body: JSON.stringify(sendData),
-    })
-    // .then(response => console.log(response));
-
-  //   console.log('보냄', sendData);
-  //   session.signal({
-  //     data: JSON.stringify(sendData),
-  //     type: 'gameStateChanged',
-  //   });
+    });
+    setIsRoll(!isRoll);
   };
 
   const faces = [dice1, dice2, dice3, dice1, dice2, dice3];

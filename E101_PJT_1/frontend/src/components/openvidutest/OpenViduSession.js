@@ -192,6 +192,16 @@ const UserVideoComponentContainer = styled.div`
 
 
 const OpenViduSession = ({
+  isRoll,
+  setIsRoll,
+  isVote,
+  setIsVote,
+  vote,
+  setVote,
+  minigameResult,
+  setMinigameResult,
+  minigameDone,
+  setMinigameDone,
   handleMainVideoStream,
   switchCamera,
   leaveSession,
@@ -268,9 +278,9 @@ const OpenViduSession = ({
       {/* <VideoContainer> */}
       {publisher !== undefined ? (
         <UserVideoComponentContainer
-          onClick={() => handleMainVideoStream(publisher)}
           className={`pos${posList[myTurnNum]}`}
         >
+          {/* onClick={() => handleMainVideoStream(publisher)} */}
           <UserVideoComponent
             streamManager={publisher}
             mainStreamer={'publisher'}
@@ -281,15 +291,18 @@ const OpenViduSession = ({
         <UserVideoComponentContainer
           className={`pos${posList[players.indexOf(JSON.parse(sub.stream.connection.data).clientData)]}`}
           key={i}
-          onClick={() => handleMainVideoStream(sub)}
         >
+          {/* onClick={() => handleMainVideoStream(sub) */}
           <UserVideoComponent streamManager={sub} mainStreamer={'sub'} />
         </UserVideoComponentContainer>
       ))}
       {/* </VideoContainer> */}
       {/* 주사위 */}
       {/* 턴 일 때만 보임 */}
-      {myTurnNum===turnNum ? <DiceRoller
+      {(!isRoll & myTurnNum===turnNum) ? <DiceRoller
+        players={players}
+        setIsRoll={setIsRoll}
+        isRoll={isRoll}
         session={session}
         posList={posList}
         playerNum={playerNum}
