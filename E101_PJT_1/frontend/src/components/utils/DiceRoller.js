@@ -14,29 +14,43 @@ const DiceRollerBlock = styled.div`
   /* border: red 3px solid; */
 `;
 
-const DiceRoller = ({ posNum, setPosNum, session }) => {
-  const [diceNum, setDiceNum] = useState();
+const DiceRoller = ({
+  posList,
+  setPosNum,
+  session,
+  playerNum,
+  myTurnNum,
+  setTurnNum,
+  setPosList,
+}) => {
+  const [diceNum, setDiceNum] = useState();  
 
-  
-  
   const onRollHandler = (value) => {
+    console.error("포지션정보", posList);
+    const myPos = posList[myTurnNum];
     // console.log(value);
     if (value > 3) {
       value = value - 3;
     }
     setDiceNum(value);
 
-    const tempPosNum = (posNum + value) % 20
-    
-    setPosNum(tempPosNum);
+    const tempPosNum = (myPos + value) % 20;
+
+    let nextPosList = [...posList];
+    nextPosList[myTurnNum] = tempPosNum;
+    console.error("다음 포지션 정보", nextPosList)
+    const nextTurn = (myTurnNum+1)%playerNum;
     const sendData = {
-      nextPosNum: tempPosNum
-    }
-    console.log("보냄", sendData);
-    session.signal({      
+      nextTurn: nextTurn, // 다음 턴
+      nextPosList: nextPosList, // 자리 업데이트
+    };
+    console.log('보냄', sendData);
+    session.signal({
       data: JSON.stringify(sendData),
       type: 'gameStateChanged',
     });
+    setPosList([...nextPosList]); // 새로운 자리 업데이트
+    setTurnNum(nextTurn);
   };
 
   const faces = [dice1, dice2, dice3, dice1, dice2, dice3];

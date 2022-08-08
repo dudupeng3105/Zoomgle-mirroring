@@ -205,16 +205,17 @@ const OpenViduSession = ({
 }) => {
   const [posNum, setPosNum] = useState(1);
   // 게임 진행 관련 변수들
-  const playerNum = players.length; // 몇 명에서 하는지
+  const playerNum = players.length; // 몇 명에서 하는지  
+  const myTurnNum = players.indexOf(myUserNameValue);
   const [turnNum, setTurnNum] = useState(0); // 몇 번째 사람 차례인지(이번 턴 인 사람)
   const [posList, setPosList] = useState([0, 0, 0, 0, 0, 0]); // 6명 max라 생각하고 각자의 포지션
-
+  
   // 주사위 동기화 ON
   session.on('signal:gameStateChanged', (data) => {
     // {"nextPosNum":2} 스트링이라 parse해줌
-    const nextPos = JSON.parse(data.data).nextPosNum;
-    console.log('주사위바뀐거 받음', nextPos);
-    setPosNum(nextPos);
+    const {nextTurn, nextPosList} = JSON.parse(data.data);
+    setTurnNum(nextTurn);
+    setPosList(nextPosList);
   });
 
   return (
@@ -222,10 +223,13 @@ const OpenViduSession = ({
       <h1>{myUserNameValue}</h1>
       <TestContainer>
         <PlayerList>
+          <p>내 턴번호: {myTurnNum}</p>
+          <p>포지션리스트: {posList}</p>
           <p>플레이어 리스트</p>
           <p>사람수: {playerNum}</p>
           <p>누구턴: {turnNum}</p>
           <p>니이름: {myUserNameValue}</p>
+          <p>누구냐:{players}</p>
           {players.map((playerName, i) => (
             <p key={i}>
               {i}번쨰: {playerName}
@@ -271,7 +275,7 @@ const OpenViduSession = ({
       {publisher !== undefined ? (
         <UserVideoComponentContainer
           onClick={() => handleMainVideoStream(publisher)}
-          className={`pos${posNum} testPos`}
+          className={`pos${posList[myTurnNum]}`}
         >
           <UserVideoComponent
             streamManager={publisher}
@@ -281,7 +285,7 @@ const OpenViduSession = ({
       ) : null}
       {subscribers.map((sub, i) => (
         <UserVideoComponentContainer
-          className={`pos${posNum + i}`}
+          className={`pos${posList[players.indexOf(JSON.parse(sub.stream.connection.data).clientData)]}`}
           key={i}
           onClick={() => handleMainVideoStream(sub)}
         >
@@ -291,11 +295,15 @@ const OpenViduSession = ({
       {/* </VideoContainer> */}
       {/* 주사위 */}
       {/* 턴 일 때만 보임 */}
-      {players[turnNum] ===myUserNameValue ? <DiceRoller
+      {myTurnNum===turnNum ? <DiceRoller
         session={session}
-        posNum={posNum}
+        posList={posList}
         setPosNum={setPosNum}
-      ></DiceRoller> : ''}
+        playerNum={playerNum}
+        myTurnNum={myTurnNum}
+        setPosList={setPosList}
+        setTurnNum={setTurnNum}
+      ></DiceRoller>: ''}
     </OpenViduSessionBlock>
   );
 };;;
