@@ -32,21 +32,22 @@ const GameNumCounterRightBtn = styled.div`
   border-left: 1rem solid grey;
 `;
 
-const GameNumCounter = ({count, setCount, myGamePlanList}) => { 
+// const GameNumCounter = ({count, setCount, myGamePlanList}) => { 
+  const GameNumCounter = (props) => { 
 
   const onIncrease = () => {
-    if (count === 6) {
-      setCount(2)
+    if (props.count === 6) {
+      props.setCount(2)
     } else {
-      setCount(count + 1)
+      props.setCount(props.count + 1)
     }
   };
 
   const onDecrease = () => {
-    if (count === 2) {
-      setCount(6)
+    if (props.count === 2) {
+      props.setCount(6)
     } else {
-      setCount(count - 1)
+      props.setCount(props.count - 1)
     }
   };
 
@@ -54,7 +55,7 @@ const GameNumCounter = ({count, setCount, myGamePlanList}) => {
     <GameNumCounterBlock>
       <GameNumCounterLeftBtn onClick={onDecrease} />
       <p>각각의 게임 정보가 들어와야함
-        {myGamePlanList[0]}
+        {props.children}
       </p>
       <GameNumCounterRightBtn onClick={onIncrease} />
     </GameNumCounterBlock>

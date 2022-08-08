@@ -118,6 +118,17 @@ const PlanGameDetail = () => {
 
   const userId = useSelector((state) => state.auth.user.userId);
   const myFriendsList = useSelector((state) => state.friend.friendList);  
+  const gamePlanList =  useSelector((state) => state.gamePlan.gamePlanList);
+  let currentRoomCode = 1000;
+  console.log(gamePlanList)
+  if (!!gamePlanList) {
+    currentRoomCode = 1000;
+  } else {
+    currentRoomCode = gamePlanList[gamePlanList.length - 1].roomCode;
+  }
+  console.log(currentRoomCode)
+  
+  
   const roomCode = inviteRoomCode;
   const onDateChangeHandler = (givenDate) => {
     setStartDate(givenDate);
@@ -148,9 +159,11 @@ const PlanGameDetail = () => {
       };
       
       dispatch(gamePlanActions.createGamePlanStart(planInfo));
-      console.log(roomCode);
+      
       setInviteRoomCode(roomCode);
-      setModalToggle(!modalToggle);    
+      
+      setModalToggle(!modalToggle);
+      console.log(roomCode);   
     }
     
   };
@@ -167,11 +180,13 @@ const PlanGameDetail = () => {
   };
 
   // 친구 초대하기
-  const onClickSendInvitation = (friendNickname) => {
-    console.log(friendNickname, inviteRoomCode);
+  const onClickSendInvitation = ({friendNickname}) => {
+
+    
+    console.log(friendNickname, currentRoomCode);   
     const inviteInfo = {
       receiver: friendNickname,
-      roomCode: inviteRoomCode
+      roomCode: currentRoomCode
     }
     dispatch(gamePlanActions.sendInvitaionStart(inviteInfo))
   };
@@ -207,8 +222,9 @@ const PlanGameDetail = () => {
 
       {/* 친구초대 모달 */}
       {modalToggle && (<GameInvitationModal>
-          
+
           {myFriendsList.map((friend, idx) => (
+  
             <FriendCard key={idx}>
               <StyledCard>
                 <ImageContainer>
@@ -220,6 +236,7 @@ const PlanGameDetail = () => {
                 <NameNicknameEl>
                   <div>이름: {friend.name}</div>
                   <div>닉네임(seq): {friend.nickname}</div>
+    
                 </NameNicknameEl>
               </StyledCard>
               <button onClick={() => onClickSendInvitation(`${friend.nickname}`)}>초대장보내기</button>
@@ -228,11 +245,13 @@ const PlanGameDetail = () => {
     
           ))}
           <button onClick={onClickModalCloser}>닫기</button>
+          {/* <p>{inviteRoomCode}</p> */}
+          <p>{currentRoomCode}</p>
         </GameInvitationModal>
         )}
 
       <PlanGameApplyBtn
-        onClick={() => {onClickHandler(`${roomCode}`)}}
+        onClick={() => {onClickHandler(`${currentRoomCode}`)}}
       >게임 예약하기</PlanGameApplyBtn>
     </PlanGameDetailBlock>
   );
