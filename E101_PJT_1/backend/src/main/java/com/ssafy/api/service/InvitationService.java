@@ -18,5 +18,5 @@ public interface InvitationService {
 	void joinPlayer(String user, long roomCode, long invitationSeq);
 
 	// 초대 거절
-	void deleteInvitation(long invitationSeq);
+	void deleteInvitation(long roomCode);
 }
