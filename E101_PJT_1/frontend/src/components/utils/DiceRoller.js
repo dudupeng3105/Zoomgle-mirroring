@@ -22,11 +22,13 @@ const DiceRoller = ({
   myTurnNum,
   setTurnNum,
   setPosList,
+  mySessionIdValue
 }) => {
   const [diceNum, setDiceNum] = useState();  
 
   const onRollHandler = (value) => {
-    console.error("포지션정보", posList);
+    console.warn("함정카드 발동")
+    console.warn("포지션정보", posList);
     const myPos = posList[myTurnNum];
     // console.log(value);
     if (value > 3) {
@@ -39,18 +41,32 @@ const DiceRoller = ({
     let nextPosList = [...posList];
     nextPosList[myTurnNum] = tempPosNum;
     console.error("다음 포지션 정보", nextPosList)
-    const nextTurn = (myTurnNum+1)%playerNum;
+    const nextTurn = (myTurnNum+1)%playerNum;    
     const sendData = {
-      nextTurn: nextTurn, // 다음 턴
-      nextPosList: nextPosList, // 자리 업데이트
+      session: mySessionIdValue,
+      to: [], // all user
+      data: JSON.stringify({
+        nextTurn: nextTurn, // 다음 턴
+        nextPosList: nextPosList, // 자리 업데이트
+      }),
+      type: 'GAME_STATE_CHANGED',
     };
-    console.log('보냄', sendData);
-    session.signal({
-      data: JSON.stringify(sendData),
-      type: 'gameStateChanged',
-    });
-    setPosList([...nextPosList]); // 새로운 자리 업데이트
-    setTurnNum(nextTurn);
+    console.log(JSON.stringify(sendData));
+    fetch('https://i7e101.p.ssafy.io:4443/openvidu/api/signal', {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Basic ' + btoa('OPENVIDUAPP:e101ssafy71'),
+      'Content-type': 'application/json',
+    },
+      body: JSON.stringify(sendData),
+    })
+    // .then(response => console.log(response));
+
+  //   console.log('보냄', sendData);
+  //   session.signal({
+  //     data: JSON.stringify(sendData),
+  //     type: 'gameStateChanged',
+  //   });
   };
 
   const faces = [dice1, dice2, dice3, dice1, dice2, dice3];

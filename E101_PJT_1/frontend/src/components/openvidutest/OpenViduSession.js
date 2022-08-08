@@ -202,21 +202,15 @@ const OpenViduSession = ({
   players,
   subscribers,
   session,
+  turnNum,
+  setTurnNum,
+  posList,
+  setPosList,
 }) => {
-  const [posNum, setPosNum] = useState(1);
+  // const [posNum, setPosNum] = useState(1);
   // 게임 진행 관련 변수들
   const playerNum = players.length; // 몇 명에서 하는지  
   const myTurnNum = players.indexOf(myUserNameValue);
-  const [turnNum, setTurnNum] = useState(0); // 몇 번째 사람 차례인지(이번 턴 인 사람)
-  const [posList, setPosList] = useState([0, 0, 0, 0, 0, 0]); // 6명 max라 생각하고 각자의 포지션
-  
-  // 주사위 동기화 ON
-  session.on('signal:gameStateChanged', (data) => {
-    // {"nextPosNum":2} 스트링이라 parse해줌
-    const {nextTurn, nextPosList} = JSON.parse(data.data);
-    setTurnNum(nextTurn);
-    setPosList(nextPosList);
-  });
 
   return (
     <OpenViduSessionBlock>
@@ -298,11 +292,11 @@ const OpenViduSession = ({
       {myTurnNum===turnNum ? <DiceRoller
         session={session}
         posList={posList}
-        setPosNum={setPosNum}
         playerNum={playerNum}
         myTurnNum={myTurnNum}
         setPosList={setPosList}
         setTurnNum={setTurnNum}
+        mySessionIdValue={mySessionIdValue}
       ></DiceRoller>: ''}
     </OpenViduSessionBlock>
   );

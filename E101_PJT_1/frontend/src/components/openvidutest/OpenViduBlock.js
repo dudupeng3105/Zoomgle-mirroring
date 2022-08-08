@@ -41,6 +41,8 @@ const OpenViduBlock = () => {
   const [currentVideoDevice, setCurrentVideoDevice] = useState(null);  
   // 게임관련 변수들
   const [players, setPlayers] = useState([]);
+  const [turnNum, setTurnNum] = useState(0); // 몇 번째 사람 차례인지(이번 턴 인 사람)
+  const [posList, setPosList] = useState([0, 0, 0, 0, 0, 0]); // 6명 max라 생각하고 각자의 포지션
 
   // componentDidMount() ==
   //  useEffect(() => { 여기에 코드를 적자  }, [])
@@ -146,6 +148,16 @@ const OpenViduBlock = () => {
     // On every asynchronous exception...
     mySession.on('exception', (exception) => {
       console.warn(exception);
+    });
+
+    // 주사위 동기화 ON
+    mySession.on('GAME_STATE_CHANGED', (data) => {
+      console.warn("시그널 왔다 받아라..");
+      // {"nextPosNum":2} 스트링이라 parse해줌
+      // console.log(JSON.parse(data.data));
+      const {nextTurn, nextPosList} = JSON.parse(data.data);
+      setTurnNum(nextTurn);
+      setPosList(nextPosList);
     });
 
     // --- 4) Connect to the session with a valid user token ---
@@ -374,6 +386,10 @@ const OpenViduBlock = () => {
       {/* 입장했으면.. */}
       {session !== undefined ? (
         <OpenViduSession
+          turnNum={turnNum}
+          setTurnNum={setTurnNum}
+          posList={posList}
+          setPosList={setPosList}
           session={session}
           handleMainVideoStream={handleMainVideoStream}
           switchCamera={switchCamera}
