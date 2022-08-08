@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from "styled-components";
 import UserVideoComponent from './UserVideoComponent';
 import DiceRoller from '../../components/utils/DiceRoller'
@@ -192,6 +192,8 @@ const UserVideoComponentContainer = styled.div`
 
 
 const OpenViduSession = ({
+  nextPlayer,
+  setNextPlayer,
   isRoll,
   setIsRoll,
   isVote,
@@ -219,8 +221,19 @@ const OpenViduSession = ({
 }) => {
   // const [posNum, setPosNum] = useState(1);
   // 게임 진행 관련 변수들
+  // console.warn("퍼블리셔는?",publisher);
   const playerNum = players.length; // 몇 명에서 하는지  
   const myTurnNum = players.indexOf(myUserNameValue);
+
+  useEffect(() => {
+    if (nextPlayer === myUserNameValue){
+      handleMainVideoStream(publisher)
+    } else {
+      const temp = subscribers.filter((sub) => JSON.parse(sub.stream.connection.data).clientData === nextPlayer)[0];
+      handleMainVideoStream(temp);
+    }
+
+  }, [nextPlayer])
 
   return (
     <OpenViduSessionBlock>
