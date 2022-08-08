@@ -126,8 +126,8 @@ const PlannedGameList = () => {
       <GameNumCounter 
           count={count}
           setCount={setCount}
-          myGamePlanList= {myGamePlanList}
-        />
+          myGamePlanList= {myGamePlanList} />
+      <p>{count}</p>
       {/* {myGamePlanList.map((Plan, idx) => (
         <PlannedGameBlock key={idx}>
           방 번호 {Plan.roomCode}의 게임

@@ -36,7 +36,7 @@ function* onAddFriendAsync({ payload }) {
     console.log("친구리스트응답", response.data);
     if (response.status === 200) {   
       // 친구 추가 됐으면 리스트 스타트해야함   
-      yield put(GetFriendListStart(payload.myId)); // 리스트
+      yield put(GetFriendListStart(payload.myNickname)); // 리스트
       yield put(AddFriendResultMessage(response.data)); // 성공메시지표현위해
     }
   } catch (error) {
