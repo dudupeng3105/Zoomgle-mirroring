@@ -11,6 +11,7 @@ import profile5 from '../../media/images/profile5.png';
 import profile6 from '../../media/images/profile6.png';
 import backboard from '../../media/images/board1-2.png';
 import papyrus from '../../media/images/Papyrus.png';
+import Xmark from '../../media/images/X-mark.png';
 
 const FriendsContentBlock = styled.div`
   background: url(${background});
@@ -88,6 +89,32 @@ const FriendAddButton = styled.div`
     border: 3px solid #29231c;
   }
 `
+const FriendCloseButton = styled.div`
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 8vh;  
+  width: 15vw;
+  margin-left: 25vw;
+  margin-top: 8vw;
+  background: url(${Xmark}) no-repeat center;
+  background-size: 5vw 8vh;
+  display: inline;
+  /* border: red solid 3px; */
+
+  font-size: 5vmin;
+  /* background-color: #352208; */
+  /* border: 3px solid #b39860; */
+  /* color: white; */
+  /* border-radius: 5px;   */
+  &:hover {
+    transform: scale(1.1);
+    transition: transform .2s;
+  }
+`
+
+
 
 export const FriendCard = styled.div`
   width: 40vmin;
@@ -142,7 +169,8 @@ const AddFriendModal = styled.div`
   padding: 3vmin;
   h1{
     margin:0;
-    margin-top: 15vh;
+    /* margin-top: 10vh; */
+    display: inline;
   }
   h2 {
     margin: 0px;
@@ -299,6 +327,11 @@ const FriendsContent = () => {
     <FriendsContentBlock>
       {modalToggle ? (
         <AddFriendModal>
+          <FriendCloseButton
+            onClick={() => {
+              setmodalToggle(!modalToggle);
+            }}         
+          >닫기</FriendCloseButton>
           <h1>친애하는 모험가를 추가하세요</h1>
           <StyledInput             
             name="friendId"
@@ -309,7 +342,7 @@ const FriendsContent = () => {
           <FriendAddButton
             onClick={onClick}          
           >추가</FriendAddButton>
-        </AddFriendModal>
+           </AddFriendModal>
       ) : (
         ''
       )}
