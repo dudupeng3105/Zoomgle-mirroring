@@ -15,46 +15,48 @@ const DiceRollerBlock = styled.div`
 `;
 
 const DiceRoller = ({
-  players,
-  setIsRoll,
+  players,  
   isRoll,
-  posList,
-  setPosNum,
-  session,
+  posList,  
   playerNum,
-  myTurnNum,
-  setTurnNum,
-  setPosList,
+  myTurnNum,  
   mySessionIdValue,
 }) => {
   const [diceNum, setDiceNum] = useState();
 
-  const onRollHandler = (value) => {
-    console.warn('함정카드 발동');
-    console.warn('포지션정보', posList);
-    const myPos = posList[myTurnNum];
-    // console.log(value);
+
+  // 주사위를 돌렸을 때는 자리 업데이트 정보만 주면된다.
+  const onRollHandler = (value) => {    
+    // console.warn('포지션정보', posList);
+
+    // 자리 계산
+    const myPos = posList[myTurnNum];    
     if (value > 3) {
       value = value - 3;
     }
     setDiceNum(value);
     const tempPosNum = (myPos + value) % 20;
+    
+    // emit 데이터 준비
     let nextPosList = [...posList];
-    nextPosList[myTurnNum] = tempPosNum;
-    console.error('다음 포지션 정보', nextPosList);
-    const nextTurn = (myTurnNum + 1) % playerNum;
-    const nextUserName = players[nextTurn];
+    nextPosList[myTurnNum] = tempPosNum;    
+    // 미니게임 랜덤
+    const nextMinigameType = Math.floor(Math.random() * 10) // 0 ~ 9 랜덤
+    
+    // emit
     const sendData = {
       session: mySessionIdValue,
       to: [], // all user
       data: JSON.stringify({
-        nextUserName: nextUserName, // 다음사람
-        nextTurn: nextTurn, // 다음 턴
+        // nextUserName: nextUserName, // 다음사람
+        // nextTurn: nextTurn, // 다음 턴
         nextPosList: nextPosList, // 자리 업데이트
+        isRoll: !isRoll,
+        nextMinigameType: nextMinigameType,
       }),
       type: 'GAME_STATE_CHANGED',
     };
-    console.log(JSON.stringify(sendData));
+    // console.log(JSON.stringify(sendData));
     fetch('https://i7e101.p.ssafy.io:4443/openvidu/api/signal', {
       method: 'POST',
       headers: {
@@ -62,8 +64,7 @@ const DiceRoller = ({
         'Content-type': 'application/json',
       },
       body: JSON.stringify(sendData),
-    });
-    setIsRoll(!isRoll);
+    });    
   };
 
   const faces = [dice1, dice2, dice3, dice1, dice2, dice3];
