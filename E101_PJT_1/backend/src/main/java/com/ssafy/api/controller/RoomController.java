@@ -148,14 +148,12 @@ public class RoomController {
 
             // 해당 roomCode의 room, invitation, player 삭제
             roomService.deleteRoom(roomCode);
-            System.out.println("@");
             invitationService.deleteInvitation(roomCode);
-            System.out.println("@@");
             invitationService.deletePlayer(roomCode);
-            System.out.println("@@@");
+
         }
         // roomCode로 room 조회
-        if (roomService.getRoomByRoomCode(roomCode) == null) {
+        if (roomService.getRoomByRoomCode(roomCode).equals(Optional.empty())) {
             return new ResponseEntity<>(roomCode + "의 게임방이 삭제되었습니다.", HttpStatus.valueOf(200));
         }
         return new ResponseEntity<>(roomCode + "의 게임방 삭제 도중 문제가 발생하였습니다.", HttpStatus.valueOf(405));
