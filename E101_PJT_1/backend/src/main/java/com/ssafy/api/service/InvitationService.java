@@ -19,4 +19,6 @@ public interface InvitationService {
 
 	// 초대 거절
 	void deleteInvitation(long roomCode);
+
+	void deletePlayer(long roomCode);
 }
