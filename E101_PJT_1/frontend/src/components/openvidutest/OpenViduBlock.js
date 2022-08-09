@@ -162,15 +162,28 @@ const OpenViduBlock = () => {
 
     // 주사위 동기화 ON
     mySession.on('GAME_STATE_CHANGED', (data) => {
-      console.warn("시그널 왔다 받아라..", players);      
-      // {"nextPosNum":2} 스트링이라 parse해줌
-      // console.log(JSON.parse(data.data));
-      const {nextTurn, nextPosList, nextUserName} = JSON.parse(data.data);
-      // handleMainVideoStream(nextUserName);
+      console.warn("시그널 왔다 받아라..", players);           
+      const {isRoll, nextPosList} = JSON.parse(data.data);      
+      setPosList(nextPosList);
+      setIsRoll(isRoll); // 주사위 돌렸다는 것이 미니게임의 시작을 알림
+    });
+
+    // 미니게임 결과 동기화 ON
+    mySession.on('MINIGAME_STATE_CHANGED', (data) => {
+      console.warn("미니게임끝났다 받아라..");      
+      const {nextTurn, nextIsRoll, nextUserName} = JSON.parse(data.data);
       setNextPlayer(nextUserName);
       setTurnNum(nextTurn);
-      setPosList(nextPosList);
-      setIsRoll(false);
+      setVote([]); // Vote 초기화
+      setIsRoll(nextIsRoll); // isRoll이 다시 false 됐다는 것은 미니게임이 끝
+      // 났다는 것임
+    });
+
+    // 투표 진행 동기화 ON
+    mySession.on('VOTE_STATE_CHANGED', (data) => {
+      console.warn("투표상황 업데이트..");      
+      const {nextVote} = JSON.parse(data.data);
+      setVote([...nextVote]);
     });
 
     // --- 4) Connect to the session with a valid user token ---

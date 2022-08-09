@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from "styled-components";
 import UserVideoComponent from './UserVideoComponent';
+import MainUserVideoComponent from './MainUserVideoComponent'; // 미니게임 중앙화면용
 import DiceRoller from '../../components/utils/DiceRoller'
 import { useState } from 'react';
 
@@ -269,13 +270,24 @@ const OpenViduSession = ({
           Leave session
         </OpenViduSessionLeaveBtn>
       </OpenViduSessionHeader>
-      {/* 그 중심에 뜨는 사람 일단 필요없음*/}
+      {/*!! 지금 턴인 사람 표시 !!*/}
       {mainStreamManager !== undefined ? (
         <MainVideo>
           {/* <p>메인스트리머</p> */}
-          <UserVideoComponent
+          <MainUserVideoComponent
+            isRoll={isRoll}
             streamManager={mainStreamManager}
             mainStreamer={'mainStreamer'}
+            myTurnNum={myTurnNum}
+            playerNum={playerNum}
+            players={players}
+            mySessionIdValue={mySessionIdValue}
+            turnNum={turnNum}
+            nextPlayer={nextPlayer}
+            isVote={isVote}
+            setIsVote={setIsVote}
+            vote={vote}
+            setVote={setVote}
           />
         </MainVideo>
       ) : null}
@@ -322,7 +334,7 @@ const OpenViduSession = ({
         myTurnNum={myTurnNum}
         setPosList={setPosList}
         setTurnNum={setTurnNum}
-        mySessionIdValue={mySessionIdValue}
+        mySessionIdValue={mySessionIdValue}        
       ></DiceRoller>: ''}
     </OpenViduSessionBlock>
   );
