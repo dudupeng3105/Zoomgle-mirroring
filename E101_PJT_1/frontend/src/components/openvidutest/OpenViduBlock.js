@@ -47,8 +47,8 @@ const OpenViduBlock = () => {
   const [nextPlayer, setNextPlayer] = useState('') // 다음 사람(handlemainStreamer에 사용)
   const [posList, setPosList] = useState([0, 0, 0, 0, 0, 0]); // 6명 max라 생각하고 각자의 포지션
   const [vote, setVote] = useState([]); // 누가 뭘로 투표했는지
-  const [minigameResult , setMinigameResult] = useState(undefined);  // 미니게임 결과(통과, 실패)
-  const [minigameDone, setMinigameDone] = useState(false); // 미니게임이 끝났는지
+  const [minigameType , setMinigameType] = useState(undefined);
+  // const [minigameDone, setMinigameDone] = useState(false); // 미니게임이 끝났는지
   const [isRoll, setIsRoll] = useState(false); // 굴렸는지
   const [isVote, setIsVote] = useState(false); // 투표했는지
 
@@ -163,7 +163,8 @@ const OpenViduBlock = () => {
     // 주사위 동기화 ON
     mySession.on('GAME_STATE_CHANGED', (data) => {
       console.warn("시그널 왔다 받아라..", players);           
-      const {isRoll, nextPosList} = JSON.parse(data.data);      
+      const {isRoll, nextPosList, nextMinigameType} = JSON.parse(data.data);      
+      setMinigameType(nextMinigameType);
       setPosList(nextPosList);
       setIsRoll(isRoll); // 주사위 돌렸다는 것이 미니게임의 시작을 알림
     });
@@ -171,9 +172,10 @@ const OpenViduBlock = () => {
     // 미니게임 결과 동기화 ON
     mySession.on('MINIGAME_STATE_CHANGED', (data) => {
       console.warn("미니게임끝났다 받아라..");      
-      const {nextTurn, nextIsRoll, nextUserName} = JSON.parse(data.data);
+      const {nextTurn, nextIsRoll, nextUserName, nextPosList} = JSON.parse(data.data);
       setNextPlayer(nextUserName);
       setTurnNum(nextTurn);
+      setPosList(nextPosList); // 성공 실패에 따라 자리 재조정
       setVote([]); // Vote 초기화
       setIsRoll(nextIsRoll); // isRoll이 다시 false 됐다는 것은 미니게임이 끝
       // 났다는 것임
@@ -420,10 +422,8 @@ const OpenViduBlock = () => {
           setIsVote={setIsVote}
           vote={vote}
           setVote={setVote}
-          minigameResult={minigameResult}
-          setMinigameResult={setMinigameResult}
-          minigameDone={minigameDone}
-          setMinigameDone={setMinigameDone}
+          minigameType={minigameType}
+          setMinigameType={setMinigameType}         
           turnNum={turnNum}
           setTurnNum={setTurnNum}
           posList={posList}

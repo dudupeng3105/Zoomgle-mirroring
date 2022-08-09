@@ -200,11 +200,7 @@ const OpenViduSession = ({
   isVote,
   setIsVote,
   vote,
-  setVote,
-  minigameResult,
-  setMinigameResult,
-  minigameDone,
-  setMinigameDone,
+  setVote,  
   handleMainVideoStream,
   switchCamera,
   leaveSession,
@@ -219,6 +215,8 @@ const OpenViduSession = ({
   setTurnNum,
   posList,
   setPosList,
+  minigameType,
+  setMinigameType
 }) => {
   // const [posNum, setPosNum] = useState(1);
   // 게임 진행 관련 변수들
@@ -288,6 +286,8 @@ const OpenViduSession = ({
             setIsVote={setIsVote}
             vote={vote}
             setVote={setVote}
+            posList={posList}
+            minigameType={minigameType}          
           />
         </MainVideo>
       ) : null}
@@ -325,16 +325,12 @@ const OpenViduSession = ({
       {/* 주사위 */}
       {/* 턴 일 때만 보임 */}
       {(!isRoll & myTurnNum===turnNum) ? <DiceRoller
-        players={players}
-        setIsRoll={setIsRoll}
-        isRoll={isRoll}
-        session={session}
+        players={players}        
+        isRoll={isRoll}        
         posList={posList}
         playerNum={playerNum}
-        myTurnNum={myTurnNum}
-        setPosList={setPosList}
-        setTurnNum={setTurnNum}
-        mySessionIdValue={mySessionIdValue}        
+        myTurnNum={myTurnNum}        
+        mySessionIdValue={mySessionIdValue}         
       ></DiceRoller>: ''}
     </OpenViduSessionBlock>
   );

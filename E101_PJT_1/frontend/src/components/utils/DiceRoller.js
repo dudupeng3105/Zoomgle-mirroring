@@ -15,16 +15,11 @@ const DiceRollerBlock = styled.div`
 `;
 
 const DiceRoller = ({
-  players,
-  setIsRoll,
+  players,  
   isRoll,
-  posList,
-  setPosNum,
-  session,
+  posList,  
   playerNum,
-  myTurnNum,
-  setTurnNum,
-  setPosList,
+  myTurnNum,  
   mySessionIdValue,
 }) => {
   const [diceNum, setDiceNum] = useState();
@@ -41,13 +36,12 @@ const DiceRoller = ({
     }
     setDiceNum(value);
     const tempPosNum = (myPos + value) % 20;
-
+    
     // emit 데이터 준비
     let nextPosList = [...posList];
-    nextPosList[myTurnNum] = tempPosNum;
-    // console.error('다음 포지션 정보', nextPosList);
-    // const nextTurn = (myTurnNum + 1) % playerNum;
-    // const nextUserName = players[nextTurn];
+    nextPosList[myTurnNum] = tempPosNum;    
+    // 미니게임 랜덤
+    const nextMinigameType = Math.floor(Math.random() * 10) // 0 ~ 9 랜덤
     
     // emit
     const sendData = {
@@ -58,6 +52,7 @@ const DiceRoller = ({
         // nextTurn: nextTurn, // 다음 턴
         nextPosList: nextPosList, // 자리 업데이트
         isRoll: !isRoll,
+        nextMinigameType: nextMinigameType,
       }),
       type: 'GAME_STATE_CHANGED',
     };

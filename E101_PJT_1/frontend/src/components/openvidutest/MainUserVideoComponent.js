@@ -2,7 +2,6 @@ import React from 'react';
 import OpenViduVideoComponent from './OvVideo';
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { set } from 'date-fns/esm';
 
 const StreamComponent = styled.div`
   width: 100%;
@@ -107,7 +106,8 @@ const MainUserVideoComponent = ({
   isVote,
   setIsVote,
   vote,
-  setVote,
+  posList,
+  minigameType,
 }) => {
   const [timeLeft, setTimeLeft] = useState(undefined);
   const [explanationOver, setExplanationOver] = useState(false);
@@ -116,11 +116,32 @@ const MainUserVideoComponent = ({
   const [checkResultOver, setCheckResultOver] = useState(false);
   const [voteSkip, setVoteSkip] = useState(false);
   const [voteResult, setVoteResult] = useState(false);
+  const [minigameInfo, setMinigameInfo] = useState(['게임코멘트', 10, 0]);
+  // 0(그리기 게임같은(현재 턴인 사람한테만 정답을 보여줘야하는 게임))
+  // 1(이외 게임)
+  const minigameList = [
+    ['줄무늬 옷 가져오기', 10, 1],
+    ['식용유 가져오기', 10, 1],
+    ['리모컨 가져오기', 10, 1],
+    ['숟가락 가져오기', 10, 1],
+    ['파란색 옷 입기', 15, 1],
+    ['캐릭터 옷 입기', 15, 1],
+    ['거북이 그리기', 20, 0],
+    ['가장 왼쪽에 있는 유저 그리기', 20, 0],
+    ['가장 오른쪽에 있는 유저 그리기', 20, 0],
+    ['돌고래 그리기', 20, 0],
+  ];
 
   // 미니게임이 끝난 걸 가정하고 작성함
   const minigameEndHandler = () => {
     const nextTurn = (myTurnNum + 1) % playerNum;
     const nextUserName = players[nextTurn];
+    // 성공, 실패(-1)에 따라 자리조정
+    let nextPosList = [...posList];
+    if (!voteResult) {
+      const myPos = posList[myTurnNum];
+      nextPosList[myTurnNum] = myPos - 1; // -1
+    }
 
     // emit
     const sendData = {
@@ -132,6 +153,7 @@ const MainUserVideoComponent = ({
         nextUserName: nextUserName, // 다음사람
         nextTurn: nextTurn, // 다음 턴
         nextIsRoll: !isRoll,
+        nextPosList: [...nextPosList],
       }),
       type: 'MINIGAME_STATE_CHANGED',
     };
@@ -149,27 +171,30 @@ const MainUserVideoComponent = ({
   const calculateTimeLeft = () => {
     if (timeLeft > 0) {
       if (voteSkip) {
-        setVoteOver(true)
-        setVoteSkip(false)
-        return 15
-      }      
+        setVoteOver(true);
+        setVoteSkip(false);
+        return 5; // 결과확인타임
+      }
       return timeLeft - 1;
     } else {
       // console.warn("현재남은시간", timeLeft);
       if (!explanationOver) {
         setExplanationOver(true); // 설명 끝
-        return 15; // 미션타임
+        return minigameInfo[1]; // 미션타임
       } else if (!timeOver) {
         setTimeOver(true); // 미션 끝
-        return 20; // 투표 타임
+        return 7; // 투표 타임
       } else if (!voteOver) {
         setVoteOver(true);
-        return 15; // 결과 확인 타임
+        setVoteSkip(false);
+        return 5; // 결과 확인 타임
       } else if (!checkResultOver) {
         setCheckResultOver(true);
         // 결과확인 후
         // 시그날 emit
-        minigameEndHandler();
+        if (turnNum === myTurnNum) {
+          minigameEndHandler();
+        }
       }
     }
   };
@@ -192,11 +217,19 @@ const MainUserVideoComponent = ({
     }
     // 성공, 실패 판단
     const agreeNum = vote.filter((thisVote) => thisVote[1] === true).length;
-    if (agreeNum > parseInt(vote.length)) {
+    if (agreeNum > parseInt(vote.length / 2)) {
       setVoteResult(true);
     }
   }, [vote]);
 
+  // 미니게임 정보(어떤 미니게임인지)
+  useEffect(() => {
+    if (minigameType === undefined) {
+      return;
+    }
+    const temp = minigameList[minigameType];
+    setMinigameInfo([...temp]);
+  }, [minigameType]);
 
   const voteHandler = (voteSelect) => {
     const nextVote = [...vote, [players[myTurnNum], voteSelect]];
@@ -230,7 +263,7 @@ const MainUserVideoComponent = ({
       setTimeOver(false);
       setVoteOver(false);
       setCheckResultOver(false);
-      setTimeLeft(10); // 문제설명타임
+      setTimeLeft(5); // 문제설명타임
       setIsVote(false);
     } else {
       return;
@@ -249,11 +282,31 @@ const MainUserVideoComponent = ({
               ) : (
                 <p>게임설명입니다, 요청하는 물건을 가져오세요</p>
               )}
-              {explanationOver & !timeOver ? <p>주전자를 가져오세요</p> : ''}
+
+              {/* 그려서 맞히기의 경우 현재 턴인 사람에게만 띄움 */}
+
+              {explanationOver & !timeOver ? (
+                !minigameInfo[2] ? (
+                  turnNum === myTurnNum ? (
+                    <p>{minigameInfo[0]}</p>
+                  ) : (
+                    ''
+                  )
+                ) : (
+                  <p>{minigameInfo[0]}</p>
+                )
+              ) : (
+                ''
+              )}
               {timeOver & !voteOver ? (
                 <>
                   <p>투표시간입니다</p>
                   <p>투표 수: {vote.length}</p>
+                  {!minigameInfo[2] ? (
+                    <p>뭘 그리는 거 였을까요?{minigameInfo[0]}</p>
+                  ) : (
+                    ''
+                  )}
                   {!isVote ? (
                     <AgreeDisagreeBtnContainer>
                       <MinigameBtn onClick={() => voteHandler(true)}>
@@ -276,12 +329,12 @@ const MainUserVideoComponent = ({
                     (결과확인타임)다음턴으로 넘어가기
                   </MinigameBtn> */}
                   <VoteResultBoard>
-                    <p>최종결과: {voteResult ? "성공" : "실패!!!"}</p>
+                    <p>최종결과: {voteResult ? '성공' : '실패!!!'}</p>
                     {vote.map((thisVote, idx) => (
                       <p key={`vote${idx}`}>
                         {thisVote[0]}의 선택: {thisVote[1] ? '통과' : '실패'}
-                      </p>                      
-                    ))}                    
+                      </p>
+                    ))}
                   </VoteResultBoard>
                 </>
               ) : (
