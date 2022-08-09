@@ -70,7 +70,7 @@ const PlannedGameList = () => {
   const myFriendsList = useSelector((state) => state.friend.friendList);  
   
   
-  const [count, setCount] = useState(2);
+  const [count, setCount] = useState(0);
   const [modalToggle, setModalToggle] = useState(false);
   const [inviteRoomCode, setInviteRoomCode] = useState(0);
   const onClickHandler = (roomCode) => {
@@ -123,10 +123,10 @@ const PlannedGameList = () => {
         </GameInvitationModal>
       )}
       <PlanGameDetailTitle>예정된 모험(4개만 보여줌)</PlanGameDetailTitle>
-      <GameNumCounter 
+      {myGamePlanList.length === 0 ? '': (<GameNumCounter 
           count={count}
           setCount={setCount}
-          myGamePlanList= {myGamePlanList} />
+          myGamePlanList= {myGamePlanList} />)}
       <p>{count}</p>
       {/* {myGamePlanList.map((Plan, idx) => (
         <PlannedGameBlock key={idx}>

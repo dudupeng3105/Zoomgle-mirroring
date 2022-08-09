@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import {   
@@ -9,6 +9,9 @@ import {
   ImageContainer,
   ProfileImg,
   NameNicknameEl, } from '../personal/FriendsContent';
+  import { gamePlanActions } from '../../store/gamePlan-slice';
+  import { friendActions } from '../../store/friends-slice';
+
 
 const GameNumCounterBlock = styled.div`
   /* border: 3px solid blue; */
@@ -61,6 +64,9 @@ const SendInvitationButton = styled.div`
 const FriendListModal = styled.div`
   position: absolute;
   border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
   padding: 2rem;
   left: 30vw;
   top: 10vh;
@@ -73,6 +79,18 @@ const FriendListModal = styled.div`
 
 // const GameNumCounter = ({count, setCount, myGamePlanList}) => { 
   const GameNumCounter = ({count, setCount, myGamePlanList}) => { 
+
+  
+    // 초대장 보내기 버튼 클릭하면 친구목록 불러오기
+  
+  // const myGamePlanList = useSelector((state) => state.gamePlan.gamePlanList)
+  const userId = useSelector((state) => state.auth.user.userId);
+  const myFriendsList = useSelector((state) => state.friend.friendList); 
+  
+  const [modalToggle, setModalToggle] = useState(false);
+  const [inviteRoomCode, setInviteRoomCode] = useState(0);
+  const dispatch = useDispatch();
+
   const maxCount = myGamePlanList.length - 1;
   const onIncrease = () => {
     if (count === maxCount) {
@@ -97,28 +115,22 @@ const FriendListModal = styled.div`
 
   }
 
-  const onClickSendInvitation = (friendNickname) => {
-    console.log(friendNickname, inviteRoomCode);
+  const onClickReservedGameInvitation = (friendNickname) => {
+    console.log(friendNickname);
     const inviteInfo = {
       receiver: friendNickname,
-      roomCode: inviteRoomCode
-    }
+      roomCode: myGamePlanList[count].roomCode
+    }  
     dispatch(gamePlanActions.sendInvitaionStart(inviteInfo))
   };
 
-  // 초대장 보내기 버튼 클릭하면 친구목록 불러오기
-  const dispatch = useDispatch();
-  const userId = useSelector((state) => state.auth.user.userId);
-  const myFriendsList = useSelector((state) => state.friend.friendList); 
-  
-  const [modalToggle, setModalToggle] = useState(false);
-  const [inviteRoomCode, setInviteRoomCode] = useState(0);
+
 
   const onClickModalCloser = () => {
     setModalToggle(!modalToggle);
   };
 
-  return (
+    return (
     <GameNumCounterBlock>
       <GameNumCounterLeftBtn onClick={onDecrease} />
         <PlannedGameInfoBox>
@@ -132,10 +144,11 @@ const FriendListModal = styled.div`
           {myGamePlanList[count].playerList.map((player, idx) => (
             <p key={idx}>{player.user}</p>
           ))}
-          <SendInvitationButton onClick = {() => onClickSearchFriendList(`${myGamePlanList[count].roomCode}`)}>초대장보내기</SendInvitationButton>
+          <SendInvitationButton onClick = {() => onClickSearchFriendList(`${myGamePlanList[count].roomCode}`)}>모험가 초대하기</SendInvitationButton>
             {/* 모달 */}
             {modalToggle && 
             <FriendListModal>
+              <p>{myGamePlanList[count].roomCode}</p>
               <button onClick={onClickModalCloser}>닫기</button>
               {myFriendsList.map((friend, idx) => (
             <FriendCard key={idx}>
@@ -151,7 +164,7 @@ const FriendListModal = styled.div`
                   <div>닉네임(seq): {friend.nickname}</div>
                 </NameNicknameEl>
               </StyledCard>
-              <button onClick={() => onClickSendInvitation(`${friend.nickname}`)}>초대장보내기</button>
+              <button onClick={() => onClickReservedGameInvitation(`${friend.nickname}`)}>초대장보내기</button>
             </FriendCard>
           ))}
             </FriendListModal>
