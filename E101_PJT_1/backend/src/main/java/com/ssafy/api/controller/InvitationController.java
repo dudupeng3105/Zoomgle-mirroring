@@ -2,12 +2,14 @@ package com.ssafy.api.controller;
 
 import com.ssafy.api.request.CreateInvitationPostReq;
 import com.ssafy.api.request.UpdateInvitationPostReq;
-import com.ssafy.api.response.InvitationListRes;
+import com.ssafy.api.response.InvitationInfoListRes;
 import com.ssafy.api.service.InvitationService;
 import com.ssafy.api.service.RoomService;
 import com.ssafy.api.service.UserService;
 import com.ssafy.common.auth.SsafyUserDetails;
+import com.ssafy.common.myObject.InvitationInfo;
 import com.ssafy.db.entity.Invitation;
+import com.ssafy.db.entity.Player;
 import com.ssafy.db.entity.Room;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,18 +66,44 @@ public class InvitationController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<InvitationListRes> getInvitationList(@ApiIgnore Authentication authentication) {
+    public ResponseEntity<InvitationInfoListRes> getInvitationList(@ApiIgnore Authentication authentication) {
         SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
         String user = userDetails.getUser().getNickname();
-        System.out.println(user);
+
+        // 초대장 정보 리스트
+        List<InvitationInfo> invitationInfoList = new ArrayList<>();
 
         List<Invitation> invitationList = invatationService.getAllInvite(user);
+        for ( Invitation invitation : invitationList ) {
+            InvitationInfo insert = new InvitationInfo();
+            insert.setInvitationSeq(invitation.getInvitationSeq());
+            insert.setRoomCode(invitation.getRoomCode());
+            insert.setSender(invitation.getSender());
+            insert.setReceiver(invitation.getReceiver());
 
-        if(invitationList.size() == 0){
-            return ResponseEntity.status(401).body(InvitationListRes.of(401, "초대장이 없습니다.", invitationList));
+            // 시간 정보 추가
+            Optional<Room> room = roomService.getRoomByRoomCode(invitation.getRoomCode());
+
+            String[] str = room.get().getDate().split(" ");
+            String[] dateInfo = str[0].split("/");
+            String[] timeInfo = str[1].split(":");
+
+            insert.setMonth(Integer.parseInt( dateInfo[0] ));
+            insert.setDay(Integer.parseInt( dateInfo[1] ));
+            insert.setYear(Integer.parseInt( dateInfo[2] ));
+
+            insert.setHour(Integer.parseInt( timeInfo[0] ));
+            insert.setMinute(Integer.parseInt( timeInfo[1] ));
+            insert.setSecond(Integer.parseInt( timeInfo[2] ));
+
+            invitationInfoList.add(insert);
         }
 
-        return ResponseEntity.status(200).body(InvitationListRes.of(200, "초대장이 " + invitationList.size() + "장 있습니다.", invitationList));
+        if(invitationList.size() == 0){
+            return ResponseEntity.status(201).body(InvitationInfoListRes.of(201, "초대장이 없습니다.", invitationInfoList));
+        }
+
+        return ResponseEntity.status(200).body(InvitationInfoListRes.of(200, "초대장이 " + invitationInfoList.size() + "장 있습니다.", invitationInfoList));
 
     }
 
