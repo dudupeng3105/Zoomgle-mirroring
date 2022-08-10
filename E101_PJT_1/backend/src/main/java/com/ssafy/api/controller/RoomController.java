@@ -113,7 +113,7 @@ public class RoomController {
         }
 
         if(roomInfoList.size() == 0){
-            return ResponseEntity.status(401).body(RoomInfoListRes.of(201, "예정된 게임이 없습니다.", roomInfoList));
+            return ResponseEntity.status(201).body(RoomInfoListRes.of(201, "예정된 게임이 없습니다.", roomInfoList));
         }
 
         return ResponseEntity.status(200).body(RoomInfoListRes.of(200, "게임이 " + roomInfoList.size() + "개 있습니다.", roomInfoList));
@@ -174,7 +174,7 @@ public class RoomController {
         }
 
         if(roomInfoList.size() == 0){
-            return ResponseEntity.status(401).body(RoomInfoListRes.of(201, "완료된 게임이 없습니다.", roomInfoList));
+            return ResponseEntity.status(201).body(RoomInfoListRes.of(201, "완료된 게임이 없습니다.", roomInfoList));
         }
 
         return ResponseEntity.status(200).body(RoomInfoListRes.of(200, "완료된 게임이 " + roomInfoList.size() + "개 있습니다.", roomInfoList));
