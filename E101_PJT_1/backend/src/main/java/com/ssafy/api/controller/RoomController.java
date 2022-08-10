@@ -91,6 +91,8 @@ public class RoomController {
             RoomInfo insert = new RoomInfo();
             insert.setRoomCode(room.get().getRoomSeq());
             insert.setHost(room.get().getHost());
+            insert.setMaxCapacity(room.get().getMaxCapacity());
+            insert.setCnt(room.get().getCnt());
             insert.setPlayerList(roomPlayerList);
 
             String[] str = room.get().getDate().split(" ");
