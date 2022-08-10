@@ -1,15 +1,15 @@
-import styled from "styled-components";
-import background from '../../media/images/mypage_back3.jpg'
-import inviteIcon from '../../media/images/Closeletter.png'
-import openedinviteIcon from '../../media/images/openletter1.png'
-import letter from '../../media/images/letter.png'
-import reject from '../../media/images/reject.png'
-import accept from '../../media/images/accept.png'
-import MyPagecalender from '../utils/MyPageCalender'
-import { useSelector } from "react-redux";
+import styled from 'styled-components';
+import background from '../../media/images/mypage_back3.jpg';
+import inviteIcon from '../../media/images/closeletter.png';
+import openedinviteIcon from '../../media/images/openletter1.png';
+import letter from '../../media/images/letter.png';
+import reject from '../../media/images/reject.png';
+import accept from '../../media/images/accept.png';
+import MyPagecalender from '../utils/MyPageCalender';
+import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { useDispatch } from "react-redux";
-import { gamePlanActions } from "../../store/gamePlan-slice";
+import { useDispatch } from 'react-redux';
+import { gamePlanActions } from '../../store/gamePlan-slice';
 
 const MyPageContentBlock = styled.div`
   background: url(${background}) center no-repeat;
@@ -18,31 +18,34 @@ const MyPageContentBlock = styled.div`
   margin: 10px;
   padding: 10px;
   /* border: 3px green solid; */
-  
-
 `;
 
 const InvitationIcon = styled.div`
   /* background: url(${inviteIcon}); */
-  /* ${props => props.closeOpen ? `background: url(${openedinviteIcon}) no-repeat center` : `background: url(${inviteIcon}) no-repeat center`}; */
-  background: ${props => props.closeOpen ? `url(${openedinviteIcon}) no-repeat center` : `url(${inviteIcon}) no-repeat center`};
+  /* ${(props) =>
+    props.closeOpen
+      ? `background: url(${openedinviteIcon}) no-repeat center`
+      : `background: url(${inviteIcon}) no-repeat center`}; */
+  background: ${(props) =>
+    props.closeOpen
+      ? `url(${openedinviteIcon}) no-repeat center`
+      : `url(${inviteIcon}) no-repeat center`};
   background-size: 18vw 25vh;
   width: 18vw;
-  height: 25vh;  
+  height: 25vh;
   margin-left: 5vw;
   margin-top: 15vh;
   cursor: pointer;
   display: inline-block;
 
   :hover {
-  transform: scale(1.1);
-  -webkit-transform: scale(1.1);
-  -moz-transform: scale(1.1);
-  -ms-transform: scale(1.1);
-  -o-transform: scale(1.1);
-}
- 
-`
+    transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    -o-transform: scale(1.1);
+  }
+`;
 
 const GivenInvitationModal = styled.div`
   position: absolute;
@@ -55,88 +58,85 @@ const GivenInvitationModal = styled.div`
   /* border: 1px solid black; */
   background: url(${letter}) no-repeat center;
   background-size: 35vw 80vh;
-
   z-index: 1;
-  display: flex;  
-  flex-direction: row;
-  /* justify-content: center; */
-  /* padding-top: 10vh; */
+  display: flex;
+  padding-top: 14vh;
   padding-left: 10vw;
-  align-items: center;
-
 `;
 
 const InvitationBlock = styled.div`
   width: 25vw;
-  height: 10vh;
-  margin-top: 10vh;
-  /* margin-bottom: 0vh; */
+  height: 60vh;
+  margin-top: 9.5vh;
   display: flex;
-  align-items: space-between;
-  margin-left: 2rem;
-  /* background-color: #2d2911; */
+  flex-direction: column;
   color: #2d2911;
   border-radius: 10px;
   font-size: 2rem;
-  /* border: 3px red solid; */
-  display: flex;
-  /* flex-direction: row; */
-`
+`;
+
+const InvitationItem = styled.div`
+  height: ${(props) => props.neededHeight};
+  width: 14vw;
+  margin-left: ${(props) => props.neededMarginLeft};
+`;
+
 const AcceptRejectButton = styled.div`
   display: flex;
   /* flex-direction: row; */
-`
+`;
 
 const AcceptButton = styled.div`
-width: 15vw;
-height: 20vh;
-background: url(${accept}) center no-repeat;
-background-size: 15vw 10vh;
-padding: 0;
-display: inline;
-border: 3px red solid;
-
-`
+  width: 7.5vw;
+  height: 10vh;
+  background: url(${accept}) center no-repeat;
+  background-size: 7.5vw 10vh;
+  padding: 0;
+  display: inline;
+  border: 3px red solid;
+`;
 
 const RejectButton = styled.div`
-width: 15vw;
-height: 20vh;
-background: url(${reject}) center no-repeat;
-background-size: 15vw 10vh;
-padding: 0;
-display: inline;
-border: 3px red solid;
-`
+  width: 7.5vw;
+  height: 10vh;
+  background: url(${reject}) center no-repeat;
+  background-size: 7.5vw 10vh;
+  padding: 0;
+  display: inline;
+  border: 3px red solid;
+`;
 
-const CalenderBlock = styled.div`
-
-  
-`
+const CalenderBlock = styled.div``;
 
 const MyPageContent = () => {
   const dispatch = useDispatch();
 
   // 초대장 아이콘을 누르면 실행
-  const myinvitationList = useSelector((state) => (state.gamePlan.invitationList))
-  console.log("초대장 아이콘 누름", myinvitationList)
-    
+  const myinvitationList = useSelector(
+    (state) => state.gamePlan.invitationList,
+  );
+  console.log('초대장 아이콘 누름', myinvitationList);
+
   const [modalToggle, setModalToggle] = useState(false);
 
   const onClickDecision = (decision, invitationSeq, roomCode) => {
-    console.log('onClickDecision =', decision, Number(invitationSeq), Number(roomCode));
+    console.log(
+      'onClickDecision =',
+      decision,
+      Number(invitationSeq),
+      Number(roomCode),
+    );
     const invitationInfo = {
       roomCode: Number(roomCode),
       invitationSeq: Number(invitationSeq),
       join: decision,
-    }
+    };
     dispatch(gamePlanActions.checkInvitaionStart(invitationInfo));
-  }
-  
-  
-  useEffect(() => {
-    dispatch(gamePlanActions.getInvitaionListStart())
-  }, []);
+  };
 
+  useEffect(() => {
+    dispatch(gamePlanActions.getInvitaionListStart());
+  }, []);
 
   return (
     <MyPageContentBlock>
@@ -145,14 +145,19 @@ const MyPageContent = () => {
         <GivenInvitationModal>
           {myinvitationList.map((invitation, idx) => (
             <InvitationBlock key={idx}>
-              {invitation.sender}
-               <br />
-              {invitation.reg_DTM}
-              <br />
-              {invitation.roomCode}
-              <br />
-              {invitation.receiver}
-              <br />
+              <InvitationItem neededHeight={`10vh`} neededMarginLeft={`2vw`}>
+                {invitation.sender}
+              </InvitationItem>
+              <InvitationItem neededHeight={`10vh`} neededMarginLeft={`2vw`}>
+                2022년 10월 27일 8시 30분
+              </InvitationItem>
+              <InvitationItem neededHeight={`9vh`} neededMarginLeft={`3vw`}>
+                {invitation.roomCode}
+              </InvitationItem>
+              <InvitationItem neededHeight={`15vh`} neededMarginLeft={`6vw`}>
+                {invitation.receiver}
+              </InvitationItem>
+
               <AcceptRejectButton>
                 <AcceptButton
                   onClick={() => {
@@ -162,8 +167,7 @@ const MyPageContent = () => {
                       `${invitation.roomCode}`,
                     );
                   }}
-                >
-                </AcceptButton>
+                ></AcceptButton>
                 <RejectButton
                   onClick={() => {
                     onClickDecision(
@@ -187,8 +191,8 @@ const MyPageContent = () => {
         }}
       />
 
-        {/* // 달력 */}
-        <MyPagecalender></MyPagecalender>
+      {/* // 달력 */}
+      <MyPagecalender></MyPagecalender>
     </MyPageContentBlock>
   );
 };

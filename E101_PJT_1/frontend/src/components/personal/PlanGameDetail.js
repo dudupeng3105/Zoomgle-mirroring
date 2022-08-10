@@ -26,7 +26,7 @@ const PlanGameDetailBlock = styled.div`
 
 export const PlanGameDetailTitle = styled.div`
   font-size: 3rem;
-  height: 10vh;
+  height: 8vh;
   color:  #412E22;
   padding-left: 4rem;
   text-decoration: underline;
@@ -132,9 +132,9 @@ const PlanGameDetail = () => {
   console.log(currentRoomCode);
 
   // gamePlanList가 바뀔때마다 발동
-  useEffect(() => {
-    setModalToggle(!modalToggle);
-  }, [gamePlanList]);
+  // useEffect(() => {    
+  //   setModalToggle(!modalToggle);
+  // }, []);
   
   const roomCode = inviteRoomCode;
   const onDateChangeHandler = (givenDate) => {
@@ -165,7 +165,11 @@ const PlanGameDetail = () => {
         "maxCapacity": count  
       };
       dispatch(gamePlanActions.createGamePlanStart(planInfo));
-      console.log(roomCode);   
+      console.log(roomCode);
+      // 게임생성하고 모달
+      setTimeout(() => {
+        setModalToggle(!modalToggle);  
+      }, 500);      
     }
   };
 

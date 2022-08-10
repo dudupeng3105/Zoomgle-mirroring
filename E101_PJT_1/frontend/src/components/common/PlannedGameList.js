@@ -73,10 +73,10 @@ const PlannedGameList = () => {
   const [count, setCount] = useState(0);
   const [modalToggle, setModalToggle] = useState(false);
   const [inviteRoomCode, setInviteRoomCode] = useState(0);
-  const onClickHandler = (roomCode) => {
-    setInviteRoomCode(roomCode);
-    setModalToggle(!modalToggle);
-  };
+  // const onClickHandler = (roomCode) => {
+  //   setInviteRoomCode(roomCode);
+  //   setModalToggle(!modalToggle);
+  // };
 
   const onClickModalCloser = () => {
     setModalToggle(!modalToggle);

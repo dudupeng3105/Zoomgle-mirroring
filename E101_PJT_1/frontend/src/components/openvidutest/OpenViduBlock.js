@@ -6,7 +6,6 @@ import OpenViduSession from './OpenViduSession';
 import styled from "styled-components";
 import gameboard from '../../media/images/gameboard.png';
 import loadingImage from '../../media/images/loadingImage.gif';
-import { nextDay } from 'date-fns';
 
 const OpenViduContainer = styled.div`
   width: 100vw;
@@ -29,11 +28,11 @@ const LoadingBlock = styled.div`
 const OPENVIDU_SERVER_URL = 'https://' + 'i7e101.p.ssafy.io' + ':4443';
 const OPENVIDU_SERVER_SECRET = 'e101ssafy71';
 
-const OpenViduBlock = () => {
+const OpenViduBlock = ({sessionNickname, sessionRoomId}) => {
   // OV
   const [ov, setOv] = useState(null);
-  const [mySessionId, setMySessionId] = useState('SessionDUDU');
-  const [myUserName, setMyUserName] = useState(`펭두두-${Math.floor(Math.random() * 100) + 1}`);
+  const [mySessionId, setMySessionId] = useState(sessionRoomId);
+  const [myUserName, setMyUserName] = useState(sessionNickname);
   const [session, setSession] = useState(undefined);
   const [mainStreamManager, setMainStreamManager] = useState(undefined);
   const [publisher, setPublisher] = useState(undefined);
