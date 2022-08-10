@@ -1,6 +1,7 @@
 package com.ssafy.api.response;
 
 import com.ssafy.common.model.response.BaseResponseBody;
+import com.ssafy.common.myObject.InvitationInfo;
 import com.ssafy.db.entity.Invitation;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -15,15 +16,15 @@ import java.util.List;
 @Getter
 @Setter
 @ApiModel("InvitationListRes")
-public class InvitationListRes extends BaseResponseBody {
+public class InvitationInfoListRes extends BaseResponseBody {
 	@ApiModelProperty(name="Invitation")
-	List<Invitation> invitationList;
-	
-	public static InvitationListRes of(Integer statusCode, String message, List<Invitation> invitationList)  {
-		InvitationListRes res = new InvitationListRes();
+	List<InvitationInfo> invitationInfoList;
+
+	public static InvitationInfoListRes of(Integer statusCode, String message, List<InvitationInfo> invitationInfoList)  {
+		InvitationInfoListRes res = new InvitationInfoListRes();
 		res.setStatusCode(statusCode);
 		res.setMessage(message);
-		res.setInvitationList(invitationList);
+		res.setInvitationInfoList(invitationInfoList);
 
 		return res;
 	}
