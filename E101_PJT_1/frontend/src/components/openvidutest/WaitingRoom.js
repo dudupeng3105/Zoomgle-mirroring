@@ -180,12 +180,12 @@ const WaitingRoom = ({
       </OpenViduSessionHeader>
       <ManualBox></ManualBox>
       {sessionHost === myUserNameValue ? (
-        playerNum === sessionCapacity ? (
+        (playerNum === sessionCapacity) ? (
           <GameStartBtn onClick={() => onClickStartGame()}>
             게임시작
           </GameStartBtn>
         ) : (
-          <GameStartBtn className='waitingBtn'>
+          <GameStartBtn className='waitingBtn' onClick={() => onClickStartGame()}>
             대기중 ({playerNum}명/{sessionCapacity})
           </GameStartBtn>
         )
