@@ -285,7 +285,7 @@ const MainUserVideoComponent = ({
               {explanationOver ? (
                 ''
               ) : (
-                <p>게임설명입니다, 요청하는 물건을 가져오세요</p>
+                <p>{minigameInfo[3]}</p>
               )}
 
               {/* 그려서 맞히기의 경우 현재 턴인 사람에게만 띄움 */}
