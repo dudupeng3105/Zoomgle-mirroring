@@ -16,6 +16,7 @@ public class RoomInfo {
     private String host;
     private int maxCapacity;
     private int cnt;
+    private String mvp;
     private int year;
     private int month;
     private int day;

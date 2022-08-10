@@ -39,27 +39,24 @@ public class RoomController {
     @PostMapping
     @ApiOperation(value = "게임방 생성", notes = "[user, date, max]로 게임방을 생성한다.")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 401, message = "인증 실패"),
-            @ApiResponse(code = 404, message = "사용자 없음"),
-            @ApiResponse(code = 500, message = "서버 오류")
+            @ApiResponse(code = 200, message = "방 생성성공"),
+            @ApiResponse(code = 400, message = "방 생성 실패")
     })
-    public void createRoom(
+    public ResponseEntity<? extends Object> createRoom(
             @ApiIgnore Authentication authentication,
             @RequestBody @ApiParam(value = "방 생성 정보", required = true) CreateRoomPostReq createRoomPostReq) {
 
         SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
         String user = userDetails.getUser().getNickname();
 
-        roomService.createRoom(user, createRoomPostReq.getDate(), createRoomPostReq.getMaxCapacity());
+        boolean res = roomService.createRoom(user, createRoomPostReq.getDate(), createRoomPostReq.getMaxCapacity());
 
 
 
-//        if(playerList.size() == 0){
-//            return ResponseEntity.status(401).body(PlayerListRes.of(401, "예정된 게임이 없습니다.", playerList));
-//        }
-//
-//        return ResponseEntity.status(200).body(PlayerListRes.of(200, "게임이 " + playerList.size() + "개 있습니다.", playerList));
+        if(res){
+            return new ResponseEntity<>("방 생성 성공", HttpStatus.valueOf(200));
+        }
+        return new ResponseEntity<>("방 생성 실패", HttpStatus.valueOf(400));
 
     }
 
@@ -83,38 +80,104 @@ public class RoomController {
 
         for ( Player player : playerList ) {
             // roomCode로 room 정보 가지고 오기
-            Optional<Room> room = roomService.getRoomByRoomCode(player.getRoomCode());
 
-            // roomCode로 playerList에서 같은 게임하는 user 가져와서 list로 담기
-            List<Player> roomPlayerList = roomService.getPlayerByRoomCode(player.getRoomCode());
+            Optional<Room> room = roomService.getRoomByRoomCodeAndMvpNull(player.getRoomCode());
 
-            RoomInfo insert = new RoomInfo();
-            insert.setRoomCode(room.get().getRoomSeq());
-            insert.setHost(room.get().getHost());
-            insert.setMaxCapacity(room.get().getMaxCapacity());
-            insert.setCnt(room.get().getCnt());
-            insert.setPlayerList(roomPlayerList);
+            if (room.isPresent()) {
+                // roomCode로 playerList에서 같은 게임하는 user 가져와서 list로 담기
+                List<Player> roomPlayerList = roomService.getPlayerByRoomCode(player.getRoomCode());
 
-            String[] str = room.get().getDate().split(" ");
-            String[] dateInfo = str[0].split("/");
-            String[] timeInfo = str[1].split(":");
+                RoomInfo insert = new RoomInfo();
+                insert.setRoomCode(room.get().getRoomSeq());
+                insert.setHost(room.get().getHost());
+                insert.setMaxCapacity(room.get().getMaxCapacity());
+                insert.setCnt(room.get().getCnt());
+                insert.setPlayerList(roomPlayerList);
 
-            insert.setMonth(Integer.parseInt( dateInfo[0] ));
-            insert.setDay(Integer.parseInt( dateInfo[1] ));
-            insert.setYear(Integer.parseInt( dateInfo[2] ));
+                String[] str = room.get().getDate().split(" ");
+                String[] dateInfo = str[0].split("/");
+                String[] timeInfo = str[1].split(":");
 
-            insert.setHour(Integer.parseInt( timeInfo[0] ));
-            insert.setMinute(Integer.parseInt( timeInfo[1] ));
-            insert.setSecond(Integer.parseInt( timeInfo[2] ));
+                insert.setMonth(Integer.parseInt( dateInfo[0] ));
+                insert.setDay(Integer.parseInt( dateInfo[1] ));
+                insert.setYear(Integer.parseInt( dateInfo[2] ));
 
-            roomInfoList.add(insert);
+                insert.setHour(Integer.parseInt( timeInfo[0] ));
+                insert.setMinute(Integer.parseInt( timeInfo[1] ));
+                insert.setSecond(Integer.parseInt( timeInfo[2] ));
+
+                roomInfoList.add(insert);
+            }
+
+
         }
 
         if(roomInfoList.size() == 0){
-            return ResponseEntity.status(401).body(RoomInfoListRes.of(401, "예정된 게임이 없습니다.", roomInfoList));
+            return ResponseEntity.status(401).body(RoomInfoListRes.of(201, "예정된 게임이 없습니다.", roomInfoList));
         }
 
         return ResponseEntity.status(200).body(RoomInfoListRes.of(200, "게임이 " + roomInfoList.size() + "개 있습니다.", roomInfoList));
+    }
+
+    // 완료된 게임 조회
+    @GetMapping("/list/done")
+    @ApiOperation(value = "게임방 목록 확인", notes = "내 게임 리스트를 확인 할 수 있다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<RoomInfoListRes> getDoneRoomList(@ApiIgnore Authentication authentication) {
+        SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
+        String user = userDetails.getUser().getNickname();
+
+        List<RoomInfo> roomInfoList = new ArrayList<>();
+
+        // 내 게임 리스트 확인 -> roomCode 가지고 와서
+        List<Player> playerList = roomService.getAllPlayer(user);
+
+        for ( Player player : playerList ) {
+            // roomCode로 room 정보 가지고 오기
+
+            Optional<Room> room = roomService.getRoomByRoomCodeAndMvpNotNull(player.getRoomCode());
+
+            if (room.isPresent()) {
+                // roomCode로 playerList에서 같은 게임하는 user 가져와서 list로 담기
+                List<Player> roomPlayerList = roomService.getPlayerByRoomCode(player.getRoomCode());
+
+                RoomInfo insert = new RoomInfo();
+                insert.setRoomCode(room.get().getRoomSeq());
+                insert.setHost(room.get().getHost());
+                insert.setMaxCapacity(room.get().getMaxCapacity());
+                insert.setCnt(room.get().getCnt());
+                insert.setMvp(room.get().getMvp());
+
+                insert.setPlayerList(roomPlayerList);
+
+                String[] str = room.get().getDate().split(" ");
+                String[] dateInfo = str[0].split("/");
+                String[] timeInfo = str[1].split(":");
+
+                insert.setMonth(Integer.parseInt( dateInfo[0] ));
+                insert.setDay(Integer.parseInt( dateInfo[1] ));
+                insert.setYear(Integer.parseInt( dateInfo[2] ));
+
+                insert.setHour(Integer.parseInt( timeInfo[0] ));
+                insert.setMinute(Integer.parseInt( timeInfo[1] ));
+                insert.setSecond(Integer.parseInt( timeInfo[2] ));
+
+                roomInfoList.add(insert);
+            }
+
+
+        }
+
+        if(roomInfoList.size() == 0){
+            return ResponseEntity.status(401).body(RoomInfoListRes.of(201, "완료된 게임이 없습니다.", roomInfoList));
+        }
+
+        return ResponseEntity.status(200).body(RoomInfoListRes.of(200, "완료된 게임이 " + roomInfoList.size() + "개 있습니다.", roomInfoList));
     }
 
     // 게임방 삭제
