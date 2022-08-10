@@ -43,18 +43,21 @@ public class InvitationController {
     @ApiOperation(value = "게임 초대하기", notes = "[gameSeq, sender, receiver]로 게임에 초대장을 보낸다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 401, message = "실패"),
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public void inviteMessage(@ApiIgnore Authentication authentication, @RequestBody @ApiParam(value = "게임 초대", required = true) CreateInvitationPostReq createInvitationPostReq) {
+    public ResponseEntity<?> inviteMessage(@ApiIgnore Authentication authentication, @RequestBody @ApiParam(value = "게임 초대", required = true) CreateInvitationPostReq createInvitationPostReq) {
         SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
 
         long roomCode = createInvitationPostReq.getRoomCode();
         String sender = userDetails.getUser().getNickname();
         String receiver = createInvitationPostReq.getReceiver();
 
-        invatationService.createInvitationPostReq(roomCode, sender, receiver);
+        if ( invatationService.createInvitationPostReq(roomCode, sender, receiver) ) {
+            return new ResponseEntity<>("게임 초대에 성공하였습니다.", HttpStatus.valueOf(200));
+        }
+        return new ResponseEntity<>("게임 초대에 실패하였습니다.", HttpStatus.valueOf(401));
     }
 
     // 초대장 목록 조회

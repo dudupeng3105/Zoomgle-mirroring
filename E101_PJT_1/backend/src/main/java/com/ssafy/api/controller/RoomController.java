@@ -185,10 +185,11 @@ public class RoomController {
     @ApiOperation(value = "게임방 삭제", notes = "해당 roomCode 게임방을 삭제한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "삭제 성공"),
-            @ApiResponse(code = 401, message = "인증 실패"),
-            @ApiResponse(code = 403, message = "토큰 없음"),
+            @ApiResponse(code = 400, message = "게임방 삭제 실패"),
+            @ApiResponse(code = 401, message = "초대장 삭제 실패"),
+            @ApiResponse(code = 402, message = "참가 예정인 게임 삭제 실패"),
             @ApiResponse(code = 404, message = "게임방 없음"),
-            @ApiResponse(code = 405, message = "삭제 실패"),
+            @ApiResponse(code = 405, message = "실패"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> deleteRoom(@PathVariable("roomCode") long roomCode, @ApiIgnore Authentication authentication) {
@@ -207,20 +208,22 @@ public class RoomController {
         }
 
         String roomHost = deleteRoom.get().getHost();
-
         /// host 체크
         if (user.equals(roomHost)) {
 
             // 해당 roomCode의 room, invitation, player 삭제
-            roomService.deleteRoom(roomCode);
-            invitationService.deleteInvitation(roomCode);
-            invitationService.deletePlayer(roomCode);
-
+            if (!roomService.deleteRoom(roomCode)) {
+                return new ResponseEntity<>(roomCode + "의 게임방 삭제 도중 문제가 발생하였습니다.", HttpStatus.valueOf(401));
+            } else if (!invitationService.deleteInvitationByRoomCode(roomCode)) {
+                return new ResponseEntity<>(roomCode + "의 게임 초대장 삭제 도중 문제가 발생하였습니다.", HttpStatus.valueOf(402));
+            } else if (!invitationService.deletePlayer(roomCode)) {
+                return new ResponseEntity<>(roomCode + "게임 참가자 삭제 도중 문제가 발생하였습니다.", HttpStatus.valueOf(403));
+            }
         }
         // roomCode로 room 조회
-        if (roomService.getRoomByRoomCode(roomCode).equals(Optional.empty())) {
+        if (!roomService.getRoomByRoomCode(roomCode).isPresent()) {
             return new ResponseEntity<>(roomCode + "의 게임방이 삭제되었습니다.", HttpStatus.valueOf(200));
         }
-        return new ResponseEntity<>(roomCode + "의 게임방 삭제 도중 문제가 발생하였습니다.", HttpStatus.valueOf(405));
+        return new ResponseEntity<>(roomCode + "의 게임방이 삭제에 실패하였습니다.", HttpStatus.valueOf(405));
     }
 }
