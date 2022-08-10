@@ -278,10 +278,10 @@ const FriendsContent = () => {
 
   // console.log(friendsArr);
 
-  // 첫렌더링할때만 돌아감
+  // 첫렌더링할때랑, addResult 바뀔때마다(친구추가할대마다)
   useEffect(() => {
     dispatch(friendActions.GetFriendListStart(userId))
-  }, []);
+  }, [addResult]);
 
   useEffect(() => {
     if (friendError) {      
