@@ -18,7 +18,12 @@ import java.time.LocalDateTime;
 @Data // 클래스 멤버 변수의 Getter/Setter 메서드 구현
 @Entity
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Table(name = "invitation")
+@Table(name = "invitation",
+        uniqueConstraints={
+                @UniqueConstraint(
+                        columnNames={"room_code", "sender", "receiver"}
+                )
+        })
 public class Invitation {
     // 초대 Seq
     @Id // 기본키
