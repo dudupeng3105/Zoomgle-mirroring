@@ -142,8 +142,15 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
     console.log(modalToggle);
   };
 
-  const onClickJoinGame = (roomCode, capacity) => {
-    navigate('/openvidutest', {state: {sessionNickname: nickname, sessionRoomId: roomCode, sessionCapacity: capacity}});
+  const onClickJoinGame = (roomCode, capacity, host) => {
+    navigate('/openvidutest', {
+      state: {
+        sessionNickname: nickname,
+        sessionRoomId: roomCode,
+        sessionCapacity: capacity,
+        sessionHost: host,
+      },
+    });
   };
 
   const onClickReservedGameInvitation = (friendNickname) => {
@@ -204,7 +211,7 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
             <ButtonContainerItem
               backColor={`#FDDFK3`}
               onClick={() =>
-                onClickJoinGame(`${myGamePlanList[count].roomCode}`, `${myGamePlanList[count].maxCapacity}`)
+                onClickJoinGame(`${myGamePlanList[count].roomCode}`, `${myGamePlanList[count].maxCapacity}`, `${myGamePlanList[count].host}`)
               }
             >
               모험떠나기

@@ -7,6 +7,7 @@ const OpenviduPage = () => {
   const sessionNickname = location.state.sessionNickname;
   const sessionRoomId = location.state.sessionRoomId;
   const sessionCapacity = location.state.sessionCapacity;
+  const sessionHost = location.state.sessionHost;
   // const {sessionNickname, sessionRoomId} = location.state;
 
   return (
@@ -14,6 +15,7 @@ const OpenviduPage = () => {
       sessionNickname={sessionNickname}
       sessionRoomId={sessionRoomId}
       sessionCapacity={sessionCapacity}
+      sessionHost={sessionHost}
     >      
     </OpenViduBlock>
   );
