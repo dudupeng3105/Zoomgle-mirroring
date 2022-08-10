@@ -45,7 +45,7 @@ const gamePlanSlice = createSlice({
       console.log(action.payload);
       state.loading = false;
       // 받은 값을 state에 담음
-      state.invitationList = action.payload.invitationList;
+      state.invitationList = action.payload.invitationInfoList;
       
     },
     // 초대장리스트 스타트

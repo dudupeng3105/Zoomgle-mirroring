@@ -6,13 +6,21 @@ import OpenViduSession from './OpenViduSession';
 import styled from "styled-components";
 import gameboard from '../../media/images/gameboard.png';
 import loadingImage from '../../media/images/loadingImage.gif';
-import { nextDay } from 'date-fns';
+import waitingRoomBackGround from '../../media/images/waitingRoom.jpg'
+import WaitingRoom from './WaitingRoom';
+
 
 const OpenViduContainer = styled.div`
   width: 100vw;
   height: 100vh;
   background: url(${gameboard});
   background-size: 100vw 100vh;
+
+
+  &.waitingRoom {
+    background: url(${waitingRoomBackGround});
+    background-size: 100vw 100vh;
+  }
 `;
 
 const LoadingBlock = styled.div`
@@ -29,11 +37,11 @@ const LoadingBlock = styled.div`
 const OPENVIDU_SERVER_URL = 'https://' + 'i7e101.p.ssafy.io' + ':4443';
 const OPENVIDU_SERVER_SECRET = 'e101ssafy71';
 
-const OpenViduBlock = () => {
+const OpenViduBlock = ({sessionNickname, sessionRoomId, sessionCapacity}) => {
   // OV
   const [ov, setOv] = useState(null);
-  const [mySessionId, setMySessionId] = useState('SessionDUDU');
-  const [myUserName, setMyUserName] = useState(`펭두두-${Math.floor(Math.random() * 100) + 1}`);
+  const [mySessionId, setMySessionId] = useState(sessionRoomId);
+  const [myUserName, setMyUserName] = useState(sessionNickname);
   const [session, setSession] = useState(undefined);
   const [mainStreamManager, setMainStreamManager] = useState(undefined);
   const [publisher, setPublisher] = useState(undefined);
@@ -42,6 +50,9 @@ const OpenViduBlock = () => {
   const [currentVideoDevice, setCurrentVideoDevice] = useState(null);  
   // 
   // 게임관련 변수들
+  // 게임관련 변수 - 대기실 변수
+  const [isGameStart, setIsGameStart] = useState(false);
+  // 게임관련 변수 - 게임 관련 변수
   const [players, setPlayers] = useState([]); // 플레이어들
   const [turnNum, setTurnNum] = useState(0); // 몇 번째 사람 차례인지(이번 턴 인 사람)
   const [nextPlayer, setNextPlayer] = useState('') // 다음 사람(handlemainStreamer에 사용)
@@ -58,13 +69,8 @@ const OpenViduBlock = () => {
   //  useEffect(() => { 여기에 코드를 적자  }, [])
   useEffect(() => {
     // 창 닫을때 session 떠나게 해줌
-    window.addEventListener('beforeunload', onbeforeunload);
-        
-    // 게임 참여
-    // console.error("아이디 뭐냐", myUserName)
-    // joinSession();
-
-    // WillUnmount()
+    window.addEventListener('beforeunload', onbeforeunload);       
+    joinSession()
     return () => {
       window.removeEventListener('beforeunload', onbeforeunload);
     };
@@ -399,47 +405,73 @@ const OpenViduBlock = () => {
   console.log("너 왜 없냐.", myUserNameValue);
 
   // 방 참여 init
-
   return (
-    <OpenViduContainer>
+    <OpenViduContainer
+      className={isGameStart ? '': 'waitingRoom'}
+    >
       {/* 그 입장하기 전에 화면 띄워줌 사실 필요없어서
         그냥 자동입장으로 일단 바꿈 */}
-      {session === undefined ? (
-        <LoadingBlock>
-          <h1>내 이름 뭐로 되어있냐?{myUserName}</h1>
-          <button onClick={()=>joinSession()}>참여하기</button>
-        </LoadingBlock>
-      ) : null}
+      {session === undefined ? <LoadingBlock></LoadingBlock> : null}
 
       {/* 입장했으면.. */}
       {session !== undefined ? (
-        <OpenViduSession
-          nextPlayer={nextPlayer}
-          setNextPlayer={setNextPlayer}
-          isRoll={isRoll}
-          setIsRoll={setIsRoll}
-          isVote={isVote}
-          setIsVote={setIsVote}
-          vote={vote}
-          setVote={setVote}
-          minigameType={minigameType}
-          setMinigameType={setMinigameType}         
-          turnNum={turnNum}
-          setTurnNum={setTurnNum}
-          posList={posList}
-          setPosList={setPosList}
-          session={session}
-          handleMainVideoStream={handleMainVideoStream}
-          switchCamera={switchCamera}
-          leaveSession={leaveSession}
-          mySessionIdValue={mySessionIdValue}
-          myUserNameValue={myUserNameValue}
-          mainStreamManager={mainStreamManager}
-          publisher={publisher}
-          players={players}
-          subscribers={subscribers}
-        >
-        </OpenViduSession>        
+        isGameStart ? (
+          <OpenViduSession
+            nextPlayer={nextPlayer}
+            setNextPlayer={setNextPlayer}
+            isRoll={isRoll}
+            setIsRoll={setIsRoll}
+            isVote={isVote}
+            setIsVote={setIsVote}
+            vote={vote}
+            setVote={setVote}
+            minigameType={minigameType}
+            setMinigameType={setMinigameType}
+            turnNum={turnNum}
+            setTurnNum={setTurnNum}
+            posList={posList}
+            setPosList={setPosList}
+            session={session}
+            handleMainVideoStream={handleMainVideoStream}
+            switchCamera={switchCamera}
+            leaveSession={leaveSession}
+            mySessionIdValue={mySessionIdValue}
+            myUserNameValue={myUserNameValue}
+            mainStreamManager={mainStreamManager}
+            publisher={publisher}
+            players={players}
+            subscribers={subscribers}
+          ></OpenViduSession>
+        ) : (
+          <WaitingRoom
+            sessionCapacity={sessionCapacity}
+            nextPlayer={nextPlayer}
+            setNextPlayer={setNextPlayer}
+            isRoll={isRoll}
+            setIsRoll={setIsRoll}
+            isVote={isVote}
+            setIsVote={setIsVote}
+            vote={vote}
+            setVote={setVote}
+            minigameType={minigameType}
+            setMinigameType={setMinigameType}
+            turnNum={turnNum}
+            setTurnNum={setTurnNum}
+            posList={posList}
+            setPosList={setPosList}
+            session={session}
+            handleMainVideoStream={handleMainVideoStream}
+            switchCamera={switchCamera}
+            leaveSession={leaveSession}
+            mySessionIdValue={mySessionIdValue}
+            myUserNameValue={myUserNameValue}
+            mainStreamManager={mainStreamManager}
+            publisher={publisher}
+            players={players}
+            subscribers={subscribers}
+          >
+          </WaitingRoom>
+        )
       ) : null}
     </OpenViduContainer>
   );
