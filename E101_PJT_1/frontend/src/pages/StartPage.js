@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import background from '../media/images/StartPageImage_long.png'
-import background1 from '../media/images/startback_3.png'
 import arrow from '../media/images/arrow.png'
 // import Button from "../components/common/Button";
 import { useNavigate } from "../../node_modules/react-router-dom/index";
@@ -44,7 +43,6 @@ const StartStoryBoard = styled.div`
   /* top: 0;   */
   color: white;
   /* background-color: #352208; */
-  /* background: url(${background1}) no-repeat center;   */
   /* border: 3px solid white; */
   display: flex;   
   justify-content: center;
