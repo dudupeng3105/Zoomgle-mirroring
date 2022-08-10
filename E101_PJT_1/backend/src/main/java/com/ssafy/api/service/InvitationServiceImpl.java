@@ -28,7 +28,7 @@ public class InvitationServiceImpl implements InvitationService {
     /**
      * 게임 초대장을 생성하는 메서드
      */
-    public void createInvitationPostReq(long roomCode, String sender, String receiver) {
+    public boolean createInvitationPostReq(long roomCode, String sender, String receiver) {
 
         // 게임 초대 중복 검색
         if (playerRepository.findByRoomCodeAndUser(roomCode, receiver) == null
@@ -41,7 +41,10 @@ public class InvitationServiceImpl implements InvitationService {
             invitation.setReceiver(receiver);
 
             invitationRepository.save(invitation);
+
+            return true;
         }
+        return false;
     }
 
     /**
@@ -73,17 +76,41 @@ public class InvitationServiceImpl implements InvitationService {
 
     }
 
-@Override
-public void deleteInvitation(long invitationSeq) {
-    invitationRepository.deleteById(invitationSeq);
-}
+    @Override
+    public boolean deleteInvitation(long invitationSeq) {
+            try {
+                invitationRepository.deleteById(invitationSeq);
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
+    }
 
     @Override
-    public void deletePlayer(long roomCode) {
-        List<Player> playerList = playerRepository.findAllByRoomCode(roomCode);
+    public boolean deleteInvitationByRoomCode(long roomCode) {
+        try {
+            List<Invitation> invitationList = invitationRepository.findAllByRoomCode(roomCode);
 
-        for (int i = 0; i < playerList.size(); i++) {
-            playerRepository.deleteById(playerList.get(i).getPlayerSeq());
+            for (int i = 0; i < invitationList.size(); i++) {
+                invitationRepository.deleteById(invitationList.get(i).getInvitationSeq());
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean deletePlayer(long roomCode) {
+        try {
+            List<Player> playerList = playerRepository.findAllByRoomCode(roomCode);
+
+            for (int i = 0; i < playerList.size(); i++) {
+                playerRepository.deleteById(playerList.get(i).getPlayerSeq());
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 }

@@ -17,6 +17,5 @@ public interface InvitationRepository extends JpaRepository<Invitation, Long> {
 
     List<Invitation> findAllByRoomCode(long roomCode);
 
-//    Object findByRoomCodeAndReceiverAndSender(long roomCode, String receiver,String sender);
     Invitation findByRoomCodeAndReceiverAndSender(long roomCode, String receiver,String sender);
 }

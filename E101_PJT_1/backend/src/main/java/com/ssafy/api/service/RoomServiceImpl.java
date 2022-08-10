@@ -79,7 +79,13 @@ public class RoomServiceImpl implements RoomService{
     }
 
     @Override
-    public void deleteRoom(long roomCode) {
-        roomRepository.deleteById(roomCode);
+    public boolean deleteRoom(long roomCode) {
+        try {
+            roomRepository.deleteById(roomCode);
+
+            return true;
+        }catch (Exception e) {
+            return false;
+        }
     }
 }
