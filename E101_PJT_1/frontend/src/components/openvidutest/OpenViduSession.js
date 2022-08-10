@@ -190,8 +190,6 @@ const UserVideoComponentContainer = styled.div`
   }
 `
 
-
-
 const OpenViduSession = ({
   nextPlayer,
   setNextPlayer,

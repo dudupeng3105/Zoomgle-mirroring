@@ -184,6 +184,7 @@ const MainUserVideoComponent = ({
         return minigameInfo[1]; // 미션타임
       } else if (!timeOver) {
         setTimeOver(true); // 미션 끝
+        setVoteResult(undefined);
         return 7; // 투표 타임
       } else if (!voteOver) {
         setVoteOver(true);
@@ -212,14 +213,17 @@ const MainUserVideoComponent = ({
 
   // vote 새로 받을 때마다 업데이트
   useEffect(() => {
+    // 성공, 실패 판단
+    const agreeNum = vote.filter((thisVote) => thisVote[1] === true).length;
+    if (agreeNum >= parseInt(vote.length / 2)) {
+      setVoteResult(true);
+    } else {
+      setVoteResult(false);
+    }
+
     // 투표가 다 끝났는지 판단
     if (vote.length === playerNum) {
       setVoteSkip(true);
-    }
-    // 성공, 실패 판단
-    const agreeNum = vote.filter((thisVote) => thisVote[1] === true).length;
-    if (agreeNum > parseInt(vote.length / 2)) {
-      setVoteResult(true);
     }
   }, [vote]);
 

@@ -80,9 +80,14 @@ const GameStartBtn = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 3rem;
-`
+  &.waitingBtn {
+    background-color: grey;
+    color: white;
+  }
+`;
 
 const WaitingRoom = ({
+  sessionHost,
   sessionCapacity,
   nextPlayer,
   setNextPlayer,
@@ -115,6 +120,42 @@ const WaitingRoom = ({
   const playerNum = players.length; // 몇 명에서 하는지
   const myTurnNum = players.indexOf(myUserNameValue);
 
+  // 게임 시작
+  const onClickStartGame = () => {    
+    // 데이터 정리
+    const nextTurnNum = Math.floor(Math.random() * playerNum);
+    const nextNextPlayer = players[nextTurnNum];
+    const nextPosList = new Array(playerNum).fill(0);
+    const nextVote = [];
+    const nextIsRoll = false;
+    const nextIsVote = false;
+    
+    // emit
+    const sendData = {
+      session: mySessionIdValue,
+      to: [], // all user
+      data: JSON.stringify({
+        nextTurnNum : nextTurnNum,
+        nextNextPlayer : nextNextPlayer,
+        nextPosList : nextPosList,
+        nextVote : nextVote,
+        nextIsRoll : nextIsRoll,
+        nextIsVote : nextIsVote,
+        nextIsGameStart : true
+      }),
+      type: 'GAME_STATE_START',
+    };
+    // console.log(JSON.stringify(sendData));
+    fetch('https://i7e101.p.ssafy.io:4443/openvidu/api/signal', {
+      method: 'POST',
+      headers: {
+        Authorization: 'Basic ' + btoa('OPENVIDUAPP:e101ssafy71'),
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(sendData),
+    });    
+  }
+
   return (
     <WaitingRoomBlock>
       {/* <h1>여기 대기실임: {myUserNameValue}</h1> */}
@@ -135,10 +176,22 @@ const WaitingRoom = ({
         </PlayerList>
       </TestContainer> */}
       <OpenViduSessionHeader>
-        {mySessionIdValue}번 방 ---- {playerNum}명입니다.
+        {mySessionIdValue}번 방
       </OpenViduSessionHeader>
       <ManualBox></ManualBox>
-      <GameStartBtn>{playerNum}명/{sessionCapacity}</GameStartBtn>
+      {sessionHost === myUserNameValue ? (
+        (playerNum === sessionCapacity) ? (
+          <GameStartBtn onClick={() => onClickStartGame()}>
+            게임시작
+          </GameStartBtn>
+        ) : (
+          <GameStartBtn className='waitingBtn' onClick={() => onClickStartGame()}>
+            대기중 ({playerNum}명/{sessionCapacity})
+          </GameStartBtn>
+        )
+      ) : (
+        ''
+      )}
 
       {publisher !== undefined ? (
         <WaitingUserVideoContainer className={`pos${0}`}>
