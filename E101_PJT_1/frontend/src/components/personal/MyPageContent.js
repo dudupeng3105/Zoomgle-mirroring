@@ -115,7 +115,7 @@ const MyPageContent = () => {
   const myinvitationList = useSelector(
     (state) => state.gamePlan.invitationList,
   );
-  console.log('초대장 아이콘 누름', myinvitationList);
+  // console.log('초대장 아이콘 누름', myinvitationList);
 
   const [modalToggle, setModalToggle] = useState(false);
 
