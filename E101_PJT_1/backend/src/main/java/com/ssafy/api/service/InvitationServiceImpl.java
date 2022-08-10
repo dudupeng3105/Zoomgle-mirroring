@@ -73,15 +73,10 @@ public class InvitationServiceImpl implements InvitationService {
 
     }
 
-    @Override
-    public void deleteInvitation(long roomCode) {
-        // roomCode로 invitationSeq를 찾고 삭제
-        List<Invitation> invitationList = invitationRepository.findAllByRoomCode(roomCode);
-
-        for (int i = 0; i < invitationList.size(); i++) {
-            invitationRepository.deleteById(invitationList.get(i).getInvitationSeq());
-        }
-    }
+@Override
+public void deleteInvitation(long invitationSeq) {
+    invitationRepository.deleteById(invitationSeq);
+}
 
     @Override
     public void deletePlayer(long roomCode) {

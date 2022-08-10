@@ -4,17 +4,21 @@ import com.ssafy.api.request.CreateInvitationPostReq;
 import com.ssafy.api.request.UpdateInvitationPostReq;
 import com.ssafy.api.response.InvitationListRes;
 import com.ssafy.api.service.InvitationService;
+import com.ssafy.api.service.RoomService;
 import com.ssafy.api.service.UserService;
 import com.ssafy.common.auth.SsafyUserDetails;
 import com.ssafy.db.entity.Invitation;
+import com.ssafy.db.entity.Room;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
+import java.util.Optional;
 
 @Api(value = "게임초대 API", tags = {"Invitations"})
 @RestController
@@ -27,6 +31,9 @@ public class InvitationController {
 
     @Autowired // 의존성 주입
     InvitationService invatationService;
+
+    @Autowired // 의존성 주입
+    RoomService roomService;
 
     // 게임 초대하기
     @PostMapping
@@ -73,7 +80,15 @@ public class InvitationController {
 
     // 초대장 관리(승낙/거절)
     @PostMapping("/manager")
-    public void InvitationManager(@ApiIgnore Authentication authentication, @RequestBody @ApiParam(value = "초대장 관리", required = true) UpdateInvitationPostReq updateInvitationPostReq) {
+    @ApiOperation(value = "초대장 관리", notes = "초대장 승낙/거절")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "게임 참가"),
+            @ApiResponse(code = 401, message = "게임 초대 거절"),
+            @ApiResponse(code = 402, message = "정원 초과"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> InvitationManager(@ApiIgnore Authentication authentication, @RequestBody @ApiParam(value = "초대장 관리", required = true) UpdateInvitationPostReq updateInvitationPostReq) {
         SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
         String user = userDetails.getUser().getNickname();
 
@@ -82,17 +97,27 @@ public class InvitationController {
 
         boolean join = updateInvitationPostReq.isJoin();
 
-        System.out.println(roomCode);
+        int curCnt = roomService.getRoomByRoomCode(roomCode).get().getCnt();
+        int curMaxCapacity = roomService.getRoomByRoomCode(roomCode).get().getMaxCapacity();
 
-        if (join == true) {
-            // player에 넣기
+        // cnt >= maxCapacity면 디비드랍, 리턴
+        if (curCnt >= curMaxCapacity) {
+            // 디비 드랍
+            invatationService.deleteInvitation(invitationSeq);
+
+            return new ResponseEntity<>("정원 초과입니다.", HttpStatus.valueOf(402));
+        } else if (join == true) {
+            // player에 넣고 db 드랍
             invatationService.joinPlayer(user, roomCode, invitationSeq);
+            invatationService.deleteInvitation(invitationSeq);
+
+            return new ResponseEntity<>(user + "님의 초대를 수락하셨습니다.", HttpStatus.valueOf(200));
         }
 
-        // 디비 드랍
-        invatationService.deleteInvitation(roomCode);
-
-
+        // 초대 거절디비 드랍
+//        invatationService.deleteInvitation(roomCode);
+        invatationService.deleteInvitation(invitationSeq);
+        return new ResponseEntity<>(user + "님의 초대를 거절하였습니다.", HttpStatus.valueOf(401));
     }
 }
 
