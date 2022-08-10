@@ -26,8 +26,8 @@ export const getUserApi = async () =>
 
 
 // 친구 - 친구 리스트, 친구 추가
-export const getFriendsListApi = async (userId) => 
-  await customAxios.get(`api/friends/${userId}`);
+export const getFriendsListApi = async (nickname) => 
+  await customAxios.get(`api/friends/${nickname}`);
 
 export const addFriendApi = async (infoId) => 
   await customAxios.post("api/friends", infoId);

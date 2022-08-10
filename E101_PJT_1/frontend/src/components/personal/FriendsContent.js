@@ -11,6 +11,7 @@ import profile5 from '../../media/images/profile5.png';
 import profile6 from '../../media/images/profile6.png';
 import backboard from '../../media/images/board1-2.png';
 import papyrus from '../../media/images/Papyrus.png';
+import Xmark from '../../media/images/X-mark.png';
 
 const FriendsContentBlock = styled.div`
   background: url(${background});
@@ -88,6 +89,32 @@ const FriendAddButton = styled.div`
     border: 3px solid #29231c;
   }
 `
+const FriendCloseButton = styled.div`
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 8vh;  
+  width: 15vw;
+  margin-left: 25vw;
+  margin-top: 8vw;
+  background: url(${Xmark}) no-repeat center;
+  background-size: 5vw 8vh;
+  display: inline;
+  /* border: red solid 3px; */
+
+  font-size: 5vmin;
+  /* background-color: #352208; */
+  /* border: 3px solid #b39860; */
+  /* color: white; */
+  /* border-radius: 5px;   */
+  &:hover {
+    transform: scale(1.1);
+    transition: transform .2s;
+  }
+`
+
+
 
 export const FriendCard = styled.div`
   width: 40vmin;
@@ -142,7 +169,8 @@ const AddFriendModal = styled.div`
   padding: 3vmin;
   h1{
     margin:0;
-    margin-top: 15vh;
+    /* margin-top: 10vh; */
+    display: inline;
   }
   h2 {
     margin: 0px;
@@ -236,7 +264,7 @@ const BoardImageContainer = styled.div`
 
 const FriendsContent = () => {
   const [error, setError] = useState(null);
-  const [friendIdInput, setFriendIdInput] = useState('');
+  const [friendNicknameInput, setFriendNicknameInput] = useState('');
   const [modalToggle, setmodalToggle] = useState(false);
 
   const dispatch = useDispatch();
@@ -244,6 +272,7 @@ const FriendsContent = () => {
   const friendError = useSelector((state) => state.friend.error);
   const addMessage = useSelector((state) => state.friend.addMessage);
   const userId = useSelector((state) => state.auth.user.userId);
+  const userNickname = useSelector((state) => state.auth.user.nickname);
   const friendsArr = useSelector((state) => state.friend.friendList);
   const addResult = useSelector((state) => state.friend.addResult);
 
@@ -270,16 +299,16 @@ const FriendsContent = () => {
   }, [addResult]);
 
   const inputChange = (e) => {
-    setFriendIdInput(e.target.value);       
+    setFriendNicknameInput(e.target.value);       
   }
 
   // 친구 추가 모달에서 아이디를 검색하고 추가를 누르면 일어나는 일
   const onClick = (e) => {
     e.preventDefault()
-    console.log(userId, friendIdInput)
+    console.log(userNickname, friendNicknameInput)
     const infoId = {
-      "myId": userId,
-      "friendId": friendIdInput
+      "myNickname": userNickname,
+      "friendNickname": friendNicknameInput
     }
     dispatch(friendActions.AddFriendStart(infoId))  
     // 성공하면 모달 닫음    
@@ -299,9 +328,14 @@ const FriendsContent = () => {
     <FriendsContentBlock>
       {modalToggle ? (
         <AddFriendModal>
+          <FriendCloseButton
+            onClick={() => {
+              setmodalToggle(!modalToggle);
+            }}         
+          >닫기</FriendCloseButton>
           <h1>친애하는 모험가를 추가하세요</h1>
           <StyledInput             
-            name="friendId"
+            name="friendNickname"
             placeholder="닉네임을 입력하세요."            
             onChange={inputChange}            
           />
@@ -309,7 +343,7 @@ const FriendsContent = () => {
           <FriendAddButton
             onClick={onClick}          
           >추가</FriendAddButton>
-        </AddFriendModal>
+           </AddFriendModal>
       ) : (
         ''
       )}
@@ -333,12 +367,12 @@ const FriendsContent = () => {
             <StyledCard>
               <ImageContainer>
                 <ProfileImg
-                  className={'profileImg' + (friend.profileImgNum%6)}
+                  className={'profileImg' + (friend.profile_Img_Num%6)}
                   // className={'profileImg' + 1}
                 ></ProfileImg>
               </ImageContainer>
               <NameNicknameEl>
-                <div>이름: {friend.userId}</div>
+                <div>이름: {friend.name}</div>
                 <div>닉네임(seq): {friend.nickname}</div>
               </NameNicknameEl>
             </StyledCard>

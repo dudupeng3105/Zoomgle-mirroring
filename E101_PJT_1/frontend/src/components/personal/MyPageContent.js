@@ -1,18 +1,19 @@
 import styled from "styled-components";
-import background from '../../media/images/headerMenuBackGround.png'
-import inviteIcon from '../../media/images/closeletter.png'
-import openedinviteIcon from '../../media/images/openletter.png'
+import background from '../../media/images/mypage_back3.jpg'
+import inviteIcon from '../../media/images/Closeletter.png'
+import openedinviteIcon from '../../media/images/openletter1.png'
 import letter from '../../media/images/letter.png'
 import reject from '../../media/images/reject.png'
 import accept from '../../media/images/accept.png'
-
+import MyPagecalender from '../utils/MyPageCalender'
 import { useSelector } from "react-redux";
 import { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
 import { gamePlanActions } from "../../store/gamePlan-slice";
 
 const MyPageContentBlock = styled.div`
-  background: url(${background});
+  background: url(${background}) center no-repeat;
+  background-size: 83vw 98vh;
   width: 100%;
   margin: 10px;
   padding: 10px;
@@ -25,10 +26,21 @@ const InvitationIcon = styled.div`
   /* background: url(${inviteIcon}); */
   /* ${props => props.closeOpen ? `background: url(${openedinviteIcon}) no-repeat center` : `background: url(${inviteIcon}) no-repeat center`}; */
   background: ${props => props.closeOpen ? `url(${openedinviteIcon}) no-repeat center` : `url(${inviteIcon}) no-repeat center`};
-  background-size: 15vw 20vh;
-  width: 20vw;
-  height: 20vh;  
+  background-size: 18vw 25vh;
+  width: 18vw;
+  height: 25vh;  
+  margin-left: 5vw;
+  margin-top: 15vh;
   cursor: pointer;
+  display: inline-block;
+
+  :hover {
+  transform: scale(1.1);
+  -webkit-transform: scale(1.1);
+  -moz-transform: scale(1.1);
+  -ms-transform: scale(1.1);
+  -o-transform: scale(1.1);
+}
  
 `
 
@@ -96,6 +108,11 @@ display: inline;
 border: 3px red solid;
 `
 
+const CalenderBlock = styled.div`
+
+  
+`
+
 const MyPageContent = () => {
   const dispatch = useDispatch();
 
@@ -123,6 +140,7 @@ const MyPageContent = () => {
 
   return (
     <MyPageContentBlock>
+      {/* 초대장 */}
       {modalToggle && (
         <GivenInvitationModal>
           {myinvitationList.map((invitation, idx) => (
@@ -168,6 +186,9 @@ const MyPageContent = () => {
           setModalToggle(!modalToggle);
         }}
       />
+
+        {/* // 달력 */}
+        <MyPagecalender></MyPagecalender>
     </MyPageContentBlock>
   );
 };

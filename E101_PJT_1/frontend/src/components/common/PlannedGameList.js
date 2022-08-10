@@ -12,6 +12,7 @@ import {
   ProfileImg,
   NameNicknameEl,
 } from '../personal/FriendsContent';
+import GameNumCounter from "../utils/GameNumCounter";
 
 const PlannedGameListBlock = styled.div`
   border: 3px solid white;
@@ -30,6 +31,7 @@ const PlannedGameBlock = styled.div`
   background-color: white;
   font-size: 2rem;
 `;
+
 
 const GameInvitationBtn = styled.div`
   font-size: 1.5rem;
@@ -68,7 +70,7 @@ const PlannedGameList = () => {
   const myFriendsList = useSelector((state) => state.friend.friendList);  
   
   
-
+  const [count, setCount] = useState(0);
   const [modalToggle, setModalToggle] = useState(false);
   const [inviteRoomCode, setInviteRoomCode] = useState(0);
   const onClickHandler = (roomCode) => {
@@ -80,14 +82,15 @@ const PlannedGameList = () => {
     setModalToggle(!modalToggle);
   };
 
-  const onClickSendInvitation = (friendId) => {
-    console.log(friendId, inviteRoomCode);
+  const onClickSendInvitation = (friendNickname) => {
+    console.log(friendNickname, inviteRoomCode);
     const inviteInfo = {
-      receiver: friendId,
+      receiver: friendNickname,
       roomCode: inviteRoomCode
     }
     dispatch(gamePlanActions.sendInvitaionStart(inviteInfo))
   };
+
   
   useEffect(() => {
     dispatch(friendActions.GetFriendListStart(userId))
@@ -105,22 +108,27 @@ const PlannedGameList = () => {
               <StyledCard>
                 <ImageContainer>
                   <ProfileImg
-                    className={'profileImg' + (friend.profileImgNum % 6)}
+                    className={'profileImg' + (friend.profile_Img_Num % 6)}
                     // className={'profileImg' + 1}
                   ></ProfileImg>
                 </ImageContainer>
                 <NameNicknameEl>
-                  <div>이름: {friend.userId}</div>
+                  <div>이름: {friend.name}</div>
                   <div>닉네임(seq): {friend.nickname}</div>
                 </NameNicknameEl>
               </StyledCard>
-              <button onClick={() => onClickSendInvitation(`${friend.userId}`)}>초대장보내기</button>
+              <button onClick={() => onClickSendInvitation(`${friend.nickname}`)}>초대장보내기</button>
             </FriendCard>
           ))}
         </GameInvitationModal>
       )}
       <PlanGameDetailTitle>예정된 모험(4개만 보여줌)</PlanGameDetailTitle>
-      {myGamePlanList.map((Plan, idx) => (
+      {myGamePlanList.length === 0 ? '': (<GameNumCounter 
+          count={count}
+          setCount={setCount}
+          myGamePlanList= {myGamePlanList} />)}
+      <p>{count}</p>
+      {/* {myGamePlanList.map((Plan, idx) => (
         <PlannedGameBlock key={idx}>
           방 번호 {Plan.roomCode}의 게임
           <p>{Plan.date}</p>
@@ -134,7 +142,7 @@ const PlannedGameList = () => {
             초대장보내기
           </GameInvitationBtn>
         </PlannedGameBlock>
-      ))}
+      ))} */}
     </PlannedGameListBlock>
   );
 };
