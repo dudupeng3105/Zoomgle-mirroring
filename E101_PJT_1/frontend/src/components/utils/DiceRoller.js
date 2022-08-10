@@ -41,7 +41,7 @@ const DiceRoller = ({
     let nextPosList = [...posList];
     nextPosList[myTurnNum] = tempPosNum;    
     // 미니게임 랜덤
-    const nextMinigameType = Math.floor(Math.random() * 10) // 0 ~ 9 랜덤
+    const nextMinigameType = Math.floor(Math.random() * 160) // 0 ~ 9 랜덤
     
     // emit
     const sendData = {
