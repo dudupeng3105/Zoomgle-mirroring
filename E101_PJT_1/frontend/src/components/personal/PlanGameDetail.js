@@ -15,6 +15,7 @@ import {
   ProfileImg,
   NameNicknameEl,
 } from '../personal/FriendsContent';
+import papyrus from '../../media/images/Papyrus.png';
 
 const PlanGameDetailBlock = styled.div`
   border: 3px solid white;
@@ -79,14 +80,15 @@ const GameInvitationModal = styled.div`
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  overflow: scroll;
+  overflow: hidden;
   padding: 2rem;
   left: 30vw;
   top: 10vh;
   width: 60vw;
   height: 80vh;
-  border: 1px solid black;
-  background-color: white;
+  /* border: 1px solid black; */
+  background: url(${papyrus});
+  background-size: 60vw 80vh;
   z-index: 1;
 `;
 

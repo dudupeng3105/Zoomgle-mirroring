@@ -25,8 +25,10 @@ const reactAudioPlayer = () => {
         url={Animal}
         width="px"
         height="0px"
-        playing={true}
+        playing={true}        // 자동 재생 on
         controls={true}
+        loop={true}
+        muted={true}          // 자동 재생 on
       />
         
 

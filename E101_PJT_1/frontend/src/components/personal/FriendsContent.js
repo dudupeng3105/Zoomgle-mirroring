@@ -12,6 +12,7 @@ import profile6 from '../../media/images/profile6.png';
 import backboard from '../../media/images/board1-2.png';
 import papyrus from '../../media/images/Papyrus.png';
 import Xmark from '../../media/images/X-mark.png';
+import friendbackground from "../../media/images/friendback.png"
 
 const FriendsContentBlock = styled.div`
   background: url(${background});
