@@ -37,7 +37,7 @@ const LoadingBlock = styled.div`
 const OPENVIDU_SERVER_URL = 'https://' + 'i7e101.p.ssafy.io' + ':4443';
 const OPENVIDU_SERVER_SECRET = 'e101ssafy71';
 
-const OpenViduBlock = ({sessionNickname, sessionRoomId, sessionCapacity}) => {
+const OpenViduBlock = ({sessionNickname, sessionRoomId, sessionCapacity, sessionHost}) => {
   // OV
   const [ov, setOv] = useState(null);
   const [mySessionId, setMySessionId] = useState(sessionRoomId);
@@ -193,6 +193,19 @@ const OpenViduBlock = ({sessionNickname, sessionRoomId, sessionCapacity}) => {
       const {nextVote} = JSON.parse(data.data);
       setVote([...nextVote]);
     });
+
+    // 대기실에서 게임 시작 전체 동기화 ON
+    mySession.on('GAME_STATE_START', (data) => {
+      console.warn("게임 시작할거야");
+      const {nextTurnNum, nextNextPlayer, nextPosList, nextVote, nextIsRoll, nextIsVote, nextIsGameStart} = JSON.parse(data.data);
+      setTurnNum(nextTurnNum);
+      setNextPlayer(nextNextPlayer);
+      setPosList(nextPosList);
+      setVote(nextVote);
+      setIsRoll(nextIsRoll);
+      setIsVote(nextIsVote);
+      setIsGameStart(nextIsGameStart);
+    })
 
     // --- 4) Connect to the session with a valid user token ---
 
@@ -444,6 +457,7 @@ const OpenViduBlock = ({sessionNickname, sessionRoomId, sessionCapacity}) => {
           ></OpenViduSession>
         ) : (
           <WaitingRoom
+            sessionHost={sessionHost}
             sessionCapacity={sessionCapacity}
             nextPlayer={nextPlayer}
             setNextPlayer={setNextPlayer}
