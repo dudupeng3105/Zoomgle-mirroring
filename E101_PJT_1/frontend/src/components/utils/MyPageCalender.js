@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import Calendar from 'react-calendar';
 import calender_back from '../../media/images/calendar.png'
+import x_mark from '../../media/images/X-mark.png'
 
 const MyPageCalenderBlock = styled.div`
   width: 30vw;
@@ -15,24 +16,27 @@ const MyPageCalenderBlock = styled.div`
 
 
 .react-calendar { 
-  width: 50vw;
+  width: 55vw;
+  height: 50vh;
   max-width: 100%;
   /* background-color: #7A573A; */
-  background: url(${calender_back});
-  background: 10vw 10vh;
-  color: white;
-  border-radius: 8px;
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  /* background: url(${calender_back}) no-repeat center; */
+  background-size: 35vw 50vh;
+  color: black;
+  /* border-radius: 8px; */
+  /* box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2); */
   /* font-family: Arial, Helvetica, sans-serif; */
   line-height: 1.125em;
+  font-size: 25px;
  }
 
  .react-calendar__navigation button {
-  color: white;
+  color: black;
   min-width: 44px;
   background:none;
-  font-size: 16px;
+  font-size: 25px;
   margin-top: 8px;
+  font-family: 'East Sea Dokdo', cursive;
  }
 
 .react-calendar--doubleView {
@@ -56,7 +60,8 @@ const MyPageCalenderBlock = styled.div`
 }
 .react-calendar button {
   margin: 0;
-  border: 0;
+  border-radius: 50%;
+  border: none;
   outline: none;
 }
 .react-calendar button:enabled:hover {
@@ -91,7 +96,7 @@ const MyPageCalenderBlock = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.75em;
+  font-size: 1rem;
   font-weight: bold;
   padding: calc(0.75em / 0.75) calc(0.5em / 0.75);
 }
@@ -110,8 +115,10 @@ const MyPageCalenderBlock = styled.div`
 .react-calendar__tile {
   max-width: 100%;
   text-align: center;
-  padding: 0.75em 0.5em;
+  padding: 0.5em 0.5em;
   background: none;
+  font-family: 'East Sea Dokdo', cursive;
+  font-size: 1.25rem;
 }
 .react-calendar__tile:disabled {
   background-color: #f0f0f0;
@@ -122,7 +129,9 @@ const MyPageCalenderBlock = styled.div`
 }
 .react-calendar__tile--now {
   /* background: #ffff76; */
-  background-color: #6f48eb;
+  /* background-color: #6f48eb; */
+  background-image:url(${x_mark});
+  font-weight: bold;
 }
 .react-calendar__tile--now:enabled:hover,
 .react-calendar__tile--now:enabled:focus {
@@ -135,9 +144,15 @@ const MyPageCalenderBlock = styled.div`
 .react-calendar__tile--hasActive:enabled:focus {
   background: #a9d4ff;
 }
+
+/* 클릭해서 표시된 날짜 */
+/* 오늘 날짜를 클릭한 뒤에도 X 가 유지되게 조건표시 */
 .react-calendar__tile--active {
-  background: #6f48eb;
-  color: white;
+  /* background: #6f48eb; */
+  color: black;
+  /* background:url(${x_mark}); */
+  background-size: 5vw 5.5vh;
+  
 }
 .react-calendar__tile--active:enabled:hover,
 .react-calendar__tile--active:enabled:focus {
