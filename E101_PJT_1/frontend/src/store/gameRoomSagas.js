@@ -35,7 +35,7 @@ function* getPictureListStartAsync({ payload }) {
   const { getPictureSuccess, getError } = gameRoomActions;  
   const { roomSeq } = payload;  
   try {
-    const response = yield call(takePictureApi, roomSeq);
+    const response = yield call(getPictureApi, roomSeq);
     console.log('사진가져오기응답', response);
     if (response.status === 200) {      
       yield put(getPictureSuccess(response.data));

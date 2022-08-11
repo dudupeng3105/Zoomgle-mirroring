@@ -36,7 +36,7 @@ const gameRoomSlice = createSlice({
     // 사진 가져오기 성공
     getPictureSuccess(state, action) {
       state.loading = false;
-      state.gameTotalPicture = action.payload.data;
+      state.gameTotalPicture = action.payload.photoList;
     },
   },
 });
