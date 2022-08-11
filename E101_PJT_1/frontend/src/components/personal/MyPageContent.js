@@ -1,12 +1,16 @@
-import styled from 'styled-components';
-import background from '../../media/images/mypage_back3.jpg';
-import inviteIcon from '../../media/images/closeletter.png';
-import openedinviteIcon from '../../media/images/openletter1.png';
-import letter from '../../media/images/letter.png';
-import reject from '../../media/images/reject.png';
-import accept from '../../media/images/accept.png';
-import MyPagecalender from '../utils/MyPageCalender';
-import { useSelector } from 'react-redux';
+
+import styled from "styled-components";
+import background from '../../media/images/mypage_back4.jpg'
+import inviteIcon from '../../media/images/closeletter.png'
+import openedinviteIcon from '../../media/images/openletter1.png'
+import letter from '../../media/images/letter.png'
+import reject from '../../media/images/reject.png'
+import accept from '../../media/images/accept.png'
+import album from '../../media/images/album_book.png'
+import MyPagecalender from '../utils/MyPageCalender'
+import { useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom';
+
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { gamePlanActions } from '../../store/gamePlan-slice';
@@ -37,9 +41,11 @@ const InvitationIcon = styled.div`
   margin-top: 15vh;
   cursor: pointer;
   display: inline-block;
+  /* 각도 변경 */
+  transform: rotate(-30deg);
 
   :hover {
-    transform: scale(1.1);
+    transform: scale(1.1) rotate(-30deg);
     -webkit-transform: scale(1.1);
     -moz-transform: scale(1.1);
     -ms-transform: scale(1.1);
@@ -106,6 +112,30 @@ const RejectButton = styled.div`
   border: 3px red solid;
 `;
 
+const HeadAlbum = styled.div`
+  background: url(${album}) center no-repeat;
+  background-size: 14vw 25vh;
+  width: 14vw;
+  height: 25vh;
+  margin-left: 5vw;
+  padding-top: 30vh;
+  padding-bottom:0;
+  /* border: 3px red solid; */
+  cursor: pointer;
+  display: inline-block;
+  /* 각도 변경 */
+  /* transform: rotate(-30deg); */
+
+  :hover {
+    transform: scale(1.1) rotate(-30deg);
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    -o-transform: scale(1.1);
+  }
+  
+`
+
 const MyPageContent = () => {
   const dispatch = useDispatch();
 
@@ -114,7 +144,7 @@ const MyPageContent = () => {
     (state) => state.gamePlan.invitationList,
   );
   // console.log('초대장 아이콘 누름', myinvitationList);
-
+  const navigate = useNavigate();
   const [modalToggle, setModalToggle] = useState(false);
   const [firstClick, setFirstClick] = useState(false);
 
@@ -193,6 +223,7 @@ const MyPageContent = () => {
 
       {/* // 달력 */}
       <MyPagecalender></MyPagecalender>
+      <HeadAlbum onClick={() => navigate('/pictures')}></HeadAlbum>
     </MyPageContentBlock>
   );
 };

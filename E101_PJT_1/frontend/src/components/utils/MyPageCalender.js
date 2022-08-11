@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Calendar from 'react-calendar';
 import calender_back from '../../media/images/calendar.png'
 import x_mark from '../../media/images/X-mark.png'
+import o_mark from '../../media/images/circle-mark.png'
 
 const MyPageCalenderBlock = styled.div`
   width: 30vw;
@@ -78,7 +79,11 @@ const MyPageCalenderBlock = styled.div`
 }
 .react-calendar__navigation button:enabled:hover,
 .react-calendar__navigation button:enabled:focus {
-  background-color: #e6e6e6;
+  transform: scale(1.2);
+    -webkit-transform: scale(1.2);
+    -moz-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    -o-transform: scale(1.2);
 }
 .react-calendar__navigation button[disabled] {
   background-color: #f0f0f0;
@@ -125,7 +130,7 @@ const MyPageCalenderBlock = styled.div`
 }
 .react-calendar__tile:enabled:hover,
 .react-calendar__tile:enabled:focus {
-  background-color: #e6e6e6;
+  /* background-color: #e6e6e6; */
 }
 .react-calendar__tile--now {
   /* background: #ffff76; */
@@ -138,11 +143,12 @@ const MyPageCalenderBlock = styled.div`
   background: #ffffa9;
 }
 .react-calendar__tile--hasActive {
-  background: #76baff;
+  /* background: #76baff; */
 }
+
 .react-calendar__tile--hasActive:enabled:hover,
 .react-calendar__tile--hasActive:enabled:focus {
-  background: #a9d4ff;
+  /* background: #a9d4ff; */
 }
 
 /* 클릭해서 표시된 날짜 */
@@ -150,7 +156,7 @@ const MyPageCalenderBlock = styled.div`
 .react-calendar__tile--active {
   /* background: #6f48eb; */
   color: black;
-  /* background:url(${x_mark}); */
+  /* background:url(${o_mark}); */
   background-size: 5vw 5.5vh;
   
 }
