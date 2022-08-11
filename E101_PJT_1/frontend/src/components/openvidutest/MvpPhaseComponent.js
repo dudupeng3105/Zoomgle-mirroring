@@ -91,7 +91,7 @@ const PictureSelectBoard = styled.div`
 const PictureImgBox = styled.div`
   width: 13vw;
   height: 24vh;
-  background: ${props => `url(${props.photo_Url}) no-repeat center`};  
+  background: ${props => `url(${props.backImg}) no-repeat center`};  
   background-size: 13vw 24vh;
 `
 
@@ -210,8 +210,8 @@ const MvpPhaseComponent = ({
       {mainStreamManager !== undefined ? (
         isMvpSpeechDone ? (
           <PictureSelectBoard>
-            {pictureList.map((img, idx) => (
-              <PictureImgBox key={`gameimage${idx}`} backImg={img.photo_Url}></PictureImgBox>
+            {pictureList.map((picture, idx) => (
+              <PictureImgBox key={`gameimage${idx}`} backImg={picture.photo_Url}></PictureImgBox>
             ))}
           </PictureSelectBoard>
         ) : (
