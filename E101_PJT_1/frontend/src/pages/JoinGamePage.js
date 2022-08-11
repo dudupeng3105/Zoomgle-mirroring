@@ -3,6 +3,10 @@ import Header from "../components/common/header";
 import background from '../media/images/headerMenuBackGround.png'
 import PlannedGameList from "../components/common/PlannedGameList";
 import PlanGameDetail from "../components/personal/PlanGameDetail";
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { gamePlanActions } from '../store/gamePlan-slice';
+import { friendActions } from '../store/friends-slice';
 
 const JoinGamePageBlock = styled.div`
   display: flex;
@@ -19,6 +23,14 @@ const JoinGameContent = styled.div`
 `;
 
 const JoinGamePage = () => {
+  const dispatch = useDispatch();
+  const userId = useSelector((state) => state.auth.user.userId);
+
+  useEffect(() => {
+    dispatch(friendActions.GetFriendListStart(userId))
+    dispatch(gamePlanActions.getGamePlanListStart());    
+  }, []);
+
   return (
     <JoinGamePageBlock>
       <Header></Header>
