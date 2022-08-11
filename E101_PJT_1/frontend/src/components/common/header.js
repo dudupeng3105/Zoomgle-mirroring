@@ -157,6 +157,8 @@ const Header = () => {
             {
               dispatch(authActions.logout())
               navigate('/')
+              // 새로고침해야 데이터 안 남아있음
+              window.location.reload();
             }
           }>로그아웃
           </LogoutButton>

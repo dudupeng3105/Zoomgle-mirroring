@@ -106,8 +106,6 @@ const RejectButton = styled.div`
   border: 3px red solid;
 `;
 
-const CalenderBlock = styled.div``;
-
 const MyPageContent = () => {
   const dispatch = useDispatch();
 
@@ -118,6 +116,7 @@ const MyPageContent = () => {
   // console.log('초대장 아이콘 누름', myinvitationList);
 
   const [modalToggle, setModalToggle] = useState(false);
+  const [firstClick, setFirstClick] = useState(false);
 
   const onClickDecision = (decision, invitationSeq, roomCode) => {
     console.log(
@@ -136,7 +135,7 @@ const MyPageContent = () => {
 
   useEffect(() => {
     dispatch(gamePlanActions.getInvitaionListStart());
-  }, []);
+  }, [firstClick]);
 
   return (
     <MyPageContentBlock>
@@ -187,6 +186,7 @@ const MyPageContent = () => {
       <InvitationIcon
         closeOpen={modalToggle}
         onClick={() => {
+          setFirstClick(true);
           setModalToggle(!modalToggle);
         }}
       />

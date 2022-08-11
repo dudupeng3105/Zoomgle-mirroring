@@ -57,6 +57,9 @@ const FriendsList = styled.div`
     display: none; 
     /* color: black; */
   }
+  & p {    
+    font-size: 3rem;
+  }
 `;
 
 const TitleButtonBlock = styled.div`
@@ -266,6 +269,7 @@ const FriendsContent = () => {
   const [error, setError] = useState(null);
   const [friendNicknameInput, setFriendNicknameInput] = useState('');
   const [modalToggle, setmodalToggle] = useState(false);
+  const [addMessageToggle, setAddMessageToggle] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -276,12 +280,23 @@ const FriendsContent = () => {
   const friendsArr = useSelector((state) => state.friend.friendList);
   const addResult = useSelector((state) => state.friend.addResult);
 
-  // console.log(friendsArr);
+  
 
   // 첫렌더링할때랑, addResult 바뀔때마다(친구추가할대마다)
   useEffect(() => {
     dispatch(friendActions.GetFriendListStart(userId))
   }, [addResult]);
+
+  // 친구 추가, 성공 메시지를 0.5초간만 띄움
+  useEffect(() => {
+    console.log(addMessage);
+    if (addMessage) {
+      setAddMessageToggle(true);
+      setTimeout(() => {
+        setAddMessageToggle(false);
+      }, 1000);
+    }
+  }, [addMessage])
 
   useEffect(() => {
     if (friendError) {      
@@ -314,15 +329,6 @@ const FriendsContent = () => {
     // 성공하면 모달 닫음    
     console.log("성공여부", addResult)       
   }
-
-  // console.log(userId);
-  const dummyFriends = [
-    {
-      name: '김동욱',
-      nickname: '두두펭',
-      profileImgNum: 2,
-    },    
-  ];
   
   return (
     <FriendsContentBlock>
@@ -339,7 +345,7 @@ const FriendsContent = () => {
             placeholder="닉네임을 입력하세요."            
             onChange={inputChange}            
           />
-          <h3>{addMessage}</h3>
+          {addMessageToggle? <h3>{addMessage}</h3> : ''}
           <FriendAddButton
             onClick={onClick}          
           >추가</FriendAddButton>
@@ -361,7 +367,7 @@ const FriendsContent = () => {
         </FriendAddButton>
       </TitleButtonBlock>
       <FriendsList>
-        <h2>{error}</h2>
+        <p>{friendsArr.length===0 ? '친구를 추가해주세요' : ''}</p>
         {friendsArr.map((friend, idx) => (
           <FriendCard key={idx}>
             <StyledCard>

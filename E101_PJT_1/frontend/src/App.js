@@ -10,9 +10,21 @@ import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
 import MainGamePage from "./pages/MainGamePage";
 import OpenviduPage from "./pages/OpenviduPage";
+import { useEffect } from 'react';
 
 
 const App = () => {
+  useEffect(() => {
+    window.addEventListener("beforeunload", alertUser);
+    return () => {
+      window.removeEventListener("beforeunload", alertUser);
+    };
+  }, []);
+  const alertUser = (e) => {
+    e.preventDefault();
+    e.returnValue = '';    
+  };
+
   return (
     <Routes>      
       <Route path='/' element={<StartPage />} />
