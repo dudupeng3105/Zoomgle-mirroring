@@ -82,6 +82,10 @@ export const checkInvitaionApi = async (invitationInfo) =>
     },
   });
 
+// 사진 저장
+export const takePictureApi = async (picData, roomSeq) =>
+  await customAxios.post(`api/photos/temp/${roomSeq}`, picData);
+
 // //
 // export const getInvitaionListApi = async () =>
 //   await customJWTAxios.get('api/invitations/list');

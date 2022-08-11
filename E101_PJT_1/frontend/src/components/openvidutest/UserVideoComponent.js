@@ -37,7 +37,11 @@ const StreamComponent = styled.div`
     border-radius: 5%;  
   }
 
-
+  &.mvpshow video {
+    width: 25vw;
+    height: 25vh;
+    border-radius: 50%;  
+  }
 `
 
 const UserVideoComponent = ({ streamManager, mainStreamer, status }) => {

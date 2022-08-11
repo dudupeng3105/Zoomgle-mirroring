@@ -1,8 +1,12 @@
 import React from 'react';
 import OpenViduVideoComponent from './OvVideo';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef  } from 'react';
 import styled from 'styled-components';
 import { minigameList } from './minigameList';
+import html2canvas from 'html2canvas';
+import { useDispatch } from 'react-redux';
+import { gameRoomActions } from '../../store/gameRoom-slice';
+
 
 const StreamComponent = styled.div`
   width: 100%;
@@ -94,6 +98,13 @@ const VoteResultBoard = styled.div`
   height: 30vh;
 `;
 
+const TestBtn = styled.div`
+  width: 10vw;
+  height: 10vh;
+  background-color: #adff45;
+  cursor: pointer;
+`
+
 const MainUserVideoComponent = ({
   streamManager,
   mainStreamer,
@@ -117,21 +128,44 @@ const MainUserVideoComponent = ({
   const [checkResultOver, setCheckResultOver] = useState(false);
   const [voteSkip, setVoteSkip] = useState(false);
   const [voteResult, setVoteResult] = useState(false);
-  const [minigameInfo, setMinigameInfo] = useState(['게임코멘트', 10, 0]);
-  // 0(그리기 게임같은(현재 턴인 사람한테만 정답을 보여줘야하는 게임))
-  // 1(이외 게임)
-  // const minigameList = [
-  //   ['줄무늬 옷 가져오기', 10, 1],
-  //   ['식용유 가져오기', 10, 1],
-  //   ['리모컨 가져오기', 10, 1],
-  //   ['숟가락 가져오기', 10, 1],
-  //   ['파란색 옷 입기', 15, 1],
-  //   ['캐릭터 옷 입기', 15, 1],
-  //   ['거북이 그리기', 20, 0],
-  //   ['가장 왼쪽에 있는 유저 그리기', 20, 0],
-  //   ['가장 오른쪽에 있는 유저 그리기', 20, 0],
-  //   ['돌고래 그리기', 20, 0],
-  // ];
+  const [minigameInfo, setMinigameInfo] = useState(['게임코멘트', 10, 0]);  
+  // html2canvas용 useRef(돔조작하기위해서)
+  const mainScreen = useRef();
+  const dispatch = useDispatch();
+
+  // html2canvas(dom element를 canvas로 바꾸어줌)
+  const onCapture = async() => {
+    console.log('사진찍습니다.');
+    const roomSeq = mySessionIdValue;
+    // dom to canvas
+    const element = mainScreen.current;
+    const canvas = await html2canvas(element); // html to canvas
+    const dataUrl = canvas.toDataURL("image/png");
+    console.log(dataUrl);
+    const blobData = dataURItoBlob(dataUrl);  
+    // 날짜 만들기
+    const now = new Date();
+    const filename =  `${roomSeq}-${now.getHours()}${now.getMinutes()}${now.getSeconds()}.jpeg`
+    // 파일 객체 마들기
+    const tempFile = new File([blobData], filename, {type: "image/jpeg"});     
+
+    // 폼데이터에 담아서 api 요청    
+    let picData = new FormData();
+    picData.append("photo", tempFile);  
+    console.log(roomSeq);    
+
+    dispatch(gameRoomActions.takePictureStart({picData, roomSeq}));       
+  }
+  
+
+  function dataURItoBlob(dataURI) {
+    var binary = atob(dataURI.split(',')[1]);
+    var array = [];
+    for(var i = 0; i < binary.length; i++) {
+        array.push(binary.charCodeAt(i));
+    }
+    return new Blob([new Uint8Array(array)], {type: 'image/jpeg'});
+  };
 
   // 미니게임이 끝난 걸 가정하고 작성함
   const minigameEndHandler = () => {
@@ -278,15 +312,11 @@ const MainUserVideoComponent = ({
   return (
     <div>
       {streamManager !== undefined ? (
-        <StreamComponent className={mainStreamer}>
+        <StreamComponent className={mainStreamer} ref={mainScreen}>
           {isRoll ? (
             <MinigameInfo>
               <p>남은 시간 : {timeLeft}</p>
-              {explanationOver ? (
-                ''
-              ) : (
-                <p>{minigameInfo[3]}</p>
-              )}
+              {explanationOver ? '' : <p>{minigameInfo[3]}</p>}
 
               {/* 그려서 맞히기의 경우 현재 턴인 사람에게만 띄움 */}
 
@@ -351,6 +381,7 @@ const MainUserVideoComponent = ({
           )}
           <OpenViduVideoComponent streamManager={streamManager} />
           <p>{nextPlayer}씨 당신차례입니다.</p>
+          <TestBtn onClick={() => onCapture()}>사진찍기테스트</TestBtn>
         </StreamComponent>
       ) : null}
     </div>

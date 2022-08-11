@@ -2,10 +2,9 @@ import React, { useEffect } from 'react';
 import styled from "styled-components";
 import UserVideoComponent from './UserVideoComponent';
 import MainUserVideoComponent from './MainUserVideoComponent'; // 미니게임 중앙화면용
-import DiceRoller from '../../components/utils/DiceRoller'
 import { useState } from 'react';
 
-const OpenViduSessionBlock = styled.div`
+const MvpPhaseComponentBlock = styled.div`
   width: 100vw;
   height: 100vh;
 `;
@@ -52,18 +51,6 @@ const MainVideo = styled.div`
   }
 `;
 
-const SwitchCameraBtn = styled.div`  
-  cursor: pointer;
-  width: 15vmin;
-  height: 5vh;
-  background-color: white;
-  border: 2px solid black;
-  color:black;
-  :hover {
-    background-color:#adff45;
-  }
-`
-
 const TestContainer = styled.div`
   color: white;  
 `;
@@ -80,117 +67,43 @@ const PlayerList = styled.div`
   }
 `
 
-const UserVideoComponentContainer = styled.div`
-  width: 10vmin;
-  height: 10vmin;
-  border: 3px solid white;
+const MvpShowUsersContainer = styled.div`
+  width: 25vw;
+  height: 25vh;
   cursor: pointer;
   position: absolute;
   &.pos0 {
-    top: 80vh;
-    left: 8.5vw;
+    top: 15vh;
+    left: 0vw;
   }
 
   &.pos1 {
-    top: 85vh;
-    left: 23vw;
+    top: 40vh;
+    left: 0vw;
   }
 
   &.pos2 {
-    top: 85vh;
-    left: 33vw;
+    top: 65vh;
+    left: 0vw;
   }
 
   &.pos3 {
-    top: 85vh;
-    left: 45vw;
+    top: 15vh;
+    right: 0vw;
   }
 
   &.pos4 {
-    top: 85vh;
-    left: 55vw;
+    top: 40vh;
+    right: 0vw;
   }
 
   &.pos5 {
-    top: 85vh;
-    left: 65vw;
-  }
-
-  &.pos6 {
-    top: 85vh;
-    left: 77vw;
-  }
-
-  &.pos7 {
-    top: 68vh;
-    left: 81vw;
-  }
-
-  &.pos8 {
-    top: 50vh;
-    left: 85vw;
-  }
-
-  &.pos9 {
-    top: 23vh;
-    left: 86vw;
-  }
-
-  &.pos10 {
-    top: 3vh;
-    left: 81vw;
-  }
-
-  &.pos11 {
-    top: 4vh;
-    left: 71vw;
-  }
-
-  &.pos12 {
-    top: 3.5vh;
-    left: 60vw;
-  }
-
-  &.pos13 {
-    top: 2.5vh;
-    left: 48vw;
-  }
-
-  &.pos14 {
-    top: 3vh;
-    left: 35.5vw;
-  }
-
-  &.pos15 {
-    top: 3vh;
-    left: 22vw;
-  }
-
-  &.pos16 {
-    top: 16vh;
-    left: 17vw;
-  }
-
-  &.pos17 {
-    top: 30vh;
-    left: 13vw;
-  }
-
-  &.pos18 {
-    top: 40vh;
-    left: 16vw;
-  }
-
-  &.pos19 {
-    top: 50vh;
-    left: 14vw;
-  }
-  &.testPos {
-    margin-left: 2vw;
+    top: 65vh;
+    right: 0vw;
   }
 `
 
-const OpenViduSession = ({
+const MvpPhaseComponent = ({
   setIsGameDone,
   isGameDone,
   nextPlayer,
@@ -235,7 +148,7 @@ const OpenViduSession = ({
   }, [nextPlayer])
 
   return (
-    <OpenViduSessionBlock>
+    <MvpPhaseComponentBlock>
       <h1>{myUserNameValue}</h1>
       <TestContainer>
         <PlayerList>
@@ -252,10 +165,6 @@ const OpenViduSession = ({
             </p>
           ))}
         </PlayerList>
-        {/* {subscribers.map((sub, i) => (
-          <p key={i}>{sub.stream.connection.data} {i}번쨰 유저</p>
-        ))} */}
-        {/* <p>{publisher.stream.connection.data}</p> */}
       </TestContainer>
       <OpenViduSessionHeader>
         <p>{mySessionIdValue}번 방</p>
@@ -288,54 +197,33 @@ const OpenViduSession = ({
             vote={vote}
             setVote={setVote}
             posList={posList}
-            minigameType={minigameType}          
+            minigameType={minigameType}
           />
         </MainVideo>
       ) : null}
-
-      <SwitchCameraBtn
-        onClick={() => {
-          switchCamera();
-        }}
-      >
-        Switch Camera
-      </SwitchCameraBtn>
-      {/* 비디오 컨테이너 */}
-      {/* <VideoContainer> */}
+      
       {publisher !== undefined ? (
-        <UserVideoComponentContainer
-          className={`pos${posList[myTurnNum]}`}
-        >
+        <MvpShowUsersContainer className={`pos${posList[myTurnNum]}`}>
           {/* onClick={() => handleMainVideoStream(publisher)} */}
           <UserVideoComponent
             streamManager={publisher}
             mainStreamer={'publisher'}
-            status={'gaming'}
+            status={'mvpshow'}
           />
-        </UserVideoComponentContainer>
+        </MvpShowUsersContainer>
       ) : null}
       {subscribers.map((sub, i) => (
-        <UserVideoComponentContainer
-          className={`pos${posList[players.indexOf(JSON.parse(sub.stream.connection.data).clientData)]}`}
-          key={i}
-        >
+        <MvpShowUsersContainer className={`pos${i + 1}`} key={`mvpshow${i}`}>
           {/* onClick={() => handleMainVideoStream(sub) */}
-          <UserVideoComponent streamManager={sub} mainStreamer={'sub'} status={'gaming'}/>
-        </UserVideoComponentContainer>
+          <UserVideoComponent
+            streamManager={sub}
+            mainStreamer={'sub'}
+            status={'mvpshow'}
+          />
+        </MvpShowUsersContainer>
       ))}
-      {/* </VideoContainer> */}
-      {/* 주사위 */}
-      {/* 턴 일 때만 보임 */}
-      {(!isRoll & myTurnNum===turnNum) ? <DiceRoller
-        players={players}        
-        isRoll={isRoll}        
-        posList={posList}
-        playerNum={playerNum}
-        myTurnNum={myTurnNum}        
-        mySessionIdValue={mySessionIdValue}         
-      ></DiceRoller>: ''}
-    </OpenViduSessionBlock>
+    </MvpPhaseComponentBlock>
   );
-};;;
+};
 
-export default OpenViduSession;
+export default MvpPhaseComponent;

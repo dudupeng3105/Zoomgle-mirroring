@@ -158,23 +158,6 @@ const WaitingRoom = ({
 
   return (
     <WaitingRoomBlock>
-      {/* <h1>여기 대기실임: {myUserNameValue}</h1> */}
-      {/* <TestContainer>
-        <PlayerList>
-          <p>내 턴번호: {myTurnNum}</p>
-          <p>포지션리스트: {posList}</p>
-          <p>플레이어 리스트</p>
-          <p>사람수: {playerNum}</p>
-          <p>누구턴: {turnNum}</p>
-          <p>니이름: {myUserNameValue}</p>
-          <p>누구냐:{players}</p>
-          {players.map((playerName, i) => (
-            <p key={i}>
-              {i}번쨰: {playerName}
-            </p>
-          ))}
-        </PlayerList>
-      </TestContainer> */}
       <OpenViduSessionHeader>
         {mySessionIdValue}번 방
       </OpenViduSessionHeader>
@@ -204,7 +187,7 @@ const WaitingRoom = ({
         </WaitingUserVideoContainer>
       ) : null}
       {subscribers.map((sub, i) => (
-        <WaitingUserVideoContainer className={`pos${i + 1}`} key={i}>
+        <WaitingUserVideoContainer className={`pos${i + 1}`} key={`waiting${i}`}>
           {/* onClick={() => handleMainVideoStream(sub) */}
           <UserVideoComponent
             streamManager={sub}

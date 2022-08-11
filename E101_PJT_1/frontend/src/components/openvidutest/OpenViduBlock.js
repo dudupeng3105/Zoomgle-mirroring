@@ -50,8 +50,9 @@ const OpenViduBlock = ({sessionNickname, sessionRoomId, sessionCapacity, session
   const [currentVideoDevice, setCurrentVideoDevice] = useState(null);  
   // 
   // 게임관련 변수들
-  // 게임관련 변수 - 대기실 변수
+  // 게임관련 변수 - 대기실 변수, 게임(사진고르는타임 남아있음) 끝 변수
   const [isGameStart, setIsGameStart] = useState(false);
+  const [isGameDone, setIsGameDone] = useState(false);
   // 게임관련 변수 - 게임 관련 변수
   const [players, setPlayers] = useState([]); // 플레이어들
   const [turnNum, setTurnNum] = useState(0); // 몇 번째 사람 차례인지(이번 턴 인 사람)
@@ -166,6 +167,19 @@ const OpenViduBlock = ({sessionNickname, sessionRoomId, sessionCapacity, session
       console.warn(exception);
     });
 
+    // 대기실에서 게임 시작 전체 동기화 ON
+    mySession.on('GAME_STATE_START', (data) => {
+      console.warn("게임 시작할거야");
+      const {nextTurnNum, nextNextPlayer, nextPosList, nextVote, nextIsRoll, nextIsVote, nextIsGameStart} = JSON.parse(data.data);
+      setTurnNum(nextTurnNum);
+      setNextPlayer(nextNextPlayer);
+      setPosList(nextPosList);
+      setVote(nextVote);
+      setIsRoll(nextIsRoll);
+      setIsVote(nextIsVote);
+      setIsGameStart(nextIsGameStart);
+    })
+
     // 주사위 동기화 ON
     mySession.on('GAME_STATE_CHANGED', (data) => {
       console.warn("시그널 왔다 받아라..", players);           
@@ -174,7 +188,7 @@ const OpenViduBlock = ({sessionNickname, sessionRoomId, sessionCapacity, session
       setPosList(nextPosList);
       setIsRoll(isRoll); // 주사위 돌렸다는 것이 미니게임의 시작을 알림
     });
-
+    
     // 미니게임 결과 동기화 ON
     mySession.on('MINIGAME_STATE_CHANGED', (data) => {
       console.warn("미니게임끝났다 받아라..");      
@@ -194,19 +208,15 @@ const OpenViduBlock = ({sessionNickname, sessionRoomId, sessionCapacity, session
       setVote([...nextVote]);
     });
 
-    // 대기실에서 게임 시작 전체 동기화 ON
-    mySession.on('GAME_STATE_START', (data) => {
-      console.warn("게임 시작할거야");
-      const {nextTurnNum, nextNextPlayer, nextPosList, nextVote, nextIsRoll, nextIsVote, nextIsGameStart} = JSON.parse(data.data);
-      setTurnNum(nextTurnNum);
-      setNextPlayer(nextNextPlayer);
+    // 투표 진행 동기화 ON
+    mySession.on('GAME_STATE_DONE', (data) => {
+      console.warn("투표상황 업데이트..");      
+      const {nextIsGameDone, nextPosList} = JSON.parse(data.data);
       setPosList(nextPosList);
-      setVote(nextVote);
-      setIsRoll(nextIsRoll);
-      setIsVote(nextIsVote);
-      setIsGameStart(nextIsGameStart);
-    })
+      setIsGameDone(nextIsGameDone);
+    });
 
+    
     // --- 4) Connect to the session with a valid user token ---
 
     // 'getToken' method is simulating what your server-side should do.
@@ -419,17 +429,46 @@ const OpenViduBlock = ({sessionNickname, sessionRoomId, sessionCapacity, session
 
   // 방 참여 init
   return (
-    <OpenViduContainer
-      className={isGameStart ? '': 'waitingRoom'}
-    >
+    <OpenViduContainer className={isGameStart ? '' : 'waitingRoom'}>
       {/* 그 입장하기 전에 화면 띄워줌 사실 필요없어서
         그냥 자동입장으로 일단 바꿈 */}
       {session === undefined ? <LoadingBlock></LoadingBlock> : null}
 
       {/* 입장했으면.. */}
       {session !== undefined ? (
-        isGameStart ? (
+        isGameDone ? (
+          <MvpPhaseComponent
+            isGameDone={isGameDone}
+            setIsGameDone={setIsGameDone}
+            nextPlayer={nextPlayer}
+            setNextPlayer={setNextPlayer}
+            isRoll={isRoll}
+            setIsRoll={setIsRoll}
+            isVote={isVote}
+            setIsVote={setIsVote}
+            vote={vote}
+            setVote={setVote}
+            minigameType={minigameType}
+            setMinigameType={setMinigameType}
+            turnNum={turnNum}
+            setTurnNum={setTurnNum}
+            posList={posList}
+            setPosList={setPosList}
+            session={session}
+            handleMainVideoStream={handleMainVideoStream}
+            switchCamera={switchCamera}
+            leaveSession={leaveSession}
+            mySessionIdValue={mySessionIdValue}
+            myUserNameValue={myUserNameValue}
+            mainStreamManager={mainStreamManager}
+            publisher={publisher}
+            players={players}
+            subscribers={subscribers}          
+          ></MvpPhaseComponent>
+        ) : isGameStart ? (
           <OpenViduSession
+            isGameDone={isGameDone}
+            setIsGameDone={setIsGameDone}
             nextPlayer={nextPlayer}
             setNextPlayer={setNextPlayer}
             isRoll={isRoll}
@@ -483,8 +522,7 @@ const OpenViduBlock = ({sessionNickname, sessionRoomId, sessionCapacity, session
             publisher={publisher}
             players={players}
             subscribers={subscribers}
-          >
-          </WaitingRoom>
+          ></WaitingRoom>
         )
       ) : null}
     </OpenViduContainer>
