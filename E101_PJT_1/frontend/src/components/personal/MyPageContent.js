@@ -1,3 +1,14 @@
+<<<<<<< HEAD
+import styled from "styled-components";
+import background from '../../media/images/mypage_back3.jpg'
+import inviteIcon from '../../media/images/closeletter.png'
+import openedinviteIcon from '../../media/images/openletter1.png'
+import letter from '../../media/images/letter.png'
+import reject from '../../media/images/reject.png'
+import accept from '../../media/images/accept.png'
+import MyPagecalender from '../utils/MyPageCalender'
+import { useSelector } from "react-redux";
+=======
 import styled from 'styled-components';
 import background from '../../media/images/mypage_back3.jpg';
 import inviteIcon from '../../media/images/closeletter.png';
@@ -7,6 +18,7 @@ import reject from '../../media/images/reject.png';
 import accept from '../../media/images/accept.png';
 import MyPagecalender from '../utils/MyPageCalender';
 import { useSelector } from 'react-redux';
+>>>>>>> master
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { gamePlanActions } from '../../store/gamePlan-slice';

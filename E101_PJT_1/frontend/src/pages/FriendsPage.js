@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Header from "../components/common/header";
+import background from "../media/images/friendback.png"
 import FriendsContent from "../components/personal/FriendsContent";
 
 const FriendsPageBlock = styled.div`

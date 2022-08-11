@@ -19,13 +19,13 @@ public class QFriend extends EntityPathBase<Friend> {
 
     public static final QFriend friend = new QFriend("friend");
 
-    public final StringPath friendId = createString("friendId");
+    public final StringPath friendNickname = createString("friendNickname");
 
     public final NumberPath<Long> friendSeq = createNumber("friendSeq", Long.class);
 
     public final DateTimePath<java.time.LocalDateTime> MOD_DTM = createDateTime("MOD_DTM", java.time.LocalDateTime.class);
 
-    public final StringPath myId = createString("myId");
+    public final StringPath myNickname = createString("myNickname");
 
     public final DateTimePath<java.time.LocalDateTime> REG_DTM = createDateTime("REG_DTM", java.time.LocalDateTime.class);
 
