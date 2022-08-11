@@ -62,6 +62,12 @@ const GameInvitationModal = styled.div`
   z-index: 1;
 `;
 
+const InfoMessage = styled.div`
+  font-size: 2rem;
+  display: flex;
+  justify-content: center;
+`;
+
 const PlannedGameList = () => {
   const dispatch = useDispatch();
 
@@ -73,10 +79,10 @@ const PlannedGameList = () => {
   const [count, setCount] = useState(0);
   const [modalToggle, setModalToggle] = useState(false);
   const [inviteRoomCode, setInviteRoomCode] = useState(0);
-  const onClickHandler = (roomCode) => {
-    setInviteRoomCode(roomCode);
-    setModalToggle(!modalToggle);
-  };
+  // const onClickHandler = (roomCode) => {
+  //   setInviteRoomCode(roomCode);
+  //   setModalToggle(!modalToggle);
+  // };
 
   const onClickModalCloser = () => {
     setModalToggle(!modalToggle);
@@ -92,10 +98,10 @@ const PlannedGameList = () => {
   };
 
   
-  useEffect(() => {
-    dispatch(friendActions.GetFriendListStart(userId))
-    dispatch(gamePlanActions.getGamePlanListStart());    
-  }, []);
+  // useEffect(() => {
+  //   dispatch(friendActions.GetFriendListStart(userId))
+  //   dispatch(gamePlanActions.getGamePlanListStart());    
+  // }, []);
 
   return (
     <PlannedGameListBlock>
@@ -117,37 +123,28 @@ const PlannedGameList = () => {
                   <div>닉네임(seq): {friend.nickname}</div>
                 </NameNicknameEl>
               </StyledCard>
-              <button onClick={() => onClickSendInvitation(`${friend.nickname}`)}>초대장보내기</button>
+              <button
+                onClick={() => onClickSendInvitation(`${friend.nickname}`)}
+              >
+                초대장보내기
+              </button>
             </FriendCard>
           ))}
         </GameInvitationModal>
       )}
       <PlanGameDetailTitle>예정된 모험(4개만 보여줌)</PlanGameDetailTitle>
-      {myGamePlanList.length === 0 ? '': (<GameNumCounter 
+      {myGamePlanList.length === 0 ? (
+        <InfoMessage>예정된 게임이 없습니다.</InfoMessage>
+      ) : (
+        <GameNumCounter
           count={count}
           setCount={setCount}
-          myGamePlanList= {myGamePlanList} />)}
-      <p>{count}</p>
-      {/* {myGamePlanList.map((Plan, idx) => (
-        <PlannedGameBlock key={idx}>
-          방 번호 {Plan.roomCode}의 게임
-          <p>{Plan.date}</p>
-          <p>{Plan.host}</p>
-          <p>{Plan.playerList[0].user}</p>
-          <GameInvitationBtn
-            onClick={() => {
-              onClickHandler(`${Plan.roomCode}`);
-            }}
-          >
-            초대장보내기
-          </GameInvitationBtn>
-        </PlannedGameBlock>
-      ))} */}
+          myGamePlanList={myGamePlanList}
+        />
+      )}
+      {/* <p>{count}</p> */}
     </PlannedGameListBlock>
   );
 };
 
 export default PlannedGameList;
-
-// game plan index state 선언
-// 

@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface InvitationService {
 	// 게임 초대장 만들기
-	void createInvitationPostReq(long roomCode, String sender, String receiver);
+	boolean createInvitationPostReq(long roomCode, String sender, String receiver);
 
 	// user의 모든 초대
 	List<Invitation> getAllInvite(String user);
@@ -18,7 +18,9 @@ public interface InvitationService {
 	void joinPlayer(String user, long roomCode, long invitationSeq);
 
 	// 초대 거절
-	void deleteInvitation(long roomCode);
+	boolean deleteInvitation(long roomCode);
 
-	void deletePlayer(long roomCode);
+	boolean deleteInvitationByRoomCode(long roomCode);
+
+	boolean deletePlayer(long roomCode);
 }

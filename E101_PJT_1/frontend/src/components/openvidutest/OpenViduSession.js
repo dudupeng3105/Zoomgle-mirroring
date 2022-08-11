@@ -190,8 +190,6 @@ const UserVideoComponentContainer = styled.div`
   }
 `
 
-
-
 const OpenViduSession = ({
   nextPlayer,
   setNextPlayer,
@@ -309,6 +307,7 @@ const OpenViduSession = ({
           <UserVideoComponent
             streamManager={publisher}
             mainStreamer={'publisher'}
+            status={'gaming'}
           />
         </UserVideoComponentContainer>
       ) : null}
@@ -318,7 +317,7 @@ const OpenViduSession = ({
           key={i}
         >
           {/* onClick={() => handleMainVideoStream(sub) */}
-          <UserVideoComponent streamManager={sub} mainStreamer={'sub'} />
+          <UserVideoComponent streamManager={sub} mainStreamer={'sub'} status={'gaming'}/>
         </UserVideoComponentContainer>
       ))}
       {/* </VideoContainer> */}

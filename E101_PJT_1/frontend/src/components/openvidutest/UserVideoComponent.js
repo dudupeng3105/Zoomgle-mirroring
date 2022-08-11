@@ -30,9 +30,17 @@ const StreamComponent = styled.div`
     border-radius: 5%;
     border: 2px yellow solid;    
   }
+
+  &.waiting video{
+    width: 25vw;
+    height: 25vh;
+    border-radius: 5%;  
+  }
+
+
 `
 
-const UserVideoComponent = ({ streamManager, mainStreamer }) => {
+const UserVideoComponent = ({ streamManager, mainStreamer, status }) => {
   const [userNickname, setUserNickname] = useState("");
   console.warn(streamManager);
   const getNicknameTag = (streamManager) => {
@@ -52,8 +60,8 @@ const UserVideoComponent = ({ streamManager, mainStreamer }) => {
   return (
     <div>
       {streamManager !== undefined ? (
-        <StreamComponent className={mainStreamer}>
-          <OpenViduVideoComponent streamManager={streamManager} />
+        <StreamComponent className={status}>
+          <OpenViduVideoComponent streamManager={streamManager}/>
           <p>{userNickname}</p>          
         </StreamComponent>
       ) : null}
