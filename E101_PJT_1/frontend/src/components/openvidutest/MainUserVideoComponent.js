@@ -35,10 +35,11 @@ const StreamComponent = styled.div`
 
   &.mainStreamer video {
     width: 40vw;
-    height: 40vh;
+    height: 50vh;
     /* padding-top: 25vmin;     */
     /* float: left; */
     cursor: initial;
+    object-fit: fill;    
     border-radius: 5%;
     border: 2px yellow solid;
   }
@@ -98,14 +99,46 @@ const VoteResultBoard = styled.div`
   height: 30vh;
 `;
 
-const TestBtn = styled.div`
+const CaptureBtn = styled.div`  
+  position: fixed;  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  right: 2vw;
+  top: 2vh;
   width: 10vw;
   height: 10vh;
-  background-color: #adff45;
+  background-color: #4E5180;
+  border-radius: 5px;
+  border: 2px solid white;
   cursor: pointer;
+  font-size: 4vmin;
+  text-align: center;
+  &:hover {
+    background-color: white;
+    border: 2px solid #4E5180;
+    color: #4E5180;
+  }
+`;
+
+const TurnInfoBox = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40vw;
+  color: navy;
+  font-size: 2.3rem;
+  &.bright {
+    border: 5px solid white;
+  }
+  &.dark {
+    border: 5px solid yellow;
+  }
 `
 
 const MainUserVideoComponent = ({
+  isGameDone,
   streamManager,
   mainStreamer,
   isRoll,
@@ -128,7 +161,10 @@ const MainUserVideoComponent = ({
   const [checkResultOver, setCheckResultOver] = useState(false);
   const [voteSkip, setVoteSkip] = useState(false);
   const [voteResult, setVoteResult] = useState(false);
-  const [minigameInfo, setMinigameInfo] = useState(['게임코멘트', 10, 0]);  
+  const [minigameInfo, setMinigameInfo] = useState(['게임코멘트', 10, 0]); 
+  // MVP 효과용
+  const [mvpEffect, setMvpEffect] = useState(null);
+
   // html2canvas용 useRef(돔조작하기위해서)
   const mainScreen = useRef();
   const dispatch = useDispatch();
@@ -309,80 +345,114 @@ const MainUserVideoComponent = ({
     }
   }, [isRoll]);
 
+  useEffect(() => {
+    if (isRoll) {
+      setExplanationOver(false);
+      setTimeOver(false);
+      setVoteOver(false);
+      setCheckResultOver(false);
+      setTimeLeft(5); // 문제설명타임
+      setIsVote(false);
+    } else {
+      return;
+    }
+  }, [isRoll]);
+
+  useEffect(() => {
+    let i = 0
+    while (i < 10) {
+      if (i % 2) {
+        setTimeout(() => {
+          setMvpEffect('bright');
+        }, (i + 1) * 300);
+      } else {
+        setTimeout(() => {
+          setMvpEffect('dark');
+        }, (i + 1) * 300);
+      }
+      i++;
+    }
+  }, [isGameDone]);
+
+  
+
   return (
     <div>
       {streamManager !== undefined ? (
-        <StreamComponent className={mainStreamer} ref={mainScreen}>
-          {isRoll ? (
-            <MinigameInfo>
-              <p>남은 시간 : {timeLeft}</p>
-              {explanationOver ? '' : <p>{minigameInfo[3]}</p>}
+        <>
+          <StreamComponent className={mainStreamer} ref={mainScreen}>
+            {isRoll ? (
+              <MinigameInfo>
+                <p>남은 시간 : {timeLeft}</p>
+                {explanationOver ? '' : <p>{minigameInfo[3]}</p>}
 
-              {/* 그려서 맞히기의 경우 현재 턴인 사람에게만 띄움 */}
+                {/* 그려서 맞히기의 경우 현재 턴인 사람에게만 띄움 */}
 
-              {explanationOver & !timeOver ? (
-                !minigameInfo[2] ? (
-                  turnNum === myTurnNum ? (
-                    <p>{minigameInfo[0]}</p>
+                {explanationOver & !timeOver ? (
+                  !minigameInfo[2] ? (
+                    turnNum === myTurnNum ? (
+                      <p>{minigameInfo[0]}</p>
+                    ) : (
+                      ''
+                    )
                   ) : (
-                    ''
+                    <p>{minigameInfo[0]}</p>
                   )
                 ) : (
-                  <p>{minigameInfo[0]}</p>
-                )
-              ) : (
-                ''
-              )}
-              {timeOver & !voteOver ? (
-                <>
-                  <p>투표시간입니다</p>
-                  <p>투표 수: {vote.length}</p>
-                  {!minigameInfo[2] ? (
-                    <p>뭘 그리는 거 였을까요?{minigameInfo[0]}</p>
-                  ) : (
-                    ''
-                  )}
-                  {!isVote ? (
-                    <AgreeDisagreeBtnContainer>
-                      <MinigameBtn onClick={() => voteHandler(true)}>
-                        찬성
-                      </MinigameBtn>
-                      <MinigameBtnRight onClick={() => voteHandler(false)}>
-                        반대
-                      </MinigameBtnRight>
-                    </AgreeDisagreeBtnContainer>
-                  ) : (
-                    ''
-                  )}
-                </>
-              ) : (
-                ''
-              )}
-              {voteOver & !checkResultOver ? (
-                <>
-                  {/* <MinigameBtn onClick={() => onClickHandler()}>
-                    (결과확인타임)다음턴으로 넘어가기
-                  </MinigameBtn> */}
-                  <VoteResultBoard>
-                    <p>최종결과: {voteResult ? '성공' : '실패!!!'}</p>
-                    {vote.map((thisVote, idx) => (
-                      <p key={`vote${idx}`}>
-                        {thisVote[0]}의 선택: {thisVote[1] ? '통과' : '실패'}
-                      </p>
-                    ))}
-                  </VoteResultBoard>
-                </>
-              ) : (
-                ''
-              )}
-            </MinigameInfo>
-          ) : (
-            ''
-          )}
-          <OpenViduVideoComponent streamManager={streamManager} />
-          <p>{nextPlayer}씨 당신차례입니다.</p>
-          <TestBtn onClick={() => onCapture()}>사진찍기테스트</TestBtn>
-        </StreamComponent>
+                  ''
+                )}
+                {timeOver & !voteOver ? (
+                  <>
+                    <p>투표시간입니다</p>
+                    <p>투표 수: {vote.length}</p>
+                    {!minigameInfo[2] ? (
+                      <p>뭘 그리는 거 였을까요?{minigameInfo[0]}</p>
+                    ) : (
+                      ''
+                    )}
+                    {!isVote ? (
+                      <AgreeDisagreeBtnContainer>
+                        <MinigameBtn onClick={() => voteHandler(true)}>
+                          찬성
+                        </MinigameBtn>
+                        <MinigameBtnRight onClick={() => voteHandler(false)}>
+                          반대
+                        </MinigameBtnRight>
+                      </AgreeDisagreeBtnContainer>
+                    ) : (
+                      ''
+                    )}
+                  </>
+                ) : (
+                  ''
+                )}
+                {voteOver & !checkResultOver ? (
+                  <>
+                    {/* <MinigameBtn onClick={() => onClickHandler()}>
+                      (결과확인타임)다음턴으로 넘어가기
+                    </MinigameBtn> */}
+                    <VoteResultBoard>
+                      <p>최종결과: {voteResult ? '성공' : '실패!!!'}</p>
+                      {vote.map((thisVote, idx) => (
+                        <p key={`vote${idx}`}>
+                          {thisVote[0]}의 선택: {thisVote[1] ? '통과' : '실패'}
+                        </p>
+                      ))}
+                    </VoteResultBoard>
+                  </>
+                ) : (
+                  ''
+                )}
+              </MinigameInfo>
+            ) : (
+              ''
+            )}
+            <OpenViduVideoComponent streamManager={streamManager} />
+            
+          </StreamComponent>
+          {isGameDone ? <TurnInfoBox className={mvpEffect}>MVP: {nextPlayer}!!</TurnInfoBox> : <TurnInfoBox>{nextPlayer}씨 당신차례입니다.</TurnInfoBox>}
+          <CaptureBtn onClick={() => onCapture()}>사진찍기테스트</CaptureBtn>
+        </>
       ) : null}
     </div>
   );

@@ -28,6 +28,7 @@ const StreamComponent = styled.div`
     /* float: left; */    
     cursor: initial;
     border-radius: 5%;
+    
     border: 2px yellow solid;    
   }
 
@@ -38,10 +39,23 @@ const StreamComponent = styled.div`
   }
 
   &.mvpshow video {
-    width: 25vw;
+    width: 15vw;
     height: 25vh;
     border-radius: 50%;  
   }
+`
+
+const NickNameBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 5vw;
+  height: 3vh;
+  background-color: navy;
+  border-radius: 25%;
+  font-size: 1.1rem;
+  color: white;
+  border: 2px solid navy;
 `
 
 const UserVideoComponent = ({ streamManager, mainStreamer, status }) => {
@@ -66,7 +80,7 @@ const UserVideoComponent = ({ streamManager, mainStreamer, status }) => {
       {streamManager !== undefined ? (
         <StreamComponent className={status}>
           <OpenViduVideoComponent streamManager={streamManager}/>
-          <p>{userNickname}</p>          
+          <NickNameBox>{userNickname}</NickNameBox>          
         </StreamComponent>
       ) : null}
     </div>

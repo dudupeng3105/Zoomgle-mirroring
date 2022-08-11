@@ -8,6 +8,7 @@ import gameboard from '../../media/images/gameboard.png';
 import loadingImage from '../../media/images/loadingImage.gif';
 import waitingRoomBackGround from '../../media/images/waitingRoom.jpg'
 import WaitingRoom from './WaitingRoom';
+import MvpPhaseComponent from './MvpPhaseComponent';
 
 
 const OpenViduContainer = styled.div`
@@ -53,6 +54,7 @@ const OpenViduBlock = ({sessionNickname, sessionRoomId, sessionCapacity, session
   // 게임관련 변수 - 대기실 변수, 게임(사진고르는타임 남아있음) 끝 변수
   const [isGameStart, setIsGameStart] = useState(false);
   const [isGameDone, setIsGameDone] = useState(false);
+  const [isMvpSpeechDone, setIsMvpSpeechDone] = useState(false);
   // 게임관련 변수 - 게임 관련 변수
   const [players, setPlayers] = useState([]); // 플레이어들
   const [turnNum, setTurnNum] = useState(0); // 몇 번째 사람 차례인지(이번 턴 인 사람)
@@ -63,6 +65,7 @@ const OpenViduBlock = ({sessionNickname, sessionRoomId, sessionCapacity, session
   // const [minigameDone, setMinigameDone] = useState(false); // 미니게임이 끝났는지
   const [isRoll, setIsRoll] = useState(false); // 굴렸는지
   const [isVote, setIsVote] = useState(false); // 투표했는지
+  // MVP 관련 변수들
 
   
 
@@ -208,12 +211,27 @@ const OpenViduBlock = ({sessionNickname, sessionRoomId, sessionCapacity, session
       setVote([...nextVote]);
     });
 
-    // 투표 진행 동기화 ON
+    // 보드게임 종료 알림
     mySession.on('GAME_STATE_DONE', (data) => {
       console.warn("투표상황 업데이트..");      
       const {nextIsGameDone, nextPosList} = JSON.parse(data.data);
       setPosList(nextPosList);
       setIsGameDone(nextIsGameDone);
+    });
+
+    // 보드게임 종료 알림
+    mySession.on('GAME_STATE_DONE', (data) => {
+      console.warn("보드게임종료..");      
+      const {nextIsGameDone, nextPosList} = JSON.parse(data.data);
+      setPosList(nextPosList);
+      setIsGameDone(nextIsGameDone);
+    });
+
+    // MVP 스피치 종료 알림
+    mySession.on('SPEECH_DONE', (data) => {
+      console.warn("연설 종료..");      
+      const {nextIsMvpSpeechDone} = JSON.parse(data.data);
+      setIsMvpSpeechDone(nextIsMvpSpeechDone);      
     });
 
     
@@ -438,6 +456,7 @@ const OpenViduBlock = ({sessionNickname, sessionRoomId, sessionCapacity, session
       {session !== undefined ? (
         isGameDone ? (
           <MvpPhaseComponent
+            isMvpSpeechDone={isMvpSpeechDone}
             isGameDone={isGameDone}
             setIsGameDone={setIsGameDone}
             nextPlayer={nextPlayer}

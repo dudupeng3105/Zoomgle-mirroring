@@ -2,7 +2,9 @@ import React, { useEffect } from 'react';
 import styled from "styled-components";
 import UserVideoComponent from './UserVideoComponent';
 import MainUserVideoComponent from './MainUserVideoComponent'; // 미니게임 중앙화면용
-import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { gameRoomActions } from '../../store/gameRoom-slice';
+import { useSelector } from 'react-redux';
 
 const MvpPhaseComponentBlock = styled.div`
   width: 100vw;
@@ -42,7 +44,7 @@ const MainVideo = styled.div`
   color: white;
   font-size: 2rem;
   position: absolute;
-  top: 25vh;
+  top: 20vh;
   left: 30vw;
   width: 40vw;
   height: 40vh;
@@ -51,20 +53,46 @@ const MainVideo = styled.div`
   }
 `;
 
-const TestContainer = styled.div`
-  color: white;  
+const MvpSpeechSkipBtn = styled.div`
+  cursor: pointer;
+  position: absolute;
+  left: 45vw;
+  top: 21vh;
+  display: flex;
+  justify-content: center;
+  width: 10vw;
+  height: 5vh;
+  align-items: center;
+  background-color: #4E5180;
+  color: white;
+  border-radius: 5px;
+  border: 2px solid white;  
+  font-size: 3vmin;
+  text-align: center;
+  &:hover {
+    background-color: white;
+    border: 2px solid #4E5180;
+    color: #4E5180;
+  }
+`
+
+const PictureSelectBoard = styled.div`
+  width: 40vw;
+  height: 50vh;
+  position: absolute;
+  top: 25vh;
+  left: 30vw;
+  width: 40vw;
+  height: 40vh;
+  display: flex;
+  flex-wrap: wrap;
 `;
 
-const PlayerList = styled.div`
-  width: 15vw;
-  height: 30vh;
-  font-size: 1rem;
-  color:black;
-  background-color: white;
-  & p {
-    font: 0.5rem;
-    margin: 0;
-  }
+const PictureImgBox = styled.div`
+  width: 13vw;
+  height: 24vh;
+  background: ${props => `url(${props.photo_Url}) no-repeat center`};  
+  background-size: 13vw 24vh;
 `
 
 const MvpShowUsersContainer = styled.div`
@@ -73,7 +101,7 @@ const MvpShowUsersContainer = styled.div`
   cursor: pointer;
   position: absolute;
   &.pos0 {
-    top: 15vh;
+    top: 10vh;
     left: 0vw;
   }
 
@@ -83,12 +111,12 @@ const MvpShowUsersContainer = styled.div`
   }
 
   &.pos2 {
-    top: 65vh;
+    top: 70vh;
     left: 0vw;
   }
 
   &.pos3 {
-    top: 15vh;
+    top: 10vh;
     right: 0vw;
   }
 
@@ -98,12 +126,13 @@ const MvpShowUsersContainer = styled.div`
   }
 
   &.pos5 {
-    top: 65vh;
+    top: 70vh;
     right: 0vw;
   }
 `
 
 const MvpPhaseComponent = ({
+  isMvpSpeechDone,
   setIsGameDone,
   isGameDone,
   nextPlayer,
@@ -136,6 +165,8 @@ const MvpPhaseComponent = ({
   // console.warn("퍼블리셔는?",publisher);
   const playerNum = players.length; // 몇 명에서 하는지  
   const myTurnNum = players.indexOf(myUserNameValue);
+  const dispatch = useDispatch();
+  const pictureList = useSelector((state) => state.gameRoom.gameTotalPicture);
 
   useEffect(() => {
     if (nextPlayer === myUserNameValue){
@@ -147,63 +178,69 @@ const MvpPhaseComponent = ({
 
   }, [nextPlayer])
 
+  useEffect(() => {
+    if (isMvpSpeechDone) {
+      dispatch(gameRoomActions.getPictureStart(mySessionIdValue));
+    }
+  }, [isMvpSpeechDone])
+
+  const onClickNextPhase = () => {
+    const sendData = {
+      session: mySessionIdValue,
+      to: [], // all user
+      data: JSON.stringify({      
+        nextIsMvpSpeechDone: true, // 이제 사진 고르러감
+      }),
+      type: 'SPEECH_DONE',
+    };
+  
+    fetch('https://i7e101.p.ssafy.io:4443/openvidu/api/signal', {
+      method: 'POST',
+      headers: {
+        Authorization: 'Basic ' + btoa('OPENVIDUAPP:e101ssafy71'),
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(sendData),
+    });    
+  }
+  
+
   return (
-    <MvpPhaseComponentBlock>
-      <h1>{myUserNameValue}</h1>
-      <TestContainer>
-        <PlayerList>
-          <p>내 턴번호: {myTurnNum}</p>
-          <p>포지션리스트: {posList}</p>
-          <p>플레이어 리스트</p>
-          <p>사람수: {playerNum}</p>
-          <p>누구턴: {turnNum}</p>
-          <p>니이름: {myUserNameValue}</p>
-          <p>누구냐:{players}</p>
-          {players.map((playerName, i) => (
-            <p key={i}>
-              {i}번쨰: {playerName}
-            </p>
-          ))}
-        </PlayerList>
-      </TestContainer>
-      <OpenViduSessionHeader>
-        <p>{mySessionIdValue}번 방</p>
-        <OpenViduSessionLeaveBtn
-          onClick={() => {
-            leaveSession();
-          }}
-          value="Leave session"
-        >
-          Leave session
-        </OpenViduSessionLeaveBtn>
-      </OpenViduSessionHeader>
-      {/*!! 지금 턴인 사람 표시 !!*/}
+    <MvpPhaseComponentBlock>      
       {mainStreamManager !== undefined ? (
-        <MainVideo>
-          {/* <p>메인스트리머</p> */}
-          <MainUserVideoComponent
-            isGameDone={isGameDone}
-            isRoll={isRoll}
-            streamManager={mainStreamManager}
-            mainStreamer={'mainStreamer'}
-            myTurnNum={myTurnNum}
-            playerNum={playerNum}
-            players={players}
-            mySessionIdValue={mySessionIdValue}
-            turnNum={turnNum}
-            nextPlayer={nextPlayer}
-            isVote={isVote}
-            setIsVote={setIsVote}
-            vote={vote}
-            setVote={setVote}
-            posList={posList}
-            minigameType={minigameType}
-          />
-        </MainVideo>
+        isMvpSpeechDone ? (
+          <PictureSelectBoard>
+            {pictureList.map((img, idx) => (
+              <PictureImgBox key={`gameimage${idx}`} backImg={img.photo_Url}></PictureImgBox>
+            ))}
+          </PictureSelectBoard>
+        ) : (
+          <MainVideo>
+            {/* <p>메인스트리머</p> */}
+            <MainUserVideoComponent
+              isGameDone={isGameDone}
+              isRoll={isRoll}
+              streamManager={mainStreamManager}
+              mainStreamer={'mainStreamer'}
+              myTurnNum={myTurnNum}
+              playerNum={playerNum}
+              players={players}
+              mySessionIdValue={mySessionIdValue}
+              turnNum={turnNum}
+              nextPlayer={nextPlayer}
+              isVote={isVote}
+              setIsVote={setIsVote}
+              vote={vote}
+              setVote={setVote}
+              posList={posList}
+              minigameType={minigameType}
+            />
+          </MainVideo>
+        )
       ) : null}
-      
+
       {publisher !== undefined ? (
-        <MvpShowUsersContainer className={`pos${posList[myTurnNum]}`}>
+        <MvpShowUsersContainer className={`pos${0}`}>
           {/* onClick={() => handleMainVideoStream(publisher)} */}
           <UserVideoComponent
             streamManager={publisher}
@@ -222,6 +259,7 @@ const MvpPhaseComponent = ({
           />
         </MvpShowUsersContainer>
       ))}
+      {nextPlayer===myUserNameValue ? <MvpSpeechSkipBtn onClick={() => onClickNextPhase()}>소감종료</MvpSpeechSkipBtn> : ''}
     </MvpPhaseComponentBlock>
   );
 };

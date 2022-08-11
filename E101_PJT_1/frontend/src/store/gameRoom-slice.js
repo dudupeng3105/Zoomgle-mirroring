@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 // GameRoom 관련 슬라이스
 // 슬라이스
 const initialGameRoomState = {
-  // gamePlanList: [],
+  gameTotalPicture: [],
   // invitationList: [],
   loading: null,
   takePicResult: null,
@@ -18,7 +18,7 @@ const gameRoomSlice = createSlice({
       state.loading = true;
       state.takePicResult = null;
     },
-    // 게임플랜리스트 성공 시 state 업데이트
+    // 사진찍기 성공
     takePictureSuccess(state, action) {
       state.loading = false;
       state.takePicResult = action.payload.message;
@@ -27,6 +27,16 @@ const gameRoomSlice = createSlice({
     getError(state, action) {
       state.loading = false;
       state.takePicResult = action.payload.message;
+    },
+    // 해당 게임에서 찍은 사진 가져오기
+    getPictureStart(state, action) {
+      state.loading = true;
+      state.gameTotalPicture = [];
+    },
+    // 사진 가져오기 성공
+    getPictureSuccess(state, action) {
+      state.loading = false;
+      state.gameTotalPicture = action.payload.data;
     },
   },
 });

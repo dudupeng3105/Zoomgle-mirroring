@@ -43,7 +43,7 @@ const MainVideo = styled.div`
   color: white;
   font-size: 2rem;
   position: absolute;
-  top: 25vh;
+  top: 20vh;
   left: 30vw;
   width: 40vw;
   height: 40vh;
@@ -233,7 +233,7 @@ const OpenViduSession = ({
     }
 
   }, [nextPlayer])
-
+  
   return (
     <OpenViduSessionBlock>
       <h1>{myUserNameValue}</h1>
