@@ -14,4 +14,8 @@ public interface InvitationRepository extends JpaRepository<Invitation, Long> {
     // 아래와 같이, Query Method 인터페이스(반환값, 메소드명, 인자) 정의를 하면 자동으로 Query Method 구현됨.
 
     List<Invitation> findAllByReceiver(String user);
+
+    List<Invitation> findAllByRoomCode(long roomCode);
+
+    Invitation findByRoomCodeAndReceiverAndSender(long roomCode, String receiver,String sender);
 }

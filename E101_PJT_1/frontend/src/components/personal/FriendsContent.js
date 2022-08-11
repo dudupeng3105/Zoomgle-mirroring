@@ -11,6 +11,8 @@ import profile5 from '../../media/images/profile5.png';
 import profile6 from '../../media/images/profile6.png';
 import backboard from '../../media/images/board1-2.png';
 import papyrus from '../../media/images/Papyrus.png';
+import Xmark from '../../media/images/X-mark.png';
+import friendbackground from "../../media/images/friendback.png"
 
 const FriendsContentBlock = styled.div`
   background: url(${background});
@@ -56,6 +58,9 @@ const FriendsList = styled.div`
     display: none; 
     /* color: black; */
   }
+  & p {    
+    font-size: 3rem;
+  }
 `;
 
 const TitleButtonBlock = styled.div`
@@ -88,6 +93,32 @@ const FriendAddButton = styled.div`
     border: 3px solid #29231c;
   }
 `
+const FriendCloseButton = styled.div`
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 8vh;  
+  width: 15vw;
+  margin-left: 25vw;
+  margin-top: 8vw;
+  background: url(${Xmark}) no-repeat center;
+  background-size: 5vw 8vh;
+  display: inline;
+  /* border: red solid 3px; */
+
+  font-size: 5vmin;
+  /* background-color: #352208; */
+  /* border: 3px solid #b39860; */
+  /* color: white; */
+  /* border-radius: 5px;   */
+  &:hover {
+    transform: scale(1.1);
+    transition: transform .2s;
+  }
+`
+
+
 
 export const FriendCard = styled.div`
   width: 40vmin;
@@ -142,7 +173,8 @@ const AddFriendModal = styled.div`
   padding: 3vmin;
   h1{
     margin:0;
-    margin-top: 15vh;
+    /* margin-top: 10vh; */
+    display: inline;
   }
   h2 {
     margin: 0px;
@@ -236,23 +268,36 @@ const BoardImageContainer = styled.div`
 
 const FriendsContent = () => {
   const [error, setError] = useState(null);
-  const [friendIdInput, setFriendIdInput] = useState('');
+  const [friendNicknameInput, setFriendNicknameInput] = useState('');
   const [modalToggle, setmodalToggle] = useState(false);
+  const [addMessageToggle, setAddMessageToggle] = useState(false);
 
   const dispatch = useDispatch();
 
   const friendError = useSelector((state) => state.friend.error);
   const addMessage = useSelector((state) => state.friend.addMessage);
   const userId = useSelector((state) => state.auth.user.userId);
+  const userNickname = useSelector((state) => state.auth.user.nickname);
   const friendsArr = useSelector((state) => state.friend.friendList);
   const addResult = useSelector((state) => state.friend.addResult);
 
-  // console.log(friendsArr);
+  
 
-  // 첫렌더링할때만 돌아감
+  // 첫렌더링할때랑, addResult 바뀔때마다(친구추가할대마다)
   useEffect(() => {
     dispatch(friendActions.GetFriendListStart(userId))
-  }, []);
+  }, [addResult]);
+
+  // 친구 추가, 성공 메시지를 0.5초간만 띄움
+  useEffect(() => {
+    console.log(addMessage);
+    if (addMessage) {
+      setAddMessageToggle(true);
+      setTimeout(() => {
+        setAddMessageToggle(false);
+      }, 1000);
+    }
+  }, [addMessage])
 
   useEffect(() => {
     if (friendError) {      
@@ -270,45 +315,42 @@ const FriendsContent = () => {
   }, [addResult]);
 
   const inputChange = (e) => {
-    setFriendIdInput(e.target.value);       
+    setFriendNicknameInput(e.target.value);       
   }
 
+  // 친구 추가 모달에서 아이디를 검색하고 추가를 누르면 일어나는 일
   const onClick = (e) => {
     e.preventDefault()
-    console.log(userId, friendIdInput)
+    console.log(userNickname, friendNicknameInput)
     const infoId = {
-      "myId": userId,
-      "friendId": friendIdInput
+      "myNickname": userNickname,
+      "friendNickname": friendNicknameInput
     }
     dispatch(friendActions.AddFriendStart(infoId))  
     // 성공하면 모달 닫음    
     console.log("성공여부", addResult)       
   }
-
-  // console.log(userId);
-  const dummyFriends = [
-    {
-      name: '김동욱',
-      nickname: '두두펭',
-      profileImgNum: 2,
-    },    
-  ];
   
   return (
     <FriendsContentBlock>
       {modalToggle ? (
         <AddFriendModal>
+          <FriendCloseButton
+            onClick={() => {
+              setmodalToggle(!modalToggle);
+            }}         
+          >닫기</FriendCloseButton>
           <h1>친애하는 모험가를 추가하세요</h1>
           <StyledInput             
-            name="friendId"
-            placeholder="아이디를 입력하세요."            
+            name="friendNickname"
+            placeholder="닉네임을 입력하세요."            
             onChange={inputChange}            
           />
-          <h3>{addMessage}</h3>
+          {addMessageToggle? <h3>{addMessage}</h3> : ''}
           <FriendAddButton
             onClick={onClick}          
           >추가</FriendAddButton>
-        </AddFriendModal>
+           </AddFriendModal>
       ) : (
         ''
       )}
@@ -326,18 +368,18 @@ const FriendsContent = () => {
         </FriendAddButton>
       </TitleButtonBlock>
       <FriendsList>
-        <h2>{error}</h2>
+        <p>{friendsArr.length===0 ? '친구를 추가해주세요' : ''}</p>
         {friendsArr.map((friend, idx) => (
           <FriendCard key={idx}>
             <StyledCard>
               <ImageContainer>
                 <ProfileImg
-                  className={'profileImg' + (friend.profileImgNum%6)}
+                  className={'profileImg' + (friend.profile_Img_Num%6)}
                   // className={'profileImg' + 1}
                 ></ProfileImg>
               </ImageContainer>
               <NameNicknameEl>
-                <div>이름: {friend.userId}</div>
+                <div>이름: {friend.name}</div>
                 <div>닉네임(seq): {friend.nickname}</div>
               </NameNicknameEl>
             </StyledCard>

@@ -23,23 +23,29 @@ public class RoomServiceImpl implements RoomService{
     /**
      * 게임방을 생성하는 메서드
      */
-    public void createRoom(String host, String date, int maxCapacity) {
-        Room room = new Room();
-        room.setHost(host);
-        room.setDate(date);
-        room.setMaxCapacity(maxCapacity);
-        room.setCnt(1);
+    public boolean createRoom(String host, String date, int maxCapacity) {
+        try {
+            Room room = new Room();
+            room.setHost(host);
+            room.setDate(date);
+            room.setMaxCapacity(maxCapacity);
+            room.setCnt(1);
 
-        long roomCode = roomRepository.save(room).getRoomSeq();
+            long roomCode = roomRepository.save(room).getRoomSeq();
 
-        // 방장은 자동으로 게임 초대
+            // 방장은 자동으로 게임 초대
 
-        Player player = new Player();
+            Player player = new Player();
 
-        player.setRoomCode(roomCode);
-        player.setUser(host);
+            player.setRoomCode(roomCode);
+            player.setUser(host);
 
-        playerRepository.save(player);
+            playerRepository.save(player);
+
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
 
@@ -54,11 +60,32 @@ public class RoomServiceImpl implements RoomService{
         return playerRepository.findAllByRoomCode(roomCode);
     }
 
+    @Override
+    public Optional<Room> getRoomByRoomCodeAndMvpNull(long roomCode) {
+        return roomRepository.findByRoomSeqAndMvpNull(roomCode);
+    }
+
+    @Override
+    public Optional<Room> getRoomByRoomCodeAndMvpNotNull(long roomCode) {
+        return roomRepository.findByRoomSeqAndMvpNotNull(roomCode);
+    }
+
     /**
      * user의 모든 게임방 리스트를 확인하는 메서드
      */
     @Override
     public List<Player> getAllPlayer(String user) {
         return playerRepository.findAllByUser(user);
+    }
+
+    @Override
+    public boolean deleteRoom(long roomCode) {
+        try {
+            roomRepository.deleteById(roomCode);
+
+            return true;
+        }catch (Exception e) {
+            return false;
+        }
     }
 }

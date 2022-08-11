@@ -18,7 +18,13 @@ package com.ssafy.db.entity;
 @Data // 클래스 멤버 변수의 Getter/Setter 메서드 구현
 @Entity
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Table(name = "player")
+@Table(name = "player",
+    uniqueConstraints={
+        @UniqueConstraint(
+            columnNames={"room_code", "user"}
+        )
+    }
+)
 public class Player {
     // 게임 참여자 Seq
     @Id // 기본키

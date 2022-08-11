@@ -2,12 +2,22 @@ import styled from 'styled-components';
 import gameboard from '../media/images/gameboard.png';
 import { useState } from 'react';
 import DiceRoller from '../components/utils/DiceRoller.js'
+import camera from '../media/images/camera.png';
 
 const MainGamePageBlock = styled.div`
 background: url(${gameboard});
 background-size: 100vw 100vh;
 width: 100vw;
 height: 100vh;
+`
+
+const CameraButton = styled.div`
+background: url(${camera}) no-repeat center;
+background-size: 5vw 10vh;
+width: 5vw;
+height: 10vh;
+margin-left: 10vw;
+/* margin-top: 10vh; */
 `
 const TestCircle = styled.div`
 width: 10vmin;
@@ -126,6 +136,7 @@ const MainGamePage = () => {
 
   return (
     <MainGamePageBlock>
+      <CameraButton></CameraButton>
       <TestCircle className={"pos" + posNum}></TestCircle>
       <button onClick={() => {setPosNum((posNum + 1)% 20)}}>
       {posNum}

@@ -15,7 +15,7 @@ const friendSlice = createSlice({
     // 친구목록불러오기    
     GetFriendListStart(state) {
       state.loading = true;
-      state.error = null;
+      state.error = null;      
     },
     GetFriendListSuccess(state, action) {
       state.loading = false;

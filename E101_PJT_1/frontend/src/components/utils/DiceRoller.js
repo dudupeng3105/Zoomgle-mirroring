@@ -14,15 +14,57 @@ const DiceRollerBlock = styled.div`
   /* border: red 3px solid; */
 `;
 
-const DiceRoller = ({ posNum, setPosNum }) => {
+const DiceRoller = ({
+  players,  
+  isRoll,
+  posList,  
+  playerNum,
+  myTurnNum,  
+  mySessionIdValue,
+}) => {
   const [diceNum, setDiceNum] = useState();
-  const onRollHandler = (value) => {
-    // console.log(value);
+
+
+  // 주사위를 돌렸을 때는 자리 업데이트 정보만 주면된다.
+  const onRollHandler = (value) => {    
+    // console.warn('포지션정보', posList);
+
+    // 자리 계산
+    const myPos = posList[myTurnNum];    
     if (value > 3) {
       value = value - 3;
     }
     setDiceNum(value);
-    setPosNum((posNum + value) % 20);
+    const tempPosNum = (myPos + value) % 20;
+    
+    // emit 데이터 준비
+    let nextPosList = [...posList];
+    nextPosList[myTurnNum] = tempPosNum;    
+    // 미니게임 랜덤
+    const nextMinigameType = Math.floor(Math.random() * 160) // 0 ~ 9 랜덤
+    
+    // emit
+    const sendData = {
+      session: mySessionIdValue,
+      to: [], // all user
+      data: JSON.stringify({
+        // nextUserName: nextUserName, // 다음사람
+        // nextTurn: nextTurn, // 다음 턴
+        nextPosList: nextPosList, // 자리 업데이트
+        isRoll: !isRoll,
+        nextMinigameType: nextMinigameType,
+      }),
+      type: 'GAME_STATE_CHANGED',
+    };
+    // console.log(JSON.stringify(sendData));
+    fetch('https://i7e101.p.ssafy.io:4443/openvidu/api/signal', {
+      method: 'POST',
+      headers: {
+        Authorization: 'Basic ' + btoa('OPENVIDUAPP:e101ssafy71'),
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(sendData),
+    });    
   };
 
   const faces = [dice1, dice2, dice3, dice1, dice2, dice3];

@@ -42,7 +42,7 @@ public class Room {
     @Column(name = "cnt", nullable = false)
     private int cnt;
 
-    // MVP 회원 Seq
+    // MVP 회원 닉네임
     @Column(name = "mvp", nullable = true)
     private String mvp;
 
