@@ -43,7 +43,7 @@ const MainVideo = styled.div`
   color: white;
   font-size: 2rem;
   position: absolute;
-  top: 25vh;
+  top: 20vh;
   left: 30vw;
   width: 40vw;
   height: 40vh;
@@ -191,6 +191,8 @@ const UserVideoComponentContainer = styled.div`
 `
 
 const OpenViduSession = ({
+  setIsGameDone,
+  isGameDone,
   nextPlayer,
   setNextPlayer,
   isRoll,
@@ -231,7 +233,7 @@ const OpenViduSession = ({
     }
 
   }, [nextPlayer])
-
+  
   return (
     <OpenViduSessionBlock>
       <h1>{myUserNameValue}</h1>
@@ -271,6 +273,7 @@ const OpenViduSession = ({
         <MainVideo>
           {/* <p>메인스트리머</p> */}
           <MainUserVideoComponent
+            isGameDone={isGameDone}
             isRoll={isRoll}
             streamManager={mainStreamManager}
             mainStreamer={'mainStreamer'}

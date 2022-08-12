@@ -80,7 +80,7 @@ const GameInvitationModal = styled.div`
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: auto;  
   padding: 2rem;
   left: 30vw;
   top: 10vh;
