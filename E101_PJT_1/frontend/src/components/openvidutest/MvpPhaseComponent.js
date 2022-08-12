@@ -236,12 +236,16 @@ const MvpPhaseComponent = ({
   const myTurnNum = players.indexOf(myUserNameValue);
   const dispatch = useDispatch();
   const pictureList = useSelector((state) => state.gameRoom.gameTotalPicture);  
-  const [timeLeft, setTimeLeft] = useState(undefined);
+  const [timeLeft, setTimeLeft] = useState(10);
 
   const calculateTimeLeft = () => {
-    if (timeLeft > 0) {      
+    console.log(timeLeft);
+    if (timeLeft > 0) {    
+      if (!isGameOver)  {
+        return 5;
+      }
       return timeLeft - 1;
-    } else {
+    } else {            
       // timeLeft = 0
       // 나가고
       leaveSession()
@@ -272,9 +276,14 @@ const MvpPhaseComponent = ({
       setTimeLeft(calculateTimeLeft());
     }, 1000);
   }, [timeLeft]);
+  
   // 게임 종료 5초 로딩phase 시작
   useEffect(() => {
-    setTimeLeft(5); // 종료 로딩 타임
+    if (isGameOver) {
+      setTimeLeft(5); // 종료 로딩 타임
+    } else {
+      return;
+    }    
   }, [isGameOver])
 
   const onClickNextPhase = () => {
