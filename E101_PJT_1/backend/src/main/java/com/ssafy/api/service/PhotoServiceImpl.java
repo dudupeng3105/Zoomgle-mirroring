@@ -68,10 +68,10 @@ public class PhotoServiceImpl implements PhotoService {
      * S3에 저장된 사진들 중 최대 6개 선정하여 추억으로 남기기 위해 DB에 저장하는 메서드
      */
     @Override
-    public void savePhotoUrl(String photo_url, String roomSeq) {
+    public void savePhotoUrl(String photoUrl, String roomSeq) {
         Photo photo = new Photo();
         photo.setRoomSeq(Long.parseLong(roomSeq));
-        photo.setPhotoUrl(photo_url);
+        photo.setPhotoUrl(photoUrl);
         photoRepository.save(photo);
     }
 

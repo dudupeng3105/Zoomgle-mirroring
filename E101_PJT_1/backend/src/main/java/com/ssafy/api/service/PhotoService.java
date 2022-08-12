@@ -17,7 +17,7 @@ public interface PhotoService {
 
     String saveTempPhoto(MultipartFile multipartFile, String date, String roomSeq) throws IOException;
 
-    void savePhotoUrl(String photo_url, String roomSeq);
+    void savePhotoUrl(String photoUrl, String roomSeq);
 
     List<PhotoInfo> showAllTempPhoto(String roomSeq);
 
