@@ -23,7 +23,9 @@ public interface PhotoRepository extends JpaRepository<Photo, Long> {
     List<PhotoInfo> getAllPhotoByDateAndNickname(@Param(value = "date") String date, @Param(value = "nickname") String nickname);
 
     @Query(value = "select ph.photo_url from player p, photo ph " +
-            " where p.user = :nickname and p.room_code = ph.room_seq;", nativeQuery = true)
+            " where p.user = :nickname and p.room_code = ph.room_seq", nativeQuery = true)
     List<PhotoInfo> getAllPhotoByNickname(@Param(value = "nickname") String nickname);
 
+    @Query(value = "select photo_url from photo where room_seq = :roomSeq", nativeQuery = true)
+    List<PhotoInfo> getAllPhotoByRoomSeq(@Param(value = "roomSeq") long roomSeq);
 }
