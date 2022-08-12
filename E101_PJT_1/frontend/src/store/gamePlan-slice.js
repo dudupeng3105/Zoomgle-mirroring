@@ -90,6 +90,11 @@ const gamePlanSlice = createSlice({
       state.loading = true;
       state.gameDonePhoto = action.payload.photoList;
     },
+    // 예정된 게임 취소(게임 취소)
+    deleteGamePlanStart(state){
+      state.loading = true;
+      state.error = null;
+    },
     // 모든 에러 이걸로 처리함
     getError(state, action) {
       console.log(action.payload.error);
