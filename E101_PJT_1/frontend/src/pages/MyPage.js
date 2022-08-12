@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Header from "../components/common/header";
 import MyPageContent from "../components/personal/MyPageContent";
+import PlannedGameList from "../components/common/PlannedGameList";
 
 const MyPageBlock = styled.div`
   display: flex;

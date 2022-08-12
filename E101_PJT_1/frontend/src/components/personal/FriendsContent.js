@@ -38,11 +38,12 @@ const FriendsContentBlock = styled.div`
 const FriendsList = styled.div`
   display: flex;
   width: 70%;
-  height: 55vh;
+  height: 45vh;
   flex-wrap: wrap;  
   overflow: auto;
   align-content: flex-start;
   justify-content: center;
+  margin-left: 5vw;
   /* margin: auto; */
   /* border: 3px black solid; */
   /* SCROLL */
@@ -177,9 +178,10 @@ export const FriendCard = styled.div`
   background-size: 25vw 18vh;
   /* border: 3px solid black; */
   margin-top: 3vmin;
-  margin-right: 2vmin;
+  margin-right: 1vmin;
   padding: 1vmin;
   display: flex;
+  /* margin-left: 30vw; */
 `;
 
 export const StyledCard = styled.div`
