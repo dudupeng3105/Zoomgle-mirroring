@@ -262,7 +262,7 @@ const OpenViduBlock = ({
     // 사진 투표 알림
     mySession.on('PICTURE_VOTE', (data) => {
       console.warn('사진투표합니다...');
-      const nextPictureVote = JSON.parse(data.data);
+      const {nextPictureVote} = JSON.parse(data.data);
       console.error("---------------------------")
       console.error("다음상황", nextPictureVote);      
       setPictureVote([...nextPictureVote]);
@@ -488,6 +488,7 @@ const OpenViduBlock = ({
       {session !== undefined ? (
         isGameDone ? (
           <MvpPhaseComponent
+            sessionHost={sessionHost}
             pictureVote={pictureVote}
             isMvpSpeechDone={isMvpSpeechDone}
             isGameDone={isGameDone}

@@ -92,13 +92,36 @@ const PictureSelectBoard = styled.div`
   border: 2px solid black;
   border-radius: 5px;
   padding-bottom: 5vh;
+  :active {
+    transform: scale(0.9);
+  }  
 `;
 
 const PictureContainer = styled.div`
   /* display: flex; */
   width: 15vw;
   height: 17vh;
-  margin: 1vh 1vw;  
+  margin: 1vh 1vw;
+  border-radius: 5px;
+  border: 2px solid #adff45;
+  .vote-color-1 { 
+    border: 2px solid red;
+  }
+  .vote-color-2 {
+    border: 2px solid yellow;
+  }
+  .vote-color-3 {
+    border: 2px solid pink;
+  }
+  .vote-color-4 {
+    border: 2px solid purple;
+  }
+  .vote-color-5 {
+    border: 2px solid blue;
+  }
+  .vote-color-6 {
+    border: 2px solid green;
+  }    
 `;
 
 const PictureCountDisplay = styled.div`
@@ -120,9 +143,7 @@ const PictureImgBox = styled.div`
   width: 15vw;  
   height: 17vh;
   background: ${props => `url(${props.backImg}) no-repeat center`};  
-  background-size: 15vw 17vh;
-  border-radius: 5px;
-  border: 2px solid #adff45;
+  background-size: 15vw 17vh;  
 `
 
 const MvpShowUsersContainer = styled.div`
@@ -162,6 +183,7 @@ const MvpShowUsersContainer = styled.div`
 `
 
 const MvpPhaseComponent = ({
+  sessionHost,
   pictureVote,
   isMvpSpeechDone,
   setIsGameDone,
@@ -267,15 +289,25 @@ const MvpPhaseComponent = ({
     }); 
   }
 
+  const onClickGameOver = () => {
+    
+  }
+
   return (
-    <MvpPhaseComponentBlock>      
+    <MvpPhaseComponentBlock>
       {mainStreamManager !== undefined ? (
         isMvpSpeechDone ? (
           <PictureSelectBoard>
             {pictureList.map((picture, idx) => (
-              <PictureContainer onClick={() => onClickPictureVote(idx, pictureList.length)}>
+              <PictureContainer
+                onClick={() => onClickPictureVote(idx, pictureList.length)}
+                className={`vote-color-${Math.floor(pictureVote[idx] / 5)}`}
+              >
                 <PictureCountDisplay>{pictureVote[idx]}</PictureCountDisplay>
-                <PictureImgBox key={`gameimage${idx}`} backImg={picture.photo_Url}></PictureImgBox>
+                <PictureImgBox
+                  key={`gameimage${idx}`}
+                  backImg={picture.photo_Url}
+                ></PictureImgBox>
               </PictureContainer>
             ))}
           </PictureSelectBoard>
@@ -324,7 +356,20 @@ const MvpPhaseComponent = ({
           />
         </MvpShowUsersContainer>
       ))}
-      {nextPlayer===myUserNameValue ? <MvpSpeechSkipBtn onClick={() => onClickNextPhase()}>소감종료</MvpSpeechSkipBtn> : ''}
+      {(nextPlayer === myUserNameValue) & !isMvpSpeechDone ? (
+        <MvpSpeechSkipBtn onClick={() => onClickNextPhase()}>
+          소감종료
+        </MvpSpeechSkipBtn>
+      ) : (
+        ''
+      )}
+      {isMvpSpeechDone & (sessionHost === myUserNameValue) ? (
+        <MvpSpeechSkipBtn onClick={() => onClickGameOver()}>
+          사진선택 종료
+        </MvpSpeechSkipBtn>
+      ) : (
+        ''
+      )}
     </MvpPhaseComponentBlock>
   );
 };
