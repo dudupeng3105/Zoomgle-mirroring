@@ -12,13 +12,15 @@ import {
 } from '../personal/FriendsContent';
 import { gamePlanActions } from '../../store/gamePlan-slice';
 import { friendActions } from '../../store/friends-slice';
-
+import nailPaper from '../../media/images/nailPaper1.png';
+import title from '../../media/images/title.png';
+import SquareLeather from '../../media/images/leather_square.png';
 const GameNumCounterBlock = styled.div`
   /* border: 3px solid blue; */
-  width: 80vw;
-  margin: 0 auto;
+  width: 60vw;
+  margin-left: 7vw;
   height: 20vh;
-  border: 2px solid black;
+  /* border: 2px solid black; */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -35,6 +37,14 @@ const GameNumCounterLeftBtn = styled.div`
   border-top: 1rem solid transparent;
   border-bottom: 1rem solid transparent;
   border-right: 1rem solid grey;
+
+  :hover {
+    transform: scale(1.2) rotate(-30deg);
+    -webkit-transform: scale(1.2);
+    -moz-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    -o-transform: scale(1.2);
+  }
 `;
 
 const GameNumCounterRightBtn = styled.div`
@@ -45,50 +55,88 @@ const GameNumCounterRightBtn = styled.div`
   border-top: 1rem solid transparent;
   border-bottom: 1rem solid transparent;
   border-left: 1rem solid grey;
+
+  :hover {
+    transform: scale(1.2) rotate(-30deg);
+    -webkit-transform: scale(1.2);
+    -moz-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    -o-transform: scale(1.2);
+  }
 `;
 
 const PlannedGameInfoBox = styled.div`
-  height: 20vh;
-  width: 65vw;
+  height: 60vh;
+  width: 100vw;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  background-color: #29231c;
+  /* align-items: center; */
+  /* background: url(${nailPaper}) center no-repeat;
+  background-size: 75vw 60vh; */
+  margin-top: 40vh;
   border-radius: 5px;
+
   color: black;
 `;
 
+// 예정된 모험 글자
+// export해서 plannedGameList에서 사용중
+const UpCommingGameTitle = styled.div`
+  font-size: 3rem;
+  background:url(${title}) no-repeat center;
+  width: 16vw;
+  height: 12vh;
+  background-size: 16vw 12vh ;
+  padding-left: 1.5rem;
+  padding-top: 1vh;
+  /* margin-left: 10vw; */
+  margin-top: 3vh;
+  margin-left: 11vw;
+  margin-bottom: 0;
+  /* text-decoration: underline; */
+  /* border: 3px solid red; */
+`
+// 번호 일자 대장
 const PlannedGameInfoItem = styled.div`
   display: flex;
   justify-content: space-between;
   width: 60vw;
   height: 5vh;
-  font-size: 2rem;
+  font-size: 2.5rem;
   background-color: transparent;
-  color: white;
-  /* border: 1px black solid; */
+  padding-top: 0;
+  color: #412E22;
+  /* padding-top: 15vh; */
+  margin-top: 3vh;
+  /* border: 1px yellow solid; */
   & p {
-    margin: 0;
+    /* margin: 0; */
+    color: #412E22;
+    font-size: 2.5rem;
   }
 `;
 
 const ButtonContainer = styled.div`
-  height: 5vh;
+  height: 9vh;
   width: 60vw;
   text-align: center;
   display: flex;
   font-size: 2rem;
   border-radius: 5px;
-  border: red solid 2px;
+  /* border: red solid 2px; */
   color: black;
-  background-color: white;
+  /* background-color: white; */
+  margin-top: 3vh;
 `;
 
 const ButtonContainerItem = styled.div`
   width: 100%;
-  border: 1px solid white;
+  /* border: 1px solid white; */
   cursor: pointer;
-  background-color: ${(props) => props.backColor};
+  background: ${(props) => props.backImg} center no-repeat;
+  background-size: 15vw 10vh;
+  color: white;
+  padding-top: 4px;
 `;
 
 const FriendListModal = styled.div`
@@ -100,7 +148,7 @@ const FriendListModal = styled.div`
   padding: 2rem;
   left: 30vw;
   top: 10vh;
-  width: 60vw;
+  width: 50vw;
   height: 80vh;
   border: 1px solid black;
   background-color: white;
@@ -180,54 +228,57 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
 
   return (
     <GameNumCounterBlock>
+      
       <GameNumCounterLeftBtn onClick={onDecrease} />
       <PlannedGameInfoBox>
+      {/* <UpCommingGameTitle>예정된 모험</UpCommingGameTitle> */}
         <PlannedGameInfoItem>
-          <div>방 번호 :{myGamePlanList[count].roomCode}</div>
-          <div>방장 :{myGamePlanList[count].host}</div>
+          <div>번호 :{myGamePlanList[count].roomCode}</div>
+          <div>대장 :{myGamePlanList[count].host}</div>
         </PlannedGameInfoItem>
         <PlannedGameInfoItem>
-          게임시작시간: {myGamePlanList[count].year}년{' '}
+          모험 일자: {myGamePlanList[count].year}년{' '}
           {myGamePlanList[count].month}월 {myGamePlanList[count].day}일{' '}
           {myGamePlanList[count].hour}시 {myGamePlanList[count].minute}분
         </PlannedGameInfoItem>
         <PlannedGameInfoItem>
+
           {myGamePlanList[count].playerList.map((player, idx) => (
-            <p>{player.user},</p>
+            <p>{player.user}</p>
           ))}
         </PlannedGameInfoItem>
         <ButtonContainer>
           <ButtonContainerItem
-            backColor={`#adff45`}
+            backImg={`url(${SquareLeather})`}
             onClick={() =>
               onClickSearchFriendList(`${myGamePlanList[count].roomCode}`)
             }
           >
-            모험가 초대하기
+            동료 초대
           </ButtonContainerItem>
           {stringToTime(
             `${myGamePlanList[count].year}-${myGamePlanList[count].month}-${myGamePlanList[count].day} ${myGamePlanList[count].hour}:${myGamePlanList[count].minute}:00`,
           ) ? (
             <ButtonContainerItem
-              backColor={`#FDDFK3`}
+            backImg={`url(${SquareLeather})`}
               onClick={() =>
                 onClickJoinGame(`${myGamePlanList[count].roomCode}`, `${myGamePlanList[count].maxCapacity}`, `${myGamePlanList[count].host}`)
               }
             >
-              모험떠나기
+              모험 시작
             </ButtonContainerItem>
           ) : (
             ''
           )}
           {nickname === myGamePlanList[count].host ? (
             <ButtonContainerItem
-              backColor={`#eeee45`}
+            backImg={`url(${SquareLeather})`}
               onClick={() =>
                 onClickSearchFriendList(`${myGamePlanList[count].roomCode}`)
               }
             >
               {' '}
-              모험취소하기
+              모험 취소
             </ButtonContainerItem>
           ) : (
             ''
@@ -272,3 +323,4 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
 };
 
 export default GameNumCounter;
+export {UpCommingGameTitle};

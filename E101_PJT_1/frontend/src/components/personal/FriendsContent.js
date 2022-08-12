@@ -9,13 +9,13 @@ import profile3 from '../../media/images/profile3.png';
 import profile4 from '../../media/images/profile4.png';
 import profile5 from '../../media/images/profile5.png';
 import profile6 from '../../media/images/profile6.png';
-import backboard from '../../media/images/friend_title.png';
+import backboard from '../../media/images/title.png';
 import papyrus from '../../media/images/Papyrus.png';
 import Xmark from '../../media/images/X-mark.png';
-import friendbackground from "../../media/images/friend_content.png"
-import friendsearch from '../../media/images/search.png'
+import friendbackground from "../../media/images/friend_content1.png"
+import friendsearch from '../../media/images/transparent_search.png'
 import scrollBlack from '../../media/images/scroll_black.png'
-import scrollWhite from '../../media/images/scroll_white.png'
+import scrollWhite from '../../media/images/friend_content1.png'
 import modalfriendsearch from '../../media/images/transparent_search.png'
 
 const FriendsContentBlock = styled.div`
@@ -53,6 +53,7 @@ const FriendsList = styled.div`
   /* &::-webkit-scrollbar-track { 
     background-color: b39860; 
     border: 1px black solid;
+<<<<<<< HEAD
     border-radius: 10px;
   } */
   /* 스크롤바의 전체 배경색 */
@@ -60,6 +61,14 @@ const FriendsList = styled.div`
     background: #352208;
     border-radius: 10px;
   } */
+    border-radius: 3px;
+  
+  /* 스크롤바의 전체 배경색 */
+  &::-webkit-scrollbar-thumb { 
+    background: url(${scrollWhite}) no-repeat center;
+    background-size: 5vw 80vh;
+    border-radius: 3px;
+  }
   /* 스크롤바 색 */
   /* &::-webkit-scrollbar-button { 
     display: none;     
@@ -91,7 +100,7 @@ const FriendAddButton = styled.div`
   width: 8vw;
   font-size: 5vmin;
   margin-right: 30vw;
-  margin-top: 9vh;
+  margin-top: 13vh;
   background: url(${friendsearch}) center no-repeat;
   background-size: 5vw 8vh;
   color: white;
@@ -162,7 +171,7 @@ const FriendCloseButton = styled.div`
 
 export const FriendCard = styled.div`
   width: 25vw;
-  height: 15vh;
+  height: 18vh;
   /* background-color: white; */
   background: url(${friendbackground}) center no-repeat;
   background-size: 25vw 18vh;
@@ -179,7 +188,8 @@ export const StyledCard = styled.div`
   
   width: 100%;
   display: flex;
-  padding: 0;
+  padding: 0.5vw;
+  color: white;
 `;
 
 export const ProfileImg = styled.div`    
@@ -304,17 +314,17 @@ export const ImageContainer = styled.div`
 `
 // 동료모험가 글씨
 const BoardImageContainer = styled.div`
-  width: 20vw;
-  height: 15vh;
+  width: 18vw;
+  height: 10vh;
   background: url(${backboard}) no-repeat;
-  background-size: 20vw 15vh ;
+  background-size: 18vw 10vh ;
   display: flex;
   justify-content: center; 
   align-items: center;
   font-size: 2.5rem; 
   /* color: white;   */
-  margin-top: 4rem;
-  margin-left: 3rem;
+  margin-top: 5rem;
+  margin-left: 0rem;
   margin-bottom: 3vh;  
 `
 

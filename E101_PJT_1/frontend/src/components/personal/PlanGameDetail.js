@@ -16,21 +16,33 @@ import {
   NameNicknameEl,
 } from '../personal/FriendsContent';
 import papyrus from '../../media/images/Papyrus.png';
+import knifePaper from '../../media/images/knifePaper1.png';
+import title from '../../media/images/title.png';
 
+// 모험 참여 생성의 아래칸 : 모험 생성 및 게임 예약하기
 const PlanGameDetailBlock = styled.div`
   border: 3px solid white;
   width: 100%;
-  height: 65vh;
+  height: 35vh;
   display: flex;  
   flex-direction: column;
+  /* background: url(${knifePaper}) center no-repeat; */
+  background-size: 70vw 35vh;
 `;
 
-export const PlanGameDetailTitle = styled.div`
+// 모험 생성 글자
+const PlanGameDetailTitle = styled.div`
   font-size: 3rem;
-  height: 8vh;
-  color:  #412E22;
-  padding-left: 4rem;
-  text-decoration: underline;
+  background:url(${title}) no-repeat center;
+  width: 14vw;
+  height: 12vh;
+  background-size: 13vw 12vh ;
+  padding-left: 2rem;
+  margin-left: 10vw;
+  margin-top: 5vh;
+  /* text-decoration: underline; */
+  border: 3px solid red;
+
 `
 
 const PlanGameDetailOption = styled.div`
@@ -40,14 +52,15 @@ const PlanGameDetailOption = styled.div`
   align-items: center;
 `
 
+// 시간 설정 인원 설정 텍스트
 const PlanGameDetailOptionName = styled.div`
-  font-size: 3rem;
+  font-size: 2.5rem;
   color:  #412E22;
-  text-decoration: underline;
-  padding-left: 30%;
+  /* text-decoration: underline; */
+  padding-left: 40%;
   width: 50%;
 `
-
+// 게임 예약하기 버튼
 const PlanGameApplyBtn = styled.div`
   font-size: 2rem;
   font-weight: bold;
@@ -208,7 +221,7 @@ const PlanGameDetail = () => {
       <PlanGameDetailTitle>모험 생성</PlanGameDetailTitle>
       {/* 달력 */}
       <PlanGameDetailOption>
-        <PlanGameDetailOptionName>시간 설정</PlanGameDetailOptionName>
+        <PlanGameDetailOptionName>시간</PlanGameDetailOptionName>
         <CustomDatePicker 
           startDate={startDate}
           setStartDate={setStartDate}   
@@ -218,7 +231,7 @@ const PlanGameDetail = () => {
       <ErrorMessage>{error}</ErrorMessage>
       {/* Personcounter */}
       <PlanGameDetailOption>
-        <PlanGameDetailOptionName>인원 설정</PlanGameDetailOptionName>
+        <PlanGameDetailOptionName>인원</PlanGameDetailOptionName>
         <PersonNumCounter 
           count={count}
           setCount={setCount}
