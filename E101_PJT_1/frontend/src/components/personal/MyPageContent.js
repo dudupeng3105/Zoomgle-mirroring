@@ -8,6 +8,7 @@ import reject from '../../media/images/reject.png'
 import accept from '../../media/images/accept.png'
 import album from '../../media/images/album_book.png'
 import MyPagecalender from '../utils/MyPageCalender'
+import PlannedGameList from "../common/PlannedGameList";
 import { useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 

@@ -18,6 +18,7 @@ import {
 import papyrus from '../../media/images/Papyrus.png';
 import knifePaper from '../../media/images/knifePaper1.png';
 import title from '../../media/images/title.png';
+import leatherSquare from '../../media/images/leather_square.png';
 
 // 모험 참여 생성의 아래칸 : 모험 생성 및 게임 예약하기
 const PlanGameDetailBlock = styled.div`
@@ -37,7 +38,7 @@ const PlanGameDetailTitle = styled.div`
   width: 14vw;
   height: 12vh;
   background-size: 13vw 12vh ;
-  padding-left: 2rem;
+  padding-left: 1.5rem;
   margin-left: 10vw;
   margin-top: 5vh;
   /* text-decoration: underline; */
@@ -57,26 +58,37 @@ const PlanGameDetailOptionName = styled.div`
   font-size: 2.5rem;
   color:  #412E22;
   /* text-decoration: underline; */
-  padding-left: 40%;
+  padding-left: 35%;
+  margin-bottom:0;
   width: 50%;
 `
-// 게임 예약하기 버튼
+// 모험 생성 버튼
 const PlanGameApplyBtn = styled.div`
+position: absolute;
   font-size: 2rem;
-  font-weight: bold;
-  padding: 1rem 3rem;
+  /* font-weight: bold; */
+  padding-top: 0.5rem;
   text-align: center;
-  width: 40%;
-  margin-left: 33%;
+  width: 15vw;
+  height: 10vh;
+  margin-left: 63vw;
+  margin-top: 20vh;
   color: white;  
   cursor: pointer;
-  background: #29231C;
-  border: 3px solid #b39860;
+  background: url(${leatherSquare}) center no-repeat;
+  background-size: 15vw 10vh;
+  /* border: 3px solid #b39860; */
   border-radius: 5px;  
   &:hover {
-    background: #E2D6BA;
+    background: url(${leatherSquare}) center no-repeat;
     color: black;
-    border: 3px solid #29231C;
+    background-size: 15vw 10vh;
+    transform: scale(1.1) rotate(-30deg);
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    /* border: 3px solid #29231C; */
   }
 `
 
@@ -270,7 +282,7 @@ const PlanGameDetail = () => {
 
       <PlanGameApplyBtn
         onClick={() => {onClickHandler(`${currentRoomCode}`)}}
-      >게임 예약하기</PlanGameApplyBtn>
+      >모험 생성</PlanGameApplyBtn>
     </PlanGameDetailBlock>
   );
 };
