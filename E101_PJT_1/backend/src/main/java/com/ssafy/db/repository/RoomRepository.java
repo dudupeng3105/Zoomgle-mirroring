@@ -1,7 +1,10 @@
 package com.ssafy.db.repository;
 
+import com.ssafy.common.myObject.RoomInfoInterface;
 import com.ssafy.db.entity.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,5 +20,13 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     Optional<Room> findByRoomSeq(long roomSeq);
 
     Optional<Room> findByRoomSeqAndMvpNull(long roomSeq);
+
     Optional<Room> findByRoomSeqAndMvpNotNull(long roomSeq);
+
+    @Query(value = "select room_seq, date, host, max_capacity, mvp from room " +
+            " where substring_index(date, ' ', 1) = :date " +
+            " AND room_seq IN (select room_code from player where user = :nickname) " +
+            " AND mvp IS NOT NULL", nativeQuery = true)
+    List<RoomInfoInterface> getRoomInfoByNicknameAndDate(@Param(value = "nickname") String nickname,
+                                                         @Param(value = "date") String date);
 }
