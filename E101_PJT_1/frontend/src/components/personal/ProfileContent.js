@@ -1,10 +1,11 @@
 import styled from "styled-components";
 // import background from '../../media/images/profile_back.jpg'
-import background from '../../media/images/headerMenuBackGround.png'
+import background from '../../media/images/woodenBack1.png'
 import ProfileContentModal from "../auth/ProfileContentModal";
 
 const ProfileContentBlock = styled.div`
   background: url(${background});
+  background-size: 83vw 98vh;
   width: 100%;
   margin: 10px;
   padding: 10px;
