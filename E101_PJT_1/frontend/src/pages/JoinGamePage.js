@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Header from "../components/common/header";
-import background from '../media/images/headerMenuBackGround.png'
+// import background from '../media/images/headerMenuBackGround.png'
+import background from '../media/images/joingamepage_back.jpg'
 import PlannedGameList from "../components/common/PlannedGameList";
 import PlanGameDetail from "../components/personal/PlanGameDetail";
 import { useEffect, useState } from 'react';
@@ -16,10 +17,12 @@ const JoinGamePageBlock = styled.div`
 `;
 
 const JoinGameContent = styled.div`
-  background: url(${background});
+  background: url(${background}) center no-repeat;
+  background-size: 83vw 98vh;
   width: 100%;
   margin: 10px;
   padding: 10px;
+  /* overflow: hidden; */
 `;
 
 const JoinGamePage = () => {

@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { PlanGameDetailTitle } from '../personal/PlanGameDetail';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -13,11 +12,17 @@ import {
   NameNicknameEl,
 } from '../personal/FriendsContent';
 import GameNumCounter from "../utils/GameNumCounter";
+import nailPaper from '../../media/images/nailPaper1.png';
+import { UpCommingGameTitle } from '../utils/GameNumCounter';
+
+// 모험 참여 생성의 윗 칸 : 예정된 모험 
 
 const PlannedGameListBlock = styled.div`
   border: 3px solid white;
   width: 100%;
-  height: 30vh;
+  height: 55vh;
+  /* background: url(${nailPaper}) center no-repeat; */
+  background-size: 75vw 60vh;
 `;
 
 const PlannedGameBlock = styled.div`
@@ -67,6 +72,7 @@ const InfoMessage = styled.div`
   display: flex;
   justify-content: center;
 `;
+
 
 const PlannedGameList = () => {
   const dispatch = useDispatch();
@@ -132,7 +138,8 @@ const PlannedGameList = () => {
           ))}
         </GameInvitationModal>
       )}
-      <PlanGameDetailTitle>예정된 모험(4개만 보여줌)</PlanGameDetailTitle>
+      {/* 예정된 모험 */}
+      <UpCommingGameTitle>예정된 모험</UpCommingGameTitle>
       {myGamePlanList.length === 0 ? (
         <InfoMessage>예정된 게임이 없습니다.</InfoMessage>
       ) : (
