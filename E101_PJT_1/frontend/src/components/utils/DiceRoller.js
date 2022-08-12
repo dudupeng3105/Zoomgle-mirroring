@@ -32,9 +32,11 @@ const DiceRoller = ({
 
     // 자리 계산
     const myPos = posList[myTurnNum];    
-    if (value >4) {
-      value = value - 3;
-    }
+    // if (value > 3) {
+    //   value = value - 3;
+    // }
+    // 테스트용 숫자(value 크게함)
+    value = value + 5;
     setDiceNum(value);
     const tempPosNum = (myPos + value) % 20;
     
@@ -43,21 +45,37 @@ const DiceRoller = ({
     nextPosList[myTurnNum] = tempPosNum;    
     // 미니게임 랜덤
     const nextMinigameType = Math.floor(Math.random() * 160) // 0 ~ 9 랜덤
-    
-    // emit
-    const sendData = {
-      session: mySessionIdValue,
-      to: [], // all user
-      data: JSON.stringify({
-        // nextUserName: nextUserName, // 다음사람
-        // nextTurn: nextTurn, // 다음 턴
-        nextPosList: nextPosList, // 자리 업데이트
-        isRoll: !isRoll,
-        nextMinigameType: nextMinigameType,
-      }),
-      type: 'GAME_STATE_CHANGED',
-    };
-    // console.log(JSON.stringify(sendData));
+    let sendData = {};
+    // 20칸이면 .. 우승자 나옴
+    if (myPos + value > 19) {
+      nextPosList[myTurnNum] = 19;
+      sendData = {
+        session: mySessionIdValue,
+        to: [], // all user
+        data: JSON.stringify({
+          // nextUserName: nextUserName, // 다음사람
+          // nextTurn: nextTurn, // 다음 턴
+          nextIsGameDone: true,
+          nextPosList: nextPosList, // 자리 업데이트                    
+        }),
+        type: 'GAME_STATE_DONE',
+      }
+    } else {
+      // 다음게임상태 emit
+      sendData = {
+        session: mySessionIdValue,
+        to: [], // all user
+        data: JSON.stringify({
+          // nextUserName: nextUserName, // 다음사람
+          // nextTurn: nextTurn, // 다음 턴
+          nextPosList: nextPosList, // 자리 업데이트
+          isRoll: !isRoll,
+          nextMinigameType: nextMinigameType,
+        }),
+        type: 'GAME_STATE_CHANGED',
+      };
+    }
+
     fetch('https://i7e101.p.ssafy.io:4443/openvidu/api/signal', {
       method: 'POST',
       headers: {

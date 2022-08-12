@@ -30,10 +30,6 @@ const reactAudioPlayer = () => {
         loop={true}
         muted={true}          // 자동 재생 on
       />
-        
-
-
-
     </reactAudioPlayerBlock>
   );
 };

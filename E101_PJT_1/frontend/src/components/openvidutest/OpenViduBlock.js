@@ -3,19 +3,19 @@ import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
 import { useState, useEffect } from 'react';
 import OpenViduSession from './OpenViduSession';
-import styled from "styled-components";
+import styled from 'styled-components';
 import gameboard from '../../media/images/gameboard.png';
 import loadingImage from '../../media/images/loadingImage.gif';
-import waitingRoomBackGround from '../../media/images/waitingRoom.jpg'
+import waitingRoomBackGround from '../../media/images/waitingRoom.jpg';
 import WaitingRoom from './WaitingRoom';
-
+import MvpPhaseComponent from './MvpPhaseComponent';
+import { useSelector } from 'react-redux';
 
 const OpenViduContainer = styled.div`
   width: 100vw;
   height: 100vh;
   background: url(${gameboard});
   background-size: 100vw 100vh;
-
 
   &.waitingRoom {
     background: url(${waitingRoomBackGround});
@@ -28,8 +28,7 @@ const LoadingBlock = styled.div`
   height: 100vh;
   background: url(${loadingImage});
   background-size: 100vw 100vh;
-`
-
+`;
 
 // const OPENVIDU_SERVER_URL = "https://" + window.location.hostname + ":4443";
 // const OPENVIDU_SERVER_SECRET = "MY_SECRET";
@@ -37,7 +36,12 @@ const LoadingBlock = styled.div`
 const OPENVIDU_SERVER_URL = 'https://' + 'i7e101.p.ssafy.io' + ':4443';
 const OPENVIDU_SERVER_SECRET = 'e101ssafy71';
 
-const OpenViduBlock = ({sessionNickname, sessionRoomId, sessionCapacity, sessionHost}) => {
+const OpenViduBlock = ({
+  sessionNickname,
+  sessionRoomId,
+  sessionCapacity,
+  sessionHost,
+}) => {
   // OV
   const [ov, setOv] = useState(null);
   const [mySessionId, setMySessionId] = useState(sessionRoomId);
@@ -47,39 +51,42 @@ const OpenViduBlock = ({sessionNickname, sessionRoomId, sessionCapacity, session
   const [publisher, setPublisher] = useState(undefined);
   const [subscribers, setSubscribers] = useState([]);
   // currentVideoDevice
-  const [currentVideoDevice, setCurrentVideoDevice] = useState(null);  
-  // 
-  // 게임관련 변수들
-  // 게임관련 변수 - 대기실 변수
+  const [currentVideoDevice, setCurrentVideoDevice] = useState(null);
+  //
+  // -----------게임관련 변수들----------------------------------
+  // 게임의 phase 분리시키는 변수들
   const [isGameStart, setIsGameStart] = useState(false);
-  // 게임관련 변수 - 게임 관련 변수
+  const [isGameDone, setIsGameDone] = useState(false);
+  const [isMvpSpeechDone, setIsMvpSpeechDone] = useState(false);
+  const [isGameOver, setIsGameOver] = useState(false);
+  // 게임 진행 관련 변수
   const [players, setPlayers] = useState([]); // 플레이어들
   const [turnNum, setTurnNum] = useState(0); // 몇 번째 사람 차례인지(이번 턴 인 사람)
-  const [nextPlayer, setNextPlayer] = useState('') // 다음 사람(handlemainStreamer에 사용)
+  const [nextPlayer, setNextPlayer] = useState(''); // 다음 사람(handlemainStreamer에 사용)
   const [posList, setPosList] = useState([0, 0, 0, 0, 0, 0]); // 6명 max라 생각하고 각자의 포지션
   const [vote, setVote] = useState([]); // 누가 뭘로 투표했는지
-  const [minigameType , setMinigameType] = useState(undefined);
+  const [minigameType, setMinigameType] = useState(undefined);
   // const [minigameDone, setMinigameDone] = useState(false); // 미니게임이 끝났는지
   const [isRoll, setIsRoll] = useState(false); // 굴렸는지
   const [isVote, setIsVote] = useState(false); // 투표했는지
-
-  
+  // MVP 및 사진 관련 변수들
+  const [pictureVote, setPictureVote] = useState([]);
 
   // componentDidMount() ==
   //  useEffect(() => { 여기에 코드를 적자  }, [])
   useEffect(() => {
     // 창 닫을때 session 떠나게 해줌
-    window.addEventListener('beforeunload', onbeforeunload);       
-    joinSession()
+    window.addEventListener('beforeunload', onbeforeunload);
+    joinSession();
     return () => {
       window.removeEventListener('beforeunload', onbeforeunload);
     };
   }, []);
 
   useEffect(() => {
-    console.error("구성원바뀜",players);
+    console.error('구성원바뀜', players);
   }, [players]);
-  
+
   // 중앙에 오는놈을 설정하기 위한 아이(하위요소로 Props 필요함)
   const handleMainVideoStream = (stream) => {
     if (mainStreamManager !== stream) {
@@ -88,18 +95,22 @@ const OpenViduBlock = ({sessionNickname, sessionRoomId, sessionCapacity, session
   };
 
   // 나갈 때 작동함
-  const deleteSubscriber = (streamManager) => {    
+  const deleteSubscriber = (streamManager) => {
     let targetSubscribers = subscribers;
     let index = targetSubscribers.indexOf(streamManager, 0);
-    const removeName = JSON.parse(targetSubscribers[index].stream.connection.data).clientData;
-    console.error("제거할 이름", removeName);
+    const removeName = JSON.parse(
+      targetSubscribers[index].stream.connection.data,
+    ).clientData;
+    console.error('제거할 이름', removeName);
 
     if (index > -1) {
-      targetSubscribers.splice(index, 1);      
+      targetSubscribers.splice(index, 1);
       setSubscribers(targetSubscribers);
     }
-    let tempPlayers = targetSubscribers.map((tempsub) => JSON.parse(tempsub.stream.connection.data).clientData)
-    console.error("나간 후 리스트", tempPlayers); 
+    let tempPlayers = targetSubscribers.map(
+      (tempsub) => JSON.parse(tempsub.stream.connection.data).clientData,
+    );
+    console.error('나간 후 리스트', tempPlayers);
     // 자기 자신 없으면 넣어야함
     if (tempPlayers.includes(myUserName) === false) {
       tempPlayers.push(myUserName);
@@ -108,11 +119,11 @@ const OpenViduBlock = ({sessionNickname, sessionRoomId, sessionCapacity, session
   };
 
   // 들어올 때
-  const joinSession = async () => {    
+  const joinSession = async () => {
     // --- 1) Get an OpenVidu object ---
     // const temp = new OpenVidu();
     const tempOv = new OpenVidu();
-    setOv(tempOv);    
+    setOv(tempOv);
 
     // --- 2) Init a session ---
 
@@ -124,34 +135,38 @@ const OpenViduBlock = ({sessionNickname, sessionRoomId, sessionCapacity, session
     var mySession = tempSession;
 
     // --- 3) Specify the actions when events take place in the session ---
-     // 게임 참여자 목록
+    // 게임 참여자 목록
     // On every new Stream received...(새로운 사람이 들어올 때 마다...)
     mySession.on('streamCreated', (event) => {
       // Subscribe to the Stream to receive it. Second parameter is undefined
       // so OpenVidu doesn't create an HTML video by its own
       var tempSubscriber = mySession.subscribe(event.stream, undefined); // 새로운 참여자
-      var tempSubscribers = subscribers; // 참여자 목록(많은 정보 담고 있음)   
+      var tempSubscribers = subscribers; // 참여자 목록(많은 정보 담고 있음)
       // 리액트에서 배열을 다른 변수에 바로 대입하는것은 참조되기 때문에 state가 즉각 변하지 않음
       // 참고: https://stackoverflow.com/questions/25937369/react-component-not-re-rendering-on-state-change
       // var tempPlayers = players; (이 방법은 잘못됨)
       // console.error("플레이어는", players);
       // let tempPlayers = [...players]; // 배열복사를 활용하자!!
       // console.error("추가전", tempPlayers);
-      const addUserName = JSON.parse(tempSubscriber.stream.connection.data).clientData;
-      console.error("이름은", addUserName);
+      const addUserName = JSON.parse(
+        tempSubscriber.stream.connection.data,
+      ).clientData;
+      console.error('이름은', addUserName);
       tempSubscribers.push(tempSubscriber);
       // tempPlayers.push(addUserName);
 
-      let tempPlayers = tempSubscribers.map((tempsub) => JSON.parse(tempsub.stream.connection.data).clientData)
+      let tempPlayers = tempSubscribers.map(
+        (tempsub) => JSON.parse(tempsub.stream.connection.data).clientData,
+      );
 
       // 자기 자신 없으면 넣어야함
       if (tempPlayers.includes(myUserName) === false) {
         tempPlayers.push(myUserName);
       }
 
-      console.error("한명더들어왔어요!", tempPlayers);
+      console.error('한명더들어왔어요!', tempPlayers);
       // Update the state with the new subscribers
-      setSubscribers(tempSubscribers);     
+      setSubscribers(tempSubscribers);
       setPlayers(tempPlayers.sort());
     });
 
@@ -166,10 +181,31 @@ const OpenViduBlock = ({sessionNickname, sessionRoomId, sessionCapacity, session
       console.warn(exception);
     });
 
+    // 대기실에서 게임 시작 전체 동기화 ON
+    mySession.on('GAME_STATE_START', (data) => {
+      console.warn('게임 시작할거야');
+      const {
+        nextTurnNum,
+        nextNextPlayer,
+        nextPosList,
+        nextVote,
+        nextIsRoll,
+        nextIsVote,
+        nextIsGameStart,
+      } = JSON.parse(data.data);
+      setTurnNum(nextTurnNum);
+      setNextPlayer(nextNextPlayer);
+      setPosList(nextPosList);
+      setVote(nextVote);
+      setIsRoll(nextIsRoll);
+      setIsVote(nextIsVote);
+      setIsGameStart(nextIsGameStart);
+    });
+
     // 주사위 동기화 ON
     mySession.on('GAME_STATE_CHANGED', (data) => {
-      console.warn("시그널 왔다 받아라..", players);           
-      const {isRoll, nextPosList, nextMinigameType} = JSON.parse(data.data);      
+      console.warn('시그널 왔다 받아라..', players);
+      const { isRoll, nextPosList, nextMinigameType } = JSON.parse(data.data);
       setMinigameType(nextMinigameType);
       setPosList(nextPosList);
       setIsRoll(isRoll); // 주사위 돌렸다는 것이 미니게임의 시작을 알림
@@ -177,8 +213,10 @@ const OpenViduBlock = ({sessionNickname, sessionRoomId, sessionCapacity, session
 
     // 미니게임 결과 동기화 ON
     mySession.on('MINIGAME_STATE_CHANGED', (data) => {
-      console.warn("미니게임끝났다 받아라..");      
-      const {nextTurn, nextIsRoll, nextUserName, nextPosList} = JSON.parse(data.data);
+      console.warn('미니게임끝났다 받아라..');
+      const { nextTurn, nextIsRoll, nextUserName, nextPosList } = JSON.parse(
+        data.data,
+      );
       setNextPlayer(nextUserName);
       setTurnNum(nextTurn);
       setPosList(nextPosList); // 성공 실패에 따라 자리 재조정
@@ -189,23 +227,54 @@ const OpenViduBlock = ({sessionNickname, sessionRoomId, sessionCapacity, session
 
     // 투표 진행 동기화 ON
     mySession.on('VOTE_STATE_CHANGED', (data) => {
-      console.warn("투표상황 업데이트..");      
-      const {nextVote} = JSON.parse(data.data);
+      console.warn('투표상황 업데이트..');
+      const { nextVote } = JSON.parse(data.data);
       setVote([...nextVote]);
     });
 
-    // 대기실에서 게임 시작 전체 동기화 ON
-    mySession.on('GAME_STATE_START', (data) => {
-      console.warn("게임 시작할거야");
-      const {nextTurnNum, nextNextPlayer, nextPosList, nextVote, nextIsRoll, nextIsVote, nextIsGameStart} = JSON.parse(data.data);
-      setTurnNum(nextTurnNum);
-      setNextPlayer(nextNextPlayer);
+    // 보드게임 종료 알림
+    mySession.on('GAME_STATE_DONE', (data) => {
+      console.warn('투표상황 업데이트..');
+      const { nextIsGameDone, nextPosList } = JSON.parse(data.data);
       setPosList(nextPosList);
-      setVote(nextVote);
-      setIsRoll(nextIsRoll);
-      setIsVote(nextIsVote);
-      setIsGameStart(nextIsGameStart);
-    })
+      setIsGameDone(nextIsGameDone);
+    });
+
+    // 보드게임 종료 알림
+    mySession.on('GAME_STATE_DONE', (data) => {
+      console.warn('보드게임종료..');
+      const { nextIsGameDone, nextPosList } = JSON.parse(data.data);
+      setPosList(nextPosList);
+      setIsGameDone(nextIsGameDone);
+    });
+
+    // MVP 스피치 종료 알림
+    mySession.on('SPEECH_DONE', (data) => {
+      console.warn('연설 종료..');
+      const { nextIsMvpSpeechDone } = JSON.parse(data.data);
+      setIsMvpSpeechDone(nextIsMvpSpeechDone);
+      // // const tempLength = PictureArr.length;
+      // console.log("템프렝스", tempLength);
+      // const temp = new Array(tempLength).fill(0);
+      // console.log("빈 어레이", temp);
+      // setPictureVote([...temp]);
+    });
+
+    // 사진 투표 알림
+    mySession.on('PICTURE_VOTE', (data) => {
+      console.warn('사진투표합니다...');
+      const {nextPictureVote} = JSON.parse(data.data);
+      console.error("---------------------------")
+      console.error("다음상황", nextPictureVote);      
+      setPictureVote([...nextPictureVote]);
+    });
+
+    // 게임 종료 알림
+    mySession.on('GAME_OVER', (data) => {
+      console.warn('게임이 최종 종료됐습니다.');
+      const {nextIsGameOver} = JSON.parse(data.data);           
+      setIsGameOver(nextIsGameOver);
+    });
 
     // --- 4) Connect to the session with a valid user token ---
 
@@ -239,12 +308,12 @@ const OpenViduBlock = ({sessionNickname, sessionRoomId, sessionCapacity, session
 
           // --- 6) Publish your stream ---
 
-          mySession.publish(tempPublisher);          
+          mySession.publish(tempPublisher);
           // Set the main video in the page to display our webcam and store our Publisher
           // 이름만 뽑아냄
-          // const publisherName = JSON.parse(tempPublisher.stream.connection.data).clientData; 
-          // console.log("퍼블리셔이름", publisherName)   
-          // tempPlayers.push(publisherName);               
+          // const publisherName = JSON.parse(tempPublisher.stream.connection.data).clientData;
+          // console.log("퍼블리셔이름", publisherName)
+          // tempPlayers.push(publisherName);
           setCurrentVideoDevice(videoDevices[0]);
           setMainStreamManager(tempPublisher);
           setPublisher(tempPublisher);
@@ -259,7 +328,6 @@ const OpenViduBlock = ({sessionNickname, sessionRoomId, sessionCapacity, session
         });
     });
   };
-
 
   // 방 나갈 때 필요한 아이(하위요소로 PROPS 필요함)
   const leaveSession = () => {
@@ -408,28 +476,61 @@ const OpenViduBlock = ({sessionNickname, sessionRoomId, sessionCapacity, session
     });
   };
 
-  const onbeforeunload = (e) => {    
-    leaveSession();    
+  const onbeforeunload = (e) => {
+    leaveSession();
   };
 
   const mySessionIdValue = mySessionId;
   const myUserNameValue = myUserName;
-  console.log("너 왜 없냐..", mySessionIdValue);
-  console.log("너 왜 없냐.", myUserNameValue);
+  console.log('너 왜 없냐..', mySessionIdValue);
+  console.log('너 왜 없냐.', myUserNameValue);
 
   // 방 참여 init
   return (
-    <OpenViduContainer
-      className={isGameStart ? '': 'waitingRoom'}
-    >
+    <OpenViduContainer className={isGameStart ? '' : 'waitingRoom'}>
       {/* 그 입장하기 전에 화면 띄워줌 사실 필요없어서
         그냥 자동입장으로 일단 바꿈 */}
       {session === undefined ? <LoadingBlock></LoadingBlock> : null}
 
       {/* 입장했으면.. */}
       {session !== undefined ? (
-        isGameStart ? (
+        isGameDone ? (
+          <MvpPhaseComponent
+            isGameOver={isGameOver}
+            sessionHost={sessionHost}
+            pictureVote={pictureVote}
+            isMvpSpeechDone={isMvpSpeechDone}
+            isGameDone={isGameDone}
+            setIsGameDone={setIsGameDone}
+            nextPlayer={nextPlayer}
+            setNextPlayer={setNextPlayer}
+            isRoll={isRoll}
+            setIsRoll={setIsRoll}
+            isVote={isVote}
+            setIsVote={setIsVote}
+            vote={vote}
+            setVote={setVote}
+            minigameType={minigameType}
+            setMinigameType={setMinigameType}
+            turnNum={turnNum}
+            setTurnNum={setTurnNum}
+            posList={posList}
+            setPosList={setPosList}
+            session={session}
+            handleMainVideoStream={handleMainVideoStream}
+            switchCamera={switchCamera}
+            leaveSession={leaveSession}
+            mySessionIdValue={mySessionIdValue}
+            myUserNameValue={myUserNameValue}
+            mainStreamManager={mainStreamManager}
+            publisher={publisher}
+            players={players}
+            subscribers={subscribers}
+          ></MvpPhaseComponent>
+        ) : isGameStart ? (
           <OpenViduSession
+            isGameDone={isGameDone}
+            setIsGameDone={setIsGameDone}
             nextPlayer={nextPlayer}
             setNextPlayer={setNextPlayer}
             isRoll={isRoll}
@@ -483,8 +584,7 @@ const OpenViduBlock = ({sessionNickname, sessionRoomId, sessionCapacity, session
             publisher={publisher}
             players={players}
             subscribers={subscribers}
-          >
-          </WaitingRoom>
+          ></WaitingRoom>
         )
       ) : null}
     </OpenViduContainer>
