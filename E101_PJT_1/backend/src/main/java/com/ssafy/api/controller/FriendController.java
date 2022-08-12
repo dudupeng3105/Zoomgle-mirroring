@@ -81,10 +81,10 @@ public class FriendController {
     }
 
     @DeleteMapping("")
-    @ApiOperation(value = "친구 추가", notes = "닉네임을 통해서 친구를 삭제 할 수 있다.")
+    @ApiOperation(value = "친구 삭제", notes = "닉네임을 통해서 친구를 삭제 할 수 있다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "친구 삭제 성공", response = FriendPostRes.class),
-            @ApiResponse(code = 401, message = "친구 삭제 실패"),
+            @ApiResponse(code = 401, message = "친구 정보 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<FriendPostRes> deleteFriend(@RequestBody @ApiParam(value = "친구 삭제 정보") FriendPostReq friendPostReq) {
@@ -92,9 +92,9 @@ public class FriendController {
         String friendNickname = friendPostReq.getFriendNickname();
 
         if (friendService.deleteFriend(myNickname, friendNickname)) {
-            return ResponseEntity.status(200).body(FriendPostRes.of(200, "친구 삭제 성공!"));
+            return ResponseEntity.status(200).body(FriendPostRes.of(200, friendNickname + "님을 언팔로우 했습니다."));
         } else {
-            return ResponseEntity.status(401).body(FriendPostRes.of(401, "친구 삭제 실패"));
+            return ResponseEntity.status(401).body(FriendPostRes.of(401, friendNickname + "님을 팔로우 하지 않고 있어요"));
         }
     }
 }
