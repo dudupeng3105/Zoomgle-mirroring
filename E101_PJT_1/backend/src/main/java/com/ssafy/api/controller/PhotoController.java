@@ -1,6 +1,7 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.request.PhotoGetReq;
+import com.ssafy.api.request.PhotoListPostReq;
 import com.ssafy.api.request.PhotoPostReq;
 import com.ssafy.api.response.PhotoRes;
 import com.ssafy.api.service.PhotoService;
@@ -41,12 +42,15 @@ public class PhotoController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public String upload(@RequestBody @ApiParam(value = "추억으로 놔두고 싶은 사진 URLs", required = true) List<String> photo_urls,
-                         @RequestBody @ApiParam(value = "게임 룸코드", required = true) String roomSeq) throws IOException {
-        for (String s : photo_urls) {
+//    public String upload(@RequestBody @ApiParam(value = "추억으로 놔두고 싶은 사진 URLs", required = true) List<String> photo_urls,
+//                         @PathVariable @ApiParam(value = "게임 룸코드", required = true) String roomSeq) throws IOException {
+    public String upload(@RequestBody @ApiParam(value = "추억으로 놔두고 싶은 사진 URLs", required = true) PhotoListPostReq photoListPostReq) throws IOException {
+        List<String> list = photoListPostReq.getPhotoUrls();
+        String roomSeq = photoListPostReq.getRoomSeq();
+        for (String s : list) {
             photoService.savePhotoUrl(s, roomSeq);
         }
-        return photo_urls.size() + "개의 사진을 저장하였습니다.";
+        return list.size() + "개의 사진을 저장하였습니다.";
     }
 
     @PostMapping("/temp/{roomSeq}")
