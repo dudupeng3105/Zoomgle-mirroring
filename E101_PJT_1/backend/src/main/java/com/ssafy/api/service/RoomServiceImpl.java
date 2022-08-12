@@ -1,13 +1,17 @@
 package com.ssafy.api.service;
 
+import com.ssafy.common.myObject.PhotoInfo;
+import com.ssafy.common.myObject.RoomInfoAndPhoto;
+import com.ssafy.common.myObject.RoomInfoInterface;
 import com.ssafy.db.entity.Player;
 import com.ssafy.db.entity.Room;
-import com.ssafy.db.entity.User;
+import com.ssafy.db.repository.PhotoRepository;
 import com.ssafy.db.repository.PlayerRepository;
 import com.ssafy.db.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +23,9 @@ public class RoomServiceImpl implements RoomService{
 
     @Autowired
     PlayerRepository playerRepository;
+
+    @Autowired
+    PhotoRepository photoRepository;
     
     @Override
     /**
@@ -102,5 +109,29 @@ public class RoomServiceImpl implements RoomService{
         }catch (Exception e) {
             return false;
         }
+    }
+
+    /**
+     * 닉네임과 날짜로 게임방 정보와 사진url 받아오기
+     */
+    @Override
+    public List<RoomInfoAndPhoto> getRoomInfoAndPhotoByNicknameAndDate(String nickname, String date) {
+
+        List<RoomInfoAndPhoto> roomInfoAndPhotoList = new ArrayList<>();
+
+        // 닉네임, 날짜로 게임방정보 리스트 받아오기
+        List<RoomInfoInterface> list = roomRepository.getRoomInfoByNicknameAndDate(nickname, date);
+
+        // 게임 방 정보 리스트를 받아서 각 게임방의 사진리스트를 찾아서 같이 하나의 객체에 저장하고 리스트에 add
+        for(RoomInfoInterface inter : list){
+            long roomSeq = inter.getRoom_Seq();
+            List<PhotoInfo> photoInfoList = photoRepository.getAllPhotoByRoomSeq(roomSeq);
+            List<Player> players = playerRepository.findAllByRoomCode(roomSeq);
+
+            RoomInfoAndPhoto roomInfoAndPhoto = new RoomInfoAndPhoto(inter, photoInfoList, players);
+            roomInfoAndPhotoList.add(roomInfoAndPhoto);
+        }
+
+        return roomInfoAndPhotoList;
     }
 }

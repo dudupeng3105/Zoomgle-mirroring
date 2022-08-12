@@ -1,5 +1,7 @@
 package com.ssafy.api.service;
 
+import com.ssafy.common.myObject.RoomInfoAndPhoto;
+import com.ssafy.common.myObject.RoomInfoInterface;
 import com.ssafy.db.entity.Player;
 import com.ssafy.db.entity.Room;
 
@@ -26,5 +28,7 @@ public interface RoomService {
 	List<Player> getAllPlayer(String user);
 
 	boolean deleteRoom(long roomCode);
+
+	List<RoomInfoAndPhoto> getRoomInfoAndPhotoByNicknameAndDate(String nickname, String date);
 }
 
