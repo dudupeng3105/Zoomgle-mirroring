@@ -18,6 +18,8 @@ import {
   getInvitaionListApi,
   checkInvitaionApi,
   sendInvitaionApi,
+  getGameDoneListApi,
+  getGameDonePhotoApi
 } from './api';
 
 // 비동기처리 함수
@@ -98,6 +100,33 @@ function* CheckInvitationAsync({ payload }) {
   }
 }
 
+
+function* GetGameDoneListAsync() {
+  const { getGameDoneListSuccess, getError } = gamePlanActions;
+  try {
+    const response = yield call(getGameDoneListApi);
+    console.log('종료된 게임가져오기', response.data);
+    if (response.status === 200) {      
+      yield put(getGameDoneListSuccess(response.data));
+    }
+  } catch (error) {
+    yield put(getError(error.response.data));
+  }
+}
+
+function* GetGameDonePhotoAsync({payload}) {
+  const { getGameDonePhotoSuccess, getError } = gamePlanActions;
+  try {
+    const response = yield call(getGameDonePhotoApi, payload);
+    console.log('종료된 게임 사진가져오기', response.data);
+    if (response.status === 200) {      
+      yield put(getGameDonePhotoSuccess(response.data));
+    }
+  } catch (error) {
+    yield put(getError(error.response.data));
+  }
+}
+
 // on : 바라보고 있는 함수
 function* oncreateGamePlan() {
   const { createGamePlanStart } = gamePlanActions;
@@ -126,10 +155,22 @@ function* oncheckInvitaion() {
   yield takeLatest(checkInvitaionStart, CheckInvitationAsync);
 }
 
+function* ongetGameDoneList() {
+  const { getGameDoneListStart } = gamePlanActions;
+  yield takeLatest(getGameDoneListStart, GetGameDoneListAsync);
+}
+
+function* ongetGameDonePhoto() {
+  const { getGameDonePhotoStart } = gamePlanActions;
+  yield takeLatest(getGameDonePhotoStart, GetGameDonePhotoAsync);
+}
+
 export const gamePlanSagas = [
   fork(oncreateGamePlan),
   fork(onGamePlanList),
   fork(onInvitationList),
   fork(onSendInvitation),
-  fork(oncheckInvitaion)
+  fork(oncheckInvitaion),
+  fork(ongetGameDoneList),
+  fork(ongetGameDonePhoto),
 ];
