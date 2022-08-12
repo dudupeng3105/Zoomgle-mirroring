@@ -14,8 +14,11 @@ import java.util.List;
 @Setter
 @ApiModel("PhotoListPostRequest")
 public class PhotoListPostReq {
-    @ApiModelProperty(name = "Room Seq", example = "1")
+    @ApiModelProperty(name = "사진 url 리스트", example = "{" +
+            "\"https://bucket-e101-zoomgle.s3.ap-northeast-2.amazonaws.com/temp/1168-2022%EB%85%848%EC%9B%949%EC%9D%BC/1168-155443.jpeg\"," +
+            "\"https://bucket-e101-zoomgle.s3.ap-northeast-2.amazonaws.com/temp/1168-2022%EB%85%848%EC%9B%949%EC%9D%BC/1168-155442.jpeg\"," +
+            "}")
     List<String> photoUrls;
-    @ApiModelProperty(name = "날짜", example = "8/3/2022 16:30:00")
+    @ApiModelProperty(name = "게임 방 번호", example = "1168")
     String roomSeq;
 }
