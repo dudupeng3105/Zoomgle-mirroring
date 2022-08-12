@@ -1,12 +1,14 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.request.PhotoGetReq;
+import com.ssafy.api.request.PhotoListPostReq;
 import com.ssafy.api.request.PhotoPostReq;
 import com.ssafy.api.response.PhotoRes;
 import com.ssafy.api.service.PhotoService;
 import com.ssafy.api.service.RoomService;
 import com.ssafy.common.myObject.PhotoInfo;
 import com.ssafy.common.util.S3Uploader;
+import com.ssafy.db.entity.Room;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Api(value = "사진 API", tags = {"Photo."})
 @RequiredArgsConstructor
@@ -39,31 +42,35 @@ public class PhotoController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public String upload(@RequestBody @ApiParam(value = "추억으로 놔두고 싶은 사진 URLs", required = true) List<String> photo_urls,
-                         @RequestBody @ApiParam(value = "게임 룸코드", required = true) String roomSeq) throws IOException {
-        for (String s : photo_urls) {
+    public String upload(@RequestBody @ApiParam(value = "추억으로 놔두고 싶은 사진 URLs", required = true) PhotoListPostReq photoListPostReq) throws IOException {
+        List<String> list = photoListPostReq.getPhotoUrls();
+        String roomSeq = photoListPostReq.getRoomSeq();
+        for (String s : list) {
             photoService.savePhotoUrl(s, roomSeq);
         }
-        return photo_urls.size() + "개의 사진을 저장하였습니다.";
+        return list.size() + "개의 사진을 저장하였습니다.";
     }
 
-    @PostMapping("/temp")
-    @ApiOperation(value = "사진 임시 저장", notes = "S3에 임시로 사진 저장")
+    @PostMapping("/temp/{roomSeq}")
+    @ApiOperation(value = "임시 사진 저장", notes = "S3와 DB에 임시 사진 저장")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 401, message = "사진 리스트 없음"),
-            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 404, message = "게임방 정보 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public String tempUpload(@RequestPart @ApiParam(value = "캡쳐 사진 파일", required = true) MultipartFile photo,
-                             @RequestPart @ApiParam(value = "게임 룸 정보", required = true) PhotoPostReq roomInfo) throws IOException {
-        String date = roomInfo.getDate();
-        String roomSeq = roomInfo.getRoomSeq();
-        photoService.saveTempPhoto(photo, date, roomSeq);
-
-        String[] dateSplit = date.split(" ")[0].split("/");
-        String dirDate = dateSplit[2] + "년" + dateSplit[0] + "월" + dateSplit[1] + "일";
-        return "사진을 S3의 /temp/" + roomSeq + "-" + dirDate + " 폴더에 저장하였습니다.";
+                             @PathVariable @ApiParam(value = "게임 방 코드", required = true) String roomSeq) throws IOException {
+        try {
+            Optional<Room> room = roomService.getRoomByRoomCode(Long.parseLong(roomSeq));
+            String date = room.get().getDate();
+            photoService.saveTempPhoto(photo, date, roomSeq);
+            String[] dateSplit = date.split(" ")[0].split("/");
+            String dirDate = dateSplit[2] + "년" + dateSplit[0] + "월" + dateSplit[1] + "일";
+            return "사진을 S3의 /temp/" + roomSeq + "-" + dirDate + " 폴더에 저장하였습니다.";
+        } catch (Exception e) {
+            return "존재하지 않는 게임방 입니다";
+        }
     }
 
     @GetMapping("")

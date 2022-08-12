@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
-import background from '../../media/images/headerMenuBackGround.png';
+import background from '../../media/images/mypage_back4.jpg'
 import { useSelector, useDispatch } from 'react-redux';
 import { friendActions } from '../../store/friends-slice';
 import profile1 from '../../media/images/profile1.png';
@@ -9,15 +9,22 @@ import profile3 from '../../media/images/profile3.png';
 import profile4 from '../../media/images/profile4.png';
 import profile5 from '../../media/images/profile5.png';
 import profile6 from '../../media/images/profile6.png';
-import backboard from '../../media/images/board1-2.png';
+import backboard from '../../media/images/friend_title.png';
 import papyrus from '../../media/images/Papyrus.png';
 import Xmark from '../../media/images/X-mark.png';
-import friendbackground from "../../media/images/friendback.png"
+import friendbackground from "../../media/images/friend_content.png"
+import friendsearch from '../../media/images/search.png'
+import scrollBlack from '../../media/images/scroll_black.png'
+import scrollWhite from '../../media/images/scroll_white.png'
+import modalfriendsearch from '../../media/images/transparent_search.png'
 
 const FriendsContentBlock = styled.div`
   background: url(${background});
+  background-size: 83vw 98vh;
   width: 100%;
   margin: 10px;
+  padding:10px;
+  overflow: hidden;
   /* padding-left: 3vmin;   */
   h3 {
     font-size: 3rem; 
@@ -30,13 +37,13 @@ const FriendsContentBlock = styled.div`
 
 const FriendsList = styled.div`
   display: flex;
-  width: 90%;
-  height: 75vh;
+  width: 70%;
+  height: 55vh;
   flex-wrap: wrap;  
   overflow: auto;
   align-content: flex-start;
   justify-content: center;
-  margin: auto;
+  /* margin: auto; */
   /* border: 3px black solid; */
   /* SCROLL */
   /* &::-webkit-scrollbar { 
@@ -74,22 +81,56 @@ const TitleButtonBlock = styled.div`
   margin-left: 8vw;
 `;
 
+// 동료명단 버튼에서 보이는 돋보기
 const FriendAddButton = styled.div`
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 8vh;  
-  width: 15vw;
+  width: 8vw;
   font-size: 5vmin;
-  background-color: #352208;
-  border: 3px solid #b39860;
+  margin-right: 30vw;
+  margin-top: 9vh;
+  background: url(${friendsearch}) center no-repeat;
+  background-size: 5vw 8vh;
   color: white;
   border-radius: 5px;  
   &:hover {
-    background: #e2d6ba;
-    color: black;
-    border: 3px solid #29231c;
+    background: url(${friendsearch}) center no-repeat;
+    background-size: 5vw 8vh;
+    transform: scale(1.1) rotate(-30deg);
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    -o-transform: scale(1.1);
+  }
+`
+
+// 모달 안의 친구 추가 버튼 
+
+const ModalFriendAddButton = styled.div`
+  cursor: pointer;
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+  height: 8vh;  
+  width: 11vw;
+  font-size: 5vmin;
+  margin-right: 20vw;
+  margin-top: 7vh;
+  background: url(${modalfriendsearch}) center no-repeat;
+  background-size: 8vw 8vh;
+  color: white;
+  border-radius: 5px;  
+  &:hover {
+    background: url(${modalfriendsearch}) center no-repeat;
+    background-size: 8vw 8vh;
+    transform: scale(1.1) rotate(-30deg);
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    -o-transform: scale(1.1);
   }
 `
 const FriendCloseButton = styled.div`
@@ -100,7 +141,7 @@ const FriendCloseButton = styled.div`
   height: 8vh;  
   width: 15vw;
   margin-left: 25vw;
-  margin-top: 8vw;
+  margin-top: 5vw;
   background: url(${Xmark}) no-repeat center;
   background-size: 5vw 8vh;
   display: inline;
@@ -120,10 +161,12 @@ const FriendCloseButton = styled.div`
 
 
 export const FriendCard = styled.div`
-  width: 40vmin;
+  width: 25vw;
   height: 15vh;
-  background-color: white;
-  border: 3px solid black;
+  /* background-color: white; */
+  background: url(${friendbackground}) center no-repeat;
+  background-size: 25vw 18vh;
+  /* border: 3px solid black; */
   margin-top: 3vmin;
   margin-right: 2vmin;
   padding: 1vmin;
@@ -131,17 +174,19 @@ export const FriendCard = styled.div`
 `;
 
 export const StyledCard = styled.div`
-  background-color: wheat;
+  /* background-color: wheat; */
   border-radius: 5px;
   
   width: 100%;
   display: flex;
+  padding: 0;
 `;
 
 export const ProfileImg = styled.div`    
-  width: 90%;
-  height: 90%;
-  margin-top: 0.1rem;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin-bottom: 2rem;
   /* margin-right: 1rem;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px; */
@@ -149,11 +194,11 @@ export const ProfileImg = styled.div`
 `;
 
 export const NameNicknameEl = styled.div`
-  font-size: 3vmin;
+  font-size: 3.5vmin;
   display: flex;
   flex-direction: column;
   /* border: 5px solid red; */
-  margin-top: 0.2rem;
+  margin-top: 0.8rem;
   margin-left: 0.8rem;
 `
 
@@ -170,13 +215,20 @@ const AddFriendModal = styled.div`
   /* border: 3px solid black; */
   border-radius: 5px;
   padding: 3vmin;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   h1{
     margin:0;
-    /* margin-top: 10vh; */
+    margin-top: 2vh;
     display: inline;
+    font-size: 3rem;
   }
   h2 {
-    margin: 0px;
+    /* margin-bottom: 2px; */
+    margin-bottom: 1vh;
+    margin-top:0;
+    color: #432616;
   }
   h3 {
     color: #432616;
@@ -184,24 +236,24 @@ const AddFriendModal = styled.div`
     margin: 0px;
     margin-bottom: 3vh
   }
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+
 `
 
 const StyledInput = styled.input`
   margin-top: 2vmin;
   margin-bottom: 2vmin;
-  margin-left: 1vmin;
+  /* margin-left: 1vmin; */
   background: #E2D6BA;
   border: 3px solid #000000;
   border-radius: 5px;
-  font-size: 1.8em;
+  font-size: 1.5rem;
   padding: 1rem 0.5rem;
-  width: 80%;    
+  width: 50%;    
   height: 9vh;
+  display: inline-block;
   ::placeholder {
-    font-size: 1.8rem;    
+    font-size: 1.5rem;    
+    font-family: 'East Sea Dokdo', cursive;
   }
   &:focus {
     border: 3px solid white;
@@ -213,43 +265,44 @@ const StyledInput = styled.input`
 
 export const ImageContainer = styled.div`
   width: 40%;
-  height: 13vh;
+  height: 18vh;
   margin-right: 1rem;
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
+  margin-left: 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
   /* border: solid black 5px; */
   .profileImg0 {
     background: url(${profile1}) no-repeat center;
-    background-size: cover;
+    background-size: 8vw 14vh;
+    margin:0;
+    padding:0;
     /* padding-top: 30px; */
     
   }
   .profileImg1 {
     background: url(${profile2}) no-repeat center;
-    background-size: cover;
+    background-size: 8vw 14vh;
   }
   .profileImg2 {
     background: url(${profile3}) no-repeat center;
-    background-size: cover;
+    background-size: 8vw 14vh;
   }
   .profileImg3 {
     background: url(${profile4}) no-repeat center;
-    background-size: cover;
+    background-size: 8vw 14vh;
   }
   .profileImg4 {
     background: url(${profile5}) no-repeat center;
-    background-size: cover;
+    background-size: 8vw 14vh;
   }
   .profileImg5 {
     background: url(${profile6}) no-repeat center;
-    background-size: contain;
+    background-size: 8vw 14vh;
   }
 
 `
-
+// 동료모험가 글씨
 const BoardImageContainer = styled.div`
   width: 20vw;
   height: 15vh;
@@ -259,10 +312,10 @@ const BoardImageContainer = styled.div`
   justify-content: center; 
   align-items: center;
   font-size: 2.5rem; 
-  color: white;  
-  margin-top: 1rem;
+  /* color: white;   */
+  margin-top: 4rem;
   margin-left: 3rem;
-  margin-bottom: 5vh;  
+  margin-bottom: 3vh;  
 `
 
 const FriendsContent = () => {
@@ -338,24 +391,26 @@ const FriendsContent = () => {
             onClick={() => {
               setmodalToggle(!modalToggle);
             }}         
-          >닫기</FriendCloseButton>
-          <h1>친애하는 모험가를 추가하세요</h1>
+          ></FriendCloseButton>
+          <h1>친애하는 동료를 추가하세요</h1>
+          <h2>동료와 함께 멋진 모험을 떠나세요!</h2>
+
           <StyledInput             
             name="friendNickname"
-            placeholder="닉네임을 입력하세요."            
+            placeholder="동료의 닉네임을 입력하세요."            
             onChange={inputChange}            
           />
           {addMessageToggle? <h3>{addMessage}</h3> : ''}
-          <FriendAddButton
+          <ModalFriendAddButton
             onClick={onClick}          
-          >추가</FriendAddButton>
+          ></ModalFriendAddButton>
            </AddFriendModal>
       ) : (
         ''
       )}
       <TitleButtonBlock>
         <BoardImageContainer>
-          모험가 명단
+          동료 모험가
           {/* <h3>모험가 명단</h3>   */}
         </BoardImageContainer>      
         <FriendAddButton
@@ -363,11 +418,11 @@ const FriendsContent = () => {
             setmodalToggle(!modalToggle);
           }}
         >
-          <p>친구추가</p>
+          {/* <p>친구추가</p> */}
         </FriendAddButton>
       </TitleButtonBlock>
       <FriendsList>
-        <p>{friendsArr.length===0 ? '친구를 추가해주세요' : ''}</p>
+        <p>{friendsArr.length===0 ? '아직 동료가 없어요' : ''}</p>
         {friendsArr.map((friend, idx) => (
           <FriendCard key={idx}>
             <StyledCard>
@@ -379,7 +434,7 @@ const FriendsContent = () => {
               </ImageContainer>
               <NameNicknameEl>
                 <div>이름: {friend.name}</div>
-                <div>닉네임(seq): {friend.nickname}</div>
+                <div>닉네임: {friend.nickname}</div>
               </NameNicknameEl>
             </StyledCard>
           </FriendCard>

@@ -12,6 +12,8 @@ import java.util.Optional;
 public interface RoomService {
 	boolean createRoom(String host, String date, int maxCapacity);
 
+	boolean updateRoom(long roomCode, String mvp);
+
 	Optional<Room> getRoomByRoomCode(long roomCode);
 
 	List<Player> getPlayerByRoomCode(long roomCode);
