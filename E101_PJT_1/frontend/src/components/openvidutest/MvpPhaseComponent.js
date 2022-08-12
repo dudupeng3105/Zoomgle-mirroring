@@ -236,13 +236,23 @@ const MvpPhaseComponent = ({
   }
   
   const onClickPictureVote = (pictureIdx, pictureLength) => {
+    
+    let temp = []
+    if (pictureVote.length === 0) {
+      temp = new Array(pictureLength).fill(0);
+      temp[pictureIdx] += 1;      
+      console.error('템프(처음에)', temp);
+    } else {
+      temp = [...pictureVote];
+      temp[pictureIdx] += 1;
+      console.error('템프(이미있을때)', temp);
+    }
 
     const sendData = {
       session: mySessionIdValue,
       to: [], // all user
       data: JSON.stringify({      
-        PictureVoteNum: pictureIdx, // 사진 인덱스만 알려주면 pictureVote에 알아서 넣음
-        pictureLength: pictureLength,
+        nextPictureVote: temp, // 다음 vote 상황        
       }),
       type: 'PICTURE_VOTE',
     };

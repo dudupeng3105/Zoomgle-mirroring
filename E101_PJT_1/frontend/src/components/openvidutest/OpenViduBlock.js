@@ -262,18 +262,10 @@ const OpenViduBlock = ({
     // 사진 투표 알림
     mySession.on('PICTURE_VOTE', (data) => {
       console.warn('사진투표합니다...');
-      const { pictureIdx, pictureLength } = JSON.parse(data.data);
-      if (pictureVote.length === 0) {
-        let temp = new Array(pictureLength).fill(0);
-        temp[pictureIdx] += 1;
-        setPictureVote([...temp]);
-        console.log('템프(처음에)', temp);
-      } else {
-        let beforeTemp = [...pictureVote];
-        beforeTemp[pictureIdx] += 1;
-        setPictureVote([...beforeTemp]);
-        console.log('비폴템프(이미있을때)', beforeTemp);
-      }
+      const nextPictureVote = JSON.parse(data.data);
+      console.error("---------------------------")
+      console.error("다음상황", nextPictureVote);      
+      setPictureVote([...nextPictureVote]);
     });
 
     // --- 4) Connect to the session with a valid user token ---
