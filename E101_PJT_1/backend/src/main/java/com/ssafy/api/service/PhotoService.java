@@ -21,4 +21,6 @@ public interface PhotoService {
 
     List<PhotoInfo> showAllTempPhoto(String roomSeq);
 
+    List<PhotoInfo> getAllPhotoByRoomSeq(long roomSeq);
+
 }
