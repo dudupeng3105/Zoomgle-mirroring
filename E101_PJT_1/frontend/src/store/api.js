@@ -97,6 +97,20 @@ await customAxios.post('api/photos', selectedPicInfo);
 // 게임 끝난거 알려주기(MVP 정보)
 export const postGameDoneApi = async(gameDoneInfo) =>
 await customAxios.post('api/rooms/done', gameDoneInfo);
-// //
+
+// 끝난 게임 가져오기
+export const getGameDoneListApi = async () =>
+  await customAxios.get('api/rooms/list/done', {
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  });
+
+// 해당 게임의 추억사진 가져오기
+export const getGameDonePhotoApi = async (roomSeq) =>
+  await customAxios.get(`api/photos/${roomSeq}`);
+
+
 // export const getInvitaionListApi = async () =>
 //   await customJWTAxios.get('api/invitations/list');

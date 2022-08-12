@@ -5,6 +5,8 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialGamePlanState = {
   gamePlanList: [],
   invitationList: [],
+  gameDoneList: [],
+  gameDonePhoto: [],
   loading: null,
   error: null,
 };
@@ -69,6 +71,24 @@ const gamePlanSlice = createSlice({
       console.log(action.payload);
       state.loading = false;
       // state.gamePlanList = action.payload.playerList;
+    },
+    // 종료된 게임 불러오기(사진첩에서 사용)
+    getGameDoneListStart(state){
+      state.loading = true;
+      state.error = null;
+    },
+    getGameDoneListSuccess(state, action){
+      state.loading = true;
+      state.gameDoneList = action.payload.roomInfoList;
+    },
+    // 종료된 게임의 사진불러오기(사진첩에서 사용)
+    getGameDonePhotoStart(state){
+      state.loading = true;
+      state.error = null;
+    },
+    getGameDonePhotoSuccess(state, action){
+      state.loading = true;
+      state.gameDonePhoto = action.payload.photoList;
     },
     // 모든 에러 이걸로 처리함
     getError(state, action) {

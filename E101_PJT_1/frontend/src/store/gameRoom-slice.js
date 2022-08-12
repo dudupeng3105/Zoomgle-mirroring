@@ -41,17 +41,7 @@ const gameRoomSlice = createSlice({
     postSelectedPicSuccess(state, action) {
       state.loading = false;
       state.takePicResult = action.payload.message;
-    },
-
-    // // 게임 종료 알림 시작
-    // postGameDoneStart(state, action) {
-    //   state.loading = true;      
-    // },
-    // // 게임 종료 알림 성공
-    // postGameDoneSuccess(state, action) {
-    //   state.loading = false;
-    //   state.takePicResult = action.payload.message;
-    // },
+    },    
 
     // 모든 에러 이걸로 처리함
     getError(state, action) {
