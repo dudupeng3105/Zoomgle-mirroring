@@ -10,6 +10,7 @@ import profile2 from '../../media/images/profile3.png';
 import profile3 from '../../media/images/profile4.png';
 import profile4 from '../../media/images/profile5.png';
 import profile5 from '../../media/images/profile6.png';
+import profileback from '../../media/images/profile_back1.png';
 
 const ProfileContentModalBlock = styled.div`
   width: 80vw;
@@ -49,6 +50,8 @@ const ProfileImgBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  background: url(${profileback});
+  background-size: 40vmin 30vmin;
   .profileImg0 {
     background: url(${profile0}) no-repeat center;
     background-size: 20vmin 20vmin;
@@ -126,10 +129,11 @@ const ProfileCenter = styled.div`
 `;
 
 const InputNameBox = styled.div`
-  /* width: 20vw; */
+  width: 28vw;
   display: flex;
   height: 13vh;
-  /* border: 1px solid blue; */
+  margin-left: 30vw;
+  border: 1px solid blue;
 `;
 
 const InputName = styled.div`
