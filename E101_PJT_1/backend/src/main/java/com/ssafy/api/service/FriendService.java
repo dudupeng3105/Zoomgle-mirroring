@@ -15,4 +15,6 @@ public interface FriendService {
     Friend createFriend(String myNickname, String friendNickname);
 
     boolean alreadyFriend(String myNickname, String friendNickname);
+
+    boolean deleteFriend(String myNickname, String friendNickname);
 }
