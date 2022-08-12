@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { gameRoomActions } from '../../store/gameRoom-slice';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
-
+import { useNavigate } from '../../../node_modules/react-router-dom/index';
 const MvpPhaseComponentBlock = styled.div`
   width: 100vw;
   height: 100vh;
@@ -57,8 +57,8 @@ const MainVideo = styled.div`
 const MvpSpeechSkipBtn = styled.div`
   cursor: pointer;
   position: absolute;
-  left: 45vw;
-  top: 21vh;
+  left: 47vw;
+  top: 15vh;
   display: flex;
   justify-content: center;
   width: 10vw;
@@ -91,10 +91,7 @@ const PictureSelectBoard = styled.div`
   background-color: #c9a959;
   border: 2px solid black;
   border-radius: 5px;
-  padding-bottom: 5vh;
-  :active {
-    transform: scale(0.9);
-  }  
+  padding-bottom: 5vh;  
 `;
 
 const PictureContainer = styled.div`
@@ -102,25 +99,9 @@ const PictureContainer = styled.div`
   width: 15vw;
   height: 17vh;
   margin: 1vh 1vw;
-  border-radius: 5px;
-  border: 2px solid #adff45;
-  .vote-color-1 { 
-    border: 2px solid red;
-  }
-  .vote-color-2 {
-    border: 2px solid yellow;
-  }
-  .vote-color-3 {
-    border: 2px solid pink;
-  }
-  .vote-color-4 {
-    border: 2px solid purple;
-  }
-  .vote-color-5 {
-    border: 2px solid blue;
-  }
-  .vote-color-6 {
-    border: 2px solid green;
+  border-radius: 5px;  
+  :active {
+    transform: scale(0.95);
   }    
 `;
 
@@ -143,7 +124,27 @@ const PictureImgBox = styled.div`
   width: 15vw;  
   height: 17vh;
   background: ${props => `url(${props.backImg}) no-repeat center`};  
-  background-size: 15vw 17vh;  
+  background-size: 15vw 17vh; 
+  border: 3px solid #adff45;
+  border-radius: 5px;
+  &.vote-color-1 { 
+    border: 3px solid red;
+  }
+  &.vote-color-2 {
+    border: 3px solid yellow;
+  }
+  &.vote-color-3 {
+    border: 3px solid pink;
+  }
+  &.vote-color-4 {
+    border: 3px solid purple;
+  }
+  &.vote-color-5 {
+    border: 3px solid blue;
+  }
+  &.vote-color-6 {
+    border: 3px solid green;
+  }     
 `
 
 const MvpShowUsersContainer = styled.div`
@@ -182,7 +183,21 @@ const MvpShowUsersContainer = styled.div`
   }
 `
 
+const GameOverLoading = styled.div`  
+  position: absolute;
+  display: flex;
+  top: 17vh;
+  left: 25vw;
+  width: 54vw;
+  height: 60vh;  
+  background-color: grey;
+  border: 2px solid black;
+  border-radius: 5px;
+  padding-bottom: 5vh;
+`;
+
 const MvpPhaseComponent = ({
+  isGameOver,
   sessionHost,
   pictureVote,
   isMvpSpeechDone,
@@ -213,6 +228,7 @@ const MvpPhaseComponent = ({
   minigameType,
   setMinigameType
 }) => {
+  const navigate = useNavigate();
   // const [posNum, setPosNum] = useState(1);
   // 게임 진행 관련 변수들
   // console.warn("퍼블리셔는?",publisher);
@@ -220,6 +236,19 @@ const MvpPhaseComponent = ({
   const myTurnNum = players.indexOf(myUserNameValue);
   const dispatch = useDispatch();
   const pictureList = useSelector((state) => state.gameRoom.gameTotalPicture);  
+  const [timeLeft, setTimeLeft] = useState(undefined);
+
+  const calculateTimeLeft = () => {
+    if (timeLeft > 0) {      
+      return timeLeft - 1;
+    } else {
+      // timeLeft = 0
+      // 나가고
+      leaveSession()
+      // 마이페이지로 이동
+      navigate('/MyPage');
+    }
+  };
 
   useEffect(() => {
     if (nextPlayer === myUserNameValue){
@@ -236,6 +265,17 @@ const MvpPhaseComponent = ({
       dispatch(gameRoomActions.getPictureStart(mySessionIdValue));
     }
   }, [isMvpSpeechDone])
+
+  // 카운트 다운 작성
+  useEffect(() => {    
+    setTimeout(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
+  }, [timeLeft]);
+  // 게임 종료 5초 로딩phase 시작
+  useEffect(() => {
+    setTimeLeft(5); // 종료 로딩 타임
+  }, [isGameOver])
 
   const onClickNextPhase = () => {
     const sendData = {
@@ -290,21 +330,54 @@ const MvpPhaseComponent = ({
   }
 
   const onClickGameOver = () => {
-    
+    console.log(pictureVote);
+    const pictureCountArr = pictureVote.map((picCnt, idx) => {
+      return [picCnt, idx];
+    })
+    const sortedPicture = pictureCountArr.sort().reverse().slice(0, 6);
+    const selectedPicture = sortedPicture.map((pic) => {
+      return pictureList[pic[1]].photo_Url;
+    })    
+    const selectedPicInfo = {
+      photoUrls: selectedPicture,
+      roomSeq: mySessionIdValue,
+    }
+    const mvpName = nextPlayer;
+    dispatch(gameRoomActions.postSelectedPicStart({selectedPicInfo, mvpName}));
+    // 게임 종료 알림
+    const sendData = {
+      session: mySessionIdValue,
+      to: [], // all user
+      data: JSON.stringify({      
+        nextIsGameOver: true, // 다음 vote 상황        
+      }),
+      type: 'GAME_OVER',
+    };
+  
+    fetch('https://i7e101.p.ssafy.io:4443/openvidu/api/signal', {
+      method: 'POST',
+      headers: {
+        Authorization: 'Basic ' + btoa('OPENVIDUAPP:e101ssafy71'),
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(sendData),
+    }); 
   }
 
   return (
     <MvpPhaseComponentBlock>
       {mainStreamManager !== undefined ? (
-        isMvpSpeechDone ? (
+        isGameOver ? (
+          <GameOverLoading>{timeLeft}</GameOverLoading>
+        ) : isMvpSpeechDone ? (
           <PictureSelectBoard>
             {pictureList.map((picture, idx) => (
               <PictureContainer
                 onClick={() => onClickPictureVote(idx, pictureList.length)}
-                className={`vote-color-${Math.floor(pictureVote[idx] / 5)}`}
               >
                 <PictureCountDisplay>{pictureVote[idx]}</PictureCountDisplay>
                 <PictureImgBox
+                  className={`vote-color-${Math.floor(pictureVote[idx] / 5)}`}
                   key={`gameimage${idx}`}
                   backImg={picture.photo_Url}
                 ></PictureImgBox>
@@ -363,7 +436,7 @@ const MvpPhaseComponent = ({
       ) : (
         ''
       )}
-      {isMvpSpeechDone & (sessionHost === myUserNameValue) ? (
+      {isMvpSpeechDone ? (
         <MvpSpeechSkipBtn onClick={() => onClickGameOver()}>
           사진선택 종료
         </MvpSpeechSkipBtn>

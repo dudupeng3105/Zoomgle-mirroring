@@ -23,11 +23,6 @@ const gameRoomSlice = createSlice({
       state.loading = false;
       state.takePicResult = action.payload.message;
     },
-    // 모든 에러 이걸로 처리함
-    getError(state, action) {
-      state.loading = false;
-      state.takePicResult = action.payload.message;
-    },
     // 해당 게임에서 찍은 사진 가져오기
     getPictureStart(state, action) {
       state.loading = true;
@@ -37,6 +32,31 @@ const gameRoomSlice = createSlice({
     getPictureSuccess(state, action) {
       state.loading = false;
       state.gameTotalPicture = action.payload.photoList;
+    },
+    // 6장 보내기 시작
+    postSelectedPicStart(state, action) {
+      state.loading = true;      
+    },
+    // 6장 보내기 성공
+    postSelectedPicSuccess(state, action) {
+      state.loading = false;
+      state.takePicResult = action.payload.message;
+    },
+
+    // // 게임 종료 알림 시작
+    // postGameDoneStart(state, action) {
+    //   state.loading = true;      
+    // },
+    // // 게임 종료 알림 성공
+    // postGameDoneSuccess(state, action) {
+    //   state.loading = false;
+    //   state.takePicResult = action.payload.message;
+    // },
+
+    // 모든 에러 이걸로 처리함
+    getError(state, action) {
+      state.loading = false;
+      state.takePicResult = action.payload.message;
     },
   },
 });

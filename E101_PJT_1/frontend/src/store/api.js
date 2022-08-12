@@ -90,6 +90,13 @@ export const takePictureApi = async (picData, roomSeq) =>
 export const getPictureApi = async (roomSeq) =>
 await customAxios.get(`api/photos/tempPhoto/${roomSeq}`);
 
+// 사진 6장 보내기
+export const postSelectedPictureApi = async (selectedPicInfo) =>
+await customAxios.post('api/photos', selectedPicInfo);
+
+// 게임 끝난거 알려주기(MVP 정보)
+export const postGameDoneApi = async(gameDoneInfo) =>
+await customAxios.post('api/rooms/done', gameDoneInfo);
 // //
 // export const getInvitaionListApi = async () =>
 //   await customJWTAxios.get('api/invitations/list');

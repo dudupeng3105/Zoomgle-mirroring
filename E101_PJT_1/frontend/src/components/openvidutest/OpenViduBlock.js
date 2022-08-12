@@ -58,6 +58,7 @@ const OpenViduBlock = ({
   const [isGameStart, setIsGameStart] = useState(false);
   const [isGameDone, setIsGameDone] = useState(false);
   const [isMvpSpeechDone, setIsMvpSpeechDone] = useState(false);
+  const [isGameOver, setIsGameOver] = useState(false);
   // 게임 진행 관련 변수
   const [players, setPlayers] = useState([]); // 플레이어들
   const [turnNum, setTurnNum] = useState(0); // 몇 번째 사람 차례인지(이번 턴 인 사람)
@@ -266,6 +267,13 @@ const OpenViduBlock = ({
       console.error("---------------------------")
       console.error("다음상황", nextPictureVote);      
       setPictureVote([...nextPictureVote]);
+    });
+
+    // 게임 종료 알림
+    mySession.on('GAME_OVER', (data) => {
+      console.warn('게임이 최종 종료됐습니다.');
+      const {nextIsGameOver} = JSON.parse(data.data);           
+      setIsGameOver(nextIsGameOver);
     });
 
     // --- 4) Connect to the session with a valid user token ---
@@ -488,6 +496,7 @@ const OpenViduBlock = ({
       {session !== undefined ? (
         isGameDone ? (
           <MvpPhaseComponent
+            isGameOver={isGameOver}
             sessionHost={sessionHost}
             pictureVote={pictureVote}
             isMvpSpeechDone={isMvpSpeechDone}

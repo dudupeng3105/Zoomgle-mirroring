@@ -18,7 +18,8 @@ const StartPageBlock = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column; 
-  background-color: #352208;   
+  background-color: #352208;
+  /* overflow: hidden; */
 `;
 
 const StartPageContent = styled.div`
