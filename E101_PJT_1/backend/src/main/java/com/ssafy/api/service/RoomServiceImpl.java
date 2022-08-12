@@ -2,6 +2,7 @@ package com.ssafy.api.service;
 
 import com.ssafy.db.entity.Player;
 import com.ssafy.db.entity.Room;
+import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.PlayerRepository;
 import com.ssafy.db.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,20 @@ public class RoomServiceImpl implements RoomService{
         }
     }
 
+    // 게임방 업데이트
+    @Override
+    public boolean updateRoom(long roomCode, String mvp) {
+        try {
+            Optional <Room> updatedRoom = roomRepository.findByRoomSeq(roomCode);
+
+            updatedRoom.get().setMvp(mvp);
+
+            roomRepository.save(updatedRoom.get());
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
 
     @Override
