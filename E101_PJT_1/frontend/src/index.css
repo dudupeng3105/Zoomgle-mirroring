@@ -5,12 +5,8 @@ body {
   font-family: 'East Sea Dokdo', cursive;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  box-sizing: border-box; /* 엘리먼트의 box-sizing 값을 border-box로 설정 */
-  /* 커스텀 세팅*/
-  /* display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;   */
+  /* 엘리먼트의 box-sizing 값을 border-box로  */
+  box-sizing: border-box; 
   min-height: 100vh;
   min-width: 100vw;
 }
@@ -38,7 +34,27 @@ a {
   box-sizing: border-box; /* 모든 엘리먼트의 box-sizing: border-box */
 }
 
-code {
+::-webkit-scrollbar { 
+  width: 10px; 
+}
+/* 스크롤바의 width */
+::-webkit-scrollbar-track { 
+  background-color: b39860; 
+  border: 1px black solid;
+  border-radius: 10px;
+}
+/* 스크롤바의 전체 배경색 */
+::-webkit-scrollbar-thumb { 
+  background: #352208;
+  border-radius: 10px;
+}
+/* 스크롤바 색 */
+::-webkit-scrollbar-button { 
+  display: none; 
+  /* color: black; */
+}
+
+/* code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-}
+} */

@@ -33,31 +33,30 @@ const FriendsList = styled.div`
   width: 90%;
   height: 75vh;
   flex-wrap: wrap;  
-  overflow:auto;
+  overflow: auto;
   align-content: flex-start;
   justify-content: center;
   margin: auto;
   /* border: 3px black solid; */
   /* SCROLL */
-  &::-webkit-scrollbar { 
+  /* &::-webkit-scrollbar { 
     width: 15px; 
-  }
+  } */
   /* 스크롤바의 width */
-  &::-webkit-scrollbar-track { 
+  /* &::-webkit-scrollbar-track { 
     background-color: b39860; 
     border: 1px black solid;
     border-radius: 10px;
-  }
+  } */
   /* 스크롤바의 전체 배경색 */
-  &::-webkit-scrollbar-thumb { 
+  /* &::-webkit-scrollbar-thumb { 
     background: #352208;
     border-radius: 10px;
-  }
+  } */
   /* 스크롤바 색 */
-  &::-webkit-scrollbar-button { 
-    display: none; 
-    /* color: black; */
-  }
+  /* &::-webkit-scrollbar-button { 
+    display: none;     
+  } */
   & p {    
     font-size: 3rem;
   }

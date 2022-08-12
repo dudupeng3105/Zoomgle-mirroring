@@ -5,6 +5,7 @@ import MainUserVideoComponent from './MainUserVideoComponent'; // 미니게임 �
 import { useDispatch } from 'react-redux';
 import { gameRoomActions } from '../../store/gameRoom-slice';
 import { useSelector } from 'react-redux';
+import { useState } from 'react';
 
 const MvpPhaseComponentBlock = styled.div`
   width: 100vw;
@@ -86,6 +87,7 @@ const PictureSelectBoard = styled.div`
   height: 40vh;
   display: flex;
   flex-wrap: wrap;
+  overflow: scroll;
 `;
 
 const PictureImgBox = styled.div`
@@ -166,7 +168,7 @@ const MvpPhaseComponent = ({
   const playerNum = players.length; // 몇 명에서 하는지  
   const myTurnNum = players.indexOf(myUserNameValue);
   const dispatch = useDispatch();
-  const pictureList = useSelector((state) => state.gameRoom.gameTotalPicture);
+  const pictureList = useSelector((state) => state.gameRoom.gameTotalPicture);  
 
   useEffect(() => {
     if (nextPlayer === myUserNameValue){
