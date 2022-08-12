@@ -77,24 +77,52 @@ const MvpSpeechSkipBtn = styled.div`
   }
 `
 
-const PictureSelectBoard = styled.div`
-  width: 40vw;
-  height: 50vh;
+const PictureSelectBoard = styled.div`  
   position: absolute;
-  top: 25vh;
-  left: 30vw;
-  width: 40vw;
-  height: 40vh;
+  display: flex;
+  top: 17vh;
+  left: 25vw;
+  width: 54vw;
+  height: 60vh;
   display: flex;
   flex-wrap: wrap;
-  overflow: scroll;
+  overflow: auto;
+  justify-content: center;
+  background-color: #c9a959;
+  border: 2px solid black;
+  border-radius: 5px;
+  padding-bottom: 5vh;
 `;
 
+const PictureContainer = styled.div`
+  /* display: flex; */
+  width: 15vw;
+  height: 17vh;
+  margin: 1vh 1vw;  
+`;
+
+const PictureCountDisplay = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2vw;
+  height: 3vh;
+  left: 1vw;
+  top: 4vh;
+  font-size: 3vmin;
+  color: black;
+  border-radius: 50%;
+  background-color: white;
+`
+
 const PictureImgBox = styled.div`
-  width: 13vw;
-  height: 24vh;
+  width: 15vw;  
+  height: 17vh;
   background: ${props => `url(${props.backImg}) no-repeat center`};  
-  background-size: 13vw 24vh;
+  background-size: 15vw 17vh;
+  border-radius: 5px;
+  border: 2px solid #adff45;
 `
 
 const MvpShowUsersContainer = styled.div`
@@ -134,6 +162,7 @@ const MvpShowUsersContainer = styled.div`
 `
 
 const MvpPhaseComponent = ({
+  pictureVote,
   isMvpSpeechDone,
   setIsGameDone,
   isGameDone,
@@ -191,7 +220,7 @@ const MvpPhaseComponent = ({
       session: mySessionIdValue,
       to: [], // all user
       data: JSON.stringify({      
-        nextIsMvpSpeechDone: true, // 이제 사진 고르러감
+        nextIsMvpSpeechDone: true, // 이제 사진 고르러감        
       }),
       type: 'SPEECH_DONE',
     };
@@ -206,6 +235,27 @@ const MvpPhaseComponent = ({
     });    
   }
   
+  const onClickPictureVote = (pictureIdx, pictureLength) => {
+
+    const sendData = {
+      session: mySessionIdValue,
+      to: [], // all user
+      data: JSON.stringify({      
+        PictureVoteNum: pictureIdx, // 사진 인덱스만 알려주면 pictureVote에 알아서 넣음
+        pictureLength: pictureLength,
+      }),
+      type: 'PICTURE_VOTE',
+    };
+  
+    fetch('https://i7e101.p.ssafy.io:4443/openvidu/api/signal', {
+      method: 'POST',
+      headers: {
+        Authorization: 'Basic ' + btoa('OPENVIDUAPP:e101ssafy71'),
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(sendData),
+    }); 
+  }
 
   return (
     <MvpPhaseComponentBlock>      
@@ -213,7 +263,10 @@ const MvpPhaseComponent = ({
         isMvpSpeechDone ? (
           <PictureSelectBoard>
             {pictureList.map((picture, idx) => (
-              <PictureImgBox key={`gameimage${idx}`} backImg={picture.photo_Url}></PictureImgBox>
+              <PictureContainer onClick={() => onClickPictureVote(idx, pictureList.length)}>
+                <PictureCountDisplay>{pictureVote[idx]}</PictureCountDisplay>
+                <PictureImgBox key={`gameimage${idx}`} backImg={picture.photo_Url}></PictureImgBox>
+              </PictureContainer>
             ))}
           </PictureSelectBoard>
         ) : (

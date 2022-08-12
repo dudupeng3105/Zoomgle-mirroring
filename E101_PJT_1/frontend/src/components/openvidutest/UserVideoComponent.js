@@ -53,7 +53,7 @@ const NickNameBox = styled.div`
   height: 3vh;
   background-color: navy;
   border-radius: 25%;
-  font-size: 1.1rem;
+  font-size: 1.8vmin;
   color: white;
   border: 2px solid navy;
 `

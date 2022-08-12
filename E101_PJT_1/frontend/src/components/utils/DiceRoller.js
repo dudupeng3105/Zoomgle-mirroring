@@ -35,7 +35,7 @@ const DiceRoller = ({
     //   value = value - 3;
     // }
     // 테스트용 숫자(value 크게함)
-    value = value + 10;
+    value = value + 20;
     setDiceNum(value);
     const tempPosNum = (myPos + value) % 20;
     
