@@ -1,6 +1,8 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.request.CreateRoomPostReq;
+import com.ssafy.api.request.UpdateRoomPostReq;
+import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.api.response.RoomInfoListRes;
 import com.ssafy.api.service.InvitationService;
 import com.ssafy.api.service.RoomService;
@@ -57,6 +59,25 @@ public class RoomController {
             return new ResponseEntity<>("방 생성 성공", HttpStatus.valueOf(200));
         }
         return new ResponseEntity<>("방 생성 실패", HttpStatus.valueOf(400));
+
+    }
+
+    // 게임방 업데이트
+    @PostMapping("/done")
+    @ApiOperation(value = "게임방 업데이트", notes = "게임이 종료되면 mvp를 추가한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "mvp 업데이트 성공"),
+            @ApiResponse(code = 400, message = "mvp 업데이트 실패")
+    })
+    public ResponseEntity<? extends Object> updateRoom(
+            @RequestBody @ApiParam(value = "방 정보 업데이트", required = true) UpdateRoomPostReq updateRoomPostReq) {
+
+        boolean res = roomService.updateRoom(updateRoomPostReq.getRoomCode(), updateRoomPostReq.getMvp());
+
+        if(res){
+            return new ResponseEntity<>("mvp 업데이트 성공", HttpStatus.valueOf(200));
+        }
+        return new ResponseEntity<>("mvp 업데이트 실패", HttpStatus.valueOf(400));
 
     }
 
