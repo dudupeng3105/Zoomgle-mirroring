@@ -111,6 +111,15 @@ export const getGameDoneListApi = async () =>
 export const getGameDonePhotoApi = async (roomSeq) =>
   await customAxios.get(`api/photos/${roomSeq}`);
 
+// 예정된 게임 삭제하기
+export const deleteGamePlanApi = async (roomSeq) =>
+  await customAxios.delete(`api/rooms/${roomSeq}`, {
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  });
+
 
 // export const getInvitaionListApi = async () =>
 //   await customJWTAxios.get('api/invitations/list');

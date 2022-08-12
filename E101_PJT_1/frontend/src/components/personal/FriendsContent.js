@@ -330,6 +330,15 @@ const BoardImageContainer = styled.div`
   margin-bottom: 3vh;  
 `
 
+const FriendDeleteBtn = styled.div`
+  position: relative;
+  top: -1vh;
+  left: 0.5vw;
+  cursor: pointer;
+  color: red;
+  font-size: 4vmin;
+`
+
 const FriendsContent = () => {
   const [error, setError] = useState(null);
   const [friendNicknameInput, setFriendNicknameInput] = useState('');
@@ -437,6 +446,7 @@ const FriendsContent = () => {
         <p>{friendsArr.length===0 ? '아직 동료가 없어요' : ''}</p>
         {friendsArr.map((friend, idx) => (
           <FriendCard key={idx}>
+            <FriendDeleteBtn>X</FriendDeleteBtn>
             <StyledCard>
               <ImageContainer>
                 <ProfileImg
@@ -447,7 +457,7 @@ const FriendsContent = () => {
               <NameNicknameEl>
                 <div>이름: {friend.name}</div>
                 <div>닉네임: {friend.nickname}</div>
-              </NameNicknameEl>
+              </NameNicknameEl>              
             </StyledCard>
           </FriendCard>
         ))}
