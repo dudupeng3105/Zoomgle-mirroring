@@ -91,7 +91,7 @@ public class PhotoController {
             photoInfoList = photoService.getAllPhotoByNickname(nickname);
 
             if (photoInfoList.size() == 0) {
-                return ResponseEntity.status(200).body(PhotoRes.of(401, "추억 사진이 없습니다.", photoInfoList));
+                return ResponseEntity.status(401).body(PhotoRes.of(401, "추억 사진이 없습니다.", photoInfoList));
             }
 
             return ResponseEntity.status(200).body(PhotoRes.of(200, nickname + "님의 추억을 불러왔습니다.", photoInfoList));
@@ -99,7 +99,7 @@ public class PhotoController {
             photoInfoList = photoService.getAllPhotoByNicknameAndDate(date, nickname);
 
             if (photoInfoList.size() == 0) {
-                return ResponseEntity.status(200).body(PhotoRes.of(401, "추억 사진이 없습니다.", photoInfoList));
+                return ResponseEntity.status(401).body(PhotoRes.of(401, "추억 사진이 없습니다.", photoInfoList));
             }
             String onlyDate = date.split(" ")[0];
             String[] splitDate = onlyDate.split("/");
@@ -108,11 +108,34 @@ public class PhotoController {
         }
     }
 
+    @GetMapping("/{roomSeq}")
+    @ApiOperation(value = "추억 사진 리스트 확인", notes = "게임 방 코드로 저장된 추억 사진 리스트를 보여준다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공", response = PhotoRes.class),
+            @ApiResponse(code = 401, message = "게임 방 정보 없음"),
+            @ApiResponse(code = 404, message = "저장된 사진 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<PhotoRes> photoListDate(@PathVariable @ApiParam(value = "게임 방 코드") long roomSeq){
+        try {
+            roomService.getRoomByRoomCode(roomSeq);
+        } catch (Exception e) {
+            return ResponseEntity.status(401).body(PhotoRes.of(401, roomSeq + "번 방의 정보가 없습니다.", null));
+        }
+
+        List<PhotoInfo> photoInfoList = photoService.getAllPhotoByRoomSeq(roomSeq);
+        if (photoInfoList.size() == 0) {
+            return ResponseEntity.status(404).body(PhotoRes.of(404, roomSeq + "번 방의 캡쳐된 사진이 하나도 없습니다.", photoInfoList));
+        }
+
+        return ResponseEntity.status(200).body(PhotoRes.of(200, roomSeq + "번 방의 저장된 사진을 불러왔습니다. (총" + photoInfoList.size() + "개)", photoInfoList));
+    }
+
     @GetMapping("/tempPhoto/{roomSeq}")
     @ApiOperation(value = "게임 중 캡쳐된 사진", notes = "게임을 진행하는 동안 캡쳐된 모든 사진들을 보여준다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = PhotoRes.class),
-            @ApiResponse(code = 401, message = "게임 룸 정보 없음"),
+            @ApiResponse(code = 401, message = "게임 방 정보 없음"),
             @ApiResponse(code = 404, message = "게임 중 캡쳐된 사진 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })

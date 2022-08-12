@@ -79,4 +79,9 @@ public class PhotoServiceImpl implements PhotoService {
     public List<PhotoInfo> showAllTempPhoto(String roomSeq) {
         return tempPhotoRepository.getAllByRoomSeq(Long.parseLong(roomSeq));
     }
+
+    @Override
+    public List<PhotoInfo> getAllPhotoByRoomSeq(long roomSeq) {
+        return photoRepository.getAllPhotoByRoomSeq(roomSeq);
+    }
 }
