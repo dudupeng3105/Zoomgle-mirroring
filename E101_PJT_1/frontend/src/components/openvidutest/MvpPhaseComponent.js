@@ -242,7 +242,7 @@ const MvpPhaseComponent = ({
     console.log(timeLeft);
     if (timeLeft > 0) {    
       if (!isGameOver)  {
-        return 5;
+        return 10;
       }
       return timeLeft - 1;
     } else {            
