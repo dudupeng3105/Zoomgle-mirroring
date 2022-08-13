@@ -1,13 +1,14 @@
 package com.ssafy.api.service;
 
+import com.ssafy.common.myObject.UserGameInfo;
+import com.ssafy.db.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.db.entity.User;
-import com.ssafy.db.repository.UserRepository;
-import com.ssafy.db.repository.UserRepositorySupport;
+import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
 
 import java.util.List;
@@ -26,6 +27,15 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	PasswordEncoder passwordEncoder;
+
+	@Autowired
+	PlayerRepository playerRepository;
+
+	@Autowired
+	RoomRepository roomRepository;
+
+	@Autowired
+	FriendRepository friendRepository;
 	
 	@Override
 	public User createUser(UserRegisterPostReq userRegisterInfo) {
@@ -96,4 +106,27 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void deleteUser(User user) { userRepository.delete(user); }
+
+	@Override
+	@Transactional
+	public UserGameInfo getUserGameInfo(String nickname) {
+		UserGameInfo userGameInfo = new UserGameInfo();
+
+		// 닉네임 이메일 가입 일
+		Optional<User> user = userRepositorySupport.findUserByNickname(nickname);
+		userGameInfo.setNickname(nickname);
+		userGameInfo.setEmail(user.get().getEmail());
+		userGameInfo.setReg_dtm(user.get().getREG_DTM());
+
+		// 플레이 한 횟수, 예정된 게임 수
+		userGameInfo.setPastGameCount(playerRepository.countGamesDone(nickname));
+		userGameInfo.setFutureGameCount(playerRepository.countGamesNotDone(nickname));
+
+		// mvp 횟수
+		userGameInfo.setMvpCount(roomRepository.countAllByMvp(nickname));
+
+		// 친구 수
+		userGameInfo.setFriendCount(friendRepository.countAllByMyNickname(nickname));
+		return userGameInfo;
+	}
 }

@@ -3,6 +3,7 @@ package com.ssafy.db.repository;
 import com.ssafy.db.entity.Invitation;
 import com.ssafy.db.entity.Player;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,4 +19,11 @@ public interface PlayerRepository extends JpaRepository<Player, Long> {
     Player findByRoomCodeAndUser(long roomCode, String user);
 
     List<Player> findAllByRoomCode(long roomCode);
+
+    @Query(value = "select count(*) from room r, player p where r.room_seq = p.room_code and p.user = :nickname and r.mvp is not null;", nativeQuery = true)
+    int countGamesDone(String nickname);
+
+    @Query(value = "select count(*) from room r, player p where r.room_seq = p.room_code and p.user = :nickname and r.mvp is null;", nativeQuery = true)
+    int countGamesNotDone(String nickname);
+
 }

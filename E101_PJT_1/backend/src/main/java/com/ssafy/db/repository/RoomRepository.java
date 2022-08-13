@@ -29,4 +29,6 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
             " AND mvp IS NOT NULL", nativeQuery = true)
     List<RoomInfoInterface> getRoomInfoByNicknameAndDate(@Param(value = "nickname") String nickname,
                                                          @Param(value = "date") String date);
+
+    int countAllByMvp(String nickname);
 }
