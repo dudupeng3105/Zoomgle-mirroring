@@ -18,40 +18,11 @@ import { UpCommingGameTitle } from '../utils/GameNumCounter';
 // 모험 참여 생성의 윗 칸 : 예정된 모험 
 
 const PlannedGameListBlock = styled.div`
-  border: 3px solid white;
-  width: 100%;
-  height: 55vh;
+  /* border: 1px solid white; */
+  width: 80vw;
+  height: 45vh;
   /* background: url(${nailPaper}) center no-repeat; */
-  background-size: 75vw 60vh;
-`;
-
-const PlannedGameBlock = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border: 3px solid black;
-  width: 80%;
-  margin: auto;
-  height: 5vh;
-  background-color: white;
-  font-size: 2rem;
-`;
-
-
-const GameInvitationBtn = styled.div`
-  font-size: 1.5rem;
-  width: 10vw;
-  text-align: center;
-  color: white;
-  cursor: pointer;
-  background: #29231c;
-  border: 3px solid #b39860;
-  border-radius: 5px;
-  &:hover {
-    background: #e2d6ba;
-    color: black;
-    border: 3px solid #29231c;
-  }
+  /* background-size: 75vw 60vh; */
 `;
 
 const GameInvitationModal = styled.div`

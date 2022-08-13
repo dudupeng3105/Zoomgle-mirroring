@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import background from '../../media/images/headerMenuBackGround.png'
+import background from '../../media/images/albumSmaller.png'
 import { useDispatch, useSelector} from "react-redux";
 import { gamePlanActions } from "../../store/gamePlan-slice";
 import { useEffect, useState } from "react";
@@ -7,8 +7,11 @@ import arrowRight from "../../media/images/arrowRight.png";
 import arrowLeft from "../../media/images/arrowLeft.png";
 
 const PicturesContentBlock = styled.div`
-  background: url(${background});
   width: 83vw;
+  height: 100vh;
+  background: url(${background}) no-repeat center;
+  background-size: 83vw 100vh;
+  padding-left: 3vw;
 `;
 
 const GameDayInfo = styled.div`
@@ -16,37 +19,18 @@ const GameDayInfo = styled.div`
   justify-content: center;
   align-items: center;
   height: 10vh;
-  width: 80vw;
+  width: 75vw;
+  margin-top: 8vh;
   font-size: 4vmin;
   color: #412E22;
   & p {
-    font-size: 6vmin;
+    font-size: 5vmin;
   }
-`
-const GameDoneBoard = styled.div`
-  width: 80vw;
-  height: 70vh;
-  margin-left: 1vw;
-  background-color: transparent;
-  /* border: 1px solid black; */
-  display: flex;
-  justify-content: space-around;
-  align-content: space-around;
-  flex-wrap: wrap;
-`
-
-const GameDoneImg = styled.div`
-  width: 25vw;  
-  height: 28vh;
-  background: ${props => `url(${props.backImg}) no-repeat center`};  
-  background-size: 25vw 28vh; 
-  border: 1px solid black;
-  border-radius: 5px;  
 `
 
 const GamePlayerInfo = styled.div`
-  width: 80vw;
-  height: 10vh;
+  width: 73vw;
+  height: 5vh;
   display: flex;
   margin-left: 1vw;
   align-items: center;
@@ -55,6 +39,28 @@ const GamePlayerInfo = styled.div`
   justify-content: space-between;    
   font-size: 5vmin;
   color: #412E22;
+`
+
+const GameDoneBoard = styled.div`
+  width: 73vw;
+  height: 70vh;
+  margin-left: 1vw;
+  background-color: transparent;
+  /* border: 1px solid black; */
+  display: flex;
+  justify-content: space-around;
+  align-content: flex-start;
+  flex-wrap: wrap;
+`
+
+const GameDoneImg = styled.div`
+  width: 23vw;  
+  height: 25vh;
+  margin-top: 4vh;
+  background: ${props => `url(${props.backImg}) no-repeat center`};  
+  background-size: 23vw 25vh; 
+  border: 1px solid black;
+  border-radius: 5px;  
 `
 
 const ArrowBtn = styled.div`

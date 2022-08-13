@@ -9,9 +9,9 @@ import StartStoryBoardBlock from "../components/display/StartStoryBoardBlock";
 import { authActions } from '../store/auth-slice';
 import { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
-import firstDescription from '../media/images/startpage3.png'
-import secondDescription from '../media/images/startpage2.png'
-import thirdDescription from '../media/images/startpage1.png'
+import firstDescription from '../media/images/startPageLetter1.png'
+import secondDescription from '../media/images/startPageLetter3.png'
+import thirdDescription from '../media/images/startPageLetter2.png'
 
 const StartPageBlock = styled.div`
   width: 100vw;
@@ -77,19 +77,26 @@ const StartPageSkipBtn = styled.div`
 const GameDescription = styled.div`
   width: 50vw;
   height: 60vh;
-  background: ${props => `url(${props.backImg}) no-repeat center`};
+  background: ${props => `url(${props.backImg}) no-repeat center`};  
   background-size: 50vw 60vh;
-  transition-property: all;
+  opacity: 0.1;
+  /* transition-property: all;
   transition-duration: 3s;
-  transition-timing-function: ease-in-out;
+  transition-timing-function: ease-in-out; */
   &.animation-1 {
+    opacity: 1;
     transform: translateY(20vh);
+    transition: all 3s ease-in-out;
   }
   &.animation-2 {
+    opacity: 1;
     transform: translateY(20vh);
+    transition: all 3s ease-in-out;
   }
   &.animation-3 {
+    opacity: 1;
     transform: translateY(20vh);
+    transition: all 3s ease-in-out;
   }
 `;
 
