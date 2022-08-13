@@ -127,6 +127,15 @@ export const deleteGamePlanApi = async (roomSeq) =>
     },
   });
 
+// 유저 프로필 정보 가져오기
+export const getUserProfileInfoApi = async () =>
+  await customAxios.get('api/users/user-game-info', {
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  });
+
 
 // export const getInvitaionListApi = async () =>
 //   await customJWTAxios.get('api/invitations/list');

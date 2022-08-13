@@ -1,7 +1,8 @@
 import styled from 'styled-components';
-import background from '../../media/images/albumSmaller.png';
+import background from '../../media/images/MyInfoBackImg.png';
 import ProfileInfoBox from './ProfileInfoBox.js';
 import { useState } from 'react';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { authActions } from '../../store/auth-slice';
 import profile0 from '../../media/images/profile1.png';
@@ -13,33 +14,31 @@ import profile5 from '../../media/images/profile6.png';
 import profileback from '../../media/images/profile_back1.png';
 
 const ProfileContentModalBlock = styled.div`
-  width: 80vw;
+  width: 83vw;
   height: 100vh;
-  color: black;
-  /* border: 3px solid white; // 나중에 지워야함. 동욱 화이팅~*/
+  color: black;  
   display: flex;
   justify-content: center;
-  align-items: center;
-  /* background-size: auto auto; */
+  align-items: flex-start;  
 `;
 
 const ProfileContentModalBackGround = styled.div`
   display: flex;
-  width: 80vw;
-  height: 100vh;
+  width: 83vw;
+  height: 90vh;
   justify-content: center;
-  align-items: center;
-  /* border: 3px solid black; */
+  align-items: center;  
   background: url(${background}) no-repeat center;
-  background-size: 80vw 100vh;
-  /* border: solid black 3px; */
+  background-size: 83vw 90vh;
+  
 `;
 
 const ProfileContentBox = styled.div`
   display: flex;
-  width: 80%;
-  height: 80vh;
-  /* border: 3px solid yellow; */
+  width: 70vw;
+  height: 75vh;  
+  border: 3px solid yellow;
+  transform: rotate(-3deg);
   background-size: contain;
 `;
 
@@ -50,6 +49,9 @@ const ProfileImgBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 12vh;
+  margin-left: 2vw;
+  transform: rotate(-7deg);
   background: url(${profileback});
   background-size: 40vmin 30vmin;
   .profileImg0 {
@@ -78,22 +80,84 @@ const ProfileImgBox = styled.div`
   }
 `;
 
-const ProfileInfoBoxContainer = styled.form`
-  margin-left: 5vmin;
-  width: 100%;
+const ProfilePictureContainer = styled.form`  
+  width: 50%;
   display: flex;
+  border: 1px solid blue;
   flex-direction: column;
 `;
+
+const ProfileStoryContainer = styled.form`  
+  width: 50%;
+  display: flex;
+  border: 1px solid green;
+  flex-direction: column;
+  font-size: 4vmin;
+`;
+
+const ProfileInfoBoxContainer = styled.form`  
+  width: 50%;
+  display: flex;
+  border: 1px solid blue;
+  flex-direction: column;
+`;
+
+const ChangePossibleInfo = styled.div`
+  margin-top: 7vh;
+  width: 100%;
+  padding-left: 10%;
+  p {
+    font-size: 4vmin;
+  }
+`
+const ProfileInfoTitle = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 5vmin;
+  height: 8vh;
+`
+
+const ProfileInfoRightBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: end;
+  padding-right: 2vw;
+  font-size: 3.5vmin;
+  height: 10vh;
+`
+
+const ProfileInfoSagaBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: flex-start;
+  padding-left: 5vw;
+  margin-top: 8vh;
+  font-size: 5vmin;
+  height: 35vh;
+  & div {
+    display: flex;
+  }
+  & div.right {
+    padding-left: 30%;
+  }
+  & div.var-color {
+    color: blue;
+  }
+`
 
 const PasswordChangeButton = styled.div`
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 10vh;
-  width: 20vw;
+  height: 5vh;
+  width: 10vw;
   /* margin-left: 25vw; */
-  font-size: 5vmin;
+  font-size: 3vmin;
+  margin-left: 60%;
   background-color: #352208;
   border: 3px solid #b39860;
   color: white;
@@ -188,6 +252,9 @@ const ProfileContentModal = () => {
   const { userId, email, name, nickname, profileImgNum } = useSelector(
     (state) => state.auth.user,
   );
+  const propfileInfo = useSelector(
+    (state) => state.auth.propfileInfo,
+  );
   const dispatch = useDispatch();
   const [passwordChangeToggle, setpasswordChangeToggle] = useState(false);
   const [imgNum, setImgNum] = useState(1);
@@ -202,6 +269,11 @@ const ProfileContentModal = () => {
     profileImgNum: profileImgNum,
   });
 
+  // 첫 렌더링시 디스패치
+  useEffect(() => {
+    dispatch(authActions.getUserProfileInfoStart());
+  }, []);
+
   // 1. 인풋 변경 이벤트 핸들러
   const onChange = (e) => {
     let { name, value } = e.target;
@@ -212,7 +284,7 @@ const ProfileContentModal = () => {
     setForm(changeValue);
     // console.log(form);
   };
-
+  
   // 2. 프로필 변경 요청
   const profileChangeSubmit = () => {
     console.log(form);
@@ -230,6 +302,13 @@ const ProfileContentModal = () => {
       setError('칸을 모두 채워주세요');
       return;
     }
+
+    // 닉네임 6글자 체크
+    if (form.nickname.length > 6) {      
+      setError('닉네임은 6글자 이하입니다.');
+      return;
+    }
+
     // 비번 일치한지
     if (form.password === form.validPassword) {
       // 통과 시 요청하고 수정완료
@@ -255,42 +334,43 @@ const ProfileContentModal = () => {
   return (
     <ProfileContentModalBlock>
       <ProfileContentModalBackGround>
-        <ProfileContentBox>
-          {/* <ProfileImgBox>
-              <ProfileCenter className={'profileImg' + imgNum}></ProfileCenter>
-            </ProfileImgBox> */}
-
-          {/* <ProfileImgBox>
-            <ProfileLeftBtn onClick={() => setImgNum((imgNum - 1) % 6)} />
-            <ProfileCenter className={'profileImg' + imgNum}></ProfileCenter>
-            <ProfileRightBtn onClick={() => setImgNum((imgNum + 1) % 6)} />
-          </ProfileImgBox> */}
-          {!passwordChangeToggle ? (
-            
-            <ProfileInfoBoxContainer>
-              <ProfileImgBox>
-                {/* <ProfileLeftBtn onClick={() => setImgNum((imgNum - 1) % 6)} /> */}
-                <ProfileCenter className={'profileImg' + imgNum}></ProfileCenter>
-                {/* <ProfileRightBtn onClick={() => setImgNum((imgNum + 1) % 6)} /> */}
-              </ProfileImgBox>
-              <InputNameBox>
-                <InputName>닉네임:</InputName>
-                <ProfileInfoBox info={nickname} />
-              </InputNameBox>
-              <InputNameBox>
-                <InputName>이메일:</InputName>
-                <ProfileInfoBox info={email} />
-              </InputNameBox>
-              <InputNameBox>
-                <InputName>비밀번호:</InputName>
-                <ProfileInfoBox info={'********'} />
-              </InputNameBox>
-              <PasswordChangeButton
-                onClick={() => setpasswordChangeToggle(!passwordChangeToggle)}
-              >
-                회원정보 수정
-              </PasswordChangeButton>
-            </ProfileInfoBoxContainer>
+        <ProfileContentBox>          
+          {!passwordChangeToggle ? (    
+            <>
+              <ProfilePictureContainer>
+                <ProfileImgBox>                
+                  <ProfileCenter className={'profileImg' + imgNum}></ProfileCenter>                
+                </ProfileImgBox> 
+                <ChangePossibleInfo>
+                  <p>닉네임: {nickname}</p>         
+                  <p>이메일: {email}</p>         
+                  <p>암호: *********</p>         
+                </ChangePossibleInfo>
+                
+                <PasswordChangeButton
+                  onClick={() => setpasswordChangeToggle(!passwordChangeToggle)}
+                >
+                  회원정보 수정
+                </PasswordChangeButton>
+              </ProfilePictureContainer>
+              <ProfileStoryContainer>
+                <ProfileInfoTitle>모험 보고서</ProfileInfoTitle>
+                <ProfileInfoRightBox>
+                  <p>보고자: 닉네임</p>
+                  <p>작성일자: {propfileInfo.reg_dtm.slice(0,10)}</p>
+                  <p>연락처: {propfileInfo.email}</p>
+                </ProfileInfoRightBox>
+                <ProfileInfoSagaBox>
+                  <div><div className='var-color'>{propfileInfo.pastGameCount}</div>번째 모험 보고서</div>
+                  <div>지금까지 &nbsp;<div className='var-color'>{propfileInfo.friendCount}</div>명의</div>
+                  <div className='right'>동료들과 함께하였고</div>
+                  <div>앞으로도 &nbsp;<div className='var-color'>{propfileInfo.futureGameCount}</div> 번의</div>
+                  <div className='right'>모험을 떠날 것이다.</div>
+                  <div><div className='var-color'>{propfileInfo.mvpCount}</div>번 '공략자'</div>  
+                  <div className='right'>로써 모험을 종료했다.</div>                  
+                </ProfileInfoSagaBox>
+              </ProfileStoryContainer>            
+            </>        
           ) : (
             <ProfileInfoBoxContainer>
               <ProfileImgBox>
@@ -356,3 +436,4 @@ const ProfileContentModal = () => {
 };
 
 export default ProfileContentModal;
+

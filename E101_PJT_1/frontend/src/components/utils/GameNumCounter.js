@@ -15,16 +15,17 @@ import { friendActions } from '../../store/friends-slice';
 import nailPaper from '../../media/images/nailPaper1.png';
 import title from '../../media/images/title.png';
 import SquareLeather from '../../media/images/leather_square.png';
+import arrowRight from "../../media/images/arrowRight.png";
+import arrowLeft from "../../media/images/arrowLeft.png";
 
 const GameNumCounterBlock = styled.div`
   /* border: 3px solid blue; */
-  width: 60vw;
-  margin-left: 7vw;
+  width: 80vw;  
   height: 20vh;
   /* border: 2px solid black; */
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  align-items: center;  
+  justify-content: center;
   p {
     font-size: 5vmin;
   }
@@ -32,43 +33,33 @@ const GameNumCounterBlock = styled.div`
 
 const GameNumCounterLeftBtn = styled.div`
   width: 5vw;
-  height: 2vw;
+  height: 3vh;
   margin-right: 2vw;
-  border-radius: 10px;
-  border-top: 1rem solid transparent;
-  border-bottom: 1rem solid transparent;
-  border-right: 1rem solid grey;
+  margin-top: 8vh;
+  background: url(${arrowLeft}) no-repeat center;
+  background-size: 5vw 3vh;
 
   :hover {
-    transform: scale(1.2) rotate(-30deg);
-    -webkit-transform: scale(1.2);
-    -moz-transform: scale(1.2);
-    -ms-transform: scale(1.2);
-    -o-transform: scale(1.2);
-  }
+    transform: scale(1.2);
+  }  
 `;
 
 const GameNumCounterRightBtn = styled.div`
   width: 5vw;
-  height: 2vw;
+  height: 4vh;
   margin-left: 2vw;
-  border-radius: 10px;
-  border-top: 1rem solid transparent;
-  border-bottom: 1rem solid transparent;
-  border-left: 1rem solid grey;
+  margin-top: 8vh;
+  background: url(${arrowRight}) no-repeat center;
+  background-size: 5vw 4vh;
 
   :hover {
-    transform: scale(1.2) rotate(-30deg);
-    -webkit-transform: scale(1.2);
-    -moz-transform: scale(1.2);
-    -ms-transform: scale(1.2);
-    -o-transform: scale(1.2);
+    transform: scale(1.2);
   }
 `;
 
 const PlannedGameInfoBox = styled.div`
   height: 60vh;
-  width: 100vw;
+  width: 60vw;
   display: flex;
   flex-direction: column;
   /* align-items: center; */
@@ -83,19 +74,17 @@ const PlannedGameInfoBox = styled.div`
 // 예정된 모험 글자
 // export해서 plannedGameList에서 사용중
 const UpCommingGameTitle = styled.div`
-  font-size: 3rem;
+  font-size: 5vmin;
   background:url(${title}) no-repeat center;
-  width: 16vw;
-  height: 12vh;
-  background-size: 16vw 12vh ;
-  padding-left: 1.5rem;
-  padding-top: 1vh;
-  /* margin-left: 10vw; */
-  margin-top: 3vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 18vw;
+  height: 10vh;
+  background-size: 18vw 10vh ;    
+  margin-top: 7vh;
   margin-left: 11vw;
-  margin-bottom: 0;
-  /* text-decoration: underline; */
-  /* border: 3px solid red; */
+  margin-bottom: 0;  
 `
 // 번호 일자 대장
 const PlannedGameInfoItem = styled.div`
@@ -103,17 +92,17 @@ const PlannedGameInfoItem = styled.div`
   justify-content: space-between;
   width: 60vw;
   height: 5vh;
-  font-size: 2.5rem;
+  font-size: 4vmin;
   background-color: transparent;
   padding-top: 0;
   color: #412E22;
   /* padding-top: 15vh; */
-  margin-top: 3vh;
+  margin-top: 1vh;
   /* border: 1px yellow solid; */
   & p {
     /* margin: 0; */
     color: #412E22;
-    font-size: 2.5rem;
+    font-size: 4.5vmin;
   }
 `;
 
@@ -132,12 +121,17 @@ const ButtonContainer = styled.div`
 
 const ButtonContainerItem = styled.div`
   width: 100%;
-  /* border: 1px solid white; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
   background: ${(props) => props.backImg} center no-repeat;
   background-size: 15vw 10vh;
   color: white;
-  padding-top: 4px;
+  font-size: 4vmin;
+  :hover {
+    transform: scale(1.1);
+  }
 `;
 
 const FriendListModal = styled.div`
@@ -238,19 +232,19 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
       <PlannedGameInfoBox>
       {/* <UpCommingGameTitle>예정된 모험</UpCommingGameTitle> */}
         <PlannedGameInfoItem>
-          <div>번호 :{myGamePlanList[count].roomCode}</div>
-          <div>대장 :{myGamePlanList[count].host}</div>
+          <p>번호 :{myGamePlanList[count].roomCode}</p>
+          <p>대장 :{myGamePlanList[count].host}</p>
         </PlannedGameInfoItem>
         <PlannedGameInfoItem>
-          모험 일자: {myGamePlanList[count].year}년{' '}
+          <p>모험 일자: {myGamePlanList[count].year}년{' '}
           {myGamePlanList[count].month}월 {myGamePlanList[count].day}일{' '}
-          {myGamePlanList[count].hour}시 {myGamePlanList[count].minute}분
+          {myGamePlanList[count].hour}시 {myGamePlanList[count].minute}분</p>
         </PlannedGameInfoItem>
         <PlannedGameInfoItem>
 
-          {myGamePlanList[count].playerList.map((player, idx) => (
-            <p key={`gamenumcounter-user-${idx}`}>{player.user}</p>
-          ))}
+          <p>대원목록: {myGamePlanList[count].playerList.map((player, idx) => (
+            player.user
+          )).join(',  ')}</p>
         </PlannedGameInfoItem>
         <ButtonContainer>
           <ButtonContainerItem
