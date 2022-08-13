@@ -134,8 +134,60 @@ const HeadAlbum = styled.div`
     -ms-transform: scale(1.1);
     -o-transform: scale(1.1);
   }
-  
 `
+
+const TotalPlanModal = styled.div`
+  position: absolute;
+  top: 10vh;
+  left: 33vw;
+  width: 50vw;
+  height: 70vh;
+  background: #B39860;  
+  padding: 1vmin;
+  display: flex;
+  align-items: center;
+  flex-direction: column;  
+  border-radius: 5px;
+  border: 1px solid black;
+`;
+
+const TotalPlanInfo = styled.div`
+  width: 48vw;
+  height: ${props => props.verticalSize};
+  display: flex;
+  align-items: center;
+  color: #412E22;
+  justify-content: ${props => props.jc};
+  font-size: ${props=> props.fontSize};  
+`;
+
+const BtnBox = styled.div`
+  width: 50vw;
+  display: flex;
+  justify-content: space-between;
+  border: 2px solid white;  
+`;
+
+const PictureBox = styled.div`
+  width: 48vw;
+  height: 20vh;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 2vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  justify-content: space-around;
+  border: 2px solid brown;  
+`;
+
+const PictureImg = styled.div`
+  width: 20vw;
+  height: 18vh;
+  background: ${props => `url(${props.backImg}) no-repeat center`};  
+  background-size: 20vw 18vh; 
+  border: 1px solid black;
+  border-radius: 5px;
+`;
 
 const MyPageContent = () => {
   const dispatch = useDispatch();
@@ -148,6 +200,38 @@ const MyPageContent = () => {
   const navigate = useNavigate();
   const [modalToggle, setModalToggle] = useState(false);
   const [firstClick, setFirstClick] = useState(false);
+  // 달력 관련
+  const gamePlanList = useSelector((state) => state.gamePlan.gamePlanList);
+  const gameDoneList = useSelector((state) => state.gamePlan.gameDoneList);
+  const gameDonePhoto = useSelector((state) => state.gamePlan.gameDonePhoto);
+  const [calendarList, setCalendarList] = useState([]);
+  const [calendarCnt, setCalendarCnt] = useState(0);
+  const [calendarToggle, setCalendarToggle] = useState(false);
+
+  useEffect(() => {
+    dispatch(gamePlanActions.getInvitaionListStart());
+  }, [firstClick]);
+
+  useEffect(() => {
+    dispatch(gamePlanActions.getGamePlanListStart());
+    dispatch(gamePlanActions.getGameDoneListStart());
+  }, []);
+
+  useEffect(() => {
+    const temp = [...gameDoneList, ...gamePlanList]
+    console.log(temp);
+    setCalendarList(temp);
+    setCalendarCnt(temp.length-1);
+  }, [gamePlanList, gameDoneList]);
+
+  useEffect(() => {
+    if (calendarList.length === 0) {
+      return;
+    }
+    if (!!calendarList[calendarCnt].mvp) {
+      dispatch(gamePlanActions.getGameDonePhotoStart(calendarList[calendarCnt].roomCode))
+    }
+  }, [calendarCnt]);
 
   const onClickDecision = (decision, invitationSeq, roomCode) => {
     console.log(
@@ -164,9 +248,21 @@ const MyPageContent = () => {
     dispatch(gamePlanActions.checkInvitaionStart(invitationInfo));
   };
 
-  useEffect(() => {
-    dispatch(gamePlanActions.getInvitaionListStart());
-  }, [firstClick]);
+  const onClickLeft = () => {
+    if (calendarCnt === 0) {
+      setCalendarCnt(calendarList.length - 1)
+    } else {
+      setCalendarCnt(calendarCnt - 1)
+    }
+  }
+
+  const onClickRight = () => {
+    if (calendarCnt === calendarList.length - 1) {
+      setCalendarCnt(0)
+    } else {
+      setCalendarCnt(calendarCnt + 1)
+    }
+  }
 
   return (
     <MyPageContentBlock>
@@ -221,6 +317,79 @@ const MyPageContent = () => {
           setModalToggle(!modalToggle);
         }}
       />
+
+      <button
+        onClick={() => {
+          setCalendarToggle(!calendarToggle);
+        }}
+      >
+        달력입니다.
+      </button>
+      {calendarToggle ? (
+        <TotalPlanModal>
+          <TotalPlanInfo fontSize={'3vmin'} jc={'end'} verticalSize={'5vh'}>
+            일자:{' '}
+            {`${calendarList[calendarCnt].year}년 ${calendarList[calendarCnt].month}월 ${calendarList[calendarCnt].day}일`}
+          </TotalPlanInfo>
+          {/* <TotalPlanInfo>{calendarList[calendarCnt].roomCode}</TotalPlanInfo> */}
+          <BtnBox>
+            <button onClick={() => onClickLeft()}>왼쪽</button>
+            <TotalPlanInfo
+              fontSize={'6vmin'}
+              jc={'center'}
+              verticalSize={'10vh'}
+            >
+              모험일지
+            </TotalPlanInfo>
+            <button onClick={() => onClickRight()}>오른쪽</button>
+          </BtnBox>
+          <TotalPlanInfo fontSize={'5vmin'} verticalSize={'7vh'}>
+            시간
+          </TotalPlanInfo>
+          <TotalPlanInfo fontSize={'4vmin'} verticalSize={'7vh'}>
+            {`${calendarList[calendarCnt].hour}시 ${calendarList[calendarCnt].minute}분`}
+          </TotalPlanInfo>
+          <TotalPlanInfo fontSize={'5vmin'} verticalSize={'7vh'}>
+            동료
+          </TotalPlanInfo>
+          <TotalPlanInfo fontSize={'3vmin'} verticalSize={'7vh'}>
+            참가자:{' '}
+            {calendarList[calendarCnt].playerList
+              .map((player) => player.user)
+              .join(', ')}
+          </TotalPlanInfo>
+          {!!calendarList[calendarCnt].mvp ? (
+            <TotalPlanInfo
+              fontSize={'4vmin'}
+              verticalSize={'4vh'}
+              jc={'center'}
+            >
+              MVP: {calendarList[calendarCnt].mvp}
+            </TotalPlanInfo>
+          ) : (
+            ''
+          )}
+          {!!calendarList[calendarCnt].mvp ? (
+            <>
+              <TotalPlanInfo fontSize={'5vmin'} verticalSize={'4vh'}>
+                사진첩
+              </TotalPlanInfo>
+              <PictureBox>
+                {gameDonePhoto.map((photo, idx) => (
+                  <PictureImg
+                    key={`mypage-photo-${idx}`}
+                    backImg={photo.photo_Url}
+                  ></PictureImg>
+                ))}
+              </PictureBox>              
+            </>
+          ) : (
+            ''
+          )}
+        </TotalPlanModal>
+      ) : (
+        ''
+      )}
 
       {/* // 달력 */}
       <MyPagecalender></MyPagecalender>

@@ -16,22 +16,22 @@ const DiceRollerBlock = styled.div`
 `;
 
 const DiceRoller = ({
-  players,  
+  players,
   isRoll,
-  posList,  
+  posList,
   playerNum,
-  myTurnNum,  
+  myTurnNum,
   mySessionIdValue,
 }) => {
   const [diceNum, setDiceNum] = useState();
 
 
   // 주사위를 돌렸을 때는 자리 업데이트 정보만 주면된다.
-  const onRollHandler = (value) => {    
+  const onRollHandler = (value) => {
     // console.warn('포지션정보', posList);
 
     // 자리 계산
-    const myPos = posList[myTurnNum];    
+    const myPos = posList[myTurnNum];
     // if (value > 3) {
     //   value = value - 3;
     // }
@@ -39,12 +39,12 @@ const DiceRoller = ({
     value = value + 5;
     setDiceNum(value);
     const tempPosNum = (myPos + value) % 20;
-    
+
     // emit 데이터 준비
     let nextPosList = [...posList];
-    nextPosList[myTurnNum] = tempPosNum;    
+    nextPosList[myTurnNum] = tempPosNum;
     // 미니게임 랜덤
-    const nextMinigameType = Math.floor(Math.random() * 160) // 0 ~ 9 랜덤
+    const nextMinigameType = Math.floor(Math.random() * 170) // 0 ~ 9 랜덤
     let sendData = {};
     // 20칸이면 .. 우승자 나옴
     if (myPos + value > 19) {
@@ -83,7 +83,7 @@ const DiceRoller = ({
         'Content-type': 'application/json',
       },
       body: JSON.stringify(sendData),
-    });    
+    });
   };
 
   const faces = [dice1, dice2, dice3, dice1, dice2, dice4];

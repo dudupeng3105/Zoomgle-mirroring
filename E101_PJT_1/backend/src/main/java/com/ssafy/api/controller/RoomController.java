@@ -1,14 +1,19 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.request.CreateRoomPostReq;
+import com.ssafy.api.request.RoomAndPhotoGetReq;
 import com.ssafy.api.request.UpdateRoomPostReq;
 import com.ssafy.api.request.UserRegisterPostReq;
+import com.ssafy.api.response.PhotoRes;
+import com.ssafy.api.response.RoomAndPhotoRes;
 import com.ssafy.api.response.RoomInfoListRes;
 import com.ssafy.api.service.InvitationService;
+import com.ssafy.api.service.PhotoService;
 import com.ssafy.api.service.RoomService;
 import com.ssafy.api.service.UserService;
 import com.ssafy.common.auth.SsafyUserDetails;
 import com.ssafy.common.myObject.RoomInfo;
+import com.ssafy.common.myObject.RoomInfoAndPhoto;
 import com.ssafy.db.entity.*;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +41,9 @@ public class RoomController {
 
     @Autowired // 의존성 주입
     InvitationService invitationService;
+
+    @Autowired
+    PhotoService photoService;
 
     // 게임방 생성
     @PostMapping
@@ -246,5 +254,25 @@ public class RoomController {
             return new ResponseEntity<>(roomCode + "의 게임방이 삭제되었습니다.", HttpStatus.valueOf(200));
         }
         return new ResponseEntity<>(roomCode + "의 게임방이 삭제에 실패하였습니다.", HttpStatus.valueOf(405));
+    }
+
+    @GetMapping("/date")
+    @ApiOperation(value = "게임 방 정보와 사진리스트 확인", notes = "닉네임과 날짜정보로 게임방 정보와 저장된 추억 사진 리스트를 보여준다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공", response = RoomAndPhotoRes.class),
+            @ApiResponse(code = 401, message = "게임 방 정보 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<RoomAndPhotoRes> getRoomAndPhoto(@RequestBody @ApiParam(value = "닉네임과 날짜정보") RoomAndPhotoGetReq roomAndPhotoGetReq){
+        String nickname = roomAndPhotoGetReq.getNickname();
+        String date = roomAndPhotoGetReq.getDate();
+
+        List<RoomInfoAndPhoto> roomInfoAndPhotoList = roomService.getRoomInfoAndPhotoByNicknameAndDate(nickname, date);
+
+        if(roomInfoAndPhotoList.size() == 0){
+            return ResponseEntity.status(401).body(RoomAndPhotoRes.of(401, "해당 정보가 없습니다.", null));
+        }
+
+        return ResponseEntity.status(200).body(RoomAndPhotoRes.of(200,"게임 방 정보와 사진 리스트를 불러왔습니다. 총(" + roomInfoAndPhotoList.size() + "개)", roomInfoAndPhotoList));
     }
 }

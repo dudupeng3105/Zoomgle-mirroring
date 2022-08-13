@@ -15,6 +15,7 @@ import { friendActions } from '../../store/friends-slice';
 import nailPaper from '../../media/images/nailPaper1.png';
 import title from '../../media/images/title.png';
 import SquareLeather from '../../media/images/leather_square.png';
+
 const GameNumCounterBlock = styled.div`
   /* border: 3px solid blue; */
   width: 60vw;
@@ -214,11 +215,15 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
     setModalToggle(!modalToggle);
   };
 
+  const onClickDeleteGame = (roomCode) => {
+    dispatch(gamePlanActions.deleteGamePlanStart(roomCode))
+  }
+
   const stringToTime = (givenString) => {
     const temp = new Date(givenString);
     const nowDate = new Date();
     const diff = parseInt((temp - nowDate) / 60000);
-    console.log(diff);
+    // console.log(diff);
     if (diff < 30) {
       return true;
     } else {
@@ -244,7 +249,7 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
         <PlannedGameInfoItem>
 
           {myGamePlanList[count].playerList.map((player, idx) => (
-            <p>{player.user}</p>
+            <p key={`gamenumcounter-user-${idx}`}>{player.user}</p>
           ))}
         </PlannedGameInfoItem>
         <ButtonContainer>
@@ -274,7 +279,7 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
             <ButtonContainerItem
             backImg={`url(${SquareLeather})`}
               onClick={() =>
-                onClickSearchFriendList(`${myGamePlanList[count].roomCode}`)
+                onClickDeleteGame(`${myGamePlanList[count].roomCode}`)
               }
             >
               {' '}
@@ -290,7 +295,7 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
             <p>{myGamePlanList[count].roomCode}</p>
             <button onClick={onClickModalCloser}>닫기</button>
             {myFriendsList.map((friend, idx) => (
-              <FriendCard key={idx}>
+              <FriendCard key={`friend-${idx}`}>
                 <StyledCard>
                   <ImageContainer>
                     <ProfileImg

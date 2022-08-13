@@ -19,7 +19,8 @@ import {
   checkInvitaionApi,
   sendInvitaionApi,
   getGameDoneListApi,
-  getGameDonePhotoApi
+  getGameDonePhotoApi,
+  deleteGamePlanApi
 } from './api';
 
 // 비동기처리 함수
@@ -127,6 +128,20 @@ function* GetGameDonePhotoAsync({payload}) {
   }
 }
 
+function* DeleteGamePlanAsync({payload}) {
+  const { getGamePlanListSuccess, getError } = gamePlanActions;
+  try {
+    const responseDelete = yield call(deleteGamePlanApi, payload);
+    console.log('게임 삭제하기', responseDelete);
+    const response = yield call(getGamePlanListApi);
+    if (response.status === 200) {      
+      yield put(getGamePlanListSuccess(response.data));
+    }
+  } catch (error) {
+    yield put(getError(error.response.data));
+  }
+}
+
 // on : 바라보고 있는 함수
 function* oncreateGamePlan() {
   const { createGamePlanStart } = gamePlanActions;
@@ -165,6 +180,11 @@ function* ongetGameDonePhoto() {
   yield takeLatest(getGameDonePhotoStart, GetGameDonePhotoAsync);
 }
 
+function* ondeleteGamePlan() {
+  const { deleteGamePlanStart } = gamePlanActions;
+  yield takeLatest(deleteGamePlanStart, DeleteGamePlanAsync);
+}
+
 export const gamePlanSagas = [
   fork(oncreateGamePlan),
   fork(onGamePlanList),
@@ -173,4 +193,5 @@ export const gamePlanSagas = [
   fork(oncheckInvitaion),
   fork(ongetGameDoneList),
   fork(ongetGameDonePhoto),
+  fork(ondeleteGamePlan),
 ];
