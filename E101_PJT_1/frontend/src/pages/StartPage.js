@@ -9,6 +9,9 @@ import StartStoryBoardBlock from "../components/display/StartStoryBoardBlock";
 import { authActions } from '../store/auth-slice';
 import { useEffect } from 'react';
 import { useDispatch } from "react-redux";
+import firstDescription from '../media/images/startpage3.png'
+import secondDescription from '../media/images/startpage2.png'
+import thirdDescription from '../media/images/startpage1.png'
 
 const StartPageBlock = styled.div`
   width: 100vw;
@@ -71,6 +74,16 @@ const StartPageSkipBtn = styled.div`
   }
 `;
 
+const GameDescription = styled.div`
+  width: 50vw;
+  height: 60vh;
+  background: ${props => `url(${props.backImg}) no-repeat center`};
+  background-size: 50vw 60vh;
+  transition-property: all;
+  transition-duration: 4s;
+  transition-timing-function: ease-in-out;
+`;
+
 const StartPage = (props) => {
   const dispatch = useDispatch();
 
@@ -97,9 +110,15 @@ const StartPage = (props) => {
         
       </StartPageContent>
       <StartStoryBoardBlock>
-        <StartStoryBoard onClick={() => handleClickEvent(2)}><h1>평범하게 살던 여섯 친구들이</h1></StartStoryBoard> 
-        <StartStoryBoard onClick={() => handleClickEvent(3)}><h1>이러쿵 저러쿵 정글에 떨어지게 된다</h1></StartStoryBoard> 
-        <StartStoryBoard onClick={() => handleClickEvent(4)}><h1>살아남으러 가보자</h1></StartStoryBoard> 
+        <StartStoryBoard onClick={() => handleClickEvent(2)}>
+          <GameDescription backImg={firstDescription}></GameDescription>
+        </StartStoryBoard> 
+        <StartStoryBoard onClick={() => handleClickEvent(3)}>
+          <GameDescription backImg={secondDescription}></GameDescription>
+        </StartStoryBoard> 
+        <StartStoryBoard onClick={() => handleClickEvent(4)}>
+          <GameDescription backImg={thirdDescription}></GameDescription>
+        </StartStoryBoard> 
       </StartStoryBoardBlock>
       
       <StartPageContent>
