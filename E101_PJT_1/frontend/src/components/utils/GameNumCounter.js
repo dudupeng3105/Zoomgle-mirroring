@@ -223,7 +223,7 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
     const temp = new Date(givenString);
     const nowDate = new Date();
     const diff = parseInt((temp - nowDate) / 60000);
-    console.log(diff);
+    // console.log(diff);
     if (diff < 30) {
       return true;
     } else {
@@ -249,7 +249,7 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
         <PlannedGameInfoItem>
 
           {myGamePlanList[count].playerList.map((player, idx) => (
-            <p>{player.user}</p>
+            <p key={`gamenumcounter-user-${idx}`}>{player.user}</p>
           ))}
         </PlannedGameInfoItem>
         <ButtonContainer>
@@ -295,7 +295,7 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
             <p>{myGamePlanList[count].roomCode}</p>
             <button onClick={onClickModalCloser}>닫기</button>
             {myFriendsList.map((friend, idx) => (
-              <FriendCard key={idx}>
+              <FriendCard key={`friend-${idx}`}>
                 <StyledCard>
                   <ImageContainer>
                     <ProfileImg
