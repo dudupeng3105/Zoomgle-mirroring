@@ -24,6 +24,7 @@ const friendSlice = createSlice({
     GetFriendListError(state, action) {
       state.loading = false;            
       state.error = action.payload.message;
+      state.friendList = [];
     },    
     // 친구추가하기 
     AddFriendStart(state) {
@@ -43,6 +44,11 @@ const friendSlice = createSlice({
         return;
       }
     },
+    // 친구삭제하기
+    DeleteFriendStart(state) {
+      state.loading = true;
+      state.error = null;
+    }
   },
 });
 

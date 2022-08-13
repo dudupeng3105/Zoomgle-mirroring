@@ -10,23 +10,25 @@ import Button from '../common/Button';
 const AuthFormBlock = styled.div`
   display: flex;  
   flex-direction: column;
-  justify-content: center;
+  /* justify-content: start; */
   align-items: center;
   width: 60%;  
-  height: 100%;
-  h3 {
-    margin: 0;
-    color: black;
-    text-decoration: underline;
-    font-size: 3rem;
-    margin-bottom: 1rem;
-  }
+  height: 100vh;
   form {    
     display: flex;
     flex-direction: column;
     width: 100%;   
     /* justify-content: center; */
     align-items: center;
+  }
+  // 로그인
+  &.jc-3 {
+    justify-content: center;
+  }
+
+  // 회원가입
+  &.jc-4 {
+    justify-content: start;
   }
 `;
 
@@ -40,7 +42,7 @@ const StyledInput = styled.input`
   font-size: 1.2rem;
   padding: 1rem 0.5rem;
   width: 100%;    
-  height: 100%;
+  height: 8vh;
   ::placeholder {
     font-size: 1.2rem;    
   }
@@ -55,6 +57,14 @@ const StyledInput = styled.input`
     margin-top: 1rem;
   }
 `;
+
+const FormTitle = styled.div`
+  height: 10vh;
+  margin-top: 3.5vh;
+  margin-bottom: 5vh;
+  font-size: 8vmin;
+  text-decoration: underlines;
+`
 
 /**
  * 폼 하단에 로그인 혹은 회원가입 링크를 보여줌
@@ -75,6 +85,28 @@ const ButtonWithMarginTop = styled(Button)`
   margin-top: 1rem;
 `;
 
+const FormBtn = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 4vmin;
+  font-weight: bold;
+  width: 20vw;
+  height: 10vh;  
+  margin-top: 2vh;
+  color: white;  
+  cursor: pointer;
+  background: #29231C;
+  border: 3px solid #b39860;
+  border-radius: 5px;  
+  &:hover {
+    background: #E2D6BA;
+    color: black;
+    border: 3px solid #29231C;
+  }
+`
+  
+
 const textMap = {
   login: '로그인',
   register: '회원가입'
@@ -93,8 +125,8 @@ const ErrorMessage = styled.div`
 const AuthForm = ({ type, form, onChange, onSubmit, error }) => {
   const text = textMap[type];
   return (
-    <AuthFormBlock>
-      <h3>{text}</h3>
+    <AuthFormBlock className={`jc-${text.length}`}>
+      <FormTitle>{text}</FormTitle>
       <form onSubmit={onSubmit}>
         <StyledInput
           autoComplete="userId"
@@ -146,7 +178,7 @@ const AuthForm = ({ type, form, onChange, onSubmit, error }) => {
         )} */}
         {/* 에러 출력 */}
         {error && <ErrorMessage>{error}</ErrorMessage>}        
-        <ButtonWithMarginTop>{text}</ButtonWithMarginTop>        
+        <FormBtn onClick={onSubmit}>{text}</FormBtn>        
       </form>
       {/* <Footer>
         {type === 'login' ? (

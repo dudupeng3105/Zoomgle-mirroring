@@ -3,7 +3,7 @@ import styled from 'styled-components';
 // import Button from './Button';
 import HeaderMenu from './headerMenu';
 import logo from '../../media/images/smallLogo.png';
-import background from '../../media/images/headerMenuBackGround.png';
+import background from '../../media/images/transParentFlag.png';
 import profile1 from '../../media/images/profile1.png';
 import profile2 from '../../media/images/profile2.png';
 import profile3 from '../../media/images/profile3.png';
@@ -21,71 +21,66 @@ const HeaderBlock = styled.div`
   position: fixed;
   display: flex;
   flex-direction: column;
-  width: 15vw;
+  width: 18vw;
   height: 100vh;
   /* background: black; */
-  background: url(${background});
-  border: 10px solid #352208;
-  background-size: contain;
+  background: url(${background}) no-repeat center;
+  background-size: 18vw 115vh;
+  /* border: 10px solid #352208; */
 `;
 
 const ProfileBox = styled.div`
+  width: 18vw;
   height: 30vh;
-  border: 3px solid yellow;
+  /* border: 3px solid yellow; */
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: end;
   align-items: center;
   .profileImg0 {
     background: url(${profile1}) no-repeat center;
-    background-size: contain;
+    background-size: 20vmin 20vmin;
     /* padding-top: 30px; */
   }
   .profileImg1 {
     background: url(${profile2}) no-repeat center;
-    background-size: cover;
+    background-size: 15vmin 15vmin;
   }
   .profileImg2 {
     background: url(${profile3}) no-repeat center;
-    background-size: cover;
+    background-size: 20vmin 20vmin;
   }
   .profileImg3 {
     background: url(${profile4}) no-repeat center;
-    background-size: cover;
+    background-size: 20vmin 20vmin;
   }
   .profileImg4 {
     background: url(${profile5}) no-repeat center;
-    background-size: cover;
+    background-size: 20vmin 20vmin;
   }
   .profileImg5 {
     background: url(${profile6}) no-repeat center;
-    background-size: contain;
+    background-size: 20vmin 20vmin;
   }
 `;
 
 const ProfileLogo = styled.div`
-  height: 90%;
-  width: 90%;
+  height: 50%;
+  width: 70%;
   cursor: pointer;
   /* background-color: #352208; */
-  border: 3px solid #b39860;
+  /* border: 1px solid #b39860; */
   /* #352208 */
-  
   border-radius: 5px;
-  
-
 `;
 
 const MenuBox = styled.div`
-  /* padding: 2rem;   */
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  /* margin: 0px 0.5rem; */
-  margin-bottom: 2rem;
-  /* margin-top: 1rem; */
-  border: 3px solid skyblue;
-  height: 70vh;
+  align-items: center;
+  justify-content: start;
+  /* border: 3px solid skyblue; */
+  height: 38vh;
   /* background: yellow;   */
 `;
 
@@ -93,40 +88,35 @@ const LogoutButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 4vmin;
-  height: 10%;
+  font-size: 3.5vmin;
+  height: 10vh;
+  width: 18vw;
   text-align: center;
   background: url(${logout}) no-repeat center;
   /* background-color: #352208; */
-  background-size: contain;
-  border: 3px solid #b39860;
-  color: #352208;
-  border-radius: 5px;
+  background-size: 10vw 10vh;
+  color: white;  
   /* border: 2px red solid; */
-  padding:0;
-  margin-top: 0;
   cursor: pointer;
-  /* &:hover {
-    background: #e2d6ba;
-    color: black;
-    border: 3px solid #29231c;
-  } */
+  &:hover {
+    transform:scale(1.1);
+  }
 `;
 
 /*
   헤더가 fixed로 되어 있기 때문에 페이지의 콘텐츠가 4rem 아래에 나타나도록 해 주는 컴포넌트
 */
 const Spacer = styled.div`
-  width: 17vw;
+  width: 18vw;
   height: 100vh;
-  background: #e2d6ba;
+  background: transparent;
 `;
 
-const Separator = styled.div`
-  width: 20px;
-  height: 100vh;
-  background: #e2d6ba;
-`;
+// const Separator = styled.div`
+//   width: 20px;
+//   height: 100vh;
+//   background: #e2d6ba;
+// `;
 
 
 const Header = () => {
@@ -165,7 +155,7 @@ const Header = () => {
         
       </HeaderBlock>
       <Spacer />
-      <Separator />
+      {/* <Separator /> */}
     </>
   );
 };
