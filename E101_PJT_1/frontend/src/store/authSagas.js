@@ -19,6 +19,7 @@ import {
   loginUserApi,
   updateUserApi,
   getUserApi,
+  getUserProfileInfoApi,
 } from './api';
 
 function* onCreateUserStartAsync({ payload }) {
@@ -88,6 +89,20 @@ function* onUpdateUserStartAsync({ payload }) {
   }
 }
 
+// (내 정보 페이지) 유저 프로필 정보 가져오기
+function* onGetUserProfileInfoStartAsync() {
+  const { getUserProfileInfoSuccess, getUserError } = authActions;
+  try {    
+    const response = yield call(getUserProfileInfoApi);
+    console.log('유저 프로필 정보 응답', response);
+    // 유저정보 저장
+    yield put(getUserProfileInfoSuccess(response.data));
+  } catch (error) {
+    console.log(error);
+    yield put(getUserError(error.response.data));
+  }
+}
+
 function* onCreateUser() {
   const { createUserStart } = authActions;  
   yield takeLatest(createUserStart, onCreateUserStartAsync);
@@ -103,8 +118,14 @@ function* onUpdateUser() {
   yield takeLatest(updateUser, onUpdateUserStartAsync);
 }
 
+function* onGetUserUserProfileInfo() {
+  const { getUserProfileInfoStart } = authActions;
+  yield takeLatest(getUserProfileInfoStart, onGetUserProfileInfoStartAsync);
+}
+
 export const authSagas = [
   fork(onLoginUser),
   fork(onCreateUser),
   fork(onUpdateUser),
+  fork(onGetUserUserProfileInfo),
 ];

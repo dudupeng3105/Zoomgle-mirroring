@@ -4,16 +4,13 @@ import background from '../../media/images/woodenBack1.png'
 import ProfileContentModal from "../auth/ProfileContentModal";
 
 const ProfileContentBlock = styled.div`
-  background: url(${background});
-  background-size: 83vw 98vh;
-  width: 100%;
-  margin: 10px;
-  padding: 10px;
+  /* background: url(${background});
+  background-size: 83vw 98vh; */
+  width: 83vw;  
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column; 
+  justify-content: center;  
 `;
 
 /**

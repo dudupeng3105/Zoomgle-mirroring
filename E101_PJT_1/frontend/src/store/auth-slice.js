@@ -19,6 +19,7 @@ const initialAuthState = {
     userId: '',
     password: '',
   },
+  propfileInfo: [],
   loading: false, // 로딩중/끝
   isAuth: null, // 로그인 유무
   error: null, // 에러 유무
@@ -118,6 +119,16 @@ const authSlice = createSlice({
     getUserError(state, action){
       state.loading = false;
       state.error = action.payload.error;
+    },
+    // GET user game info(프로필용)
+    getUserProfileInfoStart(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    // getUserProfile Success
+    getUserProfileInfoSuccess(state, action) {
+      state.loading = false;
+      state.propfileInfo = action.payload.userGameInfo;
     }
   },
 });

@@ -10,7 +10,7 @@ import profile3 from '../../media/images/profile3.png';
 import profile4 from '../../media/images/profile4.png';
 import profile5 from '../../media/images/profile5.png';
 import profile6 from '../../media/images/profile6.png';
-import logout from '../../media/images/logout1.png';
+import logout from '../../media/images/logoutArrow.png';
 
 
 import { useNavigate } from 'react-router-dom';
@@ -81,25 +81,28 @@ const MenuBox = styled.div`
   justify-content: start;
   /* border: 3px solid skyblue; */
   height: 38vh;
+  `;
   /* background: yellow;   */
-`;
 
 const LogoutButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 3.5vmin;
-  height: 10vh;
+  font-size: 3.5vmin;  
   width: 18vw;
+  height: 8vh;
+  margin-left: 0.5vw;
   text-align: center;
   background: url(${logout}) no-repeat center;
   /* background-color: #352208; */
-  background-size: 10vw 10vh;
-  color: white;  
+  background-size: 6vw 6vh;
+  color: black;  
+  padding-bottom: 6vh;
+  margin-top: 6vh;
   /* border: 2px red solid; */
   cursor: pointer;
   &:hover {
-    transform:scale(1.1);
+    transform:scale(1.2);
   }
 `;
 
@@ -137,10 +140,10 @@ const Header = () => {
           </ProfileLogo>
         </ProfileBox>
         <MenuBox>
-          <HeaderMenu to="/mypage/" MenuName={'마이페이지'}></HeaderMenu>
+          <HeaderMenu to="/mypage/" MenuName={'내 모험기지'}></HeaderMenu>
           <HeaderMenu to="/joingame/" MenuName={'모험참여/생성'}></HeaderMenu>
           <HeaderMenu to="/friends/" MenuName={'동료명단'}></HeaderMenu>
-          <HeaderMenu to="/pictures/" MenuName={'사진첩'}></HeaderMenu>
+          <HeaderMenu to="/pictures/" MenuName={'모험일지'}></HeaderMenu>
           <HeaderMenu to="/profile/" MenuName={'내 정보'}></HeaderMenu>
         </MenuBox>
         <LogoutButton onClick={() => 
@@ -150,7 +153,7 @@ const Header = () => {
               // 새로고침해야 데이터 안 남아있음
               window.location.reload();
             }
-          }>로그아웃
+          }>퇴장
           </LogoutButton>
         
       </HeaderBlock>

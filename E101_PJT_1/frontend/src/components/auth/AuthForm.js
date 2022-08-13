@@ -22,12 +22,12 @@ const AuthFormBlock = styled.div`
     align-items: center;
   }
   // 로그인
-  &.jc-3 {
+  &.jc-2 {
     justify-content: center;
   }
 
   // 회원가입
-  &.jc-4 {
+  &.jc-6 {
     justify-content: start;
   }
 `;
@@ -108,8 +108,8 @@ const FormBtn = styled.div`
   
 
 const textMap = {
-  login: '로그인',
-  register: '회원가입'
+  login: '입장',
+  register: '모험가 등록'
 };
 
 /**
