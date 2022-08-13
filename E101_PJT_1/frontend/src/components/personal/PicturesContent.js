@@ -3,12 +3,12 @@ import background from '../../media/images/headerMenuBackGround.png'
 import { useDispatch, useSelector} from "react-redux";
 import { gamePlanActions } from "../../store/gamePlan-slice";
 import { useEffect, useState } from "react";
+import arrowRight from "../../media/images/arrowRight.png";
+import arrowLeft from "../../media/images/arrowLeft.png";
 
 const PicturesContentBlock = styled.div`
   background: url(${background});
-  width: 100%;
-  margin: 10px;
-  padding: 10px;
+  width: 83vw;
 `;
 
 const GameDayInfo = styled.div`
@@ -19,23 +19,27 @@ const GameDayInfo = styled.div`
   width: 80vw;
   font-size: 4vmin;
   color: #412E22;
+  & p {
+    font-size: 6vmin;
+  }
 `
 const GameDoneBoard = styled.div`
   width: 80vw;
   height: 70vh;
   margin-left: 1vw;
   background-color: transparent;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   display: flex;
   justify-content: space-around;
+  align-content: space-around;
   flex-wrap: wrap;
 `
 
 const GameDoneImg = styled.div`
   width: 25vw;  
-  height: 33vh;
+  height: 28vh;
   background: ${props => `url(${props.backImg}) no-repeat center`};  
-  background-size: 25vw 33vh; 
+  background-size: 25vw 28vh; 
   border: 1px solid black;
   border-radius: 5px;  
 `
@@ -57,7 +61,9 @@ const ArrowBtn = styled.div`
   width: 30vw;
   height: 10vh;
   cursor: pointer;  
-  border: 1px solid black;
+  /* border: 1px solid black; */
+  background:  ${props => `url(${props.backImg}) no-repeat center`};  
+  background-size: 20vw 8vh;
 `
 
 const PicturesContent = () => {
@@ -113,9 +119,9 @@ const PicturesContent = () => {
   return (
     gameDoneList.length ? (<PicturesContentBlock>
       <GameDayInfo>
-        <ArrowBtn onClick={() => onClickLeft()}>이전</ArrowBtn>
-        {`${gameDoneList[planIdx].month}월 ${gameDoneList[planIdx].day}일 게임`}
-        <ArrowBtn onClick={() => onClickRight()}>다음</ArrowBtn>
+        <ArrowBtn onClick={() => onClickLeft()} backImg={arrowLeft}></ArrowBtn>
+        <p>{`${gameDoneList[planIdx].month}월 ${gameDoneList[planIdx].day}일 게임`}</p>
+        <ArrowBtn onClick={() => onClickRight()} backImg={arrowRight}></ArrowBtn>
       </GameDayInfo>
       <GamePlayerInfo>
         <p>MVP: {gameDoneList[planIdx].mvp}</p>

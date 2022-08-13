@@ -34,6 +34,10 @@ const SignUpForm = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     const { userId, name, email, password, nickname } = form;
+    if (nickname.length > 6) {
+      setError('닉네임은 6자 이하로 해주세요');
+      return;
+    }
     if (userId && name && email && password && nickname) {
       dispatch(authActions.createUserStart(form));
     } else {

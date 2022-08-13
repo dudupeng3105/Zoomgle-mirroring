@@ -39,6 +39,13 @@ export const getFriendsListApi = async (nickname) =>
 export const addFriendApi = async (infoId) =>
   await customAxios.post('api/friends', infoId);
 
+export const deleteFriendApi = async (friendDeleteInfo) => {
+  console.log("요청", friendDeleteInfo)
+  return await customAxios.delete('api/friends', {
+    data: friendDeleteInfo,
+  });
+}
+
 // 게임예약 - 게임 예약 만들기, 게임 리스트 가져오기
 export const createGamePlanApi = async (planInfo) => {
   return await customAxios.post('api/rooms', planInfo, {

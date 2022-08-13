@@ -8,7 +8,6 @@ import PicturesPage from "./pages/PicturesPage";
 import JoinGamePage from "./pages/JoinGamePage";
 import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
-import MainGamePage from "./pages/MainGamePage";
 import OpenviduPage from "./pages/OpenviduPage";
 import { useEffect } from 'react';
 

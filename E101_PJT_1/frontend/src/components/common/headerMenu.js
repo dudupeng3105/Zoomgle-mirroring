@@ -7,23 +7,21 @@ const HeaderMenuBlock = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 4vmin;  
-  height: 15%;
+  font-size: 3.5vmin;  
+  height: 8vh;
+  width: 18vw;
   /* margin: 15px 2px; */
-  margin-top: 10px;
-  margin-bottom: 0px;
   text-align: center;
   /* background-color: #352208; */
   background: url(${longArrow}) center no-repeat;
-  background-size: 14vw 5vh;
+  background-size: 12vw 4vh;
   /* border: 3px solid #b39860; */
   padding-bottom: 4.5vh;
-
   color: #352208;
   border-radius: 5px;
   &:hover {
-    background: url(${longArrow}) center no-repeat;
-    background-size: 14vw 5vh;
+    /* background: url(${longArrow}) center no-repeat;
+    background-size: 14vw 5vh; */
     color: white;
     /* border: 3px solid #29231C; */
   }  

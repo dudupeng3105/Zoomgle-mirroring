@@ -13,6 +13,15 @@ const StartPageModalBlock = styled.div`
   justify-content: center;
   align-items: center;
   /* background-size: auto auto; */
+  &.bigger {
+    transform: scale(1.1);
+    transition: transform .5s;
+  }
+
+  &.smaller{
+    transform: scale(0.9);
+    transition: transform .5s;
+  }
 `;
 
 const StartPageModalBackGround = styled.div`
@@ -37,9 +46,9 @@ const StartPageModalMenu = styled(Link)`
   }  
 `;
 
-const StartPageModal = () => {
+const StartPageModal = ({formEffect}) => {
   return (
-    <StartPageModalBlock>
+    <StartPageModalBlock className={formEffect}>
       <StartPageModalBackGround>
         <StartPageModalMenu backImgName={menuImage1} to="/signup/"></StartPageModalMenu>
         <StartPageModalMenu backImgName={menuImage2} to="/login/"></StartPageModalMenu>
