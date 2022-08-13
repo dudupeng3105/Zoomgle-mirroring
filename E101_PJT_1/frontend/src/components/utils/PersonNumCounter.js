@@ -14,7 +14,7 @@ const PersonNumCounterBlock = styled.div`
   }
 `;
 
-const PersonNumCounterLeftBtn = styled.div`
+export const PersonNumCounterLeftBtn = styled.div`
   width: 0;
   height: 0;
   border-radius: 10px;
@@ -23,7 +23,7 @@ const PersonNumCounterLeftBtn = styled.div`
   border-right: 1rem solid grey;
 `;
 
-const PersonNumCounterRightBtn = styled.div`
+export const PersonNumCounterRightBtn = styled.div`
   width: 0;
   height: 0;
   border-radius: 10px;

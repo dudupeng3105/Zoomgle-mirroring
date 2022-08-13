@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import StartPageModal from "../components/display/StartPageModal";
 import StartStoryBoardBlock from "../components/display/StartStoryBoardBlock";
 import { authActions } from '../store/auth-slice';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
 import firstDescription from '../media/images/startpage3.png'
 import secondDescription from '../media/images/startpage2.png'
@@ -50,7 +50,7 @@ const StartStoryBoard = styled.div`
   /* border: 3px solid white; */
   display: flex;   
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   /* background-size: auto auto; */
 `;
 
@@ -80,17 +80,44 @@ const GameDescription = styled.div`
   background: ${props => `url(${props.backImg}) no-repeat center`};
   background-size: 50vw 60vh;
   transition-property: all;
-  transition-duration: 4s;
+  transition-duration: 3s;
   transition-timing-function: ease-in-out;
+  &.animation-1 {
+    transform: translateY(20vh);
+  }
+  &.animation-2 {
+    transform: translateY(20vh);
+  }
+  &.animation-3 {
+    transform: translateY(20vh);
+  }
 `;
 
 const StartPage = (props) => {
   const dispatch = useDispatch();
+  const [chapterNum, setChapterNum] = useState(0);
+  const [formEffect, setFormEffect] = useState('');
 
   const handleClickEvent = (chapter) => {
     console.log(chapter)
+    setChapterNum(chapter);
     // console.log(chapter * 100 * window.innerHeight/100)
     window.scrollTo(0, chapter * 100 * window.innerHeight/100);
+    if (chapter === 4) {
+      let i = 0
+      while (i < 10) {
+        if (i % 2) {
+          setTimeout(() => {
+            setFormEffect('bigger');
+          }, (i + 1) * 500);
+        } else {
+          setTimeout(() => {
+            setFormEffect('smaller');
+          }, (i + 1) * 500);
+        }
+        i++;
+    }
+    }
   } 
 
   // 0. 컴포넌트가 처음 렌더링 될 때 form 을 초기화함
@@ -104,25 +131,24 @@ const StartPage = (props) => {
     <StartPageBlock>
       {/* 최상단 페이지 */}
       <StartPageSkipBtn onClick={() => handleClickEvent(4)}>건너뛰기</StartPageSkipBtn>
-      <Link to="/openvidutest/">게임장가기</Link>
       <StartPageContent onClick={() => handleClickEvent(1)}>
         {/* <StartPageSkipBtn onClick={() => navigate('/login')}>건너뛰기</StartPageSkipBtn> */}
         
       </StartPageContent>
       <StartStoryBoardBlock>
         <StartStoryBoard onClick={() => handleClickEvent(2)}>
-          <GameDescription backImg={firstDescription}></GameDescription>
+          <GameDescription backImg={firstDescription} className={`animation-${chapterNum===1 ? 1: ''}`}></GameDescription>
         </StartStoryBoard> 
         <StartStoryBoard onClick={() => handleClickEvent(3)}>
-          <GameDescription backImg={secondDescription}></GameDescription>
+          <GameDescription backImg={secondDescription} className={`animation-${chapterNum===2 ? 2: ''}`}></GameDescription>
         </StartStoryBoard> 
         <StartStoryBoard onClick={() => handleClickEvent(4)}>
-          <GameDescription backImg={thirdDescription}></GameDescription>
+          <GameDescription backImg={thirdDescription} className={`animation-${chapterNum===3 ? 3: ''}`}></GameDescription>
         </StartStoryBoard> 
       </StartStoryBoardBlock>
       
       <StartPageContent>
-        <StartPageModal></StartPageModal>
+        <StartPageModal formEffect={formEffect}></StartPageModal>
       </StartPageContent> 
       
       {/* <Button to="/MyPage">마이페이지 가기</Button> */}

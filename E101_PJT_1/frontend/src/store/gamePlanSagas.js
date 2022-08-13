@@ -57,7 +57,7 @@ function* getInvitaionListAsync({ payload }) {
   try {    
     const response = yield call(getInvitaionListApi);
     console.log('초대장플랜리스트응답', response.data);
-    if (response.status === 200) {
+    if (response.status === 200 | response.status === 201) {
       // 초대장리스트가져오기 성공
       // getInvitaionListSuccess을 디스패치함(slice가서 확인)
       yield put(getInvitaionListSuccess(response.data));
@@ -97,6 +97,7 @@ function* CheckInvitationAsync({ payload }) {
     }
   } catch (error) {
     // put은 액션을 디스패치
+    yield put(getInvitaionListStart());
     yield put(getError(error.response.data));
   }
 }
