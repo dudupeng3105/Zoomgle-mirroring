@@ -1,6 +1,7 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.UserRegisterPostReq;
+import com.ssafy.common.myObject.UserGameInfo;
 import com.ssafy.db.entity.User;
 
 import java.util.List;
@@ -21,4 +22,6 @@ public interface UserService {
 	List<User> getAllUsers();
 
 	void deleteUser(User user);
+
+	UserGameInfo getUserGameInfo(String nickname);
 }

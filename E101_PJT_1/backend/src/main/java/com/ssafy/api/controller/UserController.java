@@ -1,5 +1,7 @@
 package com.ssafy.api.controller;
 
+import com.ssafy.api.response.UserGameInfoRes;
+import com.ssafy.common.myObject.UserGameInfo;
 import org.hibernate.PropertyValueException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -152,5 +154,30 @@ public class UserController {
 	@ApiOperation(value = "닉네임 중복 체크", notes = "중복이면 false, 유효하면 true")
 	public ResponseEntity<Boolean> checkNickname(@PathVariable("nickname") String nickname) {
 		return new ResponseEntity<Boolean>(userService.checkNicknameDuplicated(nickname), HttpStatus.OK);
+	}
+
+	@GetMapping("/user-game-info")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "게임 정보 불러오기 성공"),
+			@ApiResponse(code = 401, message = "토큰 없음"),
+			@ApiResponse(code = 403, message = "회원 정보 없음"),
+			@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public ResponseEntity<UserGameInfoRes> getUserGameInfo(@ApiIgnore Authentication authentication){
+		// 토큰 정보 확인
+		if (authentication == null) {
+			return ResponseEntity.status(401).body(UserGameInfoRes.of(401, "토큰 정보가 없습니다.", null));
+		}
+
+		// 회원 정보 없음
+		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
+		User user = userService.getUserByUserId(userDetails.getUsername());
+		if (user == null) {
+			return ResponseEntity.status(403).body(UserGameInfoRes.of(403, "회원 정보가 없습니다.", null));
+		}
+		
+		// 게임 정보 저장
+		UserGameInfo userGameInfo = userService.getUserGameInfo(user.getNickname());
+		return ResponseEntity.status(200).body(UserGameInfoRes.of(200, user.getNickname() + "님의 게임 정보를 불러왔습니다.", userGameInfo));
 	}
 }

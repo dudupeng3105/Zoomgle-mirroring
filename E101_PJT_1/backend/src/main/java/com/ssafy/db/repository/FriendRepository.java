@@ -21,4 +21,6 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
             " from user u, friend f " +
             " where u.nickname = f.friend_nickname and f.my_nickname = ?1", nativeQuery = true)
     List<FriendInfoInterface> findAllFriendByNickname(String myNickname);
+
+    int countAllByMyNickname(String nickname);
 }
