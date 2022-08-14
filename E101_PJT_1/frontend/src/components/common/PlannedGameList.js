@@ -39,9 +39,12 @@ const GameInvitationModal = styled.div`
 `;
 
 const InfoMessage = styled.div`
-  font-size: 2rem;
+  font-size: 3rem;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  
 `;
 
 
@@ -112,7 +115,10 @@ const PlannedGameList = () => {
       {/* 예정된 모험 */}
       <UpCommingGameTitle>예정된 모험</UpCommingGameTitle>
       {myGamePlanList.length === 0 ? (
-        <InfoMessage>예정된 게임이 없습니다.</InfoMessage>
+        <InfoMessage>
+          <p>준비할 모험이 없다.</p>
+          <p>모험을 꾸리거나, 모험단 요청을 받으시오</p>
+        </InfoMessage>
       ) : (
         <GameNumCounter
           count={count}

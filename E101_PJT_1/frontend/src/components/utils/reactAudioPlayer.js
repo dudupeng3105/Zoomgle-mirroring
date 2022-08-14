@@ -1,37 +1,28 @@
 import styled from 'styled-components';
 // import ReactAudioPlayer from 'react-audio-player';
-import Animal from "../../media/sounds/animal.wav"
+import Animal from '../../media/sounds/animal.wav';
 import ReactPlayer from 'react-player';
 
-
-const reactAudioPlayerBlock = styled.div`
-width: 0;
-height: 0;
-display: none;
+const ReactAudioPlayerBlock = styled.div`
+  width: 0;
+  height: 0;
+  display: none;
 `;
 
-const reactAudioPlayer = () => {
+const ReactAudioPlayer = ({urlSound, isLoop, isPlaying}) => {  
   return (
-    <reactAudioPlayerBlock>
-      {/* <ReactAudioPlayer src={Animal}
-    autoPlay
-    controls
-    // width="400px"
-    // height="50px"
-    style={{ color: "red"}}>
-      </ReactAudioPlayer> */}
-
-<ReactPlayer
-        url={Animal}
+    <ReactAudioPlayerBlock>
+      <ReactPlayer
+        url={urlSound}
         width="px"
         height="0px"
-        playing={true}        // 자동 재생 on
-        controls={true}
-        loop={true}
-        muted={true}          // 자동 재생 on
+        playing={isPlaying} // 자동 재생 on
+        controls={false}
+        loop={isLoop}
+        // muted={true} // 자동 재생 on
       />
-    </reactAudioPlayerBlock>
+    </ReactAudioPlayerBlock>
   );
 };
 
-export default reactAudioPlayer;
+export default ReactAudioPlayer;

@@ -14,13 +14,13 @@ const StartPageModalBlock = styled.div`
   align-items: center;
   /* background-size: auto auto; */
   &.bigger {
-    transform: scale(1.1);
-    transition: transform .5s;
+    transform: scale(1.08);
+    transition: transform .35s;
   }
 
   &.smaller{
-    transform: scale(0.9);
-    transition: transform .5s;
+    transform: scale(0.98);
+    transition: transform .35s;
   }
 `;
 
