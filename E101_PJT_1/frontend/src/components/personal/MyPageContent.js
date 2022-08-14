@@ -1,18 +1,13 @@
 import styled from 'styled-components';
-import background from '../../media/images/woodenBack1.png';
-import inviteIcon from '../../media/images/closeletter.png';
-import openedinviteIcon from '../../media/images/openletter1.png';
 import letter from '../../media/images/letter.png';
 import reject from '../../media/images/reject.png';
 import accept from '../../media/images/accept.png';
-import album from '../../media/images/album_book.png';
 import memoriesBack from '../../media/images/MemorisBlock.png';
 import InvitationBack from '../../media/images/mypageInvitation.png';
 import PlannedGameBack from '../../media/images/PlannedGameBack.png';
 import compassBack from '../../media/images/compass.png';
 import picFrame from '../../media/images/picFrame.png';
 import arrowRight from '../../media/images/arrowRight.png';
-import PlannedGameList from '../common/PlannedGameList';
 import {
   PersonNumCounterLeftBtn,
   PersonNumCounterRightBtn,
@@ -22,6 +17,9 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { gamePlanActions } from '../../store/gamePlan-slice';
+import ReactAudioPlayer from '../utils/reactAudioPlayer';
+import gameStartSound from '../../media/sounds/08_gameStart.wav';
+import homePageSound from '../../media/sounds/03_homePage.wav';
 
 const MyPageContentBlock = styled.div`
   display: flex;
@@ -128,6 +126,14 @@ const RecentGameInfoBox = styled.div`
   p {
     font-size: 3.3vmin;
   }
+  .not-data {
+    width: 20vw;
+    display: flex;
+    margin-top: 8vh;
+    justify-content: center;
+    font-size: 4vmin;
+    color: brown;
+  }
 `;
 
 const PictureFrame = styled.div`
@@ -167,6 +173,18 @@ const PlannedGameInfoBox = styled.div`
   padding-left: 10%;
   p {
     font-size: 4.3vmin;
+  }
+  .not-data {
+    width: 18vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;    
+    font-size: 4.3vmin;
+    margin-top: 3vh;
+    color: brown;
+    p {
+      text-align: center;
+    }
   }
 `;
 
@@ -265,6 +283,7 @@ const MyPageContent = () => {
   const gameDoneList = useSelector((state) => state.gamePlan.gameDoneList);
   const gameDonePhoto = useSelector((state) => state.gamePlan.gameDonePhoto);
   const [invitationIdx, setInvitationIdx] = useState(0);
+  const [backSoundPlay, setBackSoundPlay] = useState(false);
 
   useEffect(() => {
     dispatch(gamePlanActions.getInvitaionListStart());
@@ -272,7 +291,10 @@ const MyPageContent = () => {
 
   useEffect(() => {
     dispatch(gamePlanActions.getGamePlanListStart());
-    dispatch(gamePlanActions.getGameDoneListStart());
+    dispatch(gamePlanActions.getGameDoneListStart());   
+    setTimeout(() => {
+      setBackSoundPlay(true);
+    }, 8000); 
   }, []);
 
   useEffect(() => {
@@ -285,7 +307,7 @@ const MyPageContent = () => {
           gameDoneList[gameDoneList.length - 1].roomCode,
         ),
       );
-    }
+    }    
   }, [gamePlanList, gameDoneList]);
 
   const onClickDecision = (decision, invitationSeq, roomCode) => {
@@ -329,6 +351,18 @@ const MyPageContent = () => {
 
   return (
     <MyPageContentBlock className={modalToggle ? 'darken-back' : ''}>
+      <ReactAudioPlayer
+        urlSound={gameStartSound}
+        isLoop={false}
+        isPlaying={!backSoundPlay}
+      >
+      </ReactAudioPlayer>
+      <ReactAudioPlayer
+        urlSound={homePageSound}
+        isLoop={true}
+        isPlaying={backSoundPlay}
+      >
+      </ReactAudioPlayer>
       <MemoriesAndPlanGameBox>
         <Memoriesbox className={modalToggle ? 'darken-back' : ''}>
           {gameDoneList.length !== 0 ? (
@@ -366,7 +400,9 @@ const MyPageContent = () => {
               ></ArrowBtn>
             </>
           ) : (
-            <p>지난 게임이 없어요</p>
+            <RecentGameInfoBox>
+              <div className="not-data"> 모험을 진행하고 일지를 작성하시오</div>
+            </RecentGameInfoBox>
           )}
         </Memoriesbox>
         <PlanGameBox className={modalToggle ? 'darken-back' : ''}>
@@ -387,7 +423,12 @@ const MyPageContent = () => {
               </p>
             </PlannedGameInfoBox>
           ) : (
-            '예정된 게임이 없어요'
+            <PlannedGameInfoBox>
+              <div className="not-data">
+                <p>준비할 모험이 없다.</p>
+                <p>모험을 꾸리거나, 모험단 요청을 받으시오</p>
+              </div>
+            </PlannedGameInfoBox>
           )}
           <CompassBox
             onClick={() => {
@@ -399,6 +440,9 @@ const MyPageContent = () => {
       <InvitationBox
         onClick={() => {
           setFirstClick(true);
+          if (myinvitationList.length === 0) {
+            return;
+          }
           setModalToggle(!modalToggle);
         }}
       >
