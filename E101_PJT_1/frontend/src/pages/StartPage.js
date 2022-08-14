@@ -12,6 +12,9 @@ import { useDispatch } from "react-redux";
 import firstDescription from '../media/images/startPageLetter1.png'
 import secondDescription from '../media/images/startPageLetter3.png'
 import thirdDescription from '../media/images/startPageLetter2.png'
+import ReactAudioPlayer from "../components/utils/reactAudioPlayer";
+import firstPageSound from '../media/sounds/01_firstpage.wav';
+import loginPageSound from '../media/sounds/02_loginPage.wav';
 
 const StartPageBlock = styled.div`
   width: 100vw;
@@ -104,23 +107,31 @@ const StartPage = (props) => {
   const dispatch = useDispatch();
   const [chapterNum, setChapterNum] = useState(0);
   const [formEffect, setFormEffect] = useState('');
+  const [isFirstPageSound, setIsFirstPageSound] = useState(true);
+  const [isLoginPageSound, setIsLoginPageSound] = useState(false);
 
   const handleClickEvent = (chapter) => {
+    if (chapter !== 4) {
+      setIsFirstPageSound(true);
+      setIsLoginPageSound(false);
+    }
     console.log(chapter)
     setChapterNum(chapter);
     // console.log(chapter * 100 * window.innerHeight/100)
     window.scrollTo(0, chapter * 100 * window.innerHeight/100);
     if (chapter === 4) {
+      setIsFirstPageSound(false);
+      setIsLoginPageSound(true);
       let i = 0
-      while (i < 10) {
+      while (i < 20) {
         if (i % 2) {
           setTimeout(() => {
             setFormEffect('bigger');
-          }, (i + 1) * 500);
+          }, (i + 1) * 350);
         } else {
           setTimeout(() => {
             setFormEffect('smaller');
-          }, (i + 1) * 500);
+          }, (i + 1) * 350);
         }
         i++;
     }
@@ -134,8 +145,20 @@ const StartPage = (props) => {
 
   // const navigate = useNavigate();
 
-  return (
+  return (    
     <StartPageBlock>
+      <ReactAudioPlayer
+        urlSound={firstPageSound}
+        isLoop={true}
+        isPlaying={isFirstPageSound}
+      >
+      </ReactAudioPlayer>  
+      <ReactAudioPlayer
+        urlSound={loginPageSound}
+        isLoop={true}
+        isPlaying={isLoginPageSound}
+      >
+      </ReactAudioPlayer>      
       {/* 최상단 페이지 */}
       <StartPageSkipBtn onClick={() => handleClickEvent(4)}>건너뛰기</StartPageSkipBtn>
       <StartPageContent onClick={() => handleClickEvent(1)}>
@@ -160,7 +183,7 @@ const StartPage = (props) => {
       
       {/* <Button to="/MyPage">마이페이지 가기</Button> */}
       {/* <div>안녕하세요</div> */}
-    </StartPageBlock>    
+    </StartPageBlock>      
   );
 };
 
