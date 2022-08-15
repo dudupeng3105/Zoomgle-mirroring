@@ -246,11 +246,14 @@ const MainUserVideoComponent = ({
   const minigameEndHandler = () => {
     const nextTurn = (myTurnNum + 1) % playerNum;
     const nextUserName = players[nextTurn];
-    // 성공, 실패(-1)에 따라 자리조정
+    // go(1), back(-1)에 따라 자리조정
     let nextPosList = [...posList];
-    if (!voteResult) {
+    if (voteResult === 1) { // go
       const myPos = posList[myTurnNum];
-      nextPosList[myTurnNum] = myPos - 1; // -1
+      nextPosList[myTurnNum] = myPos + 1;
+    } else if(voteResult === -1) { // back
+      const myPos = posList[myTurnNum];
+      nextPosList[myTurnNum] = myPos - 1;
     }
 
     // emit
@@ -322,16 +325,20 @@ const MainUserVideoComponent = ({
 
   // vote 새로 받을 때마다 업데이트
   useEffect(() => {
-    // 성공, 실패 판단
-    const agreeNum = vote.filter((thisVote) => thisVote[1] === true).length;
-    if (agreeNum >= parseInt(vote.length / 2)) {
-      setVoteResult(true);
-    } else {
-      setVoteResult(false);
+    // 전체 투표 판단
+    const goNum = vote.filter((thisVote) => thisVote[1] === 1).length;
+    const backNum = vote.filter((thisVote) => thisVote[1] === -1).length;
+    // const agreeNum = vote.filter((thisVote) => thisVote[1] === true).length;
+    if (goNum > parseInt((playerNum - 1) / 2)) { // go한 사람이 전체 참여자의 과반수일 때
+      setVoteResult(1);
+    } else if (backNum > parseInt((playerNum - 1) / 2)) { // back한 사람이 전체 참여자의 과반수일 때
+      setVoteResult(-1);
+    } else { // 그 외 모든 경우
+      setVoteResult(0);
     }
 
     // 투표가 다 끝났는지 판단
-    if (vote.length === playerNum) {
+    if (vote.length === playerNum - 1) {
       setVoteSkip(true);
     }
   }, [vote]);
@@ -346,7 +353,7 @@ const MainUserVideoComponent = ({
   }, [minigameType]);
 
   const voteHandler = (voteSelect) => {
-    const nextVote = [...vote, [players[myTurnNum], voteSelect]];
+    const nextVote = [players[myTurnNum], voteSelect];
     console.warn(nextVote);
     // 투표 진행 동기화 emit
     const sendData = {
@@ -367,7 +374,7 @@ const MainUserVideoComponent = ({
       },
       body: JSON.stringify(sendData),
     });
-    setIsVote(true); // 찬/반 버튼 삭제시킴
+    setIsVote(true); // 투표 버튼 삭제시킴
   };
 
   // 미니게임 시작마다(isRoll이 true) 다시 초 세팅
@@ -450,13 +457,16 @@ const MainUserVideoComponent = ({
                     ) : (
                       ''
                     )}
-                    {!isVote ? (
+                    {!isVote & (myTurnNum !== turnNum) ? (
                       <AgreeDisagreeBtnContainer>
-                        <MinigameBtn onClick={() => voteHandler(true)}>
-                          찬성
+                        <MinigameBtn onClick={() => voteHandler(1)}>
+                          go
                         </MinigameBtn>
-                        <MinigameBtnRight onClick={() => voteHandler(false)}>
-                          반대
+                        <MinigameBtn onClick={() => voteHandler(0)}>
+                          stay
+                        </MinigameBtn>
+                        <MinigameBtnRight onClick={() => voteHandler(-1)}>
+                          back
                         </MinigameBtnRight>
                       </AgreeDisagreeBtnContainer>
                     ) : (
@@ -472,10 +482,10 @@ const MainUserVideoComponent = ({
                       (결과확인타임)다음턴으로 넘어가기
                     </MinigameBtn> */}
                     <VoteResultBoard>
-                      <p>최종결과: {voteResult ? '성공' : '실패!!!'}</p>
+                      <p>최종결과: {voteResult === 1 ? 'go' : voteResult === -1 ? 'back' : 'stay'}</p>
                       {vote.map((thisVote, idx) => (
                         <p key={`vote${idx}`}>
-                          {thisVote[0]}의 선택: {thisVote[1] ? '통과' : '실패'}
+                          {thisVote[0]}의 선택: {thisVote[1] === 1 ? 'go' : thisVote[1] === -1 ? 'back' : 'stay'}
                         </p>
                       ))}
                     </VoteResultBoard>
