@@ -4,8 +4,8 @@ import styled from "styled-components";
 // import setHours from "date-fns/setHours";
 // import setMinutes from "date-fns/setMinutes";
 import DatePicker from "react-datepicker";
-
 import "react-datepicker/dist/react-datepicker.css";
+import { addMonths } from 'date-fns';
 
 const Wrapper = styled.div`
   input {
@@ -104,6 +104,11 @@ const Wrapper = styled.div`
     border-radius: 3px;
   }
 
+  .react-datepicker__day--disabled {
+    background-color: #BEBEBE;
+    color: #d3d3d3;
+  }
+
   
 `
 
@@ -111,7 +116,12 @@ const Wrapper = styled.div`
 // 
 
 const CustomDatePicker = ({startDate, onDateChangeHandler}) => {  
+  const filterPassedTime = (time) => {
+    const currentDate = new Date();
+    const selectedDate = new Date(time);
 
+    return currentDate.getTime() < selectedDate.getTime();
+  };
   
   return (
     <Wrapper>
@@ -121,6 +131,9 @@ const CustomDatePicker = ({startDate, onDateChangeHandler}) => {
         showTimeSelect
         timeFormat="HH:mm"
         timeIntervals={15}
+        minDate={new Date()}
+        maxDate={addMonths(new Date(), 1)}
+        filterTime={filterPassedTime}        
         // includeTimes={[
         //   setHours(setMinutes(new Date(), 0), 17),
         //   setHours(setMinutes(new Date(), 30), 18),
