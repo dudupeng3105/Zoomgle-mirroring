@@ -1,29 +1,29 @@
 import React from 'react';
 import OpenViduVideoComponent from './OvVideo';
-import { useState, useEffect, useRef  } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { minigameList } from './minigameList';
 import html2canvas from 'html2canvas';
 import { useDispatch } from 'react-redux';
 import { gameRoomActions } from '../../store/gameRoom-slice';
-import cameraBtn from '../../media/images/cameraBtn.PNG'
-import mainStreamerBorderStone from '../../media/images/mainStreamerBorderStone.png'
-import mvpRibbon from '../../media/images/mvpRibbon.png'
+import cameraBtn from '../../media/images/cameraBtn.PNG';
+import mainStreamerBorderStone from '../../media/images/mainStreamerBorderStone.png';
+import mvpRibbon from '../../media/images/mvpRibbon.png';
 
 const StreamComponent = styled.div`
   width: 55vw;
-  height: 58vh;    
+  height: 58vh;
   display: flex;
   flex-direction: column;
   color: white;
-  align-items: center;  
+  align-items: center;
   /* border: 1px solid white; */
   & p {
     margin: 0;
     margin-top: 2rem;
     font-size: 3rem;
     color: white;
-  }    
+  }
 `;
 
 const MinigameInfo = styled.div`
@@ -80,8 +80,8 @@ const VoteResultBoard = styled.div`
   height: 30vh;
 `;
 
-const CaptureBtn = styled.div`  
-  position: fixed;  
+const CaptureBtn = styled.div`
+  position: fixed;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -108,8 +108,8 @@ const TurnInfoBox = styled.div`
   align-items: center;
   width: 56vw;
   color: white;
-  font-size: 3rem;  
-`
+  font-size: 3rem;
+`;
 
 const MvpInfoBox = styled.div`
   position: absolute;
@@ -130,7 +130,7 @@ const MvpInfoBox = styled.div`
     color: yellow;
     /* border: 5px solid yellow; */
   }
-`
+`;
 
 const MainBorderStone = styled.div`
   width: 55vw;
@@ -142,7 +142,7 @@ const MainBorderStone = styled.div`
   align-items: center;
   background: url(${mainStreamerBorderStone});
   background-size: 55vw 60vh;
-`
+`;
 
 const MvpRibbon = styled.div`
   width: 60vw;
@@ -153,44 +153,44 @@ const MvpRibbon = styled.div`
   z-index: 5;
   background: url(${mvpRibbon});
   background-size: 60vw 70vh;
-`
+`;
 
-const CaptureAreaBox = styled.div`  
-  width: 43vw;  
+const CaptureAreaBox = styled.div`
+  width: 43vw;
   top: 2vh;
-  height: 44vh;  /* border: 1px solid red; */
+  height: 44vh; /* border: 1px solid red; */
   z-index: 3;
   display: flex;
-  justify-content: center;  
+  justify-content: center;
   /* border: 1px solid red; */
 
   &.mainStreamer {
-    margin-top: 15vh;        
+    margin-top: 15vh;
   }
 
   &.mvpStreamer {
-    margin-top: 9vh;    
+    margin-top: 9vh;
     margin-left: -4.5vh;
   }
 
-  &.mainStreamer video {    
+  &.mainStreamer video {
     width: 37vw;
-    height: 41vh;    
+    height: 41vh;
     cursor: initial;
     z-index: 2;
-    object-fit: fill;    
-    border-radius: 5%;    
+    object-fit: fill;
+    border-radius: 5%;
   }
 
-  &.mvpStreamer video {    
+  &.mvpStreamer video {
     width: 45vmin;
     height: 40vmin;
-    z-index: 2;    
+    z-index: 2;
     cursor: initial;
-    object-fit: fill;    
+    object-fit: fill;
     border-radius: 50%;
   }
-`
+`;
 
 const MainUserVideoComponent = ({
   isGameDone,
@@ -217,7 +217,7 @@ const MainUserVideoComponent = ({
   const [checkResultOver, setCheckResultOver] = useState(false);
   const [voteSkip, setVoteSkip] = useState(false);
   const [voteResult, setVoteResult] = useState(false);
-  const [minigameInfo, setMinigameInfo] = useState(['게임코멘트', 10, 0]); 
+  const [minigameInfo, setMinigameInfo] = useState(['게임코멘트', 10, 0]);
   // MVP 효과용
   const [mvpEffect, setMvpEffect] = useState(null);
 
@@ -226,38 +226,37 @@ const MainUserVideoComponent = ({
   const dispatch = useDispatch();
 
   // html2canvas(dom element를 canvas로 바꾸어줌)
-  const onCapture = async() => {
+  const onCapture = async () => {
     console.log('사진찍습니다.');
     const roomSeq = mySessionIdValue;
     // dom to canvas
     const element = mainScreen.current;
     const canvas = await html2canvas(element); // html to canvas
-    const dataUrl = canvas.toDataURL("image/png");
+    const dataUrl = canvas.toDataURL('image/png');
     console.log(dataUrl);
-    const blobData = dataURItoBlob(dataUrl);  
+    const blobData = dataURItoBlob(dataUrl);
     // 날짜 만들기
     const now = new Date();
-    const filename =  `${roomSeq}-${now.getHours()}${now.getMinutes()}${now.getSeconds()}.jpeg`
+    const filename = `${roomSeq}-${now.getHours()}${now.getMinutes()}${now.getSeconds()}.jpeg`;
     // 파일 객체 마들기
-    const tempFile = new File([blobData], filename, {type: "image/jpeg"});     
+    const tempFile = new File([blobData], filename, { type: 'image/jpeg' });
 
-    // 폼데이터에 담아서 api 요청    
+    // 폼데이터에 담아서 api 요청
     let picData = new FormData();
-    picData.append("photo", tempFile);  
-    console.log(roomSeq);    
+    picData.append('photo', tempFile);
+    console.log(roomSeq);
 
-    dispatch(gameRoomActions.takePictureStart({picData, roomSeq}));       
-  }
-  
+    dispatch(gameRoomActions.takePictureStart({ picData, roomSeq }));
+  };
 
   function dataURItoBlob(dataURI) {
     var binary = atob(dataURI.split(',')[1]);
     var array = [];
-    for(var i = 0; i < binary.length; i++) {
-        array.push(binary.charCodeAt(i));
+    for (var i = 0; i < binary.length; i++) {
+      array.push(binary.charCodeAt(i));
     }
-    return new Blob([new Uint8Array(array)], {type: 'image/jpeg'});
-  };
+    return new Blob([new Uint8Array(array)], { type: 'image/jpeg' });
+  }
 
   // 미니게임이 끝난 걸 가정하고 작성함
   const minigameEndHandler = () => {
@@ -265,10 +264,12 @@ const MainUserVideoComponent = ({
     const nextUserName = players[nextTurn];
     // go(1), back(-1)에 따라 자리조정
     let nextPosList = [...posList];
-    if (voteResult === 1) { // go
+    if (voteResult === 1) {
+      // go
       const myPos = posList[myTurnNum];
       nextPosList[myTurnNum] = myPos + 1;
-    } else if(voteResult === -1) { // back
+    } else if (voteResult === -1) {
+      // back
       const myPos = posList[myTurnNum];
       nextPosList[myTurnNum] = myPos - 1;
     }
@@ -346,11 +347,14 @@ const MainUserVideoComponent = ({
     const goNum = vote.filter((thisVote) => thisVote[1] === 1).length;
     const backNum = vote.filter((thisVote) => thisVote[1] === -1).length;
     // const agreeNum = vote.filter((thisVote) => thisVote[1] === true).length;
-    if (goNum > parseInt((playerNum - 1) / 2)) { // go한 사람이 전체 참여자의 과반수일 때
+    if (goNum > parseInt((playerNum - 1) / 2)) {
+      // go한 사람이 전체 참여자의 과반수일 때
       setVoteResult(1);
-    } else if (backNum > parseInt((playerNum - 1) / 2)) { // back한 사람이 전체 참여자의 과반수일 때
+    } else if (backNum > parseInt((playerNum - 1) / 2)) {
+      // back한 사람이 전체 참여자의 과반수일 때
       setVoteResult(-1);
-    } else { // 그 외 모든 경우
+    } else {
+      // 그 외 모든 경우
       setVoteResult(0);
     }
 
@@ -422,7 +426,7 @@ const MainUserVideoComponent = ({
   }, [isRoll]);
 
   useEffect(() => {
-    let i = 0
+    let i = 0;
     while (i < 10) {
       if (i % 2) {
         setTimeout(() => {
@@ -437,8 +441,6 @@ const MainUserVideoComponent = ({
     }
   }, [isGameDone]);
 
-  
-
   return (
     <>
       {streamManager !== undefined ? (
@@ -452,7 +454,6 @@ const MainUserVideoComponent = ({
                   {explanationOver ? '' : <p>{minigameInfo[3]}</p>}
 
                   {/* 그려서 맞히기의 경우 현재 턴인 사람에게만 띄움 */}
-
                   {explanationOver & !timeOver ? (
                     !minigameInfo[2] ? (
                       turnNum === myTurnNum ? (
@@ -461,64 +462,74 @@ const MainUserVideoComponent = ({
                         ''
                       )
                     ) : (
-                      <p>{minigameInfo[0]}</p>
+                      ''
                     )
                   ) : (
-                    <p>{minigameInfo[0]}</p>
-                  )
-                ) : (
-                  ''
-                )}
-                {timeOver & !voteOver ? (
-                  <>
-                    <p>투표시간입니다</p>
-                    <p>투표 수: {vote.length}</p>
-                    {!minigameInfo[2] ? (
-                      <p>뭘 그리는 거 였을까요?{minigameInfo[0]}</p>
-                    ) : (
-                      ''
-                    )}
-                    {!isVote & (myTurnNum !== turnNum) ? (
-                      <AgreeDisagreeBtnContainer>
-                        <MinigameBtn onClick={() => voteHandler(1)}>
-                          go
-                        </MinigameBtn>
-                        <MinigameBtn onClick={() => voteHandler(0)}>
-                          stay
-                        </MinigameBtn>
-                        <MinigameBtnRight onClick={() => voteHandler(-1)}>
-                          back
-                        </MinigameBtnRight>
-                      </AgreeDisagreeBtnContainer>
-                    ) : (
-                      ''
-                    )}
-                  </>
-                ) : (
-                  ''
-                )}
-                {voteOver & !checkResultOver ? (
-                  <>
-                    {/* <MinigameBtn onClick={() => onClickHandler()}>
+                    ''
+                  )}
+                  {timeOver & !voteOver ? (
+                    <>
+                      <p>투표시간입니다</p>
+                      <p>투표 수: {vote.length}</p>
+                      {!minigameInfo[2] ? (
+                        <p>뭘 그리는 거 였을까요?{minigameInfo[0]}</p>
+                      ) : (
+                        ''
+                      )}
+                      {!isVote & (myTurnNum !== turnNum) ? (
+                        <AgreeDisagreeBtnContainer>
+                          <MinigameBtn onClick={() => voteHandler(1)}>
+                            go
+                          </MinigameBtn>
+                          <MinigameBtn onClick={() => voteHandler(0)}>
+                            stay
+                          </MinigameBtn>
+                          <MinigameBtnRight onClick={() => voteHandler(-1)}>
+                            back
+                          </MinigameBtnRight>
+                        </AgreeDisagreeBtnContainer>
+                      ) : (
+                        ''
+                      )}
+                    </>
+                  ) : (
+                    ''
+                  )}
+                  {voteOver & !checkResultOver ? (
+                    <>
+                      {/* <MinigameBtn onClick={() => onClickHandler()}>
                       (결과확인타임)다음턴으로 넘어가기
                     </MinigameBtn> */}
-                    <VoteResultBoard>
-                      <p>최종결과: {voteResult === 1 ? 'go' : voteResult === -1 ? 'back' : 'stay'}</p>
-                      {vote.map((thisVote, idx) => (
-                        <p key={`vote${idx}`}>
-                          {thisVote[0]}의 선택: {thisVote[1] === 1 ? 'go' : thisVote[1] === -1 ? 'back' : 'stay'}
+                      <VoteResultBoard>
+                        <p>
+                          최종결과:{' '}
+                          {voteResult === 1
+                            ? 'go'
+                            : voteResult === -1
+                            ? 'back'
+                            : 'stay'}
                         </p>
-                      ))}
-                    </VoteResultBoard>
-                  </>
-                ) : (
-                  ''
-                )}
-              </MinigameInfo>
-            ) : (
-              ''
-            )}
-            <OpenViduVideoComponent streamManager={streamManager} />
+                        {vote.map((thisVote, idx) => (
+                          <p key={`vote${idx}`}>
+                            {thisVote[0]}의 선택:{' '}
+                            {thisVote[1] === 1
+                              ? 'go'
+                              : thisVote[1] === -1
+                              ? 'back'
+                              : 'stay'}
+                          </p>
+                        ))}
+                      </VoteResultBoard>
+                    </>
+                  ) : (
+                    ''
+                  )}
+                </MinigameInfo>
+              ) : (
+                ''
+              )}
+              <OpenViduVideoComponent streamManager={streamManager} />
+            </CaptureAreaBox>
           </StreamComponent>
           {isGameDone ? (
             <MvpInfoBox className={mvpEffect}>{nextPlayer}!!</MvpInfoBox>
