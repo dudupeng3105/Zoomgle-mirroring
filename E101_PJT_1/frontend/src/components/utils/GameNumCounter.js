@@ -17,6 +17,10 @@ import title from '../../media/images/title.png';
 import SquareLeather from '../../media/images/leather_square.png';
 import arrowRight from "../../media/images/arrowRight.png";
 import arrowLeft from "../../media/images/arrowLeft.png";
+import friendModalBack from "../../media/images/friendModal2.jpg";
+import closeButton from "../../media/images/closeLeatherButton.png";
+import friendModalTitle from "../../media/images/friendModalTitle.png";
+import friendInviteButton from "../../media/images/friendInviteButton.png";
 
 const GameNumCounterBlock = styled.div`
   /* border: 3px solid blue; */
@@ -141,14 +145,23 @@ const FriendListModal = styled.div`
   flex-direction: column;
   overflow: scroll;
   padding: 2rem;
-  left: 30vw;
-  top: 10vh;
-  width: 50vw;
-  height: 80vh;
+  left: 45vw;
+  top: 5vh;
+  width: 40vw;
+  height: 90vh;
   border: 1px solid black;
-  background-color: white;
+  background: url(${friendModalBack}) center no-repeat;
+  background-size: 40vw 90vh;
   z-index: 1;
 `;
+
+const InviteFriendButton = styled.button`
+  background: url(${friendInviteButton}) center no-repeat;
+  background-size: 4vw 9vh;
+  border: none;
+  
+    
+`
 
 // const GameNumCounter = ({count, setCount, myGamePlanList}) => {
 const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
@@ -224,6 +237,8 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
       return false;
     }
   };
+
+
 
   return (
     <GameNumCounterBlock>
@@ -302,13 +317,11 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
                     <div>닉네임(seq): {friend.nickname}</div>
                   </NameNicknameEl>
                 </StyledCard>
-                <button
-                  onClick={() =>
+                <InviteFriendButton onClick={() =>
                     onClickReservedGameInvitation(`${friend.nickname}`)
                   }
                 >
-                  초대장보내기
-                </button>
+                </InviteFriendButton>
               </FriendCard>
             ))}
           </FriendListModal>

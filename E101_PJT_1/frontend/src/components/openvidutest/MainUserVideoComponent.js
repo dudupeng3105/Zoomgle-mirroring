@@ -315,7 +315,7 @@ const MainUserVideoComponent = ({
       } else if (!timeOver) {
         setTimeOver(true); // 미션 끝
         setVoteResult(undefined);
-        return 7; // 투표 타임
+        return 20; // 투표 타임
       } else if (!voteOver) {
         setVoteOver(true);
         setVoteSkip(false);
