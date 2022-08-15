@@ -244,7 +244,7 @@ const OpenViduSession = ({
     <OpenViduSessionBlock>    
       <ReactAudioPlayer
         urlSound={gameBgmSound}
-        isLoop={true}
+        isLoop={false}
         isPlaying={true}
       ></ReactAudioPlayer>  
       <TestContainer>

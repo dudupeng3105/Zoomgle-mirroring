@@ -46,12 +46,13 @@ const MinigameInfo = styled.div`
 const AgreeDisagreeBtnContainer = styled.div`
   width: 30vw;
   height: 10vh;
-  display: felx;
+  display: flex;
+  /* z-index: 20; */
 `;
 
 const MinigameBtn = styled.div`
   cursor: pointer;
-  /* z-index: 10; */
+  z-index: 10;
   width: 15vw;
   height: 10vh;
   background-color: #2efb00;
@@ -62,7 +63,7 @@ const MinigameBtn = styled.div`
 
 const MinigameBtnRight = styled.div`
   cursor: pointer;
-  /* z-index: 10; */
+  z-index: 10;
   width: 15vw;
   height: 10vh;
   text-align: center;
