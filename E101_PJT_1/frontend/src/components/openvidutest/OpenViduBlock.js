@@ -220,7 +220,8 @@ const OpenViduBlock = ({
       setNextPlayer(nextUserName);
       setTurnNum(nextTurn);
       setPosList(nextPosList); // 성공 실패에 따라 자리 재조정
-      setVote([]); // Vote 초기화
+      vote.length = 0;
+      setVote(vote); // Vote 초기화
       setIsRoll(nextIsRoll); // isRoll이 다시 false 됐다는 것은 미니게임이 끝
       // 났다는 것임
     });
@@ -229,7 +230,10 @@ const OpenViduBlock = ({
     mySession.on('VOTE_STATE_CHANGED', (data) => {
       console.warn('투표상황 업데이트..');
       const { nextVote } = JSON.parse(data.data);
-      setVote([...nextVote]);
+      vote.push(nextVote); // 투표 업데이트
+      setTimeout(() => { // 동기화를 위해 1000ms 기다림
+        setVote([...vote])
+      }, 1000);
     });
 
     // 보드게임 종료 알림
