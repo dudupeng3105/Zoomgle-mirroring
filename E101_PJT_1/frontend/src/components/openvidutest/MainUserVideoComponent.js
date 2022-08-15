@@ -27,11 +27,11 @@ const StreamComponent = styled.div`
 `;
 
 const MinigameInfo = styled.div`
-  position: absolute;
+  position: absolute;  
+  z-index: 10;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  z-index: 7;
+  align-items: center;  
   background-color: transparent;
   top: 21vh;
   width: 32vw;
@@ -43,16 +43,21 @@ const MinigameInfo = styled.div`
     margin: 0;
   }
 `;
-const AgreeDisagreeBtnContainer = styled.div`
+const AgreeDisagreeBtnContainer = styled.div`  
+  position: absolute;
+  z-index: 15;
+  top: 45vh;
+  left: 12vw;  
   width: 30vw;
-  height: 10vh;
+  height: 8vh;
   display: flex;
+  justify-content: center;
+  border: 1px solid blue;
   /* z-index: 20; */
 `;
 
 const MinigameBtn = styled.div`
-  cursor: pointer;
-  z-index: 10;
+  cursor: pointer;  
   width: 15vw;
   height: 10vh;
   background-color: #2efb00;
@@ -62,8 +67,7 @@ const MinigameBtn = styled.div`
 `;
 
 const MinigameBtnRight = styled.div`
-  cursor: pointer;
-  z-index: 10;
+  cursor: pointer;  
   width: 15vw;
   height: 10vh;
   text-align: center;
@@ -137,7 +141,7 @@ const MainBorderStone = styled.div`
   width: 55vw;
   height: 60vh;
   position: absolute;
-  z-index: 5;
+  z-index: 10;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -151,7 +155,7 @@ const MvpRibbon = styled.div`
   position: absolute;
   top: 4vh;
   left: -4vw;
-  z-index: 5;
+  z-index: 10;
   background: url(${mvpRibbon});
   background-size: 60vw 70vh;
 `;
@@ -159,11 +163,12 @@ const MvpRibbon = styled.div`
 const CaptureAreaBox = styled.div`
   width: 43vw;
   top: 2vh;
-  height: 44vh; /* border: 1px solid red; */
-  z-index: 3;
+  height: 44vh; /* border: 1px solid red; */  
   display: flex;
   justify-content: center;
-  /* border: 1px solid red; */
+  display: relative;
+  z-index: 5;
+  /* border: 1px solid red; */ 
 
   &.mainStreamer {
     margin-top: 15vh;
@@ -184,8 +189,8 @@ const CaptureAreaBox = styled.div`
   }
 
   &.mvpStreamer video {
-    width: 45vmin;
-    height: 40vmin;
+    width: 20vw;
+    height: 40vh;
     z-index: 2;
     cursor: initial;
     object-fit: fill;
@@ -316,7 +321,7 @@ const MainUserVideoComponent = ({
       } else if (!timeOver) {
         setTimeOver(true); // 미션 끝
         setVoteResult(undefined);
-        return 7; // 투표 타임
+        return 20; // 투표 타임
       } else if (!voteOver) {
         setVoteOver(true);
         setVoteSkip(false);
@@ -446,7 +451,18 @@ const MainUserVideoComponent = ({
     <>
       {streamManager !== undefined ? (
         <>
-          <StreamComponent>
+          <StreamComponent>            
+            {timeOver & !voteOver & !isVote & (myTurnNum !== turnNum) ? (
+              <AgreeDisagreeBtnContainer>
+                <MinigameBtn onClick={() => voteHandler(1)}>go</MinigameBtn>
+                <MinigameBtn onClick={() => voteHandler(0)}>stay</MinigameBtn>
+                <MinigameBtnRight onClick={() => voteHandler(-1)}>
+                  back
+                </MinigameBtnRight>
+              </AgreeDisagreeBtnContainer>
+            ) : (
+              ''
+            )}
             {isMvpPhase ? <MvpRibbon /> : <MainBorderStone></MainBorderStone>}
             <CaptureAreaBox className={mainStreamer} ref={mainScreen}>
               {isRoll ? (
@@ -477,7 +493,7 @@ const MainUserVideoComponent = ({
                       ) : (
                         ''
                       )}
-                      {!isVote & (myTurnNum !== turnNum) ? (
+                      {/* {!isVote & (myTurnNum !== turnNum) ? (
                         <AgreeDisagreeBtnContainer>
                           <MinigameBtn onClick={() => voteHandler(1)}>
                             go
@@ -491,7 +507,7 @@ const MainUserVideoComponent = ({
                         </AgreeDisagreeBtnContainer>
                       ) : (
                         ''
-                      )}
+                      )} */}
                     </>
                   ) : (
                     ''
