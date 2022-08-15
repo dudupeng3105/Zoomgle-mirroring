@@ -17,8 +17,8 @@ import title from '../../media/images/title.png';
 import SquareLeather from '../../media/images/leather_square.png';
 import arrowRight from "../../media/images/arrowRight.png";
 import arrowLeft from "../../media/images/arrowLeft.png";
-import friendModalBack from "../../media/images/friendModal2.jpg";
-import closeButton from "../../media/images/closeLeatherButton.png";
+import friendModalBack from "../../media/images/friendModal.jpg";
+import closeButton from "../../media/images/closeLeatherButton1.png";
 import friendModalTitle from "../../media/images/friendModalTitle.png";
 import friendInviteButton from "../../media/images/friendInviteButton.png";
 
@@ -143,24 +143,56 @@ const FriendListModal = styled.div`
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  overflow: scroll;
+  align-items:center;
+  overflow-y: scroll;
+  overflow-x: hidden;
   padding: 2rem;
   left: 45vw;
   top: 5vh;
-  width: 40vw;
+  width: 35vw;
   height: 90vh;
   border: 1px solid black;
   background: url(${friendModalBack}) center no-repeat;
-  background-size: 40vw 90vh;
+  background-size: 35vw 90vh;
   z-index: 1;
 `;
 
-const InviteFriendButton = styled.button`
+export const InviteFriendButton = styled.button`
+position: absolute;
   background: url(${friendInviteButton}) center no-repeat;
-  background-size: 4vw 9vh;
+  background-size: 3.5vw 7vh;
+  width: 3.5vw;
+  height: 7vh;
+  cursor: pointer;
   border: none;
-  
-    
+  /* border: solid green 3px; */
+  /* padding-left: 3vw; */
+  margin-left: 24.8vw;
+  margin-top: 3.5vh;
+`
+
+export const CloseModalbutton = styled.button`
+  background: url(${closeButton}) center no-repeat;
+  background-size: 3vw 6vh;
+  border:none;
+  width: 3vw;
+  height: 6vh;
+  margin-left: 30vw;
+  margin-top: 0;
+  cursor: pointer;
+`
+export const ModalTitle = styled.div`
+background: url(${friendModalTitle}) center no-repeat;
+background-size: 20vw 15vh;
+width: 20vw;
+height: 15vh;
+font-size: 7vmin;
+padding-left: 6vw;
+padding-top: 3.5vh;
+/* margin-left: 7.5vw; */
+color: white;
+margin-top: 0;
+
 `
 
 // const GameNumCounter = ({count, setCount, myGamePlanList}) => {
@@ -301,8 +333,11 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
         {/* 모달 */}
         {modalToggle && (
           <FriendListModal>
-            <p>{myGamePlanList[count].roomCode}</p>
-            <button onClick={onClickModalCloser}>닫기</button>
+            {/* roomcode */}
+            {/* <p>{myGamePlanList[count].roomCode}</p> */}
+            {/* 모달 닫기 버튼 */}
+            <CloseModalbutton onClick={onClickModalCloser}></CloseModalbutton>
+            <ModalTitle>동료 명단</ModalTitle>
             {myFriendsList.map((friend, idx) => (
               <FriendCard key={`friend-${idx}`}>
                 <StyledCard>
@@ -314,7 +349,7 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
                   </ImageContainer>
                   <NameNicknameEl>
                     <div>이름: {friend.name}</div>
-                    <div>닉네임(seq): {friend.nickname}</div>
+                    <div>닉네임: {friend.nickname}</div>
                   </NameNicknameEl>
                 </StyledCard>
                 <InviteFriendButton onClick={() =>
