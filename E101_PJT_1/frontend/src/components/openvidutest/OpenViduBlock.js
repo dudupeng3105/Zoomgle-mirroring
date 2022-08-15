@@ -6,7 +6,7 @@ import OpenViduSession from './OpenViduSession';
 import styled from 'styled-components';
 import gameboard from '../../media/images/gameboard.png';
 import loadingImage from '../../media/images/loadingImage.gif';
-import waitingRoomBackGround from '../../media/images/waitingRoom.jpg';
+import waitingRoomBackImg from '../../media/images/waitingRoomBackImg.jpg';
 import WaitingRoom from './WaitingRoom';
 import MvpPhaseComponent from './MvpPhaseComponent';
 import { useSelector } from 'react-redux';
@@ -18,7 +18,7 @@ const OpenViduContainer = styled.div`
   background-size: 100vw 100vh;
 
   &.waitingRoom {
-    background: url(${waitingRoomBackGround});
+    background: url(${waitingRoomBackImg});
     background-size: 100vw 100vh;
   }
 `;
