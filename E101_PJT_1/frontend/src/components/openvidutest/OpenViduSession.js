@@ -3,6 +3,8 @@ import styled from "styled-components";
 import UserVideoComponent from './UserVideoComponent';
 import MainUserVideoComponent from './MainUserVideoComponent'; // 미니게임 중앙화면용
 import DiceRoller from '../../components/utils/DiceRoller'
+import ReactAudioPlayer from '../utils/reactAudioPlayer';
+import gameBgmSound from '../../media/sounds/09_gameBgm.wav'
 import { useState } from 'react';
 
 const OpenViduSessionBlock = styled.div`
@@ -43,13 +45,13 @@ const MainVideo = styled.div`
   color: white;
   font-size: 2rem;
   position: absolute;
-  top: 20vh;
-  left: 30vw;
-  width: 40vw;
-  height: 40vh;
+  top: 10vh;
+  left: 26vw;
+  width: 55vw;
+  height: 55vh;
   & video {
     cursor: initial;
-  }
+  }  
 `;
 
 const SwitchCameraBtn = styled.div`  
@@ -81,11 +83,15 @@ const PlayerList = styled.div`
 `
 
 const UserVideoComponentContainer = styled.div`
-  width: 10vmin;
-  height: 10vmin;
-  border: 3px solid white;
+  width: 11vmin;
+  height: 11vmin;  
   cursor: pointer;
   position: absolute;
+  border: 3px solid white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   &.pos0 {
     top: 80vh;
     left: 8.5vw;
@@ -235,8 +241,12 @@ const OpenViduSession = ({
   }, [nextPlayer])
   
   return (
-    <OpenViduSessionBlock>
-      <h1>{myUserNameValue}</h1>
+    <OpenViduSessionBlock>    
+      <ReactAudioPlayer
+        urlSound={gameBgmSound}
+        isLoop={true}
+        isPlaying={true}
+      ></ReactAudioPlayer>  
       <TestContainer>
         <PlayerList>
           <p>내 턴번호: {myTurnNum}</p>
@@ -259,14 +269,14 @@ const OpenViduSession = ({
       </TestContainer>
       <OpenViduSessionHeader>
         <p>{mySessionIdValue}번 방</p>
-        <OpenViduSessionLeaveBtn
+        {/* <OpenViduSessionLeaveBtn
           onClick={() => {
             leaveSession();
           }}
           value="Leave session"
         >
           Leave session
-        </OpenViduSessionLeaveBtn>
+        </OpenViduSessionLeaveBtn> */}
       </OpenViduSessionHeader>
       {/*!! 지금 턴인 사람 표시 !!*/}
       {mainStreamManager !== undefined ? (
@@ -293,13 +303,13 @@ const OpenViduSession = ({
         </MainVideo>
       ) : null}
 
-      <SwitchCameraBtn
+      {/* <SwitchCameraBtn
         onClick={() => {
           switchCamera();
         }}
       >
         Switch Camera
-      </SwitchCameraBtn>
+      </SwitchCameraBtn> */}
       {/* 비디오 컨테이너 */}
       {/* <VideoContainer> */}
       {publisher !== undefined ? (

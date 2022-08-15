@@ -45,8 +45,8 @@ const MainVideo = styled.div`
   color: white;
   font-size: 2rem;
   position: absolute;
-  top: 20vh;
-  left: 30vw;
+  top: 10vh;
+  left: 24vw;
   width: 40vw;
   height: 40vh;
   & video {
@@ -57,12 +57,12 @@ const MainVideo = styled.div`
 const MvpSpeechSkipBtn = styled.div`
   cursor: pointer;
   position: absolute;
-  left: 47vw;
-  top: 15vh;
+  left: 43vw;
+  top: 80vh;
   display: flex;
   justify-content: center;
-  width: 10vw;
-  height: 5vh;
+  width: 15vw;
+  height: 10vh;
   align-items: center;
   background-color: #4E5180;
   color: white;
@@ -400,7 +400,7 @@ const MvpPhaseComponent = ({
               isGameDone={isGameDone}
               isRoll={isRoll}
               streamManager={mainStreamManager}
-              mainStreamer={'mainStreamer'}
+              mainStreamer={'mvpStreamer'}
               myTurnNum={myTurnNum}
               playerNum={playerNum}
               players={players}
@@ -413,6 +413,7 @@ const MvpPhaseComponent = ({
               setVote={setVote}
               posList={posList}
               minigameType={minigameType}
+              isMvpPhase={true}
             />
           </MainVideo>
         )
