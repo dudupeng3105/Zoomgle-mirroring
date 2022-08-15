@@ -2,6 +2,7 @@ import React from "react";
 import OpenViduVideoComponent from "./OvVideo";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+import nameStone from '../../media/images/nameStone.png'
 
 const StreamComponent = styled.div`
   width: 100%;
@@ -12,8 +13,8 @@ const StreamComponent = styled.div`
   align-items: center;
   
   & video {
-    width:10vmin;
-    height:10vmin;
+    width:10.5vmin;
+    height:10.5vmin;
     /* padding-top: 25vmin;     */
     /* float: left; */
     object-fit: cover;
@@ -35,6 +36,7 @@ const StreamComponent = styled.div`
   &.waiting video{
     width: 25vw;
     height: 25vh;
+    /* margin-bottom: 4vh; */
     border-radius: 5%;  
   }
 
@@ -46,16 +48,26 @@ const StreamComponent = styled.div`
 `
 
 const NickNameBox = styled.div`
+  position: absolute;  
+  bottom: -2vh;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 5vw;
-  height: 3vh;
-  background-color: navy;
-  border-radius: 25%;
+  height: 5vh;
+  background: url(${nameStone});
+  background-size: 5vw 5vh;    
   font-size: 1.8vmin;
-  color: white;
-  border: 2px solid navy;
+  color: yellow;  
+  &.waiting {
+    background: url(${nameStone});
+    background-size: 10vw 4vh;
+    bottom: 0;
+    font-size: 4vmin;
+    width: 10vw;
+    height: 4vh;
+    border-radius: 5px;
+  }
 `
 
 const UserVideoComponent = ({ streamManager, mainStreamer, status }) => {
@@ -80,7 +92,7 @@ const UserVideoComponent = ({ streamManager, mainStreamer, status }) => {
       {streamManager !== undefined ? (
         <StreamComponent className={status}>
           <OpenViduVideoComponent streamManager={streamManager}/>
-          <NickNameBox>{userNickname}</NickNameBox>          
+          <NickNameBox className={status}>{userNickname}</NickNameBox>          
         </StreamComponent>
       ) : null}
     </div>

@@ -1,8 +1,12 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import UserVideoComponent from './UserVideoComponent';
-import MainUserVideoComponent from './MainUserVideoComponent'; // 미니게임 중앙화면용
-import DiceRoller from '../../components/utils/DiceRoller';
+import ReactAudioPlayer from '../utils/reactAudioPlayer';
+import waitingRoomSound from '../../media/sounds/06_waitingRoom.wav'
+import waitingRoomManual1 from '../../media/images/waitingRoomManual1.png'
+import waitingRoomManual2 from '../../media/images/waitingRoomManual2.png'
+import waitingRoomManual3 from '../../media/images/waitingRoomManual3.png'
+import useInterval from '../utils/useIntervals';
 import { useState } from 'react';
 
 const WaitingRoomBlock = styled.div`
@@ -29,45 +33,87 @@ const OpenViduSessionHeader = styled.div`
 
 const WaitingUserVideoContainer = styled.div`
   width: 25vw;
-  height: 25vh;
+  height: 25vh;  
   cursor: pointer;
   position: absolute;
   &.pos0 {
     top: 15vh;
-    left: 0vw;
+    left: 2vw;
   }
 
   &.pos1 {
-    top: 40vh;
-    left: 0vw;
+    top: 45vh;
+    left: 2vw;
   }
 
   &.pos2 {
-    top: 65vh;
-    left: 0vw;
+    top: 70vh;
+    left: 2vw;
   }
 
   &.pos3 {
     top: 15vh;
-    right: 0vw;
+    right: 2vw;
   }
 
   &.pos4 {
-    top: 40vh;
-    right: 0vw;
+    top: 45vh;
+    right: 2vw;
   }
 
   &.pos5 {
-    top: 65vh;
-    right: 0vw;
+    top: 70vh;
+    right: 2vw;
   }
 `;
 
 const ManualBox = styled.div`
   width: 45vw;
-  height: 45vh;
-  margin-top: 20vh;
-  border: 3px solid white;
+  height: 50vh;
+  margin-top: 15vh;
+  margin-right: 5vw;
+  /* border: 3px solid white;   */
+  /* background: url(${waitingRoomManual1});
+  background-size: 45vw 50vh; */
+  opacity: 0;
+  @keyframes fadeOut {
+    10% {
+      opacity: 0;
+      transform: translateX(0vw);
+    }
+    30% {
+      opacity: 1;      
+      transform: translateX(5vw);
+    }  
+    70% {
+      opacity: 1;      
+      transform: translateX(5vw);
+    }  
+    90% {
+      opacity: 0;
+      transform: translateX(10vw);
+    }
+    100% {
+      opacity: 0;
+      transform: translateX(0vw);
+    }
+  }
+  animation: fadeOut;
+  animation-duration: 10.4s;  
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  &.manual-1 {
+    background: url(${waitingRoomManual1});
+    background-size: 45vw 50vh;    
+  }
+  &.manual-2 {
+    background: url(${waitingRoomManual2});
+    background-size: 45vw 50vh;
+  }
+  &.manual-3 {
+    background: url(${waitingRoomManual3});
+    background-size: 45vw 50vh;
+  }
 `;
 
 const GameStartBtn = styled.div`
@@ -119,6 +165,11 @@ const WaitingRoom = ({
   // console.warn("퍼블리셔는?",publisher);
   const playerNum = players.length; // 몇 명에서 하는지
   const myTurnNum = players.indexOf(myUserNameValue);
+  const [manualNum, setManualNum] = useState(0);
+
+  useInterval(() => {
+    setManualNum((manualNum+1)%3 + 1);
+  }, 10000);
 
   // 게임 시작
   const onClickStartGame = () => {    
@@ -158,10 +209,15 @@ const WaitingRoom = ({
 
   return (
     <WaitingRoomBlock>
+      <ReactAudioPlayer
+        urlSound={waitingRoomSound}
+        isLoop={true}
+        isPlaying={true}
+      ></ReactAudioPlayer>
       <OpenViduSessionHeader>
         {mySessionIdValue}번 방
       </OpenViduSessionHeader>
-      <ManualBox></ManualBox>
+      <ManualBox className={`manual-${manualNum}`}></ManualBox>
       {sessionHost === myUserNameValue ? (
         (playerNum === sessionCapacity) ? (
           <GameStartBtn onClick={() => onClickStartGame()}>

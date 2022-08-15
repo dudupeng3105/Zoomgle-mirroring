@@ -6,15 +6,17 @@ import { minigameList } from './minigameList';
 import html2canvas from 'html2canvas';
 import { useDispatch } from 'react-redux';
 import { gameRoomActions } from '../../store/gameRoom-slice';
-
+import cameraBtn from '../../media/images/cameraBtn.PNG'
+import mainStreamerBorderStone from '../../media/images/mainStreamerBorderStone.png'
+import mvpRibbon from '../../media/images/mvpRibbon.png'
 
 const StreamComponent = styled.div`
-  width: 100%;
-  height: 100%;
+  width: 55vw;
+  height: 55vh;
   display: flex;
   flex-direction: column;
   color: white;
-  align-items: center;
+  align-items: center;  
 
   & p {
     margin: 0;
@@ -23,25 +25,27 @@ const StreamComponent = styled.div`
     color: white;
   }
 
-  & video {
-    width: 10vmin;
-    height: 10vmin;
-    /* padding-top: 25vmin;     */
-    /* float: left; */
-    object-fit: cover;
-    cursor: pointer;
-    border-radius: 50%;
-  }
-
-  &.mainStreamer video {
-    width: 40vw;
-    height: 50vh;
-    /* padding-top: 25vmin;     */
-    /* float: left; */
+  &.mainStreamer video {    
+    width: 37vw;
+    height: 41vh;
+    margin-top: 15vh;        
     cursor: initial;
     object-fit: fill;    
     border-radius: 5%;
-    border: 2px yellow solid;
+    /* border: 2px yellow solid;             */
+  }
+
+  &.mvpStreamer video {    
+    position: absolute;
+    top: -2vh;
+    left: 14.8vw;
+    width: 46.5vmin;
+    height: 40vmin;
+    margin-top: 10vh;        
+    cursor: initial;
+    object-fit: fill;    
+    border-radius: 50%;
+    /* border: 2px yellow solid;             */
   }
 `;
 
@@ -50,10 +54,10 @@ const MinigameInfo = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  z-index: 2;
+  z-index: 7;
   background-color: transparent;
-  top: 0;
-  width: 40vw;
+  top: 21vh;
+  width: 32vw;
   height: 20vh;
   color: #4adede;
   font-size: 2rem;
@@ -105,36 +109,70 @@ const CaptureBtn = styled.div`
   justify-content: center;
   align-items: center;
   right: 2vw;
-  top: 2vh;
-  width: 10vw;
-  height: 10vh;
-  background-color: #4E5180;
-  border-radius: 5px;
-  border: 2px solid white;
+  top: 1vh;
+  width: 8vw;
+  height: 15vh;
+  background: url(${cameraBtn});
+  background-size: 8vw 15vh;
+  /* background-color: #4E5180; */
   cursor: pointer;
   font-size: 4vmin;
   text-align: center;
   &:hover {
-    background-color: white;
-    border: 2px solid #4E5180;
-    color: #4E5180;
+    transform: rotate(-10deg);
   }
 `;
 
 const TurnInfoBox = styled.div`
   position: absolute;
+  top: 60vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 40vw;
-  color: navy;
-  font-size: 2.3rem;
+  width: 56vw;
+  color: white;
+  font-size: 3rem;  
+`
+
+const MvpInfoBox = styled.div`
+  position: absolute;
+  top: 54.5vh;
+  width: 56vw;
+  left: -1.3vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  font-size: 3rem;
+  z-index: 5;
   &.bright {
-    border: 5px solid white;
+    color: blue;
+    /* border: 5px solid white; */
   }
   &.dark {
-    border: 5px solid yellow;
+    color: yellow;
+    /* border: 5px solid yellow; */
   }
+`
+
+const MainBorderStone = styled.div`
+  width: 55vw;
+  height: 60vh;
+  position: absolute;
+  z-index: 5;
+  background: url(${mainStreamerBorderStone});
+  background-size: 55vw 60vh;
+`
+
+const MvpRibbon = styled.div`
+  width: 60vw;
+  height: 70vh;
+  position: absolute;
+  top: 4vh;
+  left: -4vw;
+  z-index: 5;
+  background: url(${mvpRibbon});
+  background-size: 60vw 70vh;
 `
 
 const MainUserVideoComponent = ({
@@ -153,6 +191,7 @@ const MainUserVideoComponent = ({
   vote,
   posList,
   minigameType,
+  isMvpPhase,
 }) => {
   const [timeLeft, setTimeLeft] = useState(undefined);
   const [explanationOver, setExplanationOver] = useState(false);
@@ -379,8 +418,9 @@ const MainUserVideoComponent = ({
   return (
     <div>
       {streamManager !== undefined ? (
-        <>
+        <>          
           <StreamComponent className={mainStreamer} ref={mainScreen}>
+            {isMvpPhase ? <MvpRibbon /> : <MainBorderStone></MainBorderStone>}
             {isRoll ? (
               <MinigameInfo>
                 <p>남은 시간 : {timeLeft}</p>
@@ -448,10 +488,13 @@ const MainUserVideoComponent = ({
               ''
             )}
             <OpenViduVideoComponent streamManager={streamManager} />
-            
           </StreamComponent>
-          {isGameDone ? <TurnInfoBox className={mvpEffect}>MVP: {nextPlayer}!!</TurnInfoBox> : <TurnInfoBox>{nextPlayer}씨 당신차례입니다.</TurnInfoBox>}
-          <CaptureBtn onClick={() => onCapture()}>사진찍기테스트</CaptureBtn>
+          {isGameDone ? (
+            <MvpInfoBox className={mvpEffect}>{nextPlayer}!!</MvpInfoBox>
+          ) : (
+            <TurnInfoBox>{nextPlayer}씨 당신차례입니다.</TurnInfoBox>
+          )}
+          <CaptureBtn onClick={() => onCapture()}></CaptureBtn>
         </>
       ) : null}
     </div>

@@ -133,13 +133,7 @@ const CustomDatePicker = ({startDate, onDateChangeHandler}) => {
         timeIntervals={15}
         minDate={new Date()}
         maxDate={addMonths(new Date(), 1)}
-        filterTime={filterPassedTime}        
-        // includeTimes={[
-        //   setHours(setMinutes(new Date(), 0), 17),
-        //   setHours(setMinutes(new Date(), 30), 18),
-        //   setHours(setMinutes(new Date(), 30), 19),
-        //   setHours(setMinutes(new Date(), 30), 17),
-        // ]}
+        filterTime={filterPassedTime}
         dateFormat="yyyy/MM/dd   h:mm aa"
       ></DatePicker>
     </Wrapper>
