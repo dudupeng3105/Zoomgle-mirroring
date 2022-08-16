@@ -589,8 +589,8 @@ const MainUserVideoComponent = ({
                           {voteResult === 1
                             ? 'go'
                             : voteResult === -1
-                            ? 'back'
-                            : 'stay'}
+                              ? 'back'
+                              : 'stay'}
                         </p>
                         {vote.map((thisVote, idx) => (
                           <p key={`vote${idx}`}>
@@ -598,8 +598,8 @@ const MainUserVideoComponent = ({
                             {thisVote[1] === 1
                               ? 'go'
                               : thisVote[1] === -1
-                              ? 'back'
-                              : 'stay'}
+                                ? 'back'
+                                : 'stay'}
                           </p>
                         ))}
                       </VoteResultBoard>
