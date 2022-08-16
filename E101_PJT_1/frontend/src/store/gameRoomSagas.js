@@ -20,7 +20,7 @@ import {
 } from './api';
 
 function* takePictureStartAsync({ payload }) {
-  const { takePictureSuccess, getError } = gameRoomActions;  
+  const { takePictureSuccess, getRoomError } = gameRoomActions;  
   const { picData, roomSeq } = payload;  
   try {
     const response = yield call(takePictureApi, picData, roomSeq);
@@ -29,12 +29,12 @@ function* takePictureStartAsync({ payload }) {
       yield put(takePictureSuccess(response.data));
     }
   } catch (error) {
-    yield put(getError(error.response.data));
+    yield put(getRoomError(error.response.data));
   }
 }
 
 function* getPictureListStartAsync({ payload }) {
-  const { getPictureSuccess, getError } = gameRoomActions;  
+  const { getPictureSuccess, getRoomError } = gameRoomActions;  
   const roomSeq = payload;  
   console.log(roomSeq);
   try {
@@ -44,12 +44,12 @@ function* getPictureListStartAsync({ payload }) {
       yield put(getPictureSuccess(response.data));
     }
   } catch (error) {
-    yield put(getError(error.response.data));
+    yield put(getRoomError(error.response.data));    
   }
 }
 
 function* postSelectedPicture({ payload }) {
-  const { postSelectedPicSuccess, getError } = gameRoomActions;  
+  const { postSelectedPicSuccess, getRoomError } = gameRoomActions;  
   const selectedPicInfo = payload.selectedPicInfo;
   const mvpName = payload.mvpName;
   console.log("selectedinfo", selectedPicInfo);
@@ -68,7 +68,7 @@ function* postSelectedPicture({ payload }) {
       yield put(postSelectedPicSuccess(response.data));
     }
   } catch (error) {
-    yield put(getError(error.response.data));
+    yield put(getRoomError(error.response.data));
   }
 }
 
