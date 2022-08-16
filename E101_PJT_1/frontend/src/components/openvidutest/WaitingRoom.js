@@ -163,7 +163,7 @@ const WaitingRoom = ({
   // console.warn("퍼블리셔는?",publisher);
   const playerNum = players.length; // 몇 명에서 하는지
   const myTurnNum = players.indexOf(myUserNameValue);
-  const [manualNum, setManualNum] = useState(0);
+  const [manualNum, setManualNum] = useState(1);
 
   useInterval(() => {
     setManualNum((manualNum+1)%3 + 1);

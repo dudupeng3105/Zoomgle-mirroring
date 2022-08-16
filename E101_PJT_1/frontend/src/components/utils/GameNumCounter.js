@@ -71,7 +71,6 @@ const PlannedGameInfoBox = styled.div`
   background-size: 75vw 60vh; */
   margin-top: 40vh;
   border-radius: 5px;
-
   color: black;
 `;
 
@@ -138,21 +137,22 @@ const ButtonContainerItem = styled.div`
   }
 `;
 
-const FriendModalBack = styled.div`
+export const FriendModalBack = styled.div`
   position: absolute;
   top: 4vh;
   left: 40vw;
   z-index: 1;
   display: flex;
-  align-items: end;
+  align-items: flex-start;
+  padding-top: 15vh;
   border-radius: 10px;
   width: 35vw;
-  height: 90vh;
+  height: 78vh;
   background: url(${friendModalBack}) center no-repeat;
-  background-size: 35vw 90vh;
+  background-size: 35vw 78vh;
 `;
 
-const FriendListModal = styled.div`
+export const FriendListModal = styled.div`
   /* position: absolute;
   border-radius: 10px; */
   display: flex;
@@ -164,8 +164,8 @@ const FriendListModal = styled.div`
   left: 45vw;
   top: 5vh;
   width: 35vw;
-  height: 70vh;
-  border: 1px solid black;
+  height: 58vh;
+  /* border: 1px solid black; */
 `;
 
 export const InviteFriendButton = styled.button`  
@@ -208,7 +208,7 @@ export const CloseModalbutton = styled.button`
   }
 `;
 
-const FriendCardContainer = styled.div`
+export const FriendCardContainer = styled.div`
   width: 31vw;
   height: 18vh;
   display: flex;
