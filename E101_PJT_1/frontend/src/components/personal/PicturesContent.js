@@ -53,6 +53,16 @@ const GameDoneBoard = styled.div`
   flex-wrap: wrap;
 `
 
+const BlankText = styled.div`
+  margin-top: 20vh;
+  width: 73vw;
+  height: 50vh;
+  font-size: 10vmin;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
 const GameDoneImg = styled.div`
   width: 23vw;  
   height: 25vh;
@@ -122,12 +132,15 @@ const PicturesContent = () => {
     }
   }
 
-  return (
-    gameDoneList.length ? (<PicturesContentBlock>
+  return gameDoneList.length ? (
+    <PicturesContentBlock>
       <GameDayInfo>
         <ArrowBtn onClick={() => onClickLeft()} backImg={arrowLeft}></ArrowBtn>
         <p>{`${gameDoneList[planIdx].month}월 ${gameDoneList[planIdx].day}일 게임`}</p>
-        <ArrowBtn onClick={() => onClickRight()} backImg={arrowRight}></ArrowBtn>
+        <ArrowBtn
+          onClick={() => onClickRight()}
+          backImg={arrowRight}
+        ></ArrowBtn>
       </GameDayInfo>
       <GamePlayerInfo>
         <p>MVP: {gameDoneList[planIdx].mvp}</p>
@@ -135,10 +148,17 @@ const PicturesContent = () => {
       </GamePlayerInfo>
       <GameDoneBoard>
         {gameDonePhoto.map((photo, idx) => (
-          <GameDoneImg key={`photo-${idx}`} backImg={photo.photo_Url}></GameDoneImg>
+          <GameDoneImg
+            key={`photo-${idx}`}
+            backImg={photo.photo_Url}
+          ></GameDoneImg>
         ))}
       </GameDoneBoard>
-    </PicturesContentBlock>) : ''
+    </PicturesContentBlock>
+  ) : (
+    <PicturesContentBlock>
+      <BlankText>모험을 진행하고 일지를 작성하시오.</BlankText>
+    </PicturesContentBlock>
   );
 };
 
