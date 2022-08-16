@@ -22,7 +22,7 @@ const AuthFormBlock = styled.div`
     align-items: center;
   }
   // 로그인
-  &.jc-2 {
+  &.jc-8 {
     justify-content: center;
   }
 

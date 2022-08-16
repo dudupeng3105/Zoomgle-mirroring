@@ -41,32 +41,32 @@ const WaitingUserVideoContainer = styled.div`
   cursor: pointer;
   position: absolute;
   &.pos0 {
-    top: 15vh;
+    top: 10vh;
     left: 2vw;
   }
 
   &.pos1 {
-    top: 45vh;
+    top: 40vh;
     left: 2vw;
   }
 
   &.pos2 {
-    top: 75vh;
+    top: 70vh;
     left: 2vw;
   }
 
   &.pos3 {
-    top: 15vh;
+    top: 10vh;
     right: 2vw;
   }
 
   &.pos4 {
-    top: 45vh;
+    top: 40vh;
     right: 2vw;
   }
 
   &.pos5 {
-    top: 75vh;
+    top: 70vh;
     right: 2vw;
   }
 `;
