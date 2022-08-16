@@ -117,6 +117,7 @@ const ManualBox = styled.div`
 `;
 
 const GameStartBtn = styled.div`
+  cursor: pointer;
   width: 20vw;
   height: 12vh;
   margin-top: 5vh;
@@ -219,13 +220,13 @@ const WaitingRoom = ({
       </OpenViduSessionHeader>
       <ManualBox className={`manual-${manualNum}`}></ManualBox>
       {sessionHost === myUserNameValue ? (
-        (playerNum === sessionCapacity) ? (
+        (playerNum === Number(sessionCapacity)) ? (
           <GameStartBtn onClick={() => onClickStartGame()}>
             게임시작
           </GameStartBtn>
         ) : (
           <GameStartBtn className='waitingBtn' onClick={() => onClickStartGame()}>
-            대기중 ({playerNum}명/{sessionCapacity})
+            대기중 ({playerNum==0 ? 1 : playerNum}/{sessionCapacity}명)
           </GameStartBtn>
         )
       ) : (

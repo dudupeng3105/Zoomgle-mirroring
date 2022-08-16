@@ -495,7 +495,13 @@ const OpenViduBlock = ({
       {/* 그 입장하기 전에 화면 띄워줌 사실 필요없어서
         그냥 자동입장으로 일단 바꿈 */}
       {session === undefined ? <LoadingBlock></LoadingBlock> : null}
-
+      {/* <button
+        onClick={() => {
+          switchCamera();
+        }}
+      >
+        Switch Camera
+      </button> */}
       {/* 입장했으면.. */}
       {session !== undefined ? (
         isGameDone ? (

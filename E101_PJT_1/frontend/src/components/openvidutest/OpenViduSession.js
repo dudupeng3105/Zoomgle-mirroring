@@ -241,10 +241,10 @@ const OpenViduSession = ({
   }, [nextPlayer])
   
   return (
-    <OpenViduSessionBlock>    
+    <OpenViduSessionBlock>
       <ReactAudioPlayer
         urlSound={gameBgmSound}
-        isLoop={true}
+        isLoop={false}
         isPlaying={false}
       ></ReactAudioPlayer>  
       <TestContainer>
@@ -301,15 +301,7 @@ const OpenViduSession = ({
             minigameType={minigameType}          
           />
         </MainVideo>
-      ) : null}
-
-      {/* <SwitchCameraBtn
-        onClick={() => {
-          switchCamera();
-        }}
-      >
-        Switch Camera
-      </SwitchCameraBtn> */}
+      ) : null}      
       {/* 비디오 컨테이너 */}
       {/* <VideoContainer> */}
       {publisher !== undefined ? (
