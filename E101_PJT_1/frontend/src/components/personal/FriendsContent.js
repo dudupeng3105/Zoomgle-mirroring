@@ -14,9 +14,8 @@ import papyrus from '../../media/images/Papyrus.png';
 import Xmark from '../../media/images/X-mark.png';
 import friendbackground from '../../media/images/friend_content1.png';
 import friendsearch from '../../media/images/transparent_search.png';
-import scrollBlack from '../../media/images/scroll_black.png';
-import scrollWhite from '../../media/images/friend_content1.png';
 import modalfriendsearch from '../../media/images/transparent_search.png';
+import CheckCloseModal from '../utils/CheckCloseModal';
 
 const FriendsContentBlock = styled.div`
   background: url(${background}) no-repeat center;
@@ -318,6 +317,9 @@ const FriendsContent = () => {
   const userNickname = useSelector((state) => state.auth.user.nickname);
   const friendsArr = useSelector((state) => state.friend.friendList);
   const addResult = useSelector((state) => state.friend.addResult);
+  // 삭제 확인 관련
+  const [deleteCheckModal, setDeleteCheckModal] = useState(false);
+  const [deleteFriendName, setDeleteFriendName] = useState('');
 
   // 첫렌더링할때랑, addResult 바뀔때마다(친구추가할대마다)
   useEffect(() => {
@@ -368,17 +370,24 @@ const FriendsContent = () => {
     console.log('성공여부', addResult);
   };
 
-  const onClickFriendDelete = (friendNickname) => {
+  const onClickFriendDelete = () => {
     const friendDeleteInfo = {
       myNickname: userNickname,
-      friendNickname: friendNickname,
+      friendNickname: deleteFriendName,
       userId: userId,
     };
     dispatch(friendActions.DeleteFriendStart(friendDeleteInfo));
+    setDeleteCheckModal(false);
   };
 
   return (
     <FriendsContentBlock>
+      {deleteCheckModal? <CheckCloseModal
+      title={'친구삭제'}
+      content={'더 이상 이 모험가와 엮이고 싶지 않습니까?'}
+      deleteFunction={onClickFriendDelete}
+      modalCloseToggle={setDeleteCheckModal}
+      ></CheckCloseModal>: ''}
       {modalToggle ? (
         <AddFriendModal>
           <FriendCloseButton
@@ -421,7 +430,8 @@ const FriendsContent = () => {
           <FriendCard key={idx}>
             <FriendDeleteBtn
               onClick={() => {
-                onClickFriendDelete(friend.nickname);
+                setDeleteCheckModal(true);
+                setDeleteFriendName(friend.nickname)                
               }}
             >
               X
@@ -446,3 +456,4 @@ const FriendsContent = () => {
 };
 
 export default FriendsContent;
+

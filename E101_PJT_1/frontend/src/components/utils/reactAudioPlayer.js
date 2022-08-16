@@ -19,7 +19,7 @@ const ReactAudioPlayer = ({urlSound, isLoop, isPlaying}) => {
         playing={isPlaying} // 자동 재생 on
         controls={false}
         loop={isLoop}
-        // muted={true} // 자동 재생 on
+        // muted={true} // 자동 재생 on        
       />
     </ReactAudioPlayerBlock>
   );
