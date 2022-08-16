@@ -6,6 +6,7 @@ import DiceRoller from '../../components/utils/DiceRoller'
 import ReactAudioPlayer from '../utils/reactAudioPlayer';
 import gameBgmSound from '../../media/sounds/09_gameBgm.wav'
 import { useState } from 'react';
+import RankingTable from '../../media/images/RankingTable.png';
 
 const OpenViduSessionBlock = styled.div`
   width: 100vw;
@@ -71,15 +72,38 @@ const TestContainer = styled.div`
 `;
 
 const PlayerList = styled.div`
+  background: url(${RankingTable});
+  background-size: 15vw 30vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
   width: 15vw;
   height: 30vh;
-  font-size: 1rem;
-  color:black;
-  background-color: white;
-  & p {
-    font: 0.5rem;
-    margin: 0;
-  }
+  font-size: 3.5vmin;
+  padding-top: 4.5vh;
+  color:black;  /* background-color: white; */  
+`
+
+const PlayerRankingTitle = styled.div`   
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 5.5vh;
+  width: 12vh;  
+  font-size: 5vmin;
+  padding-bottom: 4.5vh;
+  color: white;
+ `
+
+const PlayerRankingTag = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 6.1vh;
+  width: 12vh;  
+  font-size: 3vmin;
+  margin-bottom: 1vh; 
 `
 
 const UserVideoComponentContainer = styled.div`
@@ -228,7 +252,8 @@ const OpenViduSession = ({
   // 게임 진행 관련 변수들
   // console.warn("퍼블리셔는?",publisher);
   const playerNum = players.length; // 몇 명에서 하는지  
-  const myTurnNum = players.indexOf(myUserNameValue);
+  const myTurnNum = players.indexOf(myUserNameValue);  
+  const [top2Players, setTop2Players] = useState([]);
 
   useEffect(() => {
     if (nextPlayer === myUserNameValue){
@@ -237,8 +262,28 @@ const OpenViduSession = ({
       const temp = subscribers.filter((sub) => JSON.parse(sub.stream.connection.data).clientData === nextPlayer)[0];
       handleMainVideoStream(temp);
     }
-
   }, [nextPlayer])
+
+  useEffect(() => {
+    if (posList.length === 0) {
+      return;
+    } else {
+      let temp = [...posList];
+      let tempArr = [];
+      console.warn(temp)
+      const first = Math.max.apply(null, temp);
+      const firstIndex = temp.indexOf(first);
+      temp[firstIndex] = 0
+      tempArr.push(players[firstIndex])
+      console.warn(temp)
+      const secondMax = Math.max.apply(null, temp);
+      const secondIndex = temp.indexOf(secondMax);
+      tempArr.push(players[secondIndex])
+      setTop2Players([...tempArr])
+    }
+  }, [posList])
+
+
   
   return (
     <OpenViduSessionBlock>
@@ -249,18 +294,25 @@ const OpenViduSession = ({
       ></ReactAudioPlayer>  
       <TestContainer>
         <PlayerList>
-          <p>내 턴번호: {myTurnNum}</p>
+          <PlayerRankingTitle>순위</PlayerRankingTitle>
+          {top2Players.length === 0 ? '' : 
+            <>            
+              <PlayerRankingTag>1등: {top2Players[0]}</PlayerRankingTag>
+              <PlayerRankingTag>2등: {top2Players[1]}</PlayerRankingTag>
+            </>
+          }
+          {/* <p>내 턴번호: {myTurnNum}</p>
           <p>포지션리스트: {posList}</p>
           <p>플레이어 리스트</p>
           <p>사람수: {playerNum}</p>
           <p>누구턴: {turnNum}</p>
           <p>니이름: {myUserNameValue}</p>
-          <p>누구냐:{players}</p>
-          {players.map((playerName, i) => (
+          <p>누구냐:{players}</p> */}
+          {/* {players.map((playerName, i) => (
             <p key={i}>
               {i}번쨰: {playerName}
             </p>
-          ))}
+          ))} */}
         </PlayerList>
         {/* {subscribers.map((sub, i) => (
           <p key={i}>{sub.stream.connection.data} {i}번쨰 유저</p>
@@ -268,7 +320,7 @@ const OpenViduSession = ({
         {/* <p>{publisher.stream.connection.data}</p> */}
       </TestContainer>
       <OpenViduSessionHeader>
-        <p>{mySessionIdValue}번 방</p>
+        {/* <p>{mySessionIdValue}번 방</p> */}
         {/* <OpenViduSessionLeaveBtn
           onClick={() => {
             leaveSession();
