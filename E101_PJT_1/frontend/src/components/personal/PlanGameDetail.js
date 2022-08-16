@@ -16,15 +16,15 @@ import {
   NameNicknameEl,
 } from '../personal/FriendsContent';
 
-import { 
+import {
   InviteFriendButton,
   CloseModalbutton,
   ModalTitle,
   FriendListModal,
-  FriendCardContainer,  
+  FriendCardContainer,
   FriendModalBack
- } from '../utils/GameNumCounter';
- import friendModalBack from "../../media/images/friendModal.jpg";
+} from '../utils/GameNumCounter';
+import friendModalBack from "../../media/images/friendModal.jpg";
 import knifePaper from '../../media/images/knifePaper1.png';
 import title from '../../media/images/title.png';
 import leatherSquare from '../../media/images/leather_square.png';
@@ -143,8 +143,21 @@ const GameInvitationBtn = styled.div`
 
 const PlanGameDetail = () => {
   const dispatch = useDispatch();
+
+
+  const today = new Date();
+  let hour = today.getHours();
+  let minute = today.getMinutes();
+  minute = Math.floor(minute / 15);
+  minute++;
+  if (minute >= 4) {
+    minute %= 4;
+    hour++;
+  }
+  minute *= 15;
+
   const [startDate, setStartDate] = useState(
-    setHours(setMinutes(new Date(), 30), 16),
+    setHours(setMinutes(today, minute), hour),
   );
 
   const [count, setCount] = useState(2);
@@ -245,7 +258,7 @@ const PlanGameDetail = () => {
           onDateChangeHandler={onDateChangeHandler}
         />
         <ErrorMessage>{error}</ErrorMessage>
-      </PlanGameDetailOption>      
+      </PlanGameDetailOption>
       {/* Personcounter */}
       <PlanGameDetailOption>
         <PlanGameDetailOptionName>인원</PlanGameDetailOptionName>
@@ -254,42 +267,42 @@ const PlanGameDetail = () => {
 
       {/* 모달 */}
       {modalToggle && (
-          <FriendModalBack>
-            <ModalTitle>동료 명단</ModalTitle>
-            <CloseModalbutton onClick={onClickModalCloser}>X</CloseModalbutton>
-            <FriendListModal>
-              {/* roomcode */}
-              {/* <p>{myGamePlanList[count].roomCode}</p> */}
-              {/* 모달 닫기 버튼 */}
+        <FriendModalBack>
+          <ModalTitle>동료 명단</ModalTitle>
+          <CloseModalbutton onClick={onClickModalCloser}>X</CloseModalbutton>
+          <FriendListModal>
+            {/* roomcode */}
+            {/* <p>{myGamePlanList[count].roomCode}</p> */}
+            {/* 모달 닫기 버튼 */}
 
-              {myFriendsList.map((friend, idx) => (
-                <FriendCardContainer>
-                  <FriendCard key={`friend-${idx}`}>
-                    <StyledCard>
-                      <ImageContainer>
-                        <ProfileImg
-                          className={
-                            'profileImg' + (friend.profile_Img_Num % 6)
-                          }
-                          // className={'profileImg' + 1}
-                        ></ProfileImg>
-                      </ImageContainer>
-                      <NameNicknameEl>
-                        <div>이름: {friend.name}</div>
-                        <div>닉네임: {friend.nickname}</div>
-                      </NameNicknameEl>
-                    </StyledCard>
-                  </FriendCard>
-                  <InviteFriendButton
-                    onClick={() =>
-                      onClickSendInvitation(`${friend.nickname}`)
-                    }
-                  ></InviteFriendButton>
-                </FriendCardContainer>
-              ))}
-            </FriendListModal>
-          </FriendModalBack>
-        )}
+            {myFriendsList.map((friend, idx) => (
+              <FriendCardContainer>
+                <FriendCard key={`friend-${idx}`}>
+                  <StyledCard>
+                    <ImageContainer>
+                      <ProfileImg
+                        className={
+                          'profileImg' + (friend.profile_Img_Num % 6)
+                        }
+                      // className={'profileImg' + 1}
+                      ></ProfileImg>
+                    </ImageContainer>
+                    <NameNicknameEl>
+                      <div>이름: {friend.name}</div>
+                      <div>닉네임: {friend.nickname}</div>
+                    </NameNicknameEl>
+                  </StyledCard>
+                </FriendCard>
+                <InviteFriendButton
+                  onClick={() =>
+                    onClickSendInvitation(`${friend.nickname}`)
+                  }
+                ></InviteFriendButton>
+              </FriendCardContainer>
+            ))}
+          </FriendListModal>
+        </FriendModalBack>
+      )}
 
       <PlanGameApplyBtn
         onClick={() => {
