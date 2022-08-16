@@ -166,12 +166,12 @@ export const ProfileImg = styled.div`
 `;
 
 export const NameNicknameEl = styled.div`
-  font-size: 3.5vmin;
+  font-size: 3vmin;
   display: flex;
   flex-direction: column;
   /* border: 5px solid red; */
-  margin-top: 0.8rem;
-  margin-left: 0.8rem;
+  margin-top: 0.5vh;
+  /* margin-left: 0.2vw; */
 `;
 
 const AddFriendModal = styled.div`

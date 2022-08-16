@@ -15,20 +15,20 @@ import { friendActions } from '../../store/friends-slice';
 import nailPaper from '../../media/images/nailPaper1.png';
 import title from '../../media/images/title.png';
 import SquareLeather from '../../media/images/leather_square.png';
-import arrowRight from "../../media/images/arrowRight.png";
-import arrowLeft from "../../media/images/arrowLeft.png";
-import friendModalBack from "../../media/images/friendModal.jpg";
-import closeButton from "../../media/images/closeLeatherButton1.png";
-import friendModalTitle from "../../media/images/friendModalTitle.png";
-import friendInviteButton from "../../media/images/friendInviteButton.png";
+import arrowRight from '../../media/images/arrowRight.png';
+import arrowLeft from '../../media/images/arrowLeft.png';
+import friendModalBack from '../../media/images/friendModal.jpg';
+import closeButton from '../../media/images/closeLeatherButton1.png';
+import friendModalTitle from '../../media/images/friendModalTitle.png';
+import friendInviteButton from '../../media/images/friendInviteButton.png';
 
 const GameNumCounterBlock = styled.div`
   /* border: 3px solid blue; */
-  width: 80vw;  
+  width: 80vw;
   height: 20vh;
   /* border: 2px solid black; */
   display: flex;
-  align-items: center;  
+  align-items: center;
   justify-content: center;
   p {
     font-size: 5vmin;
@@ -45,7 +45,7 @@ const GameNumCounterLeftBtn = styled.div`
 
   :hover {
     transform: scale(1.2);
-  }  
+  }
 `;
 
 const GameNumCounterRightBtn = styled.div`
@@ -79,17 +79,17 @@ const PlannedGameInfoBox = styled.div`
 // export해서 plannedGameList에서 사용중
 const UpCommingGameTitle = styled.div`
   font-size: 5vmin;
-  background:url(${title}) no-repeat center;
+  background: url(${title}) no-repeat center;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 18vw;
   height: 10vh;
-  background-size: 18vw 10vh ;    
+  background-size: 18vw 10vh;
   margin-top: 7vh;
   margin-left: 11vw;
-  margin-bottom: 0;  
-`
+  margin-bottom: 0;
+`;
 // 번호 일자 대장
 const PlannedGameInfoItem = styled.div`
   display: flex;
@@ -99,13 +99,13 @@ const PlannedGameInfoItem = styled.div`
   font-size: 4vmin;
   background-color: transparent;
   padding-top: 0;
-  color: #412E22;
+  color: #412e22;
   /* padding-top: 15vh; */
   margin-top: 1vh;
   /* border: 1px yellow solid; */
   & p {
     /* margin: 0; */
-    color: #412E22;
+    color: #412e22;
     font-size: 4.5vmin;
   }
 `;
@@ -138,62 +138,100 @@ const ButtonContainerItem = styled.div`
   }
 `;
 
-const FriendListModal = styled.div`
+const FriendModalBack = styled.div`
   position: absolute;
+  top: 4vh;
+  left: 40vw;
+  z-index: 1;
+  display: flex;
+  align-items: end;
   border-radius: 10px;
+  width: 35vw;
+  height: 90vh;
+  background: url(${friendModalBack}) center no-repeat;
+  background-size: 35vw 90vh;
+`;
+
+const FriendListModal = styled.div`
+  /* position: absolute;
+  border-radius: 10px; */
   display: flex;
   flex-direction: column;
-  align-items:center;
+  align-items: center;
   overflow-y: scroll;
   overflow-x: hidden;
   padding: 2rem;
   left: 45vw;
   top: 5vh;
   width: 35vw;
-  height: 90vh;
+  height: 70vh;
   border: 1px solid black;
-  background: url(${friendModalBack}) center no-repeat;
-  background-size: 35vw 90vh;
-  z-index: 1;
 `;
 
-export const InviteFriendButton = styled.button`
-position: absolute;
+export const InviteFriendButton = styled.button`  
   background: url(${friendInviteButton}) center no-repeat;
   background-size: 3.5vw 7vh;
   width: 3.5vw;
   height: 7vh;
   cursor: pointer;
   border: none;
+  margin-top: 1vh;
+  :hover {
+    transform: scale(1.05);
+  }
+  :active {
+    transform: scale(0.95);
+  }
   /* border: solid green 3px; */
   /* padding-left: 3vw; */
-  margin-left: 24.8vw;
-  margin-top: 3.5vh;
-`
+  /* margin-left: 24.8vw; */
+  /* margin-top: 3.5vh; */
+`;
 
 export const CloseModalbutton = styled.button`
   background: url(${closeButton}) center no-repeat;
-  background-size: 3vw 6vh;
-  border:none;
-  width: 3vw;
+  position: absolute;
+  top: 2vh;
+  right: 2vw;
+  background-size: 6vw 6vh;
+  border: none;
+  width: 6vw;
   height: 6vh;
-  margin-left: 30vw;
+  margin-left: 25vw;
   margin-top: 0;
   cursor: pointer;
-`
-export const ModalTitle = styled.div`
-background: url(${friendModalTitle}) center no-repeat;
-background-size: 20vw 15vh;
-width: 20vw;
-height: 15vh;
-font-size: 7vmin;
-padding-left: 6vw;
-padding-top: 3.5vh;
-/* margin-left: 7.5vw; */
-color: white;
-margin-top: 0;
+  :hover {
+    transform: scale(1.05);
+  }
+  :active {
+    transform: scale(0.95);
+  }
+`;
 
-`
+const FriendCardContainer = styled.div`
+  width: 31vw;
+  height: 18vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const ModalTitle = styled.div`
+  position: absolute;
+  background: url(${friendModalTitle}) center no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-size: 20vw 15vh;
+  width: 20vw;
+  height: 15vh;
+  top: 1vh;
+  left: 5vw;
+  font-size: 5vmin;
+  padding-top: 1vh;
+  color: white;
+  margin-top: 0;
+`;
 
 // const GameNumCounter = ({count, setCount, myGamePlanList}) => {
 const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
@@ -255,8 +293,10 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
   };
 
   const onClickDeleteGame = (roomCode) => {
-    dispatch(gamePlanActions.deleteGamePlanStart(roomCode))
-  }
+    console.warn(roomCode);
+    setCount(count - 1);
+    dispatch(gamePlanActions.deleteGamePlanStart(roomCode));
+  };
 
   const stringToTime = (givenString) => {
     const temp = new Date(givenString);
@@ -270,28 +310,29 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
     }
   };
 
-
-
   return (
     <GameNumCounterBlock>
-      
       <GameNumCounterLeftBtn onClick={onDecrease} />
       <PlannedGameInfoBox>
-      {/* <UpCommingGameTitle>예정된 모험</UpCommingGameTitle> */}
+        {/* <UpCommingGameTitle>예정된 모험</UpCommingGameTitle> */}
         <PlannedGameInfoItem>
           <p>번호 :{myGamePlanList[count].roomCode}</p>
           <p>대장 :{myGamePlanList[count].host}</p>
         </PlannedGameInfoItem>
         <PlannedGameInfoItem>
-          <p>모험 일자: {myGamePlanList[count].year}년{' '}
-          {myGamePlanList[count].month}월 {myGamePlanList[count].day}일{' '}
-          {myGamePlanList[count].hour}시 {myGamePlanList[count].minute}분</p>
+          <p>
+            모험 일자: {myGamePlanList[count].year}년{' '}
+            {myGamePlanList[count].month}월 {myGamePlanList[count].day}일{' '}
+            {myGamePlanList[count].hour}시 {myGamePlanList[count].minute}분
+          </p>
         </PlannedGameInfoItem>
         <PlannedGameInfoItem>
-
-          <p>대원목록: {myGamePlanList[count].playerList.map((player, idx) => (
-            player.user
-          )).join(',  ')}</p>
+          <p>
+            대원목록:{' '}
+            {myGamePlanList[count].playerList
+              .map((player, idx) => player.user)
+              .join(',  ')}
+          </p>
         </PlannedGameInfoItem>
         <ButtonContainer>
           <ButtonContainerItem
@@ -306,9 +347,13 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
             `${myGamePlanList[count].year}-${myGamePlanList[count].month}-${myGamePlanList[count].day} ${myGamePlanList[count].hour}:${myGamePlanList[count].minute}:00`,
           ) ? (
             <ButtonContainerItem
-            backImg={`url(${SquareLeather})`}
+              backImg={`url(${SquareLeather})`}
               onClick={() =>
-                onClickJoinGame(`${myGamePlanList[count].roomCode}`, `${myGamePlanList[count].maxCapacity}`, `${myGamePlanList[count].host}`)
+                onClickJoinGame(
+                  `${myGamePlanList[count].roomCode}`,
+                  `${myGamePlanList[count].maxCapacity}`,
+                  `${myGamePlanList[count].host}`,
+                )
               }
             >
               모험 시작
@@ -318,7 +363,7 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
           )}
           {nickname === myGamePlanList[count].host ? (
             <ButtonContainerItem
-            backImg={`url(${SquareLeather})`}
+              backImg={`url(${SquareLeather})`}
               onClick={() =>
                 onClickDeleteGame(`${myGamePlanList[count].roomCode}`)
               }
@@ -332,34 +377,41 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
         </ButtonContainer>
         {/* 모달 */}
         {modalToggle && (
-          <FriendListModal>
-            {/* roomcode */}
-            {/* <p>{myGamePlanList[count].roomCode}</p> */}
-            {/* 모달 닫기 버튼 */}
-            <CloseModalbutton onClick={onClickModalCloser}></CloseModalbutton>
+          <FriendModalBack>
             <ModalTitle>동료 명단</ModalTitle>
-            {myFriendsList.map((friend, idx) => (
-              <FriendCard key={`friend-${idx}`}>
-                <StyledCard>
-                  <ImageContainer>
-                    <ProfileImg
-                      className={'profileImg' + (friend.profile_Img_Num % 6)}
-                      // className={'profileImg' + 1}
-                    ></ProfileImg>
-                  </ImageContainer>
-                  <NameNicknameEl>
-                    <div>이름: {friend.name}</div>
-                    <div>닉네임: {friend.nickname}</div>
-                  </NameNicknameEl>
-                </StyledCard>
-                <InviteFriendButton onClick={() =>
-                    onClickReservedGameInvitation(`${friend.nickname}`)
-                  }
-                >
-                </InviteFriendButton>
-              </FriendCard>
-            ))}
-          </FriendListModal>
+            <CloseModalbutton onClick={onClickModalCloser}>X</CloseModalbutton>
+            <FriendListModal>
+              {/* roomcode */}
+              {/* <p>{myGamePlanList[count].roomCode}</p> */}
+              {/* 모달 닫기 버튼 */}
+
+              {myFriendsList.map((friend, idx) => (
+                <FriendCardContainer>
+                  <FriendCard key={`friend-${idx}`}>
+                    <StyledCard>
+                      <ImageContainer>
+                        <ProfileImg
+                          className={
+                            'profileImg' + (friend.profile_Img_Num % 6)
+                          }
+                          // className={'profileImg' + 1}
+                        ></ProfileImg>
+                      </ImageContainer>
+                      <NameNicknameEl>
+                        <div>이름: {friend.name}</div>
+                        <div>닉네임: {friend.nickname}</div>
+                      </NameNicknameEl>
+                    </StyledCard>
+                  </FriendCard>
+                  <InviteFriendButton
+                    onClick={() =>
+                      onClickReservedGameInvitation(`${friend.nickname}`)
+                    }
+                  ></InviteFriendButton>
+                </FriendCardContainer>
+              ))}
+            </FriendListModal>
+          </FriendModalBack>
         )}
 
         {/* <p>{JSON.stringify(myGamePlanList[count].playerList)}</p> */}
@@ -370,4 +422,4 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
 };
 
 export default GameNumCounter;
-export {UpCommingGameTitle};
+export { UpCommingGameTitle };
