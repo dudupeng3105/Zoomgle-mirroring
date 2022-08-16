@@ -90,7 +90,7 @@ const PlayerRankingTitle = styled.div`
   justify-content: center;
   align-items: center;
   height: 5.5vh;
-  width: 12vh;  
+  width: 12vw;  
   font-size: 5vmin;
   padding-bottom: 4.5vh;
   color: white;
@@ -101,7 +101,7 @@ const PlayerRankingTag = styled.div`
   justify-content: center;
   align-items: center;
   height: 6.1vh;
-  width: 12vh;  
+  width: 13vw;  
   font-size: 3vmin;
   margin-bottom: 1vh; 
 `
