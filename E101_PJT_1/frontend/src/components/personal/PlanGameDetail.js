@@ -15,7 +15,13 @@ import {
   ProfileImg,
   NameNicknameEl,
 } from '../personal/FriendsContent';
-import papyrus from '../../media/images/Papyrus.png';
+
+import { 
+  InviteFriendButton,
+  CloseModalbutton,
+  ModalTitle,
+ } from '../utils/GameNumCounter';
+ import friendModalBack from "../../media/images/friendModal.jpg";
 import knifePaper from '../../media/images/knifePaper1.png';
 import title from '../../media/images/title.png';
 import leatherSquare from '../../media/images/leather_square.png';
@@ -100,16 +106,20 @@ const GameInvitationModal = styled.div`
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  overflow: auto;
+  align-items:center;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  /* overflow: auto; */
   padding: 2rem;
   left: 30vw;
   top: 10vh;
-  width: 60vw;
-  height: 80vh;
-  /* border: 1px solid black; */
-  background: url(${papyrus});
-  background-size: 60vw 80vh;
+  width: 35vw;
+  height: 90vh;
+  border: 2px solid white;
+  background: url(${friendModalBack}) center no-repeat;
+  background-size: 35vw 90vh;
   z-index: 1;
+  margin-left: 10vw;
 `;
 
 const GameInvitationBtn = styled.div`
@@ -242,7 +252,9 @@ const PlanGameDetail = () => {
       {/* 친구초대 모달 */}
       {modalToggle && (
         <GameInvitationModal>
-          <p>{currentRoomCode}</p>
+          {/* <p>{currentRoomCode}</p> */}
+          <CloseModalbutton onClick={onClickModalCloser}></CloseModalbutton>
+            <ModalTitle>동료 명단</ModalTitle>
           {myFriendsList.map((friend, idx) => (
             <FriendCard key={idx}>
               <StyledCard>
@@ -254,15 +266,14 @@ const PlanGameDetail = () => {
                 </ImageContainer>
                 <NameNicknameEl>
                   <div>이름: {friend.name}</div>
-                  <div>닉네임(seq): {friend.nickname}</div>
+                  <div>닉네임: {friend.nickname}</div>
                 </NameNicknameEl>
               </StyledCard>
-              <button onClick={() => onClickSendInvitation(friend.nickname)}>
-                초대장보내기
-              </button>
+              <InviteFriendButton onClick={() => onClickSendInvitation(friend.nickname)}>
+              </InviteFriendButton>
             </FriendCard>
           ))}
-          <button onClick={onClickModalCloser}>닫기</button>
+          {/* <button onClick={onClickModalCloser}>닫기</button> */}
           {/* <p>{inviteRoomCode}</p> */}
         </GameInvitationModal>
       )}
