@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import letter from '../../media/images/letter.png';
-import reject from '../../media/images/reject.png';
-import accept from '../../media/images/accept.png';
+import letter from '../../media/images/InvitationLetter.png';
+import reject from '../../media/images/rejectButton.png';
+import accept from '../../media/images/acceptButton.png';
 import memoriesBack from '../../media/images/MemorisBlock.png';
 import InvitationBack from '../../media/images/mypageInvitation.png';
 import PlannedGameBack from '../../media/images/PlannedGameBack.png';
@@ -111,6 +111,7 @@ const ArrowBtn = styled.div`
   width: 8vw;
   height: 5vh;
   cursor: pointer;
+  z-index: 2;
   /* border: 1px solid black; */
   background: url(${arrowRight}) center no-repeat;
   background-size: 8vw 5vh;
@@ -207,25 +208,48 @@ const GivenInvitationModal = styled.div`
 
 const InvitationBlock = styled.div`
   width: 35vw;
-  height: 60vh;
-  margin-top: 9.5vh;
+  height: 60vh;  
+  /* border: 1px solid blue; */
+  padding-top: 15vh;
+  justify-content: center;
   display: flex;
   flex-direction: column;
   color: #2d2911;
   border-radius: 10px;
-  font-size: 3.5vmin;
-  padding-left: 6vw;
+  font-size: 3.5vmin;  
 `;
 
 const InvitationItem = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
   height: ${(props) => props.neededHeight};
-  width: 14vw;
-  margin-left: ${(props) => props.neededMarginLeft};
+  width: 27vw;
+  padding-left: ${(props) => props.neededPaddingLeft};
+  & p {
+
+  }
 `;
 
 const AcceptRejectButton = styled.div`
   display: flex;
+  justify-content: space-around;
+  width: 27vw;
+  /* border: 1px solid yellow; */
   /* flex-direction: row; */
+`;
+
+const CloseModalBtn = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  width: 3vw;
+  height: 3vh;
+  color: red;
+  font-size: 5vmin;
+  top: 1vh;
+  right: 2vw;
+  cursor: pointer;
 `;
 
 const AcceptButton = styled.div`
@@ -288,6 +312,13 @@ const MyPageContent = () => {
   useEffect(() => {
     dispatch(gamePlanActions.getInvitaionListStart());
   }, [firstClick]);
+
+  // 초대장없으면 모달 닫아버림
+  useEffect(() => {
+    if (myinvitationList.length === 0) {
+      setModalToggle(false);
+    }
+  }, [myinvitationList]);
 
   useEffect(() => {
     dispatch(gamePlanActions.getGamePlanListStart());
@@ -451,6 +482,9 @@ const MyPageContent = () => {
 
       {modalToggle && (
         <GivenInvitationModal>
+          <CloseModalBtn onClick={() => {
+                setModalToggle(!modalToggle);
+              }}>X</CloseModalBtn>
           <BtnContainer>
             <PersonNumCounterLeftBtn
               onClick={() => {
@@ -460,19 +494,20 @@ const MyPageContent = () => {
           </BtnContainer>
           {myinvitationList.length !== 0 ? (
             <InvitationBlock>
-              <InvitationItem neededHeight={`10vh`} neededMarginLeft={`2vw`}>
-                {myinvitationList[invitationIdx].sender}
+              <InvitationItem neededHeight={`7vh`} neededPaddingLeft={`2vw`}>
+                <p>{myinvitationList[invitationIdx].sender}님 으로부터의 초대장</p>                
               </InvitationItem>
-              <InvitationItem neededHeight={`10vh`} neededMarginLeft={`2vw`}>
-                {`${myinvitationList[invitationIdx].year}년 ${myinvitationList[invitationIdx].month}월 ${myinvitationList[invitationIdx].day}일 ${myinvitationList[invitationIdx].hour}시 ${myinvitationList[invitationIdx].minute}분`}
+              <InvitationItem neededHeight={`15vh`} neededPaddingLeft={`2vw`}>
+                <p>{`${myinvitationList[invitationIdx].year}년 ${myinvitationList[invitationIdx].month}월 ${myinvitationList[invitationIdx].day}일 ${myinvitationList[invitationIdx].hour}시 ${myinvitationList[invitationIdx].minute}분`} 까지</p>
+                <p>늦지않도록 펜과 노트를 지참해</p>
+                <p>집합하기 바람.</p>
               </InvitationItem>
-              <InvitationItem neededHeight={`9vh`} neededMarginLeft={`3vw`}>
-                {myinvitationList[invitationIdx].roomCode}
+              <InvitationItem neededHeight={`5vh`} neededPaddingLeft={`2vw`}>
+                장소는 {myinvitationList[invitationIdx].roomCode}번 방이다.
               </InvitationItem>
-              <InvitationItem neededHeight={`15vh`} neededMarginLeft={`6vw`}>
-                {myinvitationList[invitationIdx].receiver}
+              <InvitationItem neededHeight={`8vh`} neededPaddingLeft={`2vw`}>
+                초대에 응하시겠습니까?
               </InvitationItem>
-
               <AcceptRejectButton>
                 <AcceptButton
                   onClick={() => {

@@ -32,11 +32,11 @@ const DiceRoller = ({
 
     // 자리 계산
     const myPos = posList[myTurnNum];
-    if (value > 3) {
-      value = value - 3;
-    }
+    // if (value > 3) {
+    //   value = value - 3;
+    // }
     // 테스트용 숫자(value 크게함)
-    // value = value + 10;
+    value = value + 10;
     setDiceNum(value);
     const tempPosNum = (myPos + value) % 20;
 

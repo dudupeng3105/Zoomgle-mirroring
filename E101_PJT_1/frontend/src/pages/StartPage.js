@@ -150,7 +150,7 @@ const StartPage = (props) => {
       <ReactAudioPlayer
         urlSound={firstPageSound}
         isLoop={true}
-        isPlaying={isFirstPageSound}
+        isPlaying={isFirstPageSound}        
       >
       </ReactAudioPlayer>  
       <ReactAudioPlayer
