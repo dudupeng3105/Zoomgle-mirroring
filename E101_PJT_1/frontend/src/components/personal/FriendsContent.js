@@ -144,6 +144,7 @@ export const FriendCard = styled.div`
   /* margin-left: 30vw; */
 `;
 
+
 export const StyledCard = styled.div`
   /* background-color: wheat; */
   border-radius: 5px;
