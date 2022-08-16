@@ -6,9 +6,11 @@ import { minigameList } from './minigameList';
 import html2canvas from 'html2canvas';
 import { useDispatch } from 'react-redux';
 import { gameRoomActions } from '../../store/gameRoom-slice';
-import cameraBtn from '../../media/images/cameraBtn.PNG';
+import cameraBtn from '../../media/images/cameraBtn.png';
 import mainStreamerBorderStone from '../../media/images/mainStreamerBorderStone.png';
 import mvpRibbon from '../../media/images/mvpRibbon.png';
+import nameStone from '../../media/images/nameStone.png';
+import timeStone from '../../media/images/timeStone.png';
 
 const StreamComponent = styled.div`
   width: 55vw;
@@ -87,15 +89,16 @@ const VoteResultBoard = styled.div`
 
 const CaptureBtn = styled.div`
   position: fixed;
+  z-index: 12;
   display: flex;
   justify-content: center;
   align-items: center;
-  right: 2vw;
-  top: 1vh;
+  left: 20vw;
+  top: 68vh;
   width: 8vw;
-  height: 15vh;
+  height: 10vh;
   background: url(${cameraBtn});
-  background-size: 8vw 15vh;
+  background-size: 8vw 10vh;
   /* background-color: #4E5180; */
   cursor: pointer;
   font-size: 4vmin;
@@ -103,17 +106,27 @@ const CaptureBtn = styled.div`
   &:hover {
     transform: rotate(-10deg);
   }
+  :active {
+    transform: rotate(10deg);
+  }
 `;
 
-const TurnInfoBox = styled.div`
+const TurnInfoBox = styled.div`  
   position: absolute;
-  top: 60vh;
+  width: 20vw;
+  height: 10vh;
+  top: 51vh;
+  left: 18vw;
+  padding-top: 0.5vh;
+  z-index: 11;
   display: flex;
+  background: url(${nameStone});
+  /* border: 1px solid blue; */
+  background-size: 20vw 10vh;
   justify-content: center;
-  align-items: center;
-  width: 56vw;
+  align-items: center;  
   color: white;
-  font-size: 3rem;
+  font-size: 3vmin;
 `;
 
 const MvpInfoBox = styled.div`
@@ -160,10 +173,27 @@ const MvpRibbon = styled.div`
   background-size: 60vw 70vh;
 `;
 
+const TimeInfoBox = styled.div`
+  position: absolute;
+  z-index: 8;
+  left: 42vw;
+  top: 17vh;
+  width: 7vw;
+  height: 7vh;
+  background: url(${timeStone});
+  background-size: 7vw 7vh;
+  font-size: 7vmin;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: navy;
+`
+
 const CaptureAreaBox = styled.div`
-  width: 43vw;
+  width: 45vw;
   top: 2vh;
-  height: 44vh; /* border: 1px solid red; */  
+  height: 44vh; 
+  /* border: 1px solid red;   */
   display: flex;
   justify-content: center;
   display: relative;
@@ -180,7 +210,7 @@ const CaptureAreaBox = styled.div`
   }
 
   &.mainStreamer video {
-    width: 37vw;
+    width: 45vw;
     height: 41vh;
     cursor: initial;
     z-index: 2;
@@ -195,6 +225,14 @@ const CaptureAreaBox = styled.div`
     cursor: initial;
     object-fit: fill;
     border-radius: 50%;
+  }
+
+  &.bright video {       
+    border: 5px solid yellow;
+  }
+
+  &.dark video {    
+    border: 5px solid blue;
   }
 `;
 
@@ -445,6 +483,7 @@ const MainUserVideoComponent = ({
       }
       i++;
     }
+    setMvpEffect('');
   }, [isGameDone]);
 
   return (
@@ -464,10 +503,10 @@ const MainUserVideoComponent = ({
               ''
             )}
             {isMvpPhase ? <MvpRibbon /> : <MainBorderStone></MainBorderStone>}
-            <CaptureAreaBox className={mainStreamer} ref={mainScreen}>
+            <CaptureAreaBox className={`${mainStreamer} ${mvpEffect}`} ref={mainScreen}>
+              {!isMvpPhase ? <TimeInfoBox>{timeLeft}</TimeInfoBox>: ''}
               {isRoll ? (
-                <MinigameInfo>
-                  <p>남은 시간 : {timeLeft}</p>
+                <MinigameInfo>                  
                   {explanationOver ? '' : <p>{minigameInfo[3]}</p>}
 
                   {/* 그려서 맞히기의 경우 현재 턴인 사람에게만 띄움 */}
@@ -479,7 +518,7 @@ const MainUserVideoComponent = ({
                         ''
                       )
                     ) : (
-                      ''
+                      <p>{minigameInfo[0]}</p>
                     )
                   ) : (
                     ''
@@ -551,7 +590,7 @@ const MainUserVideoComponent = ({
           {isGameDone ? (
             <MvpInfoBox className={mvpEffect}>{nextPlayer}!!</MvpInfoBox>
           ) : (
-            <TurnInfoBox>{nextPlayer}씨 당신차례입니다.</TurnInfoBox>
+            <TurnInfoBox>{nextPlayer}</TurnInfoBox>
           )}
           <CaptureBtn onClick={() => onCapture()}></CaptureBtn>
         </>
