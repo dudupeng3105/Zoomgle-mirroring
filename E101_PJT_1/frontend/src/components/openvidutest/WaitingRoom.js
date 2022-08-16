@@ -9,6 +9,8 @@ import waitingRoomManual3 from '../../media/images/waitingRoomManual3.png'
 import useInterval from '../utils/useIntervals';
 import { useState } from 'react';
 
+import playerEnterSound from '../../media/sounds/07_playerEnter.wav';
+
 const WaitingRoomBlock = styled.div`
   width: 100vw;
   height: 100vh;

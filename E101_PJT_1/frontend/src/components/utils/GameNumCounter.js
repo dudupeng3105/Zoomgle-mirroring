@@ -21,6 +21,7 @@ import friendModalBack from "../../media/images/friendModal.jpg";
 import closeButton from "../../media/images/closeLeatherButton1.png";
 import friendModalTitle from "../../media/images/friendModalTitle.png";
 import friendInviteButton from "../../media/images/friendInviteButton.png";
+import btnClickSound from '../../media/sounds/05_btn.wav';
 
 const GameNumCounterBlock = styled.div`
   /* border: 3px solid blue; */
@@ -270,12 +271,15 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
     }
   };
 
-
+  function btnClick() {
+    var audio = new Audio(btnClickSound);
+    audio.play();
+  }
 
   return (
     <GameNumCounterBlock>
       
-      <GameNumCounterLeftBtn onClick={onDecrease} />
+      <GameNumCounterLeftBtn onClick={() => {onDecrease(); btnClick();}} />
       <PlannedGameInfoBox>
       {/* <UpCommingGameTitle>예정된 모험</UpCommingGameTitle> */}
         <PlannedGameInfoItem>
@@ -296,9 +300,9 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
         <ButtonContainer>
           <ButtonContainerItem
             backImg={`url(${SquareLeather})`}
-            onClick={() =>
-              onClickSearchFriendList(`${myGamePlanList[count].roomCode}`)
-            }
+            onClick={() => {
+              btnClick();
+              onClickSearchFriendList(`${myGamePlanList[count].roomCode}`)}}
           >
             동료 초대
           </ButtonContainerItem>
@@ -307,9 +311,9 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
           ) ? (
             <ButtonContainerItem
             backImg={`url(${SquareLeather})`}
-              onClick={() =>
-                onClickJoinGame(`${myGamePlanList[count].roomCode}`, `${myGamePlanList[count].maxCapacity}`, `${myGamePlanList[count].host}`)
-              }
+              onClick={() =>{
+                btnClick();
+                onClickJoinGame(`${myGamePlanList[count].roomCode}`, `${myGamePlanList[count].maxCapacity}`, `${myGamePlanList[count].host}`)}}
             >
               모험 시작
             </ButtonContainerItem>
@@ -319,9 +323,9 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
           {nickname === myGamePlanList[count].host ? (
             <ButtonContainerItem
             backImg={`url(${SquareLeather})`}
-              onClick={() =>
-                onClickDeleteGame(`${myGamePlanList[count].roomCode}`)
-              }
+              onClick={() =>{
+                btnClick();
+                onClickDeleteGame(`${myGamePlanList[count].roomCode}`)}}
             >
               {' '}
               모험 취소
@@ -364,7 +368,7 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
 
         {/* <p>{JSON.stringify(myGamePlanList[count].playerList)}</p> */}
       </PlannedGameInfoBox>
-      <GameNumCounterRightBtn onClick={onIncrease} />
+      <GameNumCounterRightBtn onClick={() => {onIncrease(); btnClick();}} />
     </GameNumCounterBlock>
   );
 };

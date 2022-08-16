@@ -9,7 +9,7 @@ const ReactAudioPlayerBlock = styled.div`
   display: none;
 `;
 
-const ReactAudioPlayer = ({urlSound, isLoop, isPlaying}) => {  
+const ReactAudioPlayer = ({urlSound, isLoop, isPlaying, volumeNum}) => {  
   return (
     <ReactAudioPlayerBlock>
       <ReactPlayer
@@ -19,6 +19,7 @@ const ReactAudioPlayer = ({urlSound, isLoop, isPlaying}) => {
         playing={isPlaying} // 자동 재생 on
         controls={false}
         loop={isLoop}
+        volume={volumeNum}
         // muted={true} // 자동 재생 on
       />
     </ReactAudioPlayerBlock>

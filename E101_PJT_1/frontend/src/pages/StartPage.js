@@ -151,12 +151,14 @@ const StartPage = (props) => {
         urlSound={firstPageSound}
         isLoop={true}
         isPlaying={isFirstPageSound}
+        volumeNum={0.6}
       >
       </ReactAudioPlayer>  
       <ReactAudioPlayer
         urlSound={loginPageSound}
         isLoop={true}
         isPlaying={isLoginPageSound}
+        volumeNum={0.4}
       >
       </ReactAudioPlayer>      
       {/* 최상단 페이지 */}

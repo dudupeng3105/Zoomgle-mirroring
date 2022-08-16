@@ -26,6 +26,8 @@ import knifePaper from '../../media/images/knifePaper1.png';
 import title from '../../media/images/title.png';
 import leatherSquare from '../../media/images/leather_square.png';
 
+import btnClickSound from '../../media/sounds/05_btn.wav';
+
 // 모험 참여 생성의 아래칸 : 모험 생성 및 게임 예약하기
 const PlanGameDetailBlock = styled.div`  
   width: 100%;
@@ -225,6 +227,11 @@ const PlanGameDetail = () => {
     dispatch(gamePlanActions.sendInvitaionStart(inviteInfo));
   };
 
+  function btnClick() {
+    var audio = new Audio(btnClickSound);
+    audio.play();
+  }
+
   // useEffect(() => {
   //   dispatch(friendActions.GetFriendListStart(userId))
   //   dispatch(gamePlanActions.getGamePlanListStart());
@@ -269,7 +276,10 @@ const PlanGameDetail = () => {
                   <div>닉네임: {friend.nickname}</div>
                 </NameNicknameEl>
               </StyledCard>
-              <InviteFriendButton onClick={() => onClickSendInvitation(friend.nickname)}>
+              <InviteFriendButton onClick={() => {
+                btnClick();
+                onClickSendInvitation(friend.nickname)}}
+              >
               </InviteFriendButton>
             </FriendCard>
           ))}
@@ -280,6 +290,7 @@ const PlanGameDetail = () => {
 
       <PlanGameApplyBtn
         onClick={() => {
+          btnClick();
           onClickHandler(`${currentRoomCode}`);
         }}
       >

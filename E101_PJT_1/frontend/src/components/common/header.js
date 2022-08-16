@@ -12,6 +12,10 @@ import profile5 from '../../media/images/profile5.png';
 import profile6 from '../../media/images/profile6.png';
 import logout from '../../media/images/logoutArrow.png';
 
+import { useState, useEffect } from 'react';
+import ReactAudioPlayer from '../utils/reactAudioPlayer';
+import nextPageSound from '../../media/sounds/04_nextPage.wav';
+import homePageSound from '../../media/sounds/03_homePage.wav';
 
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -123,6 +127,8 @@ const Spacer = styled.div`
 
 
 const Header = () => {
+  const [nextPagePlay, setNextPagePlay] = useState(true);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { nickname,profileImgNum } = useSelector((state) => ({
@@ -133,6 +139,20 @@ const Header = () => {
   return (
     <>
       <HeaderBlock>
+        <ReactAudioPlayer
+          urlSound={nextPageSound}
+          isLoop={false}
+          isPlaying={nextPagePlay}
+          volumeNum={0.7}
+        >
+        </ReactAudioPlayer>
+        <ReactAudioPlayer
+          urlSound={homePageSound}
+          isLoop={true}
+          isPlaying={true}
+          volumeNum={0.3}
+        >
+        </ReactAudioPlayer>
         <ProfileBox>
           <ProfileLogo onClick={() => navigate('/mypage')} className={`profileImg${profileImgNum%6}`}>
             {/* <h2>이미지 : {profileImgNum}</h2> */}

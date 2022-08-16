@@ -17,6 +17,7 @@ import friendsearch from '../../media/images/transparent_search.png';
 import scrollBlack from '../../media/images/scroll_black.png';
 import scrollWhite from '../../media/images/friend_content1.png';
 import modalfriendsearch from '../../media/images/transparent_search.png';
+import btnClickSound from '../../media/sounds/05_btn.wav';
 
 const FriendsContentBlock = styled.div`
   background: url(${background}) no-repeat center;
@@ -377,12 +378,18 @@ const FriendsContent = () => {
     dispatch(friendActions.DeleteFriendStart(friendDeleteInfo));
   };
 
+  function btnClick() {
+    var audio = new Audio(btnClickSound);
+    audio.play();
+  }
+
   return (
     <FriendsContentBlock>
       {modalToggle ? (
         <AddFriendModal>
           <FriendCloseButton
             onClick={() => {
+              btnClick();
               setmodalToggle(!modalToggle);
             }}
           ></FriendCloseButton>
@@ -409,6 +416,7 @@ const FriendsContent = () => {
         </BoardImageContainer>
         <FriendAddButton
           onClick={() => {
+            btnClick();
             setmodalToggle(!modalToggle);
           }}
         >
@@ -421,6 +429,7 @@ const FriendsContent = () => {
           <FriendCard key={idx}>
             <FriendDeleteBtn
               onClick={() => {
+                btnClick();
                 onClickFriendDelete(friend.nickname);
               }}
             >

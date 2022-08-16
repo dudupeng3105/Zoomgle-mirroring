@@ -5,6 +5,7 @@ import { gamePlanActions } from "../../store/gamePlan-slice";
 import { useEffect, useState } from "react";
 import arrowRight from "../../media/images/arrowRight.png";
 import arrowLeft from "../../media/images/arrowLeft.png";
+import btnClickSound from '../../media/sounds/05_btn.wav';
 
 const PicturesContentBlock = styled.div`
   width: 83vw;
@@ -122,12 +123,17 @@ const PicturesContent = () => {
     }
   }
 
+  function btnClick() {
+    var audio = new Audio(btnClickSound);
+    audio.play();
+  }
+
   return (
     gameDoneList.length ? (<PicturesContentBlock>
       <GameDayInfo>
-        <ArrowBtn onClick={() => onClickLeft()} backImg={arrowLeft}></ArrowBtn>
+        <ArrowBtn onClick={() =>{onClickLeft(); btnClick();}} backImg={arrowLeft}></ArrowBtn>
         <p>{`${gameDoneList[planIdx].month}월 ${gameDoneList[planIdx].day}일 게임`}</p>
-        <ArrowBtn onClick={() => onClickRight()} backImg={arrowRight}></ArrowBtn>
+        <ArrowBtn onClick={() => {onClickRight(); btnClick();}} backImg={arrowRight}></ArrowBtn>
       </GameDayInfo>
       <GamePlayerInfo>
         <p>MVP: {gameDoneList[planIdx].mvp}</p>

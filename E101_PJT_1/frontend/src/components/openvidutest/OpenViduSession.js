@@ -5,6 +5,7 @@ import MainUserVideoComponent from './MainUserVideoComponent'; // 미니게임 �
 import DiceRoller from '../../components/utils/DiceRoller'
 import ReactAudioPlayer from '../utils/reactAudioPlayer';
 import gameBgmSound from '../../media/sounds/09_gameBgm.wav'
+import gameStartSound from '../../media/sounds/08_gameStart.wav'
 import { useState } from 'react';
 
 const OpenViduSessionBlock = styled.div`
@@ -229,6 +230,13 @@ const OpenViduSession = ({
   // console.warn("퍼블리셔는?",publisher);
   const playerNum = players.length; // 몇 명에서 하는지  
   const myTurnNum = players.indexOf(myUserNameValue);
+  const [backSoundPlay, setBackSoundPlay] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setBackSoundPlay(true);
+    }, 2300);
+  }, []);
 
   useEffect(() => {
     if (nextPlayer === myUserNameValue){
@@ -243,10 +251,17 @@ const OpenViduSession = ({
   return (
     <OpenViduSessionBlock>
       <ReactAudioPlayer
+        urlSound={gameStartSound}
+        isLoop={false}
+        isPlaying={!backSoundPlay}
+        volumeNum={0.7}
+      ></ReactAudioPlayer>
+      <ReactAudioPlayer
         urlSound={gameBgmSound}
         isLoop={false}
-        isPlaying={false}
-      ></ReactAudioPlayer>  
+        isPlaying={backSoundPlay}
+        volumeNum={0.5}
+      ></ReactAudioPlayer> 
       <TestContainer>
         <PlayerList>
           <p>내 턴번호: {myTurnNum}</p>
