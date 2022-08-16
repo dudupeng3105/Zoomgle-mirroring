@@ -11,6 +11,8 @@ import WaitingRoom from './WaitingRoom';
 import MvpPhaseComponent from './MvpPhaseComponent';
 import { useSelector } from 'react-redux';
 
+import moveSound from '../../media/sounds/11_move.wav';
+
 const OpenViduContainer = styled.div`
   width: 100vw;
   height: 100vh;
@@ -86,6 +88,11 @@ const OpenViduBlock = ({
   useEffect(() => {
     console.error('구성원바뀜', players);
   }, [players]);
+
+  useEffect(() => {
+    console.warn('포지션바뀜', posList);
+    playSound(moveSound);
+  }, [posList]);
 
   // 중앙에 오는놈을 설정하기 위한 아이(하위요소로 Props 필요함)
   const handleMainVideoStream = (stream) => {
@@ -488,6 +495,11 @@ const OpenViduBlock = ({
   const myUserNameValue = myUserName;
   console.log('너 왜 없냐..', mySessionIdValue);
   console.log('너 왜 없냐.', myUserNameValue);
+
+  function playSound(soundName) {
+    var audio = new Audio(soundName);
+    audio.play();
+  }
 
   // 방 참여 init
   return (

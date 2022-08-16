@@ -7,6 +7,10 @@ import { gameRoomActions } from '../../store/gameRoom-slice';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import { useNavigate } from '../../../node_modules/react-router-dom/index';
+import ReactAudioPlayer from '../utils/reactAudioPlayer';
+import mvpBgmSound from '../../media/sounds/17_mvpBgm.wav';
+import gameBgmSound from '../../media/sounds/09_gameBgm.wav';
+
 const MvpPhaseComponentBlock = styled.div`
   width: 100vw;
   height: 100vh;
@@ -237,6 +241,7 @@ const MvpPhaseComponent = ({
   const dispatch = useDispatch();
   const pictureList = useSelector((state) => state.gameRoom.gameTotalPicture);  
   const [timeLeft, setTimeLeft] = useState(10);
+  const [backSoundPlay, setBackSoundPlay] = useState(false);
 
   const calculateTimeLeft = () => {
     console.log(timeLeft);
@@ -375,6 +380,18 @@ const MvpPhaseComponent = ({
 
   return (
     <MvpPhaseComponentBlock>
+      <ReactAudioPlayer
+        urlSound={mvpBgmSound}
+        isLoop={true}
+        isPlaying={!backSoundPlay}
+        volumeNum={0.5}
+      ></ReactAudioPlayer>
+      <ReactAudioPlayer
+        urlSound={gameBgmSound}
+        isLoop={true}
+        isPlaying={backSoundPlay}
+        volumeNum={0.5}
+      ></ReactAudioPlayer>
       {mainStreamManager !== undefined ? (
         isGameOver ? (
           <GameOverLoading>{timeLeft}</GameOverLoading>
@@ -440,7 +457,10 @@ const MvpPhaseComponent = ({
         </MvpShowUsersContainer>
       ))}
       {(nextPlayer === myUserNameValue) & !isMvpSpeechDone ? (
-        <MvpSpeechSkipBtn onClick={() => onClickNextPhase()}>
+        <MvpSpeechSkipBtn onClick={() => {
+          setBackSoundPlay(true);
+          onClickNextPhase()}}
+        >
           소감종료
         </MvpSpeechSkipBtn>
       ) : (

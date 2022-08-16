@@ -4,8 +4,9 @@ import UserVideoComponent from './UserVideoComponent';
 import MainUserVideoComponent from './MainUserVideoComponent'; // 미니게임 중앙화면용
 import DiceRoller from '../../components/utils/DiceRoller'
 import ReactAudioPlayer from '../utils/reactAudioPlayer';
-import gameBgmSound from '../../media/sounds/09_gameBgm.wav'
-import gameStartSound from '../../media/sounds/08_gameStart.wav'
+import gameStartSound from '../../media/sounds/08_gameStart.wav';
+import gameBgmSound from '../../media/sounds/09_gameBgm.wav';
+import myTurnSound from '../../media/sounds/10_myTurn.wav';
 import { useState } from 'react';
 
 const OpenViduSessionBlock = styled.div`
@@ -235,11 +236,12 @@ const OpenViduSession = ({
   useEffect(() => {
     setTimeout(() => {
       setBackSoundPlay(true);
-    }, 2300);
+    }, 8500);
   }, []);
 
   useEffect(() => {
     if (nextPlayer === myUserNameValue){
+      playSound(myTurnSound);
       handleMainVideoStream(publisher)
     } else {
       const temp = subscribers.filter((sub) => JSON.parse(sub.stream.connection.data).clientData === nextPlayer)[0];
@@ -247,6 +249,11 @@ const OpenViduSession = ({
     }
 
   }, [nextPlayer])
+
+  function playSound(soundName) {
+    var audio = new Audio(soundName);
+    audio.play();
+  }
   
   return (
     <OpenViduSessionBlock>
@@ -258,7 +265,7 @@ const OpenViduSession = ({
       ></ReactAudioPlayer>
       <ReactAudioPlayer
         urlSound={gameBgmSound}
-        isLoop={false}
+        isLoop={true}
         isPlaying={backSoundPlay}
         volumeNum={0.5}
       ></ReactAudioPlayer> 
