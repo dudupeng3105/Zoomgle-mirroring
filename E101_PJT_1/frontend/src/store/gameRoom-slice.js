@@ -44,7 +44,7 @@ const gameRoomSlice = createSlice({
     },    
 
     // 모든 에러 이걸로 처리함
-    getError(state, action) {
+    getRoomError(state, action) {
       state.loading = false;
       state.takePicResult = action.payload.message;
     },

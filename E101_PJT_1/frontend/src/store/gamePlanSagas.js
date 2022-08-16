@@ -125,7 +125,10 @@ function* GetGameDonePhotoAsync({payload}) {
       yield put(getGameDonePhotoSuccess(response.data));
     }
   } catch (error) {
-    yield put(getError(error.response.data));
+    yield put(getGameDonePhotoSuccess({
+      photoList: []
+    }))
+    // yield put(getError(error.response.data));
   }
 }
 

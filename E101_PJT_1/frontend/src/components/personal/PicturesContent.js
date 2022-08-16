@@ -82,6 +82,15 @@ const ArrowBtn = styled.div`
   background-size: 20vw 8vh;
 `
 
+const BlankPhotoText = styled.div`
+  width: 73vw;
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 7vmin;
+`
+
 const PicturesContent = () => {
   const dispatch = useDispatch();
   const [planIdx, setPlanIdx] = useState(0);
@@ -147,12 +156,16 @@ const PicturesContent = () => {
         <p>참여자 : {playerNames.join(', ')}</p>
       </GamePlayerInfo>
       <GameDoneBoard>
-        {gameDonePhoto.map((photo, idx) => (
-          <GameDoneImg
-            key={`photo-${idx}`}
-            backImg={photo.photo_Url}
-          ></GameDoneImg>
-        ))}
+        {gameDonePhoto.length === 0 ? (
+          <BlankPhotoText>찍은 사진이 없습니다.</BlankPhotoText>
+        ) : (
+          gameDonePhoto.map((photo, idx) => (
+            <GameDoneImg
+              key={`photo-${idx}`}
+              backImg={photo.photo_Url}
+            ></GameDoneImg>
+          ))
+        )}
       </GameDoneBoard>
     </PicturesContentBlock>
   ) : (
