@@ -111,11 +111,11 @@ const VoteResultBoard = styled.div`
 const VoteResultComment = styled.div`
   display: flex;
   width: 35vw;
-  height: 10vh;
+  height: 5vh;
   justify-content: center;
   align-items: center;
   color: ${(props) => props.textColor};
-  font-size: 6vmin;
+  font-size: 5vmin;
 `
 
 const CaptureBtn = styled.div`
@@ -241,7 +241,10 @@ const VoteInfoBox = styled.div`
   height: 40vh;
   background-color: #d0c28f; 
   color: brown;
-  font-size: 6vmin;
+  font-size: 4vmin;
+  & p {
+    font-size:5vmin;
+  }
 `;
 
 const MvpRibbon = styled.div`
@@ -703,7 +706,11 @@ const MainUserVideoComponent = ({
                             </VoteResultComment>
                           </>
                         ) : (
-                          ''
+                          <>
+                            <VoteResultComment textColor={'#412e22'}>
+                              아무도 너에게 관심이 없다.
+                            </VoteResultComment>
+                          </>
                         )}                        
                         <VoteResultComment>
                           {vote
