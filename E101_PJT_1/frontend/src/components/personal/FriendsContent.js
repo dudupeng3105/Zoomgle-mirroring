@@ -17,6 +17,8 @@ import friendsearch from '../../media/images/transparent_search.png';
 import modalfriendsearch from '../../media/images/friendInviteButton.png';
 import btnClickSound from '../../media/sounds/05_btn.wav';
 import CheckCloseModal from '../utils/CheckCloseModal';
+import searchBtn from '../../media/images/searchBtn.png';
+
 
 const FriendsContentBlock = styled.div`
   background: url(${background}) no-repeat center;
@@ -91,13 +93,12 @@ const ModalFriendAddButton = styled.div`
   height: 8vh;
   width: 5vw;
   font-size: 5vmin;
-  background: url(${modalfriendsearch}) center no-repeat;
+  margin-top: 0.5vh;
+  background: url(${searchBtn}) center no-repeat;
   background-size: 5vw 8vh;
   color: white;
   border-radius: 5px;
   &:hover {
-    /* background: url(${modalfriendsearch}) center no-repeat;
-    background-size: 8vw 8vh; */
     transform: scale(1.1);
   }
 `;
@@ -437,7 +438,7 @@ const FriendsContent = () => {
         </FriendAddButton>
       </TitleButtonBlock>
       <FriendsList>
-        <p>{friendsArr.length === 0 ? '아직 동료가 없어요' : ''}</p>
+        <p>{friendsArr.length === 0 ? '아직 동료가 없다. 동료를 추가하고 모험을 생성하라.' : ''}</p>
         {friendsArr.map((friend, idx) => (
           <FriendCard key={idx}>
             <FriendDeleteBtn
