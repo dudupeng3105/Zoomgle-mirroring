@@ -244,7 +244,6 @@ const MvpPhaseComponent = ({
   const dispatch = useDispatch();
   const pictureList = useSelector((state) => state.gameRoom.gameTotalPicture);  
   const [timeLeft, setTimeLeft] = useState(10);
-  const [backSoundPlay, setBackSoundPlay] = useState(false);
 
   const calculateTimeLeft = () => {
     console.log(timeLeft);
@@ -386,13 +385,13 @@ const MvpPhaseComponent = ({
       <ReactAudioPlayer
         urlSound={mvpBgmSound}
         isLoop={true}
-        isPlaying={!backSoundPlay}
+        isPlaying={!isMvpSpeechDone}
         volumeNum={0.5}
       ></ReactAudioPlayer>
       <ReactAudioPlayer
         urlSound={gameBgmSound}
         isLoop={true}
-        isPlaying={backSoundPlay}
+        isPlaying={isMvpSpeechDone}
         volumeNum={0.5}
       ></ReactAudioPlayer>
       {mainStreamManager !== undefined ? (
@@ -460,10 +459,7 @@ const MvpPhaseComponent = ({
         </MvpShowUsersContainer>
       ))}
       {(nextPlayer === myUserNameValue) & !isMvpSpeechDone ? (
-        <MvpSpeechSkipBtn onClick={() => {
-          setBackSoundPlay(true);
-          onClickNextPhase()}}
-        >
+        <MvpSpeechSkipBtn onClick={() => onClickNextPhase()} >
           소감종료
         </MvpSpeechSkipBtn>
       ) : (
