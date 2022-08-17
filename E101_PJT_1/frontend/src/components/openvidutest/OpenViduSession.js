@@ -9,6 +9,10 @@ import gameBgmSound from '../../media/sounds/09_gameBgm.wav';
 import myTurnSound from '../../media/sounds/10_myTurn.wav';
 import { useState } from 'react';
 import RankingTable from '../../media/images/RankingTable.png';
+import diceImg1 from '../../media/images/dice1.jpg'
+import diceImg2 from '../../media/images/dice2.jpg'
+import diceImg3 from '../../media/images/dice3.jpg'
+import diceImg4 from '../../media/images/dice4.jpg'
 
 const OpenViduSessionBlock = styled.div`
   width: 100vw;
@@ -107,6 +111,72 @@ const PlayerRankingTag = styled.div`
   font-size: 3vmin;
   margin-bottom: 1vh;
 `;
+
+const ShowDiceModal = styled.div`
+  display: flex;
+  position: absolute;
+  z-index: 5;
+  width: 10vmin;
+  height: 10vmin;
+  top: 79vh;
+  left: 89vw;      
+  &.dice-1 {
+    @keyframes leaves-1 {
+      0% {
+          transform: scale(0);
+      }
+      100% {
+          transform: scale(1);
+      }
+    }
+    animation: leaves-1 2.5s ease-in-out;    
+    background: url(${diceImg1}) no-repeat center;
+    background-size: 10vmin 10vmin;
+  }
+
+  &.dice-2 {
+    @keyframes leaves-2 {
+      0% {
+          transform: scale(0);
+      }
+      100% {
+          transform: scale(1);
+      }
+    }
+    animation: leaves-2 2.5s ease-in-out;      
+    background: url(${diceImg2}) no-repeat center;
+    background-size: 10vmin 10vmin;
+  }
+
+  &.dice-3 {
+    @keyframes leaves-3 {
+      0% {
+          transform: scale(0);
+      }
+      100% {
+          transform: scale(1);
+      }
+    }
+    animation: leaves-3 2.5s ease-in-out;    
+    background: url(${diceImg3}) no-repeat center;
+    background-size: 10vmin 10vmin;
+  }
+
+  &.dice-4 {
+    @keyframes leaves-4 {
+      0% {
+          transform: scale(0);
+      }
+      100% {
+          transform: scale(1);
+      }
+    }
+    animation: leaves-4 2.5s ease-in-out;  
+    background: url(${diceImg4}) no-repeat center;
+    background-size: 10vmin 10vmin;
+  }
+`;
+
 
 const UserVideoComponentContainer = styled.div`
   width: 11vmin;
@@ -438,12 +508,21 @@ const OpenViduSession = ({
   const myTurnNum = players.indexOf(myUserNameValue);
   const [backSoundPlay, setBackSoundPlay] = useState(false);
   const [top2Players, setTop2Players] = useState([]);
+  const [showDiceToggle, setShowDiceToggle] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
       setBackSoundPlay(true);
     }, 8500);
   }, []);
+
+  useEffect(() => {
+    console.warn("쇼다이스넘")
+    setShowDiceToggle(true);
+    setTimeout(() => {
+      setShowDiceToggle(false);
+    }, 4500);
+  }, [whatDiceNum]);
 
   useEffect(() => {
     if (nextPlayer === myUserNameValue) {
@@ -604,7 +683,12 @@ const OpenViduSession = ({
       ) : (
         ''
       )}
-      <h1>{whatDiceNum}</h1>
+      {showDiceToggle ? (
+        <ShowDiceModal className={`dice-${whatDiceNum}`}>
+        </ShowDiceModal>
+      ) : (
+        ''
+      )}
     </OpenViduSessionBlock>
   );
 };
