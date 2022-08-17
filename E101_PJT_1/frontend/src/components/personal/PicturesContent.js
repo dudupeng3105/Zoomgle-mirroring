@@ -54,6 +54,16 @@ const GameDoneBoard = styled.div`
   flex-wrap: wrap;
 `
 
+const BlankText = styled.div`
+  margin-top: 20vh;
+  width: 73vw;
+  height: 50vh;
+  font-size: 10vmin;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
 const GameDoneImg = styled.div`
   width: 23vw;  
   height: 25vh;
@@ -71,6 +81,15 @@ const ArrowBtn = styled.div`
   /* border: 1px solid black; */
   background:  ${props => `url(${props.backImg}) no-repeat center`};  
   background-size: 20vw 8vh;
+`
+
+const BlankPhotoText = styled.div`
+  width: 73vw;
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 7vmin;
 `
 
 const PicturesContent = () => {
@@ -140,11 +159,22 @@ const PicturesContent = () => {
         <p>참여자 : {playerNames.join(', ')}</p>
       </GamePlayerInfo>
       <GameDoneBoard>
-        {gameDonePhoto.map((photo, idx) => (
-          <GameDoneImg key={`photo-${idx}`} backImg={photo.photo_Url}></GameDoneImg>
-        ))}
+        {gameDonePhoto.length === 0 ? (
+          <BlankPhotoText>찍은 사진이 없습니다.</BlankPhotoText>
+        ) : (
+          gameDonePhoto.map((photo, idx) => (
+            <GameDoneImg
+              key={`photo-${idx}`}
+              backImg={photo.photo_Url}
+            ></GameDoneImg>
+          ))
+        )}
       </GameDoneBoard>
-    </PicturesContentBlock>) : ''
+    </PicturesContentBlock>
+  ) : (
+    <PicturesContentBlock>
+      <BlankText>모험을 진행하고 일지를 작성하시오.</BlankText>
+    </PicturesContentBlock>
   );
 };
 

@@ -3,9 +3,13 @@ import styled from 'styled-components';
 import UserVideoComponent from './UserVideoComponent';
 import ReactAudioPlayer from '../utils/reactAudioPlayer';
 import waitingRoomSound from '../../media/sounds/06_waitingRoom.wav'
-import waitingRoomManual1 from '../../media/images/waitingRoomManual1.png'
-import waitingRoomManual2 from '../../media/images/waitingRoomManual2.png'
-import waitingRoomManual3 from '../../media/images/waitingRoomManual3.png'
+import waitingRoomManual1 from '../../media/images/manualBox1.png'
+import waitingRoomManual2 from '../../media/images/manualBox2.png'
+import waitingRoomManual3 from '../../media/images/manualBox3.png'
+import waitingRoomManual4 from '../../media/images/manualBox4.png'
+import waitingRoomManual5 from '../../media/images/manualBox5.png'
+import waitingStone from '../../media/images/waitingStone.png'
+import waitingStartStone from '../../media/images/waitingStartStone.png'
 import useInterval from '../utils/useIntervals';
 import { useState } from 'react';
 
@@ -39,12 +43,12 @@ const WaitingUserVideoContainer = styled.div`
   cursor: pointer;
   position: absolute;
   &.pos0 {
-    top: 15vh;
+    top: 10vh;
     left: 2vw;
   }
 
   &.pos1 {
-    top: 45vh;
+    top: 40vh;
     left: 2vw;
   }
 
@@ -54,12 +58,12 @@ const WaitingUserVideoContainer = styled.div`
   }
 
   &.pos3 {
-    top: 15vh;
+    top: 10vh;
     right: 2vw;
   }
 
   &.pos4 {
-    top: 45vh;
+    top: 40vh;
     right: 2vw;
   }
 
@@ -73,10 +77,9 @@ const ManualBox = styled.div`
   width: 45vw;
   height: 50vh;
   margin-top: 15vh;
-  margin-right: 5vw;
-  /* border: 3px solid white;   */
-  /* background: url(${waitingRoomManual1});
-  background-size: 45vw 50vh; */
+  margin-right: 8vw;  
+  background: ${props => `url(${props.backImg}) no-repeat center`};
+  background-size: 45vw 50vh;
   opacity: 0;
   @keyframes fadeOut {
     10% {
@@ -103,19 +106,7 @@ const ManualBox = styled.div`
   animation: fadeOut;
   animation-duration: 10.4s;  
   animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
-  &.manual-1 {
-    background: url(${waitingRoomManual1});
-    background-size: 45vw 50vh;    
-  }
-  &.manual-2 {
-    background: url(${waitingRoomManual2});
-    background-size: 45vw 50vh;
-  }
-  &.manual-3 {
-    background: url(${waitingRoomManual3});
-    background-size: 45vw 50vh;
-  }
+  animation-iteration-count: infinite;  
 `;
 
 const GameStartBtn = styled.div`
@@ -123,15 +114,21 @@ const GameStartBtn = styled.div`
   width: 20vw;
   height: 12vh;
   margin-top: 5vh;
-  border: 2px solid green;
-  background-color: green;
+  background: url(${waitingStartStone});
+  background-size: 20vw 12vh;  
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 3rem;
+  padding-top: 4vh;
   &.waitingBtn {
-    background-color: grey;
+    background: url(${waitingStone});
+    background-size: 20vw 12vh;
+    padding-top: 1vh;
     color: white;
+  }
+  :active {
+    transform: scale(0.95);
   }
 `;
 
@@ -168,7 +165,7 @@ const WaitingRoom = ({
   // console.warn("퍼블리셔는?",publisher);
   const playerNum = players.length; // 몇 명에서 하는지
   const myTurnNum = players.indexOf(myUserNameValue);
-  const [manualNum, setManualNum] = useState(0);
+  const [manualNum, setManualNum] = useState(1);
 
   useInterval(() => {
     setManualNum((manualNum+1)%3 + 1);
@@ -220,14 +217,19 @@ const WaitingRoom = ({
       <OpenViduSessionHeader>
         {mySessionIdValue}번 방
       </OpenViduSessionHeader>
-      <ManualBox className={`manual-${manualNum}`}></ManualBox>
+      {manualNum === 1 ?  <ManualBox backImg={waitingRoomManual1}></ManualBox> : ''}
+      {manualNum === 2 ?  <ManualBox backImg={waitingRoomManual2}></ManualBox> : ''}
+      {manualNum === 3 ?  <ManualBox backImg={waitingRoomManual3}></ManualBox> : ''}
+      {manualNum === 4 ?  <ManualBox backImg={waitingRoomManual4}></ManualBox> : ''}
+      {manualNum === 5 ?  <ManualBox backImg={waitingRoomManual5}></ManualBox> : ''}      
+      {/* <ManualBox className={`manual-${manualNum}`}></ManualBox> */}
       {sessionHost === myUserNameValue ? (
         (playerNum === Number(sessionCapacity)) ? (
           <GameStartBtn onClick={() => onClickStartGame()}>
             게임시작
           </GameStartBtn>
         ) : (
-          <GameStartBtn className='waitingBtn' onClick={() => onClickStartGame()}>
+          <GameStartBtn className='waitingBtn'>
             대기중 ({playerNum==0 ? 1 : playerNum}/{sessionCapacity}명)
           </GameStartBtn>
         )

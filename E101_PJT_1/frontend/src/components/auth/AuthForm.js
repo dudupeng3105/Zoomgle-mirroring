@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Button from '../common/Button';
+import btnBack from '../../media/images/longArrow1.png'
 
 /**
  * 회원가입 또는 로그인 폼을 보여줍니다.
@@ -22,7 +23,7 @@ const AuthFormBlock = styled.div`
     align-items: center;
   }
   // 로그인
-  &.jc-2 {
+  &.jc-8 {
     justify-content: center;
   }
 
@@ -89,26 +90,28 @@ const FormBtn = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 4vmin;
-  font-weight: bold;
-  width: 20vw;
+  font-size: 4.5vmin;
+  /* font-weight: bold; */
+  width: 15vw;
   height: 10vh;  
-  margin-top: 2vh;
-  color: white;  
+  margin-top: 3vh;
+  padding-bottom: 5vh;
+  color: #412E22; 
   cursor: pointer;
-  background: #29231C;
-  border: 3px solid #b39860;
+  background: url(${btnBack}) center no-repeat;
+  background-size: 15vw 6vh;
+  /* border: 3px solid #b39860; */
   border-radius: 5px;  
-  &:hover {
-    background: #E2D6BA;
-    color: black;
-    border: 3px solid #29231C;
-  }
+  :hover {
+    transform: scale(1.1);
+    transition: transform .2s;
+    color: white;
+  } 
 `
   
 
 const textMap = {
-  login: '입장',
+  login: '모험 기지 입장',
   register: '모험가 등록'
 };
 

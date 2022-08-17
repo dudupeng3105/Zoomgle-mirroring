@@ -20,9 +20,12 @@ import homePageSound from '../../media/sounds/03_homePage.wav';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { authActions } from '../../store/auth-slice';
+import { useState } from 'react';
+import CheckCloseModal from '../utils/CheckCloseModal';
 
 const HeaderBlock = styled.div`
   position: fixed;
+  z-index: 6;
   display: flex;
   flex-direction: column;
   width: 18vw;
@@ -85,14 +88,14 @@ const MenuBox = styled.div`
   justify-content: start;
   /* border: 3px solid skyblue; */
   height: 38vh;
-  `;
-  /* background: yellow;   */
+`;
+/* background: yellow;   */
 
 const LogoutButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 3.5vmin;  
+  font-size: 3.5vmin;
   width: 18vw;
   height: 8vh;
   margin-left: 0.5vw;
@@ -100,13 +103,13 @@ const LogoutButton = styled.div`
   background: url(${logout}) no-repeat center;
   /* background-color: #352208; */
   background-size: 6vw 6vh;
-  color: black;  
+  color: black;
   padding-bottom: 6vh;
   margin-top: 6vh;
   /* border: 2px red solid; */
   cursor: pointer;
   &:hover {
-    transform:scale(1.2);
+    transform: scale(1.2);
   }
 `;
 
@@ -125,16 +128,22 @@ const Spacer = styled.div`
 //   background: #e2d6ba;
 // `;
 
-
 const Header = () => {
   const [nextPagePlay, setNextPagePlay] = useState(true);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { nickname,profileImgNum } = useSelector((state) => ({
+  const { nickname, profileImgNum } = useSelector((state) => ({
     nickname: state.auth.user.nickname,
-    profileImgNum: state.auth.user.profileImgNum
+    profileImgNum: state.auth.user.profileImgNum,
   }));
+  const [logoutCheckModal, setLogoutCheckModal] = useState(false);
+  const logoutHandler = () => {
+    dispatch(authActions.logout());
+    navigate('/');
+    // 새로고침해야 데이터 안 남아있음
+    window.location.reload();
+  };
 
   return (
     <>
@@ -153,8 +162,21 @@ const Header = () => {
           volumeNum={0.3}
         >
         </ReactAudioPlayer>
+        {logoutCheckModal ? (
+          <CheckCloseModal
+            title={'로그아웃'}
+            content={'모험을 종료하시겠습니까?'}
+            deleteFunction={logoutHandler}
+            modalCloseToggle={setLogoutCheckModal}
+          ></CheckCloseModal>
+        ) : (
+          ''
+        )}
         <ProfileBox>
-          <ProfileLogo onClick={() => navigate('/mypage')} className={`profileImg${profileImgNum%6}`}>
+          <ProfileLogo
+            onClick={() => navigate('/mypage')}
+            className={`profileImg${profileImgNum % 6}`}
+          >
             {/* <h2>이미지 : {profileImgNum}</h2> */}
             {/* <h2>닉네임: {nickname}</h2> */}
           </ProfileLogo>
@@ -166,16 +188,9 @@ const Header = () => {
           <HeaderMenu to="/pictures/" MenuName={'모험일지'}></HeaderMenu>
           <HeaderMenu to="/profile/" MenuName={'내 정보'}></HeaderMenu>
         </MenuBox>
-        <LogoutButton onClick={() => 
-            {
-              dispatch(authActions.logout())
-              navigate('/')
-              // 새로고침해야 데이터 안 남아있음
-              window.location.reload();
-            }
-          }>퇴장
-          </LogoutButton>
-        
+        <LogoutButton onClick={() => setLogoutCheckModal(true)}>
+          퇴장
+        </LogoutButton>
       </HeaderBlock>
       <Spacer />
       {/* <Separator /> */}

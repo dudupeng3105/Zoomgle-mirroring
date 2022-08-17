@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import background from '../../media/images/Papyrus.png'
-import menuImage1 from '../../media/images/startMenuSignup.png'
-import menuImage2 from '../../media/images/startMenuLogin.png'
+import menuImage1 from '../../media/images/startMenuSignup1.png'
+import menuImage2 from '../../media/images/startMenuLogin1.png'
 import { Link } from "react-router-dom";
 
 const StartPageModalBlock = styled.div`

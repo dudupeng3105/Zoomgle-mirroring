@@ -10,6 +10,9 @@ import { useNavigate } from '../../../node_modules/react-router-dom/index';
 import ReactAudioPlayer from '../utils/reactAudioPlayer';
 import mvpBgmSound from '../../media/sounds/17_mvpBgm.wav';
 import gameBgmSound from '../../media/sounds/09_gameBgm.wav';
+import MvpStone from '../../media/images/MvpStone.png'
+import gameSetAnimation from '../../media/images/gameSetAnimation.gif';
+import album from '../../media/images/album.png'
 
 const MvpPhaseComponentBlock = styled.div`
   width: 100vw;
@@ -63,39 +66,39 @@ const MvpSpeechSkipBtn = styled.div`
   position: absolute;
   left: 43vw;
   top: 80vh;
+  padding-right: 0.5vw;
+  padding-top: 0.2vh;
   display: flex;
   justify-content: center;
+  align-items: center;  
+  background: url(${MvpStone});
+  background-size: 15vw 10vh;
   width: 15vw;
-  height: 10vh;
-  align-items: center;
-  background-color: #4E5180;
-  color: white;
-  border-radius: 5px;
-  border: 2px solid white;  
-  font-size: 3vmin;
-  text-align: center;
-  &:hover {
-    background-color: white;
-    border: 2px solid #4E5180;
-    color: #4E5180;
+  height: 10vh;  
+  color: white;  
+  font-size: 5vmin;    
+  :hover {
+    transform: scale(1.05);
+  }
+  :active {
+    transform: scale(0.95);
   }
 `
 
 const PictureSelectBoard = styled.div`  
   position: absolute;
   display: flex;
+  background: url(${album});
+  background-size: 60vw 65vh;
   top: 17vh;
-  left: 25vw;
-  width: 54vw;
-  height: 60vh;
+  left: 22vw;
+  width: 60vw;
+  height: 65vh;
   display: flex;
   flex-wrap: wrap;
   overflow: auto;
-  justify-content: center;
-  background-color: #c9a959;
-  border: 2px solid black;
-  border-radius: 5px;
-  padding-bottom: 5vh;  
+  justify-content: center;  
+  padding-top: 3vh;
 `;
 
 const PictureContainer = styled.div`
@@ -194,8 +197,8 @@ const GameOverLoading = styled.div`
   left: 25vw;
   width: 54vw;
   height: 60vh;  
-  background-color: grey;
-  border: 2px solid black;
+  background: url(${gameSetAnimation});
+  background-size: 54vw 60vh;  
   border-radius: 5px;
   padding-bottom: 5vh;
 `;
@@ -394,7 +397,7 @@ const MvpPhaseComponent = ({
       ></ReactAudioPlayer>
       {mainStreamManager !== undefined ? (
         isGameOver ? (
-          <GameOverLoading>{timeLeft}</GameOverLoading>
+          <GameOverLoading></GameOverLoading>
         ) : isMvpSpeechDone ? (
           <PictureSelectBoard>
             {pictureList.map((picture, idx) => (

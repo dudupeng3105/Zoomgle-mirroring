@@ -6,9 +6,11 @@ import { minigameList } from './minigameList';
 import html2canvas from 'html2canvas';
 import { useDispatch } from 'react-redux';
 import { gameRoomActions } from '../../store/gameRoom-slice';
-import cameraBtn from '../../media/images/cameraBtn.PNG';
+import cameraBtn from '../../media/images/cameraBtn.png';
 import mainStreamerBorderStone from '../../media/images/mainStreamerBorderStone.png';
 import mvpRibbon from '../../media/images/mvpRibbon.png';
+import nameStone from '../../media/images/nameStone.png';
+import timeStone from '../../media/images/timeStone.png';
 
 import gameAlertSound from '../../media/sounds/12_gameAlert.wav';
 import countDownSound from '../../media/sounds/13_countDown.wav';
@@ -39,9 +41,9 @@ const MinigameInfo = styled.div`
   flex-direction: column;
   align-items: center;  
   background-color: transparent;
-  top: 21vh;
+  top: 15vh;
   width: 32vw;
-  height: 20vh;
+  height: 60vh;
   color: #4adede;
   font-size: 2rem;
   & p {
@@ -52,35 +54,47 @@ const MinigameInfo = styled.div`
 const AgreeDisagreeBtnContainer = styled.div`  
   position: absolute;
   z-index: 15;
-  top: 45vh;
-  left: 12vw;  
-  width: 30vw;
+  top: 42vh;
+  left: 8vw;  
+  width: 40vw;
   height: 8vh;
   display: flex;
-  justify-content: center;
-  border: 1px solid blue;
+  justify-content: space-around;
+  /* background-color: yellow; */
+  /* border: 1px solid blue; */
   /* z-index: 20; */
 `;
 
 const MinigameBtn = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 1vh;
   cursor: pointer;  
-  width: 15vw;
+  width: 10vw;
   height: 10vh;
-  background-color: #2efb00;
+  background: url(${timeStone}) no-repeat center;
+  background-size: 10vw 10vh;
   text-align: center;
   font-size: 3rem;
-  color: black;
+  color: ${(props) => (props.textColor)};
+  :hover {
+    transform: scale(1.05);
+  }
+  :active {
+    transform: scale(0.95);
+  }
 `;
 
-const MinigameBtnRight = styled.div`
-  cursor: pointer;  
-  width: 15vw;
-  height: 10vh;
-  text-align: center;
-  background-color: #f90473;
-  font-size: 3rem;
-  color: black;
-`;
+// const MinigameBtnRight = styled.div`
+//   cursor: pointer;  
+//   width: 15vw;
+//   height: 10vh;
+//   text-align: center;
+//   background-color: #f90473;
+//   font-size: 3rem;
+//   color: black;
+// `;
 
 const VoteResultBoard = styled.div`
   display: flex;
@@ -93,15 +107,16 @@ const VoteResultBoard = styled.div`
 
 const CaptureBtn = styled.div`
   position: fixed;
+  z-index: 12;
   display: flex;
   justify-content: center;
   align-items: center;
-  right: 2vw;
-  top: 1vh;
+  left: 20vw;
+  top: 68vh;
   width: 8vw;
-  height: 15vh;
+  height: 10vh;
   background: url(${cameraBtn});
-  background-size: 8vw 15vh;
+  background-size: 8vw 10vh;
   /* background-color: #4E5180; */
   cursor: pointer;
   font-size: 4vmin;
@@ -109,17 +124,41 @@ const CaptureBtn = styled.div`
   &:hover {
     transform: rotate(-10deg);
   }
+  :active {
+    transform: rotate(10deg);
+  }
 `;
 
-const TurnInfoBox = styled.div`
+const VoteAnswer = styled.div`
   position: absolute;
-  top: 60vh;
+  z-index: 12;
+  top: 16vh;
+  left: -5vw;  
+  width: 40vw;
+  height: 8vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 56vw;
   color: white;
-  font-size: 3rem;
+  font-size: 5vmin;
+`
+
+const TurnInfoBox = styled.div`  
+  position: absolute;
+  width: 20vw;
+  height: 10vh;
+  top: 51vh;
+  left: 18vw;
+  padding-top: 0.5vh;
+  z-index: 11;
+  display: flex;
+  background: url(${nameStone});
+  /* border: 1px solid blue; */
+  background-size: 20vw 10vh;
+  justify-content: center;
+  align-items: center;  
+  color: white;
+  font-size: 6vmin;
 `;
 
 const MvpInfoBox = styled.div`
@@ -155,6 +194,41 @@ const MainBorderStone = styled.div`
   background-size: 55vw 60vh;
 `;
 
+const ExplanationInfo = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 45vw;
+  padding: 0 5vw;
+  height: 40vh;
+  background-color: #d0c28f; 
+  color: brown;
+  font-size: 6vmin;
+`;
+
+const MissionInfo = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 5vh 0;
+  width: 45vw;
+  height: 40vh;
+  background-color: transparent; 
+  color: brown;
+  font-size: 6vmin;
+`;
+
+const VoteInfoBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10vh 0;
+  width: 45vw;
+  height: 40vh;
+  background-color: #d0c28f; 
+  color: brown;
+  font-size: 6vmin;
+`;
+
 const MvpRibbon = styled.div`
   width: 60vw;
   height: 70vh;
@@ -166,10 +240,27 @@ const MvpRibbon = styled.div`
   background-size: 60vw 70vh;
 `;
 
+const TimeInfoBox = styled.div`
+  position: absolute;
+  z-index: 15;
+  left: 42vw;
+  top: 17vh;
+  width: 7vw;
+  height: 7vh;
+  background: url(${timeStone});
+  background-size: 7vw 7vh;
+  font-size: 7vmin;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: navy;
+`
+
 const CaptureAreaBox = styled.div`
-  width: 43vw;
+  width: 45vw;
   top: 2vh;
-  height: 44vh; /* border: 1px solid red; */  
+  height: 44vh; 
+  /* border: 1px solid red;   */
   display: flex;
   justify-content: center;
   display: relative;
@@ -186,12 +277,12 @@ const CaptureAreaBox = styled.div`
   }
 
   &.mainStreamer video {
-    width: 37vw;
+    width: 45vw;
     height: 41vh;
     cursor: initial;
     z-index: 2;
     object-fit: fill;
-    border-radius: 5%;
+    /* border-radius: 5%; */
   }
 
   &.mvpStreamer video {
@@ -201,6 +292,14 @@ const CaptureAreaBox = styled.div`
     cursor: initial;
     object-fit: fill;
     border-radius: 50%;
+  }
+
+  &.bright video {       
+    border: 5px solid yellow;
+  }
+
+  &.dark video {    
+    border: 5px solid blue;
   }
 `;
 
@@ -225,6 +324,7 @@ const MainUserVideoComponent = ({
   const [timeLeft, setTimeLeft] = useState(undefined);
   const [explanationOver, setExplanationOver] = useState(false);
   const [timeOver, setTimeOver] = useState(false);
+  const [beforeVoteOver, setBeforeVoteOver] = useState(false);
   const [voteOver, setVoteOver] = useState(false);
   const [checkResultOver, setCheckResultOver] = useState(false);
   const [voteSkip, setVoteSkip] = useState(false);
@@ -331,6 +431,10 @@ const MainUserVideoComponent = ({
       } else if (!timeOver) {
         setTimeOver(true); // 미션 끝
         setVoteResult(undefined);
+        return 5; // 투표 전 타임
+      } else if (!beforeVoteOver) {
+        setBeforeVoteOver(true); // 투표 전 타임 끝
+        // setVoteResult(undefined);
         return 20; // 투표 타임
       } else if (!voteOver) {
         setVoteOver(true);
@@ -429,19 +533,7 @@ const MainUserVideoComponent = ({
       setCheckResultOver(false);
       setTimeLeft(5); // 문제설명타임
       setIsVote(false);
-    } else {
-      return;
-    }
-  }, [isRoll]);
-
-  useEffect(() => {
-    if (isRoll) {
-      setExplanationOver(false);
-      setTimeOver(false);
-      setVoteOver(false);
-      setCheckResultOver(false);
-      setTimeLeft(5); // 문제설명타임
-      setIsVote(false);
+      setBeforeVoteOver(false);
     } else {
       return;
     }
@@ -461,6 +553,7 @@ const MainUserVideoComponent = ({
       }
       i++;
     }
+    setMvpEffect('');
   }, [isGameDone]);
 
   function playSound(soundName) {
@@ -471,65 +564,66 @@ const MainUserVideoComponent = ({
   return (
     <>
       {streamManager !== undefined ? (
-        <>
-          <StreamComponent>            
-            {timeOver & !voteOver & !isVote & (myTurnNum !== turnNum) ? (
-              <AgreeDisagreeBtnContainer>
-                <MinigameBtn onClick={() => voteHandler(1)}>go</MinigameBtn>
-                <MinigameBtn onClick={() => voteHandler(0)}>stay</MinigameBtn>
-                <MinigameBtnRight onClick={() => voteHandler(-1)}>
-                  back
-                </MinigameBtnRight>
-              </AgreeDisagreeBtnContainer>
+        <>          
+          <StreamComponent>
+            {timeOver &
+            !voteOver &
+            beforeVoteOver &
+            !isVote &
+            (myTurnNum !== turnNum) ? (
+              <>
+                <VoteAnswer>{minigameInfo[0]}</VoteAnswer>
+                <AgreeDisagreeBtnContainer>                                
+                  {/* <p>투표 수: {vote.length}</p> */}
+                  <MinigameBtn textColor={'#005f04'} onClick={() => voteHandler(1)}>GO</MinigameBtn>
+                  <MinigameBtn textColor={'#Eabe11'} onClick={() => voteHandler(0)}>STAY</MinigameBtn>
+                  <MinigameBtn textColor={'#9c1b2b'} onClick={() => voteHandler(-1)}>
+                    BACK
+                  </MinigameBtn>
+                </AgreeDisagreeBtnContainer>
+              </>
             ) : (
               ''
             )}
             {isMvpPhase ? <MvpRibbon /> : <MainBorderStone></MainBorderStone>}
-            <CaptureAreaBox className={mainStreamer} ref={mainScreen}>
+            {/* {isRoll ? <MissonInfo></MissonInfo> : ''} */}
+            <CaptureAreaBox
+              className={`${mainStreamer} ${mvpEffect}`}
+              ref={mainScreen}
+            >               
+              {!isMvpPhase ? <TimeInfoBox>{timeLeft}</TimeInfoBox> : ''}
               {isRoll ? (
                 <MinigameInfo>
-                  <p>남은 시간 : {timeLeft}</p>
-                  {explanationOver ? '' : <p>{minigameInfo[3]}</p>}
+                  {explanationOver ? (
+                    ''
+                  ) : (
+                    <ExplanationInfo>{minigameInfo[3]}</ExplanationInfo>
+                  )}
 
                   {/* 그려서 맞히기의 경우 현재 턴인 사람에게만 띄움 */}
                   {explanationOver & !timeOver ? (
                     !minigameInfo[2] ? (
                       turnNum === myTurnNum ? (
-                        <p>{minigameInfo[0]}</p>
+                        <MissionInfo>{minigameInfo[0]}</MissionInfo>
                       ) : (
                         ''
                       )
                     ) : (
-                      ''
+                      <MissionInfo>{minigameInfo[0]}</MissionInfo>
                     )
                   ) : (
                     ''
                   )}
-                  {timeOver & !voteOver ? (
-                    <>
-                      <p>투표시간입니다</p>
-                      <p>투표 수: {vote.length}</p>
+                  {timeOver & !beforeVoteOver ? (
+                    <VoteInfoBox>
+                      <p>{nextPlayer}의 운명을 결정지을 투표가 시작된다.</p>
                       {!minigameInfo[2] ? (
-                        <p>뭘 그리는 거 였을까요?{minigameInfo[0]}</p>
+                        <p>정답은?&nbsp;{minigameInfo[0]}이다.</p>
                       ) : (
                         ''
                       )}
-                      {/* {!isVote & (myTurnNum !== turnNum) ? (
-                        <AgreeDisagreeBtnContainer>
-                          <MinigameBtn onClick={() => voteHandler(1)}>
-                            go
-                          </MinigameBtn>
-                          <MinigameBtn onClick={() => voteHandler(0)}>
-                            stay
-                          </MinigameBtn>
-                          <MinigameBtnRight onClick={() => voteHandler(-1)}>
-                            back
-                          </MinigameBtnRight>
-                        </AgreeDisagreeBtnContainer>
-                      ) : (
-                        ''
-                      )} */}
-                    </>
+                      <p>그는 지령을 잘 수행하였는가?</p>
+                    </VoteInfoBox>
                   ) : (
                     ''
                   )}
@@ -544,8 +638,8 @@ const MainUserVideoComponent = ({
                           {voteResult === 1
                             ? 'go'
                             : voteResult === -1
-                            ? 'back'
-                            : 'stay'}
+                              ? 'back'
+                              : 'stay'}
                         </p>
                         {vote.map((thisVote, idx) => (
                           <p key={`vote${idx}`}>
@@ -553,8 +647,8 @@ const MainUserVideoComponent = ({
                             {thisVote[1] === 1
                               ? 'go'
                               : thisVote[1] === -1
-                              ? 'back'
-                              : 'stay'}
+                                ? 'back'
+                                : 'stay'}
                           </p>
                         ))}
                       </VoteResultBoard>
@@ -572,7 +666,7 @@ const MainUserVideoComponent = ({
           {isGameDone ? (
             <MvpInfoBox className={mvpEffect}>{nextPlayer}!!</MvpInfoBox>
           ) : (
-            <TurnInfoBox>{nextPlayer}씨 당신차례입니다.</TurnInfoBox>
+            <TurnInfoBox>{nextPlayer}</TurnInfoBox>
           )}
           <CaptureBtn onClick={() => onCapture()}></CaptureBtn>
         </>

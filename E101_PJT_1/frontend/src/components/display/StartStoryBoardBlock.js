@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import background from '../../media/images/back_long1.jpg'
+import background from '../../media/images/back_long.jpg'
 
 const StartStoryBoardBlockBlock = styled.div`
   width: 100%;
