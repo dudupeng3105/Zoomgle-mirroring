@@ -268,7 +268,6 @@ const MvpPhaseComponent = ({
   const dispatch = useDispatch();
   const pictureList = useSelector((state) => state.gameRoom.gameTotalPicture);  
   const [timeLeft, setTimeLeft] = useState(10);
-  const [backSoundPlay, setBackSoundPlay] = useState(false);
   const [picturePickExplain, setPicturePickExplain] = useState(false);
 
   const calculateTimeLeft = () => {
@@ -411,13 +410,13 @@ const MvpPhaseComponent = ({
       <ReactAudioPlayer
         urlSound={mvpBgmSound}
         isLoop={true}
-        isPlaying={!backSoundPlay}
+        isPlaying={!isMvpSpeechDone}
         volumeNum={0.5}
       ></ReactAudioPlayer>
       <ReactAudioPlayer
         urlSound={gameBgmSound}
         isLoop={true}
-        isPlaying={backSoundPlay}
+        isPlaying={isMvpSpeechDone}
         volumeNum={0.5}
       ></ReactAudioPlayer>
       {mainStreamManager !== undefined ? (
@@ -490,15 +489,13 @@ const MvpPhaseComponent = ({
         </MvpShowUsersContainer>
       ))}
       {(nextPlayer === myUserNameValue) & !isMvpSpeechDone ? (
-        <MvpSpeechSkipBtn onClick={() => {
-          setBackSoundPlay(true);
-          onClickNextPhase()}}
-        >
+        <MvpSpeechSkipBtn onClick={() => onClickNextPhase()} >
           소감종료
         </MvpSpeechSkipBtn>
       ) : (
         ''
       )}
+<<<<<<< HEAD
       {/* <MvpSpeechSkipBtn onClick={() => setPicturePickExplain(true)}>
        {picturePickExplain}사진 고르기
       </MvpSpeechSkipBtn> */}
@@ -506,6 +503,13 @@ const MvpPhaseComponent = ({
         사진 고르기{picturePickExplain}
       </MvpSpeechSkipBtn> : ''}
       {isMvpSpeechDone & picturePickExplain &(myUserNameValue===sessionHost) ? (
+=======
+      {isMvpSpeechDone & !picturePickExplain ? <MvpSpeechSkipBtn onClick={() => setPicturePickExplain(true)}>
+        사진 고르기{}
+      </MvpSpeechSkipBtn> : ''}
+      {isMvpSpeechDone & (myUserNameValue===sessionHost) 
+      & picturePickExplain & !isGameOver ? (
+>>>>>>> b132acf8a169c4ff192dd263a05c385130222da6
         <MvpSpeechSkipBtn onClick={() => onClickGameOver()}>
           사진선택 종료
         </MvpSpeechSkipBtn>

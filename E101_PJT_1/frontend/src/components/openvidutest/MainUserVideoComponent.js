@@ -12,6 +12,7 @@ import mvpRibbon from '../../media/images/mvpRibbon.png';
 import nameStone from '../../media/images/nameStone.png';
 import timeStone from '../../media/images/timeStone.png';
 
+import btnClickSound from '../../media/sounds/05_btn.wav';
 import gameAlertSound from '../../media/sounds/12_gameAlert.wav';
 import countDownSound from '../../media/sounds/13_countDown.wav';
 import voteSuccessSound from '../../media/sounds/14_voteSuccess.wav';
@@ -399,6 +400,33 @@ const MainUserVideoComponent = ({
       // go
       const myPos = posList[myTurnNum];
       nextPosList[myTurnNum] = myPos + 1;
+      // go했는데 20이면 게임 종료 mvp는 myTurnNum인 사람
+      let sendData = {};
+      if (myPos + 1 > 19) {
+        nextPosList[myTurnNum] = 19;
+        sendData = {
+          session: mySessionIdValue,
+          to: [], // all user
+          data: JSON.stringify({
+            // nextUserName: nextUserName, // 다음사람
+            // nextTurn: nextTurn, // 다음 턴
+            nextIsRoll: false,
+            nextIsGameDone: true,
+            nextPosList: nextPosList, // 자리 업데이트                    
+          }),
+          type: 'GAME_STATE_DONE_GO',
+        }
+
+        fetch('https://i7e101.p.ssafy.io:4443/openvidu/api/signal', {
+          method: 'POST',
+          headers: {
+            Authorization: 'Basic ' + btoa('OPENVIDUAPP:e101ssafy71'),
+            'Content-type': 'application/json',
+          },
+          body: JSON.stringify(sendData),
+        });
+        return;
+      }
     } else if (voteResult === -1) {
       // back
       const myPos = posList[myTurnNum];
@@ -437,7 +465,7 @@ const MainUserVideoComponent = ({
         setVoteSkip(false);
         return 5; // 결과확인타임
       }
-      if(timeLeft === 5 & !timeOver & explanationOver) {
+      if (timeLeft === 5 & !timeOver & explanationOver) {
         playSound(countDownSound);
       }
       return timeLeft - 1;
@@ -445,6 +473,7 @@ const MainUserVideoComponent = ({
       // console.warn("현재남은시간", timeLeft);
       if (!explanationOver) {
         setExplanationOver(true); // 설명 끝
+        playSound(gameAlertSound); // 미션 시작 gameAlertSound
         return minigameInfo[1]; // 미션타임
       } else if (!timeOver) {
         setTimeOver(true); // 미션 끝
@@ -453,6 +482,7 @@ const MainUserVideoComponent = ({
       } else if (!beforeVoteOver) {
         setBeforeVoteOver(true); // 투표 전 타임 끝
         // setVoteResult(undefined);
+        playSound(gameAlertSound); // 투표 시작 gameAlertSound
         return 20; // 투표 타임
       } else if (!voteOver) {
         setVoteOver(true);
@@ -488,13 +518,13 @@ const MainUserVideoComponent = ({
     if (goNum > parseInt((playerNum - 1) / 2)) {
       // go한 사람이 전체 참여자의 과반수일 때
       setVoteResult(1);
-      setTimeout(()=> {
+      setTimeout(() => {
         playSound(voteSuccessSound);
       }, 1500);
     } else if (backNum > parseInt((playerNum - 1) / 2)) {
       // back한 사람이 전체 참여자의 과반수일 때
       setVoteResult(-1);
-      setTimeout(()=> {
+      setTimeout(() => {
         playSound(voteFailSound);
       }, 1500);
     } else {
@@ -552,6 +582,7 @@ const MainUserVideoComponent = ({
       setTimeLeft(5); // 문제설명타임
       setIsVote(false);
       setBeforeVoteOver(false);
+      playSound(gameAlertSound); // 문제 설명 시작 gameAlertSound
     } else {
       return;
     }
@@ -585,32 +616,17 @@ const MainUserVideoComponent = ({
         <>
           <StreamComponent>
             {timeOver &
-            !voteOver &
-            beforeVoteOver &
-            !isVote &
-            (myTurnNum !== turnNum) ? (
+              !voteOver &
+              beforeVoteOver &
+              !isVote &
+              (myTurnNum !== turnNum) ? (
               <>
                 <VoteAnswer>{minigameInfo[0]}</VoteAnswer>
                 <AgreeDisagreeBtnContainer>
                   {/* <p>투표 수: {vote.length}</p> */}
-                  <MinigameBtn
-                    textColor={'#005f04'}
-                    onClick={() => voteHandler(1)}
-                  >
-                    GO
-                  </MinigameBtn>
-                  <MinigameBtn
-                    textColor={'#Eabe11'}
-                    onClick={() => voteHandler(0)}
-                  >
-                    STAY
-                  </MinigameBtn>
-                  <MinigameBtn
-                    textColor={'#9c1b2b'}
-                    onClick={() => voteHandler(-1)}
-                  >
-                    BACK
-                  </MinigameBtn>
+                  <MinigameBtn textColor={'#005f04'} onClick={() => { playSound(btnClickSound); voteHandler(1); }}>GO</MinigameBtn>
+                  <MinigameBtn textColor={'#Eabe11'} onClick={() => { playSound(btnClickSound); voteHandler(0); }}>STAY</MinigameBtn>
+                  <MinigameBtn textColor={'#9c1b2b'} onClick={() => { playSound(btnClickSound); voteHandler(-1); }}>BACK</MinigameBtn>
                 </AgreeDisagreeBtnContainer>
               </>
             ) : (

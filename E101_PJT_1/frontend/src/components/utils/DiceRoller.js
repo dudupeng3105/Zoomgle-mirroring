@@ -44,7 +44,12 @@ const DiceRoller = ({
     let nextPosList = [...posList];
     nextPosList[myTurnNum] = tempPosNum;
     // 미니게임 랜덤
-    const nextMinigameType = Math.floor(Math.random() * 170) // 0 ~ 9 랜덤
+    // const nextMinigameType = Math.floor(Math.random() * 220) // 0 ~ 219 랜덤
+    let rand = Math.random() * 100;
+    const random = (Math.random() * 220) * (Math.random() * rand);
+    const nextMinigameType = Math.floor(random % 220) // 0 ~ 219 랜덤
+
+    console.error(nextMinigameType);
     let sendData = {};
     // 20칸이면 .. 우승자 나옴
     if (myPos + value > 19) {

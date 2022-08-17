@@ -254,6 +254,15 @@ const OpenViduBlock = ({
     });
 
     // 보드게임 종료 알림
+    mySession.on('GAME_STATE_DONE_GO', (data) => {
+      console.warn('투표상황 업데이트..');
+      const { nextIsGameDone, nextPosList, nextIsRoll } = JSON.parse(data.data);
+      setIsRoll(nextIsRoll);
+      setPosList(nextPosList);
+      setIsGameDone(nextIsGameDone);
+    });
+
+    // 보드게임 종료 알림
     mySession.on('GAME_STATE_DONE', (data) => {
       console.warn('보드게임종료..');
       const { nextIsGameDone, nextPosList } = JSON.parse(data.data);
