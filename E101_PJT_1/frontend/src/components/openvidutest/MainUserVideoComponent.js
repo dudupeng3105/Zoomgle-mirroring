@@ -6,7 +6,7 @@ import { minigameList } from './minigameList';
 import html2canvas from 'html2canvas';
 import { useDispatch } from 'react-redux';
 import { gameRoomActions } from '../../store/gameRoom-slice';
-import cameraBtn from '../../media/images/cameraBtn.png';
+import cameraBtn from '../../media/images/cameraButton.png';
 import mainStreamerBorderStone from '../../media/images/mainStreamerBorderStone.png';
 import mvpRibbon from '../../media/images/mvpRibbon.png';
 import nameStone from '../../media/images/nameStone.png';
@@ -100,11 +100,24 @@ const MinigameBtn = styled.div`
 const VoteResultBoard = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: yellow;
-  color: black;
-  width: 30vw;
-  height: 30vh;
+  justify-content: center;
+  width: 45vw;
+  padding: 0 5vw;
+  height: 40vh;
+  background-color: #d0c28f; 
+  color: brown;
+  font-size: 6vmin;
 `;
+
+const VoteResultComment = styled.div`
+  display: flex;
+  width: 35vw;
+  height: 5vh;
+  justify-content: center;
+  align-items: center;
+  color: ${(props) => props.textColor};
+  font-size: 5vmin;
+`
 
 const CaptureBtn = styled.div`
   position: fixed;
@@ -134,11 +147,12 @@ const VoteAnswer = styled.div`
   position: absolute;
   z-index: 12;
   top: 16vh;
-  left: -5vw;  
-  width: 40vw;
-  height: 8vh;
+  left: 7vw;  
+  width: 25vw;
+  /* border: 1px solid blue; */
+  height: 10vh;
   display: flex;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
   color: white;
   font-size: 5vmin;
@@ -193,6 +207,7 @@ const MainBorderStone = styled.div`
   align-items: center;
   background: url(${mainStreamerBorderStone});
   background-size: 55vw 60vh;
+  margin-right: 1vw;
 `;
 
 const ExplanationInfo = styled.div`
@@ -222,12 +237,15 @@ const VoteInfoBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10vh 0;
+  padding: 10vh 5vw;
   width: 45vw;
   height: 40vh;
   background-color: #d0c28f; 
   color: brown;
-  font-size: 6vmin;
+  font-size: 4vmin;
+  & p {
+    font-size:5vmin;
+  }
 `;
 
 const MvpRibbon = styled.div`
@@ -568,7 +586,7 @@ const MainUserVideoComponent = ({
   return (
     <>
       {streamManager !== undefined ? (
-        <>          
+        <>
           <StreamComponent>
             {timeOver &
             !voteOver &
@@ -577,7 +595,7 @@ const MainUserVideoComponent = ({
             (myTurnNum !== turnNum) ? (
               <>
                 <VoteAnswer>{minigameInfo[0]}</VoteAnswer>
-                <AgreeDisagreeBtnContainer>                                
+                <AgreeDisagreeBtnContainer>
                   {/* <p>투표 수: {vote.length}</p> */}
                   <MinigameBtn textColor={'#005f04'} onClick={() => {playSound(btnClickSound); voteHandler(1);}}>GO</MinigameBtn>
                   <MinigameBtn textColor={'#Eabe11'} onClick={() => {playSound(btnClickSound); voteHandler(0);}}>STAY</MinigameBtn>
@@ -592,7 +610,7 @@ const MainUserVideoComponent = ({
             <CaptureAreaBox
               className={`${mainStreamer} ${mvpEffect}`}
               ref={mainScreen}
-            >               
+            >
               {!isMvpPhase ? <TimeInfoBox>{timeLeft}</TimeInfoBox> : ''}
               {isRoll ? (
                 <MinigameInfo>
@@ -620,7 +638,9 @@ const MainUserVideoComponent = ({
                     <VoteInfoBox>
                       <p>{nextPlayer}의 운명을 결정지을 투표가 시작된다.</p>
                       {!minigameInfo[2] ? (
-                        <p>정답은?&nbsp;{minigameInfo[0]}이다.</p>
+                        <VoteResultComment textColor={'#a70000'}>
+                          정답은?&nbsp;{minigameInfo[0]}이다.
+                        </VoteResultComment>
                       ) : (
                         ''
                       )}
@@ -635,15 +655,71 @@ const MainUserVideoComponent = ({
                       (결과확인타임)다음턴으로 넘어가기
                     </MinigameBtn> */}
                       <VoteResultBoard>
-                        <p>
-                          최종결과:{' '}
-                          {voteResult === 1
-                            ? 'go'
-                            : voteResult === -1
-                              ? 'back'
-                              : 'stay'}
-                        </p>
-                        {vote.map((thisVote, idx) => (
+                        {voteResult === -1 ? (
+                          <>
+                            <VoteResultComment textColor={'#412e22'}>
+                              절망하고, 주저앉아라
+                            </VoteResultComment>
+                            <VoteResultComment textColor={'#a70000'}>
+                              뒤로 한칸
+                            </VoteResultComment>
+                            <VoteResultComment textColor={'#365a2a'}>
+                              당신의 발을 묶어둔 자:
+                            </VoteResultComment>
+                          </>
+                        ) : (
+                          ''
+                        )}
+                        {voteResult === 0 ? (
+                          <>
+                            <VoteResultComment textColor={'#412e22'}>
+                              그저 불행을 피했을 뿐이다
+                            </VoteResultComment>
+                            <VoteResultComment textColor={'#03035e'}>
+                              그대로
+                            </VoteResultComment>
+                          </>
+                        ) : (
+                          ''
+                        )}
+                        {voteResult === 1 ? (
+                          <>
+                            <VoteResultComment textColor={'#412e22'}>
+                              행운의 신이 너의 편이다
+                            </VoteResultComment>
+                            <VoteResultComment textColor={'#365a2a'}>
+                              앞으로 한칸
+                            </VoteResultComment>
+                            <VoteResultComment textColor={'#365a2a'}>
+                              당신의 뒤를 밀어준 자:
+                            </VoteResultComment>
+                          </>
+                        ) : (
+                          ''
+                        )}
+                        {voteResult === undefined ? (
+                          <VoteResultComment textColor={'#365a2a'}>
+                            아무도 너에게 관심이 없다.
+                          </VoteResultComment>
+                        ) : (
+                          ''
+                        )}
+                        <VoteResultComment>
+                          {vote
+                            .filter(
+                              (thisVote) => Number(thisVote[1]) === voteResult,
+                            )
+                            .map((thisVote, idx) => {
+                              if (voteResult === -1) {
+                                return `${thisVote[0]} `;
+                              } else if (voteResult === 0) {
+                                return '';
+                              } else {
+                                return `${thisVote[0]} `;
+                              }
+                            })}
+                        </VoteResultComment>
+                        {/* {vote.map((thisVote, idx) => (
                           <p key={`vote${idx}`}>
                             {thisVote[0]}의 선택:{' '}
                             {thisVote[1] === 1
@@ -652,7 +728,7 @@ const MainUserVideoComponent = ({
                                 ? 'back'
                                 : 'stay'}
                           </p>
-                        ))}
+                        ))} */}
                       </VoteResultBoard>
                     </>
                   ) : (
