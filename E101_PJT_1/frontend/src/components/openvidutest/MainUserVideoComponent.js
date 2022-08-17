@@ -400,6 +400,7 @@ const MainUserVideoComponent = ({
       // go
       const myPos = posList[myTurnNum];
       nextPosList[myTurnNum] = myPos + 1;
+      // go했는데 20이면 게임 종료 mvp는 myTurnNum인 사람
     } else if (voteResult === -1) {
       // back
       const myPos = posList[myTurnNum];
