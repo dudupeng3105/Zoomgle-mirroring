@@ -465,7 +465,7 @@ const MainUserVideoComponent = ({
         setVoteSkip(false);
         return 5; // 결과확인타임
       }
-      if(timeLeft === 5 & !timeOver & explanationOver) {
+      if (timeLeft === 5 & !timeOver & explanationOver) {
         playSound(countDownSound);
       }
       return timeLeft - 1;
@@ -518,13 +518,13 @@ const MainUserVideoComponent = ({
     if (goNum > parseInt((playerNum - 1) / 2)) {
       // go한 사람이 전체 참여자의 과반수일 때
       setVoteResult(1);
-      setTimeout(()=> {
+      setTimeout(() => {
         playSound(voteSuccessSound);
       }, 1500);
     } else if (backNum > parseInt((playerNum - 1) / 2)) {
       // back한 사람이 전체 참여자의 과반수일 때
       setVoteResult(-1);
-      setTimeout(()=> {
+      setTimeout(() => {
         playSound(voteFailSound);
       }, 1500);
     } else {
@@ -616,17 +616,17 @@ const MainUserVideoComponent = ({
         <>
           <StreamComponent>
             {timeOver &
-            !voteOver &
-            beforeVoteOver &
-            !isVote &
-            (myTurnNum !== turnNum) ? (
+              !voteOver &
+              beforeVoteOver &
+              !isVote &
+              (myTurnNum !== turnNum) ? (
               <>
                 <VoteAnswer>{minigameInfo[0]}</VoteAnswer>
                 <AgreeDisagreeBtnContainer>
                   {/* <p>투표 수: {vote.length}</p> */}
-                  <MinigameBtn textColor={'#005f04'} onClick={() => {playSound(btnClickSound); voteHandler(1);}}>GO</MinigameBtn>
-                  <MinigameBtn textColor={'#Eabe11'} onClick={() => {playSound(btnClickSound); voteHandler(0);}}>STAY</MinigameBtn>
-                  <MinigameBtn textColor={'#9c1b2b'} onClick={() => {playSound(btnClickSound); voteHandler(-1);}}>BACK</MinigameBtn>
+                  <MinigameBtn textColor={'#005f04'} onClick={() => { playSound(btnClickSound); voteHandler(1); }}>GO</MinigameBtn>
+                  <MinigameBtn textColor={'#Eabe11'} onClick={() => { playSound(btnClickSound); voteHandler(0); }}>STAY</MinigameBtn>
+                  <MinigameBtn textColor={'#9c1b2b'} onClick={() => { playSound(btnClickSound); voteHandler(-1); }}>BACK</MinigameBtn>
                 </AgreeDisagreeBtnContainer>
               </>
             ) : (
