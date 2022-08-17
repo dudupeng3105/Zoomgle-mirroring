@@ -319,6 +319,9 @@ const MainUserVideoComponent = ({
         setVoteSkip(false);
         return 5; // 결과확인타임
       }
+      if(timeLeft === 5 & !timeOver & explanationOver) {
+        playSound(countDownSound);
+      }
       return timeLeft - 1;
     } else {
       // console.warn("현재남은시간", timeLeft);
@@ -363,11 +366,15 @@ const MainUserVideoComponent = ({
     if (goNum > parseInt((playerNum - 1) / 2)) {
       // go한 사람이 전체 참여자의 과반수일 때
       setVoteResult(1);
-      playSound(voteSuccessSound);
+      setTimeout(()=> {
+        playSound(voteSuccessSound);
+      }, 1500);
     } else if (backNum > parseInt((playerNum - 1) / 2)) {
       // back한 사람이 전체 참여자의 과반수일 때
       setVoteResult(-1);
-      playSound(voteFailSound);
+      setTimeout(()=> {
+        playSound(voteFailSound);
+      }, 1500);
     } else {
       // 그 외 모든 경우
       setVoteResult(0);

@@ -11,6 +11,7 @@ import WaitingRoom from './WaitingRoom';
 import MvpPhaseComponent from './MvpPhaseComponent';
 import { useSelector } from 'react-redux';
 
+import playerEnterSound from '../../media/sounds/07_playerEnter.wav';
 import moveSound from '../../media/sounds/11_move.wav';
 
 const OpenViduContainer = styled.div`
@@ -87,6 +88,7 @@ const OpenViduBlock = ({
 
   useEffect(() => {
     console.error('구성원바뀜', players);
+    playSound(playerEnterSound);
   }, [players]);
 
   useEffect(() => {
