@@ -20,7 +20,6 @@ import homePageSound from '../../media/sounds/03_homePage.wav';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { authActions } from '../../store/auth-slice';
-import { useState } from 'react';
 import CheckCloseModal from '../utils/CheckCloseModal';
 
 const HeaderBlock = styled.div`

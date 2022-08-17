@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import background from '../../media/images/albumSmaller.png'
-import { useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { gamePlanActions } from "../../store/gamePlan-slice";
 import { useEffect, useState } from "react";
 import arrowRight from "../../media/images/arrowRight.png";
@@ -106,24 +106,24 @@ const PicturesContent = () => {
 
   // 리스트 받아올때 마다
   useEffect(() => {
-    if (gameDoneList.length === 0){
+    if (gameDoneList.length === 0) {
       return;
     } else {
       dispatch(gamePlanActions.getGameDonePhotoStart(gameDoneList[0].roomCode))
-      const temp  = gameDoneList[0].playerList.map((player) => player.user)
+      const temp = gameDoneList[0].playerList.map((player) => player.user)
       setPlayerNames([...temp]);
-    }    
+    }
   }, [gameDoneList]);
-  
+
   // 인덱스 변경 시
   useEffect(() => {
-    if (gameDoneList.length === 0){
+    if (gameDoneList.length === 0) {
       return;
     } else {
       dispatch(gamePlanActions.getGameDonePhotoStart(gameDoneList[planIdx].roomCode))
-      const temp  = gameDoneList[planIdx].playerList.map((player) => player.user)
+      const temp = gameDoneList[planIdx].playerList.map((player) => player.user)
       setPlayerNames([...temp]);
-    }    
+    }
   }, [planIdx]);
 
   const onClickLeft = () => {
@@ -150,9 +150,9 @@ const PicturesContent = () => {
   return (
     gameDoneList.length ? (<PicturesContentBlock>
       <GameDayInfo>
-        <ArrowBtn onClick={() =>{onClickLeft(); btnClick();}} backImg={arrowLeft}></ArrowBtn>
+        <ArrowBtn onClick={() => { onClickLeft(); btnClick(); }} backImg={arrowLeft}></ArrowBtn>
         <p>{`${gameDoneList[planIdx].month}월 ${gameDoneList[planIdx].day}일 게임`}</p>
-        <ArrowBtn onClick={() => {onClickRight(); btnClick();}} backImg={arrowRight}></ArrowBtn>
+        <ArrowBtn onClick={() => { onClickRight(); btnClick(); }} backImg={arrowRight}></ArrowBtn>
       </GameDayInfo>
       <GamePlayerInfo>
         <p>MVP: {gameDoneList[planIdx].mvp}</p>
@@ -171,11 +171,11 @@ const PicturesContent = () => {
         )}
       </GameDoneBoard>
     </PicturesContentBlock>
-  ) : (
-    <PicturesContentBlock>
-      <BlankText>모험을 진행하고 일지를 작성하시오.</BlankText>
-    </PicturesContentBlock>
-  );
+    ) : (
+      <PicturesContentBlock>
+        <BlankText>모험을 진행하고 일지를 작성하시오.</BlankText>
+      </PicturesContentBlock>
+    ))
 };
 
 export default PicturesContent;
