@@ -6,7 +6,7 @@ import { minigameList } from './minigameList';
 import html2canvas from 'html2canvas';
 import { useDispatch } from 'react-redux';
 import { gameRoomActions } from '../../store/gameRoom-slice';
-import cameraBtn from '../../media/images/cameraBtn.png';
+import cameraBtn from '../../media/images/cameraButton.png';
 import mainStreamerBorderStone from '../../media/images/mainStreamerBorderStone.png';
 import mvpRibbon from '../../media/images/mvpRibbon.png';
 import nameStone from '../../media/images/nameStone.png';
