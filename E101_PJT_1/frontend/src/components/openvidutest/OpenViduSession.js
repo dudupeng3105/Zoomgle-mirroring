@@ -500,6 +500,7 @@ const OpenViduSession = ({
   minigameType,
   setMinigameType,
   whatDiceNum,
+  setWhatDiceNum
 }) => {
   // const [posNum, setPosNum] = useState(1);
   // 게임 진행 관련 변수들
@@ -516,11 +517,14 @@ const OpenViduSession = ({
     }, 8500);
   }, []);
 
-  useEffect(() => {
-    console.warn("쇼다이스넘")
+  useEffect(() => {    
+    if (whatDiceNum===0) {
+      return
+    }
     setShowDiceToggle(true);
     setTimeout(() => {
       setShowDiceToggle(false);
+      setWhatDiceNum(0);
     }, 4500);
   }, [whatDiceNum]);
 

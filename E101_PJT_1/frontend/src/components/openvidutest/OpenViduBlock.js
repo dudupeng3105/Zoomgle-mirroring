@@ -75,7 +75,7 @@ const OpenViduBlock = ({
   // MVP 및 사진 관련 변수들
   const [pictureVote, setPictureVote] = useState([]);
   // 주사위 몇 나왔는지 알려주기 위한 변수
-  const [whatDiceNum, setWhatDiceNum] = useState(1);
+  const [whatDiceNum, setWhatDiceNum] = useState(0);
 
   // componentDidMount() ==
   //  useEffect(() => { 여기에 코드를 적자  }, [])
@@ -593,6 +593,7 @@ const OpenViduBlock = ({
             players={players}
             subscribers={subscribers}
             whatDiceNum={whatDiceNum}
+            setWhatDiceNum={setWhatDiceNum}
           ></OpenViduSession>
         ) : (
           <WaitingRoom
