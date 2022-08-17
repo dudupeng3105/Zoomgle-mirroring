@@ -403,7 +403,6 @@ const MainUserVideoComponent = ({
       // go했는데 20이면 게임 종료 mvp는 myTurnNum인 사람
       let sendData = {};
       if (myPos + 1 > 19) {
-        console.error("@@@@@나 여기옴 ", myPos+1);
         nextPosList[myTurnNum] = 19;
         sendData = {
           session: mySessionIdValue,
@@ -411,10 +410,11 @@ const MainUserVideoComponent = ({
           data: JSON.stringify({
             // nextUserName: nextUserName, // 다음사람
             // nextTurn: nextTurn, // 다음 턴
+            nextIsRoll: false,
             nextIsGameDone: true,
             nextPosList: nextPosList, // 자리 업데이트                    
           }),
-          type: 'GAME_STATE_DONE',
+          type: 'GAME_STATE_DONE_GO',
         }
 
         fetch('https://i7e101.p.ssafy.io:4443/openvidu/api/signal', {
