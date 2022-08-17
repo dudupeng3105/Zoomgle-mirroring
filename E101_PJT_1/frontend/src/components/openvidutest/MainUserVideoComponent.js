@@ -11,7 +11,7 @@ import mainStreamerBorderStone from '../../media/images/mainStreamerBorderStone.
 import mvpRibbon from '../../media/images/mvpRibbon.png';
 import nameStone from '../../media/images/nameStone.png';
 import timeStone from '../../media/images/timeStone.png';
-
+import mainStreamerVoteStone from '../../media/images/mainStreamerVoteStone.png';
 import btnClickSound from '../../media/sounds/05_btn.wav';
 import gameAlertSound from '../../media/sounds/12_gameAlert.wav';
 import countDownSound from '../../media/sounds/13_countDown.wav';
@@ -112,7 +112,7 @@ const VoteResultBoard = styled.div`
 const VoteResultComment = styled.div`
   display: flex;
   width: 35vw;
-  height: 5vh;
+  height: 7vh;
   justify-content: center;
   align-items: center;
   color: ${(props) => props.textColor};
@@ -150,7 +150,7 @@ const VoteAnswer = styled.div`
   left: 7vw;  
   width: 25vw;
   /* border: 1px solid blue; */
-  height: 10vh;
+  height: 12vh;
   display: flex;
   justify-content: start;
   align-items: center;
@@ -208,6 +208,10 @@ const MainBorderStone = styled.div`
   background: url(${mainStreamerBorderStone});
   background-size: 55vw 60vh;
   margin-right: 1vw;
+  &.vote-time {
+    background: url(${mainStreamerVoteStone});
+    background-size: 55vw 60vh;
+  }
 `;
 
 const ExplanationInfo = styled.div`
@@ -273,6 +277,19 @@ const TimeInfoBox = styled.div`
   justify-content: center;
   align-items: center;
   color: navy;
+`
+
+const  DestinyTimeText = styled.div`
+  position: absolute;
+  z-index: 10;
+  top: 12vh;
+  width: 12vw;
+  height: 5vh;
+  font-size: 4.5vmin;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #412e22;
 `
 
 const CaptureAreaBox = styled.div`
@@ -632,7 +649,8 @@ const MainUserVideoComponent = ({
             ) : (
               ''
             )}
-            {isMvpPhase ? <MvpRibbon /> : <MainBorderStone></MainBorderStone>}
+            {isMvpPhase ? <MvpRibbon /> : <MainBorderStone className={timeOver & isRoll ? 'vote-time': ''}></MainBorderStone>}
+            {timeOver & isRoll ? <DestinyTimeText>운명의 시간</DestinyTimeText> : ''}
             {/* {isRoll ? <MissonInfo></MissonInfo> : ''} */}
             <CaptureAreaBox
               className={`${mainStreamer} ${mvpEffect}`}

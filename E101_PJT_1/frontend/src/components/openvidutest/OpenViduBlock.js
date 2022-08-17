@@ -74,6 +74,8 @@ const OpenViduBlock = ({
   const [isVote, setIsVote] = useState(false); // 투표했는지
   // MVP 및 사진 관련 변수들
   const [pictureVote, setPictureVote] = useState([]);
+  // 주사위 몇 나왔는지 알려주기 위한 변수
+  const [whatDiceNum, setWhatDiceNum] = useState(1);
 
   // componentDidMount() ==
   //  useEffect(() => { 여기에 코드를 적자  }, [])
@@ -213,11 +215,13 @@ const OpenViduBlock = ({
 
     // 주사위 동기화 ON
     mySession.on('GAME_STATE_CHANGED', (data) => {
-      console.warn('시그널 왔다 받아라..', players);
-      const { isRoll, nextPosList, nextMinigameType } = JSON.parse(data.data);
+      console.warn('시그널 왔다 받아라..', players);      
+      const { isRoll, nextPosList, nextMinigameType, nextwhatDiceNum } = JSON.parse(data.data);
+      console.warn(nextwhatDiceNum)
       setMinigameType(nextMinigameType);
       setPosList(nextPosList);
       setIsRoll(isRoll); // 주사위 돌렸다는 것이 미니게임의 시작을 알림
+      setWhatDiceNum(nextwhatDiceNum);
     });
 
     // 미니게임 결과 동기화 ON
@@ -588,6 +592,7 @@ const OpenViduBlock = ({
             publisher={publisher}
             players={players}
             subscribers={subscribers}
+            whatDiceNum={whatDiceNum}
           ></OpenViduSession>
         ) : (
           <WaitingRoom
