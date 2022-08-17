@@ -14,7 +14,7 @@ import profile5 from '../../media/images/profile6.png';
 import profileback from '../../media/images/profile_back1.png';
 import btnClickSound from '../../media/sounds/05_btn.wav';
 import copyrightBtn from '../../media/images/copyright.png'
-import copyrightBack from '../../media/images/Papyrus.png'
+import copyrightBack from '../../media/images/CCPapyrus.png'
 
 
 const ProfileContentModalBlock = styled.div`
@@ -390,7 +390,9 @@ const ProfileContentModal = () => {
 
   return (
     <ProfileContentModalBlock>
-      {copyRightModalToggle ? <CopyRightModal onClick={() => setCopyRightModalToggle(false)}></CopyRightModal> : ''}
+      {copyRightModalToggle ? <CopyRightModal onClick={() => setCopyRightModalToggle(false)}>
+        링크
+      </CopyRightModal> : ''}
       <ProfileContentModalBackGround>
         <ProfileContentBox>
           {!passwordChangeToggle ? (
@@ -430,10 +432,11 @@ const ProfileContentModal = () => {
                 </ProfileInfoRightBox>
                 <ProfileInfoSagaBox>
                   <div>
+                  벌써 &nbsp;
                     <div className="var-color">
                       {propfileInfo.pastGameCount}
                     </div>
-                    번째 모험 보고서
+                    번째 모험을 완료했다.
                   </div>
                   <div>
                     지금까지 &nbsp;
@@ -453,7 +456,7 @@ const ProfileContentModal = () => {
                     <div className="var-color">{propfileInfo.mvpCount}</div>번
                     '공략자'
                   </div>
-                  <div className="right">로서 모험을 종료했다.</div>
+                  <div className="right">로써 모험을 종료했다.</div>
                 </ProfileInfoSagaBox>
               </ProfileStoryContainer>
             </>
