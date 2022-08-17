@@ -706,24 +706,25 @@ const MainUserVideoComponent = ({
                             </VoteResultComment>
                           </>
                         ) : (
-                          <>
-                            <VoteResultComment textColor={'#412e22'}>
-                              아무도 너에게 관심이 없다.
-                            </VoteResultComment>
-                          </>
-                        )}                        
+                          ''
+                        )}
+                        {voteResult === undefined ? (
+                          <VoteResultComment textColor={'#365a2a'}>
+                            아무도 너에게 관심이 없다.
+                          </VoteResultComment>
+                        ) : (
+                          ''
+                        )}
                         <VoteResultComment>
                           {vote
-                            .filter((thisVote) => Number(thisVote[1]) === voteResult)
+                            .filter(
+                              (thisVote) => Number(thisVote[1]) === voteResult,
+                            )
                             .map((thisVote, idx) => {
                               if (voteResult === -1) {
-                                return (
-                                  `${thisVote[0]} `
-                                );
+                                return `${thisVote[0]} `;
                               } else if (voteResult === 0) {
-                                return (
-                                  ''
-                                );
+                                return '';
                               } else {
                                 return `${thisVote[0]} `;
                               }

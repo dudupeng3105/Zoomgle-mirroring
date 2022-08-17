@@ -64,7 +64,7 @@ const MainVideo = styled.div`
 const MvpSpeechSkipBtn = styled.div`
   cursor: pointer;
   position: absolute;
-  left: 43vw;
+  left: 45vw;
   top: 80vh;
   padding-right: 0.5vw;
   padding-top: 0.2vh;
@@ -85,7 +85,7 @@ const MvpSpeechSkipBtn = styled.div`
   }
 `
 
-const PictureSelectBoard = styled.div`  
+const PictureSelectCover = styled.div`  
   position: absolute;
   display: flex;
   background: url(${album});
@@ -97,8 +97,19 @@ const PictureSelectBoard = styled.div`
   display: flex;
   flex-wrap: wrap;
   overflow: auto;
-  justify-content: center;  
-  padding-top: 3vh;
+  justify-content: center;
+  padding-top: 5vh;
+`;
+
+const PictureSelectBoard = styled.div`
+  display: flex;
+  /* border: 1px solid blue; */
+  width: 55vw;
+  height: 50vh;
+  display: flex;
+  flex-wrap: wrap;
+  overflow: auto;
+  justify-content: center;
 `;
 
 const PictureContainer = styled.div`
@@ -152,6 +163,19 @@ const PictureImgBox = styled.div`
   &.vote-color-6 {
     border: 3px solid green;
   }     
+`
+
+const PicturePickExplainBox = styled.div`
+  position: absolute;
+  display: flex;
+  top: 17vh;
+  left: 25vw;
+  width: 54vw;
+  height: 60vh;  
+  background: url(${gameSetAnimation});
+  background-size: 54vw 60vh;  
+  border-radius: 5px;
+  padding-bottom: 5vh;
 `
 
 const MvpShowUsersContainer = styled.div`
@@ -245,6 +269,7 @@ const MvpPhaseComponent = ({
   const pictureList = useSelector((state) => state.gameRoom.gameTotalPicture);  
   const [timeLeft, setTimeLeft] = useState(10);
   const [backSoundPlay, setBackSoundPlay] = useState(false);
+  const [picturePickExplain, setPicturePickExplain] = useState(false);
 
   const calculateTimeLeft = () => {
     console.log(timeLeft);
@@ -398,8 +423,15 @@ const MvpPhaseComponent = ({
       {mainStreamManager !== undefined ? (
         isGameOver ? (
           <GameOverLoading></GameOverLoading>
-        ) : isMvpSpeechDone ? (
-          <PictureSelectBoard>
+        ) : isMvpSpeechDone ? !picturePickExplain ? (<>
+          <PicturePickExplainBox>          
+          </PicturePickExplainBox>
+          <MvpSpeechSkipBtn onClick={() => setPicturePickExplain(true)}>
+            사진 고르기{picturePickExplain}
+          </MvpSpeechSkipBtn>        
+        </>) : (
+          <PictureSelectCover>
+            <PictureSelectBoard>
             {pictureList.map((picture, idx) => (
               <PictureContainer
                 onClick={() => onClickPictureVote(idx, pictureList.length)}
@@ -412,7 +444,8 @@ const MvpPhaseComponent = ({
                 ></PictureImgBox>
               </PictureContainer>
             ))}
-          </PictureSelectBoard>
+            </PictureSelectBoard>
+          </PictureSelectCover>
         ) : (
           <MainVideo>
             {/* <p>메인스트리머</p> */}
@@ -469,7 +502,7 @@ const MvpPhaseComponent = ({
       ) : (
         ''
       )}
-      {isMvpSpeechDone ? (
+      {isMvpSpeechDone & (myUserNameValue===sessionHost) ? (
         <MvpSpeechSkipBtn onClick={() => onClickGameOver()}>
           사진선택 종료
         </MvpSpeechSkipBtn>
