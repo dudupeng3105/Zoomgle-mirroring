@@ -32,8 +32,8 @@ const DiceRoller = ({
 
     // 자리 계산
     const myPos = posList[myTurnNum];
-    if (value > 3) {
-      value = value - 3;
+    if (value > 4) {
+      value = value - 4;
     }
     // 테스트용 숫자(value 크게함)
     // value = value + 3;
@@ -76,6 +76,7 @@ const DiceRoller = ({
           nextPosList: nextPosList, // 자리 업데이트
           isRoll: !isRoll,
           nextMinigameType: nextMinigameType,
+          nextwhatDiceNum: value,
         }),
         type: 'GAME_STATE_CHANGED',
       };
@@ -91,7 +92,7 @@ const DiceRoller = ({
     });
   };
 
-  const faces = [dice1, dice2, dice3, dice1, dice2, dice4];
+  const faces = [dice1, dice2, dice3, dice4, dice1, dice2];
 
   return (
     <DiceRollerBlock>

@@ -294,7 +294,7 @@ const PlanGameDetail = () => {
       {modalToggle && (
         <FriendModalBack>
         <ModalTitle>동료 명단</ModalTitle>
-        <RoomCodeText>{gamePlanList[count].roomCode}번방</RoomCodeText>
+        <RoomCodeText>{currentRoomCode}번방</RoomCodeText>
         {modalEffect === 'success' ? (
           <ModalErrorText textColor=
           {'#e2d6ba'}>초대를 완료했다.</ModalErrorText>
