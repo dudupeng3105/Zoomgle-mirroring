@@ -12,6 +12,7 @@ import profile3 from '../../media/images/profile4.png';
 import profile4 from '../../media/images/profile5.png';
 import profile5 from '../../media/images/profile6.png';
 import profileback from '../../media/images/profile_back1.png';
+import btnClickSound from '../../media/sounds/05_btn.wav';
 
 const ProfileContentModalBlock = styled.div`
   width: 83vw;
@@ -350,6 +351,11 @@ const ProfileContentModal = () => {
     }
   };
 
+  function btnClick() {
+    var audio = new Audio(btnClickSound);
+    audio.play();
+  }
+
   return (
     <ProfileContentModalBlock>
       <ProfileContentModalBackGround>
@@ -369,7 +375,9 @@ const ProfileContentModal = () => {
                 </ChangePossibleInfo>
 
                 <PasswordChangeButton
-                  onClick={() => setpasswordChangeToggle(!passwordChangeToggle)}
+                  onClick={() => {
+                    btnClick();
+                    setpasswordChangeToggle(!passwordChangeToggle)}}
                   className={'profile-amend'}
                 >
                   회원정보 수정
@@ -419,12 +427,16 @@ const ProfileContentModal = () => {
             <>
               <ProfilePictureContainer>
                 <ProfileImgBox>
-                  <ProfileLeftBtn onClick={() => setImgNum((imgNum - 1) % 6)} />
+                  <ProfileLeftBtn onClick={() => {
+                    btnClick();
+                    setImgNum((imgNum - 1) % 6)}} />
                   <ProfileCenter
                     className={'profileImg' + imgNum}
                   ></ProfileCenter>
                   <ProfileRightBtn
-                    onClick={() => setImgNum((imgNum + 1) % 6)}
+                    onClick={() => {
+                      btnClick();
+                      setImgNum((imgNum + 1) % 6)}}
                   />
                 </ProfileImgBox>
               </ProfilePictureContainer>
@@ -468,11 +480,16 @@ const ProfileContentModal = () => {
                   <ErrorBox>{error}</ErrorBox>
                 </ErrorButtonBlock>
                 <AmendOverButtonContainer>
-                  <PasswordChangeButton onClick={() => profileChangeSubmit()}>
+                  <PasswordChangeButton onClick={() => {
+                    btnClick();
+                    profileChangeSubmit();}}
+                  >
                     수정 완료
                   </PasswordChangeButton>
                   <PasswordChangeButton
-                    onClick={() => setpasswordChangeToggle(!passwordChangeToggle)}
+                    onClick={() => {
+                      btnClick();
+                      setpasswordChangeToggle(!passwordChangeToggle)}}
                   >
                     수정 취소
                   </PasswordChangeButton>

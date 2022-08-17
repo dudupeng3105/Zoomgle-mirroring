@@ -20,6 +20,8 @@ import { gamePlanActions } from '../../store/gamePlan-slice';
 import ReactAudioPlayer from '../utils/reactAudioPlayer';
 import gameStartSound from '../../media/sounds/08_gameStart.wav';
 import homePageSound from '../../media/sounds/03_homePage.wav';
+import nextPageSound from '../../media/sounds/04_nextPage.wav';
+import btnClickSound from '../../media/sounds/05_btn.wav';
 
 const MyPageContentBlock = styled.div`
   display: flex;
@@ -307,7 +309,9 @@ const MyPageContent = () => {
   const gameDoneList = useSelector((state) => state.gamePlan.gameDoneList);
   const gameDonePhoto = useSelector((state) => state.gamePlan.gameDonePhoto);
   const [invitationIdx, setInvitationIdx] = useState(0);
-  const [backSoundPlay, setBackSoundPlay] = useState(false);
+  // const [backSoundPlay, setBackSoundPlay] = useState(true);
+  // const [nexyPagePlay, setNextPagePlay] = useState(false);
+  const [btnClickPlay, setBtnClickPlay] = useState(false);
 
   useEffect(() => {
     dispatch(gamePlanActions.getInvitaionListStart());
@@ -323,9 +327,6 @@ const MyPageContent = () => {
   useEffect(() => {
     dispatch(gamePlanActions.getGamePlanListStart());
     dispatch(gamePlanActions.getGameDoneListStart());   
-    setTimeout(() => {
-      setBackSoundPlay(true);
-    }, 8000); 
   }, []);
 
   useEffect(() => {
@@ -380,20 +381,38 @@ const MyPageContent = () => {
     navigate('/joingame');
   };
 
+  function btnClick() {
+    var audio = new Audio(btnClickSound);
+    audio.play();
+  }
+
   return (
     <MyPageContentBlock className={modalToggle ? 'darken-back' : ''}>
-      <ReactAudioPlayer
+      {/* <ReactAudioPlayer
         urlSound={gameStartSound}
         isLoop={false}
-        isPlaying={!backSoundPlay}
+        // isPlaying={!backSoundPlay}
+        isPlaying={false}
       >
       </ReactAudioPlayer>
       <ReactAudioPlayer
         urlSound={homePageSound}
         isLoop={true}
-        isPlaying={backSoundPlay}
-      >
+        // isPlaying={backSoundPlay}
+        isPlaying={false}
+        >
       </ReactAudioPlayer>
+      <ReactAudioPlayer
+        urlSound={nextPageSound}
+        isLoop={false}
+        isPlaying={nexyPagePlay}
+      >
+      </ReactAudioPlayer> */}
+      <ReactAudioPlayer
+        urlSound={btnClickSound}
+        isLoop={false}
+        isPlaying={btnClickPlay}
+      ></ReactAudioPlayer>
       <MemoriesAndPlanGameBox>
         <Memoriesbox className={modalToggle ? 'darken-back' : ''}>
           {gameDoneList.length !== 0 ? (
@@ -470,6 +489,7 @@ const MyPageContent = () => {
       </MemoriesAndPlanGameBox>
       <InvitationBox
         onClick={() => {
+          btnClick();
           setFirstClick(true);
           if (myinvitationList.length === 0) {
             return;
@@ -488,6 +508,7 @@ const MyPageContent = () => {
           <BtnContainer>
             <PersonNumCounterLeftBtn
               onClick={() => {
+                btnClick();
                 onClickLeft();
               }}
             />
@@ -511,6 +532,7 @@ const MyPageContent = () => {
               <AcceptRejectButton>
                 <AcceptButton
                   onClick={() => {
+                    btnClick();
                     onClickDecision(
                       true,
                       `${myinvitationList[invitationIdx].invitationSeq}`,
@@ -520,6 +542,7 @@ const MyPageContent = () => {
                 ></AcceptButton>
                 <RejectButton
                   onClick={() => {
+                    btnClick();
                     onClickDecision(
                       false,
                       `${myinvitationList[invitationIdx].invitationSeq}`,
@@ -535,6 +558,7 @@ const MyPageContent = () => {
           <BtnContainer>
             <PersonNumCounterRightBtn
               onClick={() => {
+                btnClick();
                 onClickRight();
               }}
             />

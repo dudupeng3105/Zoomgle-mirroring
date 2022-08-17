@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { useState } from 'react';
 
+import btnClickSound from '../../media/sounds/05_btn.wav';
+
 const PersonNumCounterBlock = styled.div`
   /* border: 3px solid blue; */
   width: 40vmin;
@@ -50,11 +52,16 @@ const PersonNumCounter = ({count, setCount}) => {
     }
   };
 
+  function btnClick() {
+    var audio = new Audio(btnClickSound);
+    audio.play();
+  }
+
   return (
     <PersonNumCounterBlock>
-      <PersonNumCounterLeftBtn onClick={onDecrease} />
+      <PersonNumCounterLeftBtn onClick={() => {btnClick(); onDecrease()}} />
       <p>{count}명</p>
-      <PersonNumCounterRightBtn onClick={onIncrease} />
+      <PersonNumCounterRightBtn onClick={() => {btnClick(); onIncrease()}} />
     </PersonNumCounterBlock>
   );
 };

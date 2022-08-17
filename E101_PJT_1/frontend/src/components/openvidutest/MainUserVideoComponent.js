@@ -12,6 +12,12 @@ import mvpRibbon from '../../media/images/mvpRibbon.png';
 import nameStone from '../../media/images/nameStone.png';
 import timeStone from '../../media/images/timeStone.png';
 
+import gameAlertSound from '../../media/sounds/12_gameAlert.wav';
+import countDownSound from '../../media/sounds/13_countDown.wav';
+import voteSuccessSound from '../../media/sounds/14_voteSuccess.wav';
+import voteFailSound from '../../media/sounds/15_voteFail.wav';
+import cameraSound from '../../media/sounds/18_cameraSound.mp3';
+
 const StreamComponent = styled.div`
   width: 55vw;
   height: 58vh;
@@ -333,6 +339,7 @@ const MainUserVideoComponent = ({
 
   // html2canvas(dom element를 canvas로 바꾸어줌)
   const onCapture = async () => {
+    playSound(cameraSound);
     console.log('사진찍습니다.');
     const roomSeq = mySessionIdValue;
     // dom to canvas
@@ -412,6 +419,9 @@ const MainUserVideoComponent = ({
         setVoteSkip(false);
         return 5; // 결과확인타임
       }
+      if(timeLeft === 5 & !timeOver & explanationOver) {
+        playSound(countDownSound);
+      }
       return timeLeft - 1;
     } else {
       // console.warn("현재남은시간", timeLeft);
@@ -460,9 +470,15 @@ const MainUserVideoComponent = ({
     if (goNum > parseInt((playerNum - 1) / 2)) {
       // go한 사람이 전체 참여자의 과반수일 때
       setVoteResult(1);
+      setTimeout(()=> {
+        playSound(voteSuccessSound);
+      }, 1500);
     } else if (backNum > parseInt((playerNum - 1) / 2)) {
       // back한 사람이 전체 참여자의 과반수일 때
       setVoteResult(-1);
+      setTimeout(()=> {
+        playSound(voteFailSound);
+      }, 1500);
     } else {
       // 그 외 모든 경우
       setVoteResult(0);
@@ -539,6 +555,11 @@ const MainUserVideoComponent = ({
     }
     setMvpEffect('');
   }, [isGameDone]);
+
+  function playSound(soundName) {
+    var audio = new Audio(soundName);
+    audio.play();
+  }
 
   return (
     <>
