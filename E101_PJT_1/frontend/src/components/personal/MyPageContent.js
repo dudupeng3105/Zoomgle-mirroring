@@ -8,6 +8,8 @@ import PlannedGameBack from '../../media/images/PlannedGameBack.png';
 import compassBack from '../../media/images/compass.png';
 import picFrame from '../../media/images/picFrame.png';
 import arrowRight from '../../media/images/arrowRight.png';
+import paperBtn from '../../media/images/paperBtn.png';
+
 import {
   PersonNumCounterLeftBtn,
   PersonNumCounterRightBtn,
@@ -22,6 +24,7 @@ import gameStartSound from '../../media/sounds/08_gameStart.wav';
 import homePageSound from '../../media/sounds/03_homePage.wav';
 import nextPageSound from '../../media/sounds/04_nextPage.wav';
 import btnClickSound from '../../media/sounds/05_btn.wav';
+ 
 
 const MyPageContentBlock = styled.div`
   display: flex;
@@ -292,13 +295,29 @@ const BtnContainer = styled.div`
 
 const StartAdventureBtn = styled.div`
   position: absolute;
-  right: 35vw;
+  background: url(${paperBtn});
+  background-size: 12vw 8vh;
+  right: 45vw;
   bottom: 8vh;
   display: flex;
-  width: 10vw;
-  height: 10vh;
+  width: 12vw;
+  height: 8vh;
+  padding-top: 1vh;
+  padding-left: 1vw;
+  
   cursor: pointer;
-  background-color: yellow;
+
+  & p {
+    font-size: 5vmin;
+    color: #412E22;
+  }
+
+  :hover {
+    transform: scale(1.1);
+  }
+  :active {
+    transform: scale(0.9);
+  }
 `;
 
 const MyPageContent = () => {
@@ -488,7 +507,7 @@ const MyPageContent = () => {
                   );
                 }}
               >
-                모험 시작
+                <p>모험 바로가기</p>
               </StartAdventureBtn>
               <PlannedGameInfoBox>
                 <p>대장: {gamePlanList[gamePlanList.length - 1].host}</p>
