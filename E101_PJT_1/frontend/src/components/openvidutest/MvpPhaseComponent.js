@@ -13,6 +13,7 @@ import gameBgmSound from '../../media/sounds/09_gameBgm.wav';
 import MvpStone from '../../media/images/MvpStone.png';
 import gameSetAnimation from '../../media/images/gameSetAnimation.gif';
 import album from '../../media/images/album.png';
+import pictureSelectManual from '../../media/images/pictureSelectManual.png'
 
 const MvpPhaseComponentBlock = styled.div`
   width: 100vw;
@@ -64,7 +65,7 @@ const MainVideo = styled.div`
 const MvpSpeechSkipBtn = styled.div`
   cursor: pointer;
   position: absolute;
-  left: 45vw;
+  left: ${(props) => (props.leftPos)};
   top: 80vh;
   padding-right: 0.5vw;
   padding-top: 0.2vh;
@@ -172,7 +173,7 @@ const PicturePickExplainBox = styled.div`
   left: 25vw;
   width: 54vw;
   height: 60vh;
-  background: url(${gameSetAnimation});
+  background: url(${pictureSelectManual});
   background-size: 54vw 60vh;
   border-radius: 5px;
   padding-bottom: 5vh;
@@ -498,7 +499,7 @@ const MvpPhaseComponent = ({
         </MvpShowUsersContainer>
       ))}
       {(nextPlayer === myUserNameValue) & !isMvpSpeechDone ? (
-        <MvpSpeechSkipBtn onClick={() => onClickNextPhase()}>
+        <MvpSpeechSkipBtn leftPos={'43vw'} onClick={() => onClickNextPhase()}>
           소감종료
         </MvpSpeechSkipBtn>
       ) : (
@@ -506,7 +507,7 @@ const MvpPhaseComponent = ({
       )}
       \
       {isMvpSpeechDone & !picturePickExplain ? (
-        <MvpSpeechSkipBtn onClick={() => setPicturePickExplain(true)}>
+        <MvpSpeechSkipBtn leftPos={'45vw'} onClick={() => setPicturePickExplain(true)}>
           사진 고르기{}
         </MvpSpeechSkipBtn>
       ) : (
@@ -516,7 +517,7 @@ const MvpPhaseComponent = ({
       (myUserNameValue === sessionHost) &
       picturePickExplain &
       !isGameOver ? (
-        <MvpSpeechSkipBtn onClick={() => onClickGameOver()}>
+        <MvpSpeechSkipBtn leftPos={'45vw'} onClick={() => onClickGameOver()}>
           사진선택 종료
         </MvpSpeechSkipBtn>
       ) : (
