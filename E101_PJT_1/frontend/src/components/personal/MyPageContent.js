@@ -181,7 +181,7 @@ const PlannedGameInfoBox = styled.div`
     width: 18vw;
     display: flex;
     flex-direction: column;
-    justify-content: center;    
+    justify-content: center;
     font-size: 4.3vmin;
     margin-top: 3vh;
     color: brown;
@@ -210,7 +210,7 @@ const GivenInvitationModal = styled.div`
 
 const InvitationBlock = styled.div`
   width: 35vw;
-  height: 60vh;  
+  height: 60vh;
   /* border: 1px solid blue; */
   padding-top: 15vh;
   justify-content: center;
@@ -218,7 +218,7 @@ const InvitationBlock = styled.div`
   flex-direction: column;
   color: #2d2911;
   border-radius: 10px;
-  font-size: 3.5vmin;  
+  font-size: 3.5vmin;
 `;
 
 const InvitationItem = styled.div`
@@ -228,9 +228,6 @@ const InvitationItem = styled.div`
   height: ${(props) => props.neededHeight};
   width: 27vw;
   padding-left: ${(props) => props.neededPaddingLeft};
-  & p {
-
-  }
 `;
 
 const AcceptRejectButton = styled.div`
@@ -293,6 +290,17 @@ const BtnContainer = styled.div`
   height: 65vh;
 `;
 
+const StartAdventureBtn = styled.div`
+  position: absolute;
+  right: 35vw;
+  bottom: 8vh;
+  display: flex;
+  width: 10vw;
+  height: 10vh;
+  cursor: pointer;
+  background-color: yellow;
+`;
+
 const MyPageContent = () => {
   const dispatch = useDispatch();
 
@@ -308,6 +316,7 @@ const MyPageContent = () => {
   const gamePlanList = useSelector((state) => state.gamePlan.gamePlanList);
   const gameDoneList = useSelector((state) => state.gamePlan.gameDoneList);
   const gameDonePhoto = useSelector((state) => state.gamePlan.gameDonePhoto);
+  const { nickname } = useSelector((state) => state.auth.user);
   const [invitationIdx, setInvitationIdx] = useState(0);
   // const [backSoundPlay, setBackSoundPlay] = useState(true);
   // const [nexyPagePlay, setNextPagePlay] = useState(false);
@@ -326,7 +335,7 @@ const MyPageContent = () => {
 
   useEffect(() => {
     dispatch(gamePlanActions.getGamePlanListStart());
-    dispatch(gamePlanActions.getGameDoneListStart());   
+    dispatch(gamePlanActions.getGameDoneListStart());
   }, []);
 
   useEffect(() => {
@@ -339,7 +348,7 @@ const MyPageContent = () => {
           gameDoneList[gameDoneList.length - 1].roomCode,
         ),
       );
-    }    
+    }
   }, [gamePlanList, gameDoneList]);
 
   const onClickDecision = (decision, invitationSeq, roomCode) => {
@@ -379,6 +388,17 @@ const MyPageContent = () => {
 
   const onClickMoveJoinPage = () => {
     navigate('/joingame');
+  };
+
+  const onClickJoinGame = (roomCode, capacity, host) => {
+    navigate('/openvidutest', {
+      state: {
+        sessionNickname: nickname,
+        sessionRoomId: roomCode,
+        sessionCapacity: capacity,
+        sessionHost: host,
+      },
+    });
   };
 
   function btnClick() {
@@ -457,21 +477,35 @@ const MyPageContent = () => {
         </Memoriesbox>
         <PlanGameBox className={modalToggle ? 'darken-back' : ''}>
           {gamePlanList.length !== 0 ? (
-            <PlannedGameInfoBox>
-              <p>대장: {gamePlanList[gamePlanList.length - 1].host}</p>
-              <p>
-                모험일자:{' '}
-                {`${gamePlanList[gamePlanList.length - 1].year}년 ${
-                  gamePlanList[gamePlanList.length - 1].month
-                }월 ${gamePlanList[gamePlanList.length - 1].day}일`}
-              </p>
-              <p>
-                동료:{' '}
-                {gamePlanList[gamePlanList.length - 1].playerList
-                  .map((player) => player.user)
-                  .join(' ')}
-              </p>
-            </PlannedGameInfoBox>
+            <>
+              <StartAdventureBtn
+                onClick={() => {
+                  btnClick();
+                  onClickJoinGame(
+                    `${gamePlanList[gamePlanList.length - 1].roomCode}`,
+                    `${gamePlanList[gamePlanList.length - 1].maxCapacity}`,
+                    `${gamePlanList[gamePlanList.length - 1].host}`,
+                  );
+                }}
+              >
+                모험 시작
+              </StartAdventureBtn>
+              <PlannedGameInfoBox>
+                <p>대장: {gamePlanList[gamePlanList.length - 1].host}</p>
+                <p>
+                  모험일자:{' '}
+                  {`${gamePlanList[gamePlanList.length - 1].year}년 ${
+                    gamePlanList[gamePlanList.length - 1].month
+                  }월 ${gamePlanList[gamePlanList.length - 1].day}일`}
+                </p>
+                <p>
+                  동료:{' '}
+                  {gamePlanList[gamePlanList.length - 1].playerList
+                    .map((player) => player.user)
+                    .join(' ')}
+                </p>
+              </PlannedGameInfoBox>
+            </>
           ) : (
             <PlannedGameInfoBox>
               <div className="not-data">
@@ -502,9 +536,13 @@ const MyPageContent = () => {
 
       {modalToggle && (
         <GivenInvitationModal>
-          <CloseModalBtn onClick={() => {
-                setModalToggle(!modalToggle);
-              }}>X</CloseModalBtn>
+          <CloseModalBtn
+            onClick={() => {
+              setModalToggle(!modalToggle);
+            }}
+          >
+            X
+          </CloseModalBtn>
           <BtnContainer>
             <PersonNumCounterLeftBtn
               onClick={() => {
@@ -516,10 +554,15 @@ const MyPageContent = () => {
           {myinvitationList.length !== 0 ? (
             <InvitationBlock>
               <InvitationItem neededHeight={`7vh`} neededPaddingLeft={`2vw`}>
-                <p>{myinvitationList[invitationIdx].sender}님 으로부터의 초대장</p>                
+                <p>
+                  {myinvitationList[invitationIdx].sender}님 으로부터의 초대장
+                </p>
               </InvitationItem>
               <InvitationItem neededHeight={`15vh`} neededPaddingLeft={`2vw`}>
-                <p>{`${myinvitationList[invitationIdx].year}년 ${myinvitationList[invitationIdx].month}월 ${myinvitationList[invitationIdx].day}일 ${myinvitationList[invitationIdx].hour}시 ${myinvitationList[invitationIdx].minute}분`} 까지</p>
+                <p>
+                  {`${myinvitationList[invitationIdx].year}년 ${myinvitationList[invitationIdx].month}월 ${myinvitationList[invitationIdx].day}일 ${myinvitationList[invitationIdx].hour}시 ${myinvitationList[invitationIdx].minute}분`}{' '}
+                  까지
+                </p>
                 <p>늦지않도록 펜과 노트를 지참해</p>
                 <p>집합하기 바람.</p>
               </InvitationItem>

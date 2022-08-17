@@ -47,6 +47,19 @@ const InfoMessage = styled.div`
   
 `;
 
+const UpCommingGameTitleandNotion = styled.div`
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  width: 70vw;
+  height: 10vh;
+  margin-top: 10vh;
+  margin-left: 9.8vw;
+  margin-bottom: 0;
+  font-size: 4vmin;  
+  color: #29231c;
+`;
+
 
 const PlannedGameList = () => {
   const dispatch = useDispatch();
@@ -63,6 +76,15 @@ const PlannedGameList = () => {
   //   setInviteRoomCode(roomCode);
   //   setModalToggle(!modalToggle);
   // };
+
+  // 첫 렌더링시 디스패치
+  useEffect(() => {
+    if (myGamePlanList.length === 0) {
+      return;
+    } else {
+      setCount(myGamePlanList.length-1);
+    }    
+  }, myGamePlanList);
 
   const onClickModalCloser = () => {
     setModalToggle(!modalToggle);
@@ -113,7 +135,11 @@ const PlannedGameList = () => {
         </GameInvitationModal>
       )}
       {/* 예정된 모험 */}
-      <UpCommingGameTitle>예정된 모험</UpCommingGameTitle>
+      <UpCommingGameTitleandNotion>
+        <UpCommingGameTitle>예정된 모험</UpCommingGameTitle>
+        <p>모험시작 30분 전부터 입장할 수 있다.</p>      
+      </UpCommingGameTitleandNotion>
+      
       {myGamePlanList.length === 0 ? (
         <InfoMessage>
           <p>준비할 모험이 없다.</p>

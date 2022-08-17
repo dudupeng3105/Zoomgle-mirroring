@@ -13,6 +13,9 @@ import profile4 from '../../media/images/profile5.png';
 import profile5 from '../../media/images/profile6.png';
 import profileback from '../../media/images/profile_back1.png';
 import btnClickSound from '../../media/sounds/05_btn.wav';
+import copyrightBtn from '../../media/images/copyright.png'
+import copyrightBack from '../../media/images/Papyrus.png'
+
 
 const ProfileContentModalBlock = styled.div`
   width: 83vw;
@@ -173,6 +176,34 @@ const PasswordChangeButton = styled.div`
   }
 `;
 
+const CopyrightBtn = styled.div`
+  position: absolute;
+  bottom: 1vh;
+  width: 3vw;
+  height: 3vh;
+  cursor: pointer;
+  background: url(${copyrightBtn});
+  background-size: 3vw 3vh;
+  :hover {
+    transform: scale(1.05);
+  }
+
+  :active {
+    transform: scale(0.95);
+  }
+`;
+
+const CopyRightModal = styled.div`
+  position: absolute;
+  z-index: 15;
+  bottom: 20vh;
+  width: 40vw;
+  height: 70vh;
+  cursor: pointer;
+  background: url(${copyrightBack}) no-repeat center;
+  background-size: 40vw 70vh;
+`;
+
 const ProfileLeftBtn = styled.div`
   width: 0;
   height: 0;
@@ -279,6 +310,7 @@ const ProfileContentModal = () => {
   const [passwordChangeToggle, setpasswordChangeToggle] = useState(false);
   const [imgNum, setImgNum] = useState(1);
   const [error, setError] = useState(null);
+  const [copyRightModalToggle, setCopyRightModalToggle] = useState(false);
   const [form, setForm] = useState({
     userId: userId,
     name: name,
@@ -358,6 +390,7 @@ const ProfileContentModal = () => {
 
   return (
     <ProfileContentModalBlock>
+      {copyRightModalToggle ? <CopyRightModal onClick={() => setCopyRightModalToggle(false)}></CopyRightModal> : ''}
       <ProfileContentModalBackGround>
         <ProfileContentBox>
           {!passwordChangeToggle ? (
@@ -382,6 +415,7 @@ const ProfileContentModal = () => {
                 >
                   회원정보 수정
                 </PasswordChangeButton>
+                <CopyrightBtn onClick={() => setCopyRightModalToggle(true)}></CopyrightBtn>
               </ProfilePictureContainer>
               <ProfileStoryContainer>
                 <ProfileInfoTitle>모험 보고서</ProfileInfoTitle>

@@ -180,11 +180,7 @@ const PlanGameDetail = () => {
     currentRoomCode = gamePlanList[gamePlanList.length - 1].roomCode;
   }
   console.log(currentRoomCode);
-
-  // gamePlanList가 바뀔때마다 발동
-  // useEffect(() => {
-  //   setModalToggle(!modalToggle);
-  // }, []);
+  
 
   const roomCode = inviteRoomCode;
   const onDateChangeHandler = (givenDate) => {

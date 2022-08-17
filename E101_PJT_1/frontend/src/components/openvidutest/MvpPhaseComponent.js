@@ -499,10 +499,13 @@ const MvpPhaseComponent = ({
       ) : (
         ''
       )}
-      {isGameOver & isMvpSpeechDone & !picturePickExplain ? <MvpSpeechSkipBtn onClick={() => setPicturePickExplain(true)}>
+      {/* <MvpSpeechSkipBtn onClick={() => setPicturePickExplain(true)}>
+       {picturePickExplain}사진 고르기
+      </MvpSpeechSkipBtn> */}
+      {isMvpSpeechDone & !picturePickExplain ? <MvpSpeechSkipBtn onClick={() => setPicturePickExplain(true)}>
         사진 고르기{picturePickExplain}
       </MvpSpeechSkipBtn> : ''}
-      {isMvpSpeechDone & (myUserNameValue===sessionHost) ? (
+      {isMvpSpeechDone & picturePickExplain &(myUserNameValue===sessionHost) ? (
         <MvpSpeechSkipBtn onClick={() => onClickGameOver()}>
           사진선택 종료
         </MvpSpeechSkipBtn>

@@ -37,6 +37,12 @@ const LoginForm = () => {
     dispatch(authActions.loginUserStart({ userId, password }));
   };
 
+  const onCheckEnter = (e) => {    
+    if(e.key === 'Enter') {
+      onSubmit(e);
+    }
+  }
+
   // 3. 로그인 성공 / 실패 처리
   useEffect(() => {
     if (authError) {
@@ -58,6 +64,7 @@ const LoginForm = () => {
       onChange={onChange}
       onSubmit={onSubmit}
       error={error}
+      onCheckEnter={onCheckEnter}
     />
   );
 };

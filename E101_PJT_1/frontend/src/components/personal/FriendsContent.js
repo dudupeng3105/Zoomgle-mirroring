@@ -14,7 +14,7 @@ import papyrus from '../../media/images/Papyrus.png';
 import Xmark from '../../media/images/X-mark.png';
 import friendbackground from '../../media/images/friend_content1.png';
 import friendsearch from '../../media/images/transparent_search.png';
-import modalfriendsearch from '../../media/images/transparent_search.png';
+import modalfriendsearch from '../../media/images/friendInviteButton.png';
 import btnClickSound from '../../media/sounds/05_btn.wav';
 import CheckCloseModal from '../utils/CheckCloseModal';
 
@@ -52,7 +52,6 @@ const FriendsList = styled.div`
 
 const TitleButtonBlock = styled.div`
   display: flex;
-  justify-content: space-between;
   /* justify-content: center; */
   padding-right: 1vmin;
   /* padding-left: 7vmin;   */
@@ -73,6 +72,7 @@ const FriendAddButton = styled.div`
   font-size: 5vmin;
   margin-right: 30vw;
   margin-top: 13vh;
+  margin-bottom: 4.8vh;
   background: url(${friendsearch}) center no-repeat;
   background-size: 5vw 8vh;
   color: white;
@@ -80,28 +80,24 @@ const FriendAddButton = styled.div`
   &:hover {
     background: url(${friendsearch}) center no-repeat;
     background-size: 5vw 8vh;
-    transform: scale(1.1) rotate(-30deg);
-    -webkit-transform: scale(1.1);
-    -moz-transform: scale(1.1);
-    -ms-transform: scale(1.1);
-    -o-transform: scale(1.1);
+    transform: scale(1.1);  
   }
 `;
 
 // 모달 안의 친구 추가 버튼
 
 const ModalFriendAddButton = styled.div`
-  cursor: pointer;  
+  cursor: pointer;
   height: 8vh;
-  width: 20%;
+  width: 5vw;
   font-size: 5vmin;
   background: url(${modalfriendsearch}) center no-repeat;
-  background-size: 8vw 8vh;
+  background-size: 5vw 8vh;
   color: white;
   border-radius: 5px;
   &:hover {
-    background: url(${modalfriendsearch}) center no-repeat;
-    background-size: 8vw 8vh;
+    /* background: url(${modalfriendsearch}) center no-repeat;
+    background-size: 8vw 8vh; */
     transform: scale(1.1);
   }
 `;
@@ -113,7 +109,7 @@ const FriendCloseButton = styled.div`
   height: 8vh;
   width: 15vw;
   margin-left: 25vw;
-  margin-top: 5vw;
+  margin-top: 10vh;
   background: url(${Xmark}) no-repeat center;
   background-size: 5vw 8vh;
   display: inline;
@@ -217,9 +213,9 @@ const StyledInput = styled.input`
   border: 3px solid #000000;
   border-radius: 5px;
   font-size: 1.5rem;
-  padding: 1rem 0.5rem;
-  width: 70%;
-  margin-right: 10%;
+  padding: 1vmin 0.5vmin 1.5vmin 1vmin;
+  width: 15vw;
+  margin-right: 5%;
   height: 8vh;
   display: inline-block;
   ::placeholder {
@@ -238,7 +234,8 @@ const InputAndBtnBox = styled.div`
   width: 80%;
   height: 8vh;
   display: flex;
-  margin-top: 3vh;
+  margin-left: 10vw;
+  margin-top: 5vh;
   margin-bottom: 3vh;
 `;
 
@@ -334,7 +331,7 @@ const FriendsContent = () => {
       setAddMessageToggle(true);
       setTimeout(() => {
         setAddMessageToggle(false);
-      }, 1000);
+      }, 500);
     }
   }, [addMessage]);
 
@@ -371,6 +368,12 @@ const FriendsContent = () => {
     console.log('성공여부', addResult);
   };
 
+  const onCheckEnter = (e) => {    
+    if(e.key === 'Enter') {
+      onClick(e);
+    }
+  }
+
   const onClickFriendDelete = () => {
     const friendDeleteInfo = {
       myNickname: userNickname,
@@ -402,13 +405,14 @@ const FriendsContent = () => {
               setmodalToggle(!modalToggle);
             }}
           ></FriendCloseButton>
-          <h1>친애하는 동료를 추가하세요</h1>
-          <h2>동료와 함께 멋진 모험을 떠나세요!</h2>
+          <h1>친애하는 동료를 추가하라</h1>
+          <h2>동료와 함께 멋진 모험을 떠나보자!</h2>
           <InputAndBtnBox>
             <StyledInput
               name="friendNickname"
-              placeholder="동료의 닉네임을 입력하세요."
+              placeholder="동료의 닉네임을 입력하라."
               onChange={inputChange}
+              onKeyPress={onCheckEnter}
             />
             <ModalFriendAddButton onClick={onClick}></ModalFriendAddButton>
           </InputAndBtnBox>

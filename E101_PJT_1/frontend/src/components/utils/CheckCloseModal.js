@@ -6,22 +6,25 @@ import backImg from '../../media/images/Papyrus.png'
 const CheckCloseModalBlock = styled.div`
   position: absolute;    
   background: url(${backImg});
-  background-size: 35vw 25vh;
-  width: 35vw;
-  height: 25vh;
-  top: 40vh;
+  background-size: 30vw 45vh;
+  width: 30vw;
+  height: 45vh;
+  z-index: 10;
+  top: 30vh;
   left: 35vw;  
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
-  font-size: 3.5vmin;  
+  font-size: 5vmin;  
+  padding-top: 5vh;
 `;
 
 const OxBtnContainer = styled.div`
   display: flex;
-  width: 30vw;
-  justify-content: center;
+  width: 13vw;
+  justify-content: space-between;
+  margin-top: 5vh;
 `;
 
 const AcceptBtn = styled.div`
@@ -46,11 +49,21 @@ const RejectBtn = styled.div`
   }
 `
 
+const CloseModalText = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25vw;
+  height: 10vh;
+  color: ${(props => props.textColor)};
+  font-size: ${(props => props.textSize)};;
+`
+
 const CheckCloseModal = ({title, content, deleteFunction, modalCloseToggle}) => {
   return (
     <CheckCloseModalBlock>
-      <p>{title}</p>
-      <p>{content}</p>
+      <CloseModalText textColor={`#a70000`} textSize={`5vmin`}>{title}</CloseModalText>
+      <CloseModalText textColor={`#421e22`} textSize={`4.5vmin`}>{content}</CloseModalText>
       <OxBtnContainer>
         <AcceptBtn onClick={() => deleteFunction()}></AcceptBtn>
         <RejectBtn onClick={() => modalCloseToggle(false)}></RejectBtn>      

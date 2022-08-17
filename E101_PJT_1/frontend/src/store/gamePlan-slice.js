@@ -7,6 +7,7 @@ const initialGamePlanState = {
   invitationList: [],
   gameDoneList: [],
   gameDonePhoto: [],
+  invitationResult: 0,
   loading: null,
   error: null,
 };
@@ -59,6 +60,7 @@ const gamePlanSlice = createSlice({
     sendInvitaionSuccess(state, action) {
       console.log(action.payload);
       state.loading = false;
+      state.invitationResult = 1;
       // state.gamePlanList = action.payload.playerList;
     },
     // 초대장승락 스타트    
@@ -99,8 +101,12 @@ const gamePlanSlice = createSlice({
     getError(state, action) {
       console.log(action.payload.error);
       state.loading = false;
+      state.invitationResult = 2;
       state.error = action.payload.error;
     },
+    resetResult(state) {
+      state.invitationResult = 0;
+    }
   },
 });
 

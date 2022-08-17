@@ -47,6 +47,12 @@ const SignUpForm = () => {
     }
   };
 
+  const onCheckEnter = (e) => {    
+    if(e.key === 'Enter') {
+      onSubmit(e);
+    }
+  }
+
   // 3. 회원가입 성공 / 실패 처리
   useEffect(() => {
     if (authError) {
@@ -68,6 +74,7 @@ const SignUpForm = () => {
       onChange={onChange}
       onSubmit={onSubmit}
       error={error}
+      onCheckEnter={onCheckEnter}
     />
   );
 };

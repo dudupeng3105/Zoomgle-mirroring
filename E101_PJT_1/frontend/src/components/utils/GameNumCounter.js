@@ -86,10 +86,13 @@ const UpCommingGameTitle = styled.div`
   width: 18vw;
   height: 10vh;
   background-size: 18vw 10vh;
-  margin-top: 7vh;
-  margin-left: 11vw;
+  /* margin-top: 7vh; */
+  margin-right: 5vw;
   margin-bottom: 0;
+  color: black;
 `;
+
+
 // 번호 일자 대장
 const PlannedGameInfoItem = styled.div`
   display: flex;
@@ -151,6 +154,14 @@ export const FriendModalBack = styled.div`
   height: 78vh;
   background: url(${friendModalBack}) center no-repeat;
   background-size: 35vw 78vh;
+
+  &.success {
+    border: 5px solid #94a04e;
+  }
+
+  &.fail {
+    border: 5px solid #a70000;
+  }
 `;
 
 export const FriendListModal = styled.div`
@@ -241,10 +252,29 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
   // const myGamePlanList = useSelector((state) => state.gamePlan.gamePlanList)
   const { nickname } = useSelector((state) => state.auth.user);
   const myFriendsList = useSelector((state) => state.friend.friendList);
+  const invitationResult = useSelector((state) => state.gamePlan.invitationResult)
 
   const [modalToggle, setModalToggle] = useState(false);
   const [inviteRoomCode, setInviteRoomCode] = useState(0);
+  const [modalEffect, setModalEffect] = useState('');
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (invitationResult === 1) {
+      setModalEffect('success')
+      setTimeout(() => {
+        dispatch(gamePlanActions.resetResult());
+      }, 1000); 
+    } 
+    else if (invitationResult === 2) {
+      setModalEffect('fail')
+      setTimeout(() => {
+        dispatch(gamePlanActions.resetResult());
+      }, 1000);      
+    } else {
+      setModalEffect('')
+    } 
+  }, invitationResult);
 
   const maxCount = myGamePlanList.length - 1;
   const onIncrease = () => {
@@ -291,11 +321,14 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
 
   const onClickModalCloser = () => {
     setModalToggle(!modalToggle);
+    dispatch(gamePlanActions.resetResult());
   };
 
   const onClickDeleteGame = (roomCode) => {
     console.warn(roomCode);
-    setCount(count - 1);
+    if (count !== 0) {
+      setCount(count - 1);
+    }    
     dispatch(gamePlanActions.deleteGamePlanStart(roomCode));
   };
 
@@ -321,6 +354,7 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
       
       <GameNumCounterLeftBtn onClick={() => {onDecrease(); btnClick();}} />
       <PlannedGameInfoBox>
+        {/* <UpCommingGameTitle>예정된 모험</UpCommingGameTitle> */}
         {/* <UpCommingGameTitle>예정된 모험</UpCommingGameTitle> */}
         <PlannedGameInfoItem>
           <p>번호 :{myGamePlanList[count].roomCode}</p>
@@ -380,17 +414,17 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
         </ButtonContainer>
         {/* 모달 */}
         {modalToggle && (
-          <FriendModalBack>
+          <FriendModalBack className={modalEffect}>
             <ModalTitle>동료 명단</ModalTitle>
-            <CloseModalbutton onClick={onClickModalCloser}>X</CloseModalbutton>
+            <CloseModalbutton onClick={onClickModalCloser}></CloseModalbutton>
             <FriendListModal>
               {/* roomcode */}
               {/* <p>{myGamePlanList[count].roomCode}</p> */}
               {/* 모달 닫기 버튼 */}
 
               {myFriendsList.map((friend, idx) => (
-                <FriendCardContainer>
-                  <FriendCard key={`friend-${idx}`}>
+                <FriendCardContainer key={`friend-${idx}`}>
+                  <FriendCard>
                     <StyledCard>
                       <ImageContainer>
                         <ProfileImg

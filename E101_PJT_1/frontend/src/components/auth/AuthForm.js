@@ -125,12 +125,12 @@ const ErrorMessage = styled.div`
   margin-top: 1rem;
 `;
 
-const AuthForm = ({ type, form, onChange, onSubmit, error }) => {
+const AuthForm = ({ type, form, onChange, onSubmit, error, onCheckEnter }) => {
   const text = textMap[type];
   return (
     <AuthFormBlock className={`jc-${text.length}`}>
       <FormTitle>{text}</FormTitle>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} onKeyPress={(e) => onCheckEnter(e)} >
         <StyledInput
           autoComplete="userId"
           name="userId"
