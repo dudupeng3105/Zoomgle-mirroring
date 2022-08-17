@@ -151,7 +151,7 @@ export const FriendModalBack = styled.div`
   padding-top: 15vh;
   border-radius: 10px;
   width: 35vw;
-  height: 78vh;
+  height: 85vh;
   background: url(${friendModalBack}) center no-repeat;
   background-size: 35vw 78vh;
 
@@ -176,7 +176,8 @@ export const FriendListModal = styled.div`
   left: 45vw;
   top: 5vh;
   width: 35vw;
-  height: 58vh;
+  height: 54vh;
+  margin-top: 12vh;
   /* border: 1px solid black; */
 `;
 
@@ -203,12 +204,12 @@ export const InviteFriendButton = styled.button`
 export const CloseModalbutton = styled.button`
   background: url(${closeButton}) center no-repeat;
   position: absolute;
-  top: 2vh;
+  top: 5vh;
   right: 2vw;
-  background-size: 6vw 6vh;
+  background-size: 4vw 5vh;
   border: none;
-  width: 6vw;
-  height: 6vh;
+  width: 4vw;
+  height: 5vh;
   margin-left: 25vw;
   margin-top: 0;
   cursor: pointer;
@@ -234,15 +235,45 @@ export const ModalTitle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-size: 20vw 15vh;
+  background-size: 20vw 10vh;
   width: 20vw;
-  height: 15vh;
-  top: 1vh;
+  height: 10vh;
+  top: 5vh;
   left: 5vw;
   font-size: 5vmin;
   padding-top: 1vh;
   color: white;
   margin-top: 0;
+`;
+
+export const ModalErrorText = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20vw;
+  height: 5vh;
+  top: 20.5vh;
+  left: 7vw;
+  font-size: 5vmin;
+  padding-top: 1vh;
+  color:${(props) => props.textColor};
+  margin-top: 0;
+`;
+
+export const RoomCodeText = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20vw;
+  height: 5vh;
+  top: 13vh;
+  /* text-decoration: underline; */
+  left: 21vw;
+  font-size: 3.5vmin;
+  padding-top: 1vh;
+  color: white;
 `;
 
 // const GameNumCounter = ({count, setCount, myGamePlanList}) => {
@@ -260,21 +291,22 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.warn(modalEffect,"DFsfsf", invitationResult);
     if (invitationResult === 1) {
       setModalEffect('success')
       setTimeout(() => {
         dispatch(gamePlanActions.resetResult());
-      }, 1000); 
+      }, 5000); 
     } 
     else if (invitationResult === 2) {
       setModalEffect('fail')
       setTimeout(() => {
         dispatch(gamePlanActions.resetResult());
-      }, 1000);      
+      }, 5000);      
     } else {
       setModalEffect('')
     } 
-  }, invitationResult);
+  }, [invitationResult]);
 
   const maxCount = myGamePlanList.length - 1;
   const onIncrease = () => {
@@ -351,8 +383,12 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
 
   return (
     <GameNumCounterBlock>
-      
-      <GameNumCounterLeftBtn onClick={() => {onDecrease(); btnClick();}} />
+      <GameNumCounterLeftBtn
+        onClick={() => {
+          onDecrease();
+          btnClick();
+        }}
+      />
       <PlannedGameInfoBox>
         {/* <UpCommingGameTitle>예정된 모험</UpCommingGameTitle> */}
         {/* <UpCommingGameTitle>예정된 모험</UpCommingGameTitle> */}
@@ -380,7 +416,8 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
             backImg={`url(${SquareLeather})`}
             onClick={() => {
               btnClick();
-              onClickSearchFriendList(`${myGamePlanList[count].roomCode}`)}}
+              onClickSearchFriendList(`${myGamePlanList[count].roomCode}`);
+            }}
           >
             동료 초대
           </ButtonContainerItem>
@@ -388,10 +425,15 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
             `${myGamePlanList[count].year}-${myGamePlanList[count].month}-${myGamePlanList[count].day} ${myGamePlanList[count].hour}:${myGamePlanList[count].minute}:00`,
           ) ? (
             <ButtonContainerItem
-            backImg={`url(${SquareLeather})`}
-              onClick={() =>{
+              backImg={`url(${SquareLeather})`}
+              onClick={() => {
                 btnClick();
-                onClickJoinGame(`${myGamePlanList[count].roomCode}`, `${myGamePlanList[count].maxCapacity}`, `${myGamePlanList[count].host}`)}}
+                onClickJoinGame(
+                  `${myGamePlanList[count].roomCode}`,
+                  `${myGamePlanList[count].maxCapacity}`,
+                  `${myGamePlanList[count].host}`,
+                );
+              }}
             >
               모험 시작
             </ButtonContainerItem>
@@ -400,10 +442,11 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
           )}
           {nickname === myGamePlanList[count].host ? (
             <ButtonContainerItem
-            backImg={`url(${SquareLeather})`}
-              onClick={() =>{
+              backImg={`url(${SquareLeather})`}
+              onClick={() => {
                 btnClick();
-                onClickDeleteGame(`${myGamePlanList[count].roomCode}`)}}
+                onClickDeleteGame(`${myGamePlanList[count].roomCode}`);
+              }}
             >
               {' '}
               모험 취소
@@ -414,8 +457,21 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
         </ButtonContainer>
         {/* 모달 */}
         {modalToggle && (
-          <FriendModalBack className={modalEffect}>
+          <FriendModalBack>
             <ModalTitle>동료 명단</ModalTitle>
+            <RoomCodeText>{myGamePlanList[count].roomCode}번방</RoomCodeText>
+            {modalEffect === 'success' ? (
+              <ModalErrorText textColor=
+              {'#e2d6ba'}>초대를 완료했다.</ModalErrorText>
+            ) : (
+              ''
+            )}
+            {modalEffect === 'fail' ? (
+              <ModalErrorText textColor=
+              {'#e2d6ba'}>이미 모험에 초대했다.</ModalErrorText>
+            ) : (
+              ''
+            )}
             <CloseModalbutton onClick={onClickModalCloser}></CloseModalbutton>
             <FriendListModal>
               {/* roomcode */}
@@ -453,7 +509,12 @@ const GameNumCounter = ({ count, setCount, myGamePlanList }) => {
 
         {/* <p>{JSON.stringify(myGamePlanList[count].playerList)}</p> */}
       </PlannedGameInfoBox>
-      <GameNumCounterRightBtn onClick={() => {onIncrease(); btnClick();}} />
+      <GameNumCounterRightBtn
+        onClick={() => {
+          onIncrease();
+          btnClick();
+        }}
+      />
     </GameNumCounterBlock>
   );
 };
