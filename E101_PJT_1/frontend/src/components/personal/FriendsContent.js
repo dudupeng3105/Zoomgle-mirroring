@@ -15,6 +15,7 @@ import Xmark from '../../media/images/X-mark.png';
 import friendbackground from '../../media/images/friend_content1.png';
 import friendsearch from '../../media/images/transparent_search.png';
 import modalfriendsearch from '../../media/images/transparent_search.png';
+import btnClickSound from '../../media/sounds/05_btn.wav';
 import CheckCloseModal from '../utils/CheckCloseModal';
 
 const FriendsContentBlock = styled.div`
@@ -380,6 +381,11 @@ const FriendsContent = () => {
     setDeleteCheckModal(false);
   };
 
+  function btnClick() {
+    var audio = new Audio(btnClickSound);
+    audio.play();
+  }
+
   return (
     <FriendsContentBlock>
       {deleteCheckModal? <CheckCloseModal
@@ -392,6 +398,7 @@ const FriendsContent = () => {
         <AddFriendModal>
           <FriendCloseButton
             onClick={() => {
+              btnClick();
               setmodalToggle(!modalToggle);
             }}
           ></FriendCloseButton>
@@ -418,6 +425,7 @@ const FriendsContent = () => {
         </BoardImageContainer>
         <FriendAddButton
           onClick={() => {
+            btnClick();
             setmodalToggle(!modalToggle);
           }}
         >
@@ -430,6 +438,7 @@ const FriendsContent = () => {
           <FriendCard key={idx}>
             <FriendDeleteBtn
               onClick={() => {
+                btnClick();
                 setDeleteCheckModal(true);
                 setDeleteFriendName(friend.nickname)                
               }}

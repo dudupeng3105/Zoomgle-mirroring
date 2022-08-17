@@ -4,7 +4,9 @@ import UserVideoComponent from './UserVideoComponent';
 import MainUserVideoComponent from './MainUserVideoComponent'; // 미니게임 중앙화면용
 import DiceRoller from '../../components/utils/DiceRoller'
 import ReactAudioPlayer from '../utils/reactAudioPlayer';
-import gameBgmSound from '../../media/sounds/09_gameBgm.wav'
+import gameStartSound from '../../media/sounds/08_gameStart.wav';
+import gameBgmSound from '../../media/sounds/09_gameBgm.wav';
+import myTurnSound from '../../media/sounds/10_myTurn.wav';
 import { useState } from 'react';
 import RankingTable from '../../media/images/RankingTable.png';
 
@@ -252,11 +254,19 @@ const OpenViduSession = ({
   // 게임 진행 관련 변수들
   // console.warn("퍼블리셔는?",publisher);
   const playerNum = players.length; // 몇 명에서 하는지  
-  const myTurnNum = players.indexOf(myUserNameValue);  
+  const myTurnNum = players.indexOf(myUserNameValue);
+  const [backSoundPlay, setBackSoundPlay] = useState(false);
   const [top2Players, setTop2Players] = useState([]);
 
   useEffect(() => {
+    setTimeout(() => {
+      setBackSoundPlay(true);
+    }, 8500);
+  }, []);  
+
+  useEffect(() => {
     if (nextPlayer === myUserNameValue){
+      playSound(myTurnSound);
       handleMainVideoStream(publisher)
     } else {
       const temp = subscribers.filter((sub) => JSON.parse(sub.stream.connection.data).clientData === nextPlayer)[0];
@@ -283,15 +293,25 @@ const OpenViduSession = ({
     }
   }, [posList])
 
-
+  function playSound(soundName) {
+    var audio = new Audio(soundName);
+    audio.play();
+  }
   
   return (
     <OpenViduSessionBlock>
       <ReactAudioPlayer
-        urlSound={gameBgmSound}
+        urlSound={gameStartSound}
         isLoop={false}
-        isPlaying={false}
-      ></ReactAudioPlayer>  
+        isPlaying={!backSoundPlay}
+        volumeNum={0.7}
+      ></ReactAudioPlayer>
+      <ReactAudioPlayer
+        urlSound={gameBgmSound}
+        isLoop={true}
+        isPlaying={backSoundPlay}
+        volumeNum={0.5}
+      ></ReactAudioPlayer> 
       <TestContainer>
         <PlayerList>
           <PlayerRankingTitle>순위</PlayerRankingTitle>
