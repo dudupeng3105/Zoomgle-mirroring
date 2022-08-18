@@ -796,7 +796,7 @@ const MainUserVideoComponent = ({
           ) : (
             <TurnInfoBox>{nextPlayer}</TurnInfoBox>
           )}
-          <CaptureBtn onClick={() => onCapture()}></CaptureBtn>
+          {!isGameDone ? <CaptureBtn onClick={() => onCapture()}></CaptureBtn> : ''}
         </>
       ) : null}
     </>
