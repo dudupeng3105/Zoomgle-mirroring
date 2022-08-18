@@ -415,13 +415,13 @@ const MvpPhaseComponent = ({
         urlSound={mvpBgmSound}
         isLoop={true}
         isPlaying={!isMvpSpeechDone}
-        volumeNum={0.5}
+        volumeNum={0.2}
       ></ReactAudioPlayer>
       <ReactAudioPlayer
         urlSound={gameBgmSound}
         isLoop={true}
         isPlaying={isMvpSpeechDone}
-        volumeNum={0.5}
+        volumeNum={0.4}
       ></ReactAudioPlayer>
       {mainStreamManager !== undefined ? (
         isGameOver ? (
