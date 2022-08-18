@@ -391,7 +391,6 @@ const ProfileContentModal = () => {
   return (
     <ProfileContentModalBlock>
       {copyRightModalToggle ? <CopyRightModal onClick={() => setCopyRightModalToggle(false)}>
-        링크
       </CopyRightModal> : ''}
       <ProfileContentModalBackGround>
         <ProfileContentBox>
@@ -400,7 +399,7 @@ const ProfileContentModal = () => {
               <ProfilePictureContainer>
                 <ProfileImgBox>
                   <ProfileCenter
-                    className={'profileImg' + imgNum}
+                    className={'profileImg' + profileImgNum}
                   ></ProfileCenter>
                 </ProfileImgBox>
                 <ChangePossibleInfo>
@@ -466,7 +465,8 @@ const ProfileContentModal = () => {
                 <ProfileImgBox>
                   <ProfileLeftBtn onClick={() => {
                     btnClick();
-                    setImgNum((imgNum - 1) % 6)}} />
+                    setImgNum((imgNum - 1) < 0 ? 5 : imgNum - 1)}} />
+                    {/* setImgNum((imgNum - 1) % 6)}} /> */}
                   <ProfileCenter
                     className={'profileImg' + imgNum}
                   ></ProfileCenter>

@@ -45,7 +45,7 @@ const ProfileBox = styled.div`
   align-items: center;
   .profileImg0 {
     background: url(${profile1}) no-repeat center;
-    background-size: 20vmin 20vmin;
+    background-size: 15vmin 15vmin;
     /* padding-top: 30px; */
   }
   .profileImg1 {
@@ -58,7 +58,7 @@ const ProfileBox = styled.div`
   }
   .profileImg3 {
     background: url(${profile4}) no-repeat center;
-    background-size: 20vmin 20vmin;
+    background-size: 15vmin 15vmin;
   }
   .profileImg4 {
     background: url(${profile5}) no-repeat center;
