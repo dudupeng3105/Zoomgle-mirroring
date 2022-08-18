@@ -155,7 +155,7 @@ const PicturesContent = () => {
         <ArrowBtn onClick={() => { onClickRight(); btnClick(); }} backImg={arrowRight}></ArrowBtn>
       </GameDayInfo>
       <GamePlayerInfo>
-        <p>MVP: {gameDoneList[planIdx].mvp}</p>
+        <p>공략자: {gameDoneList[planIdx].mvp}</p>
         <p>참여자 : {playerNames.join(', ')}</p>
       </GamePlayerInfo>
       <GameDoneBoard>
