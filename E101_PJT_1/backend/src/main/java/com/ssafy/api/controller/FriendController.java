@@ -6,7 +6,7 @@ import com.ssafy.api.response.FriendRes;
 import com.ssafy.api.service.FriendService;
 import com.ssafy.api.service.UserService;
 import com.ssafy.common.model.response.BaseResponseBody;
-import com.ssafy.common.myObject.FriendInfoInterface;
+import com.ssafy.common.cumtomObject.FriendInfoInterface;
 import com.ssafy.db.entity.User;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;

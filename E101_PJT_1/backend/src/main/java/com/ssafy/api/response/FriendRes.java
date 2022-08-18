@@ -1,7 +1,7 @@
 package com.ssafy.api.response;
 
 import com.ssafy.common.model.response.BaseResponseBody;
-import com.ssafy.common.myObject.FriendInfoInterface;
+import com.ssafy.common.cumtomObject.FriendInfoInterface;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;

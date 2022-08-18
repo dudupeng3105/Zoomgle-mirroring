@@ -1,6 +1,6 @@
 package com.ssafy.api.service;
 
-import com.ssafy.common.myObject.FriendInfoInterface;
+import com.ssafy.common.cumtomObject.FriendInfoInterface;
 import com.ssafy.db.entity.Friend;
 
 import java.util.List;

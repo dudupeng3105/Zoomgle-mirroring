@@ -10,9 +10,9 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import java.nio.charset.StandardCharsets;
 
 @SpringBootApplication
-public class GroupCallApplication {
+public class ZoomgleApplication {
 	public static void main(String[] args) {
-        SpringApplication.run(GroupCallApplication.class, args);
+        SpringApplication.run(ZoomgleApplication.class, args);
     }
 
     @Bean

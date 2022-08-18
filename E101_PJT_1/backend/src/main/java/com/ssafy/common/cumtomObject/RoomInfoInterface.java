@@ -1,4 +1,4 @@
-package com.ssafy.common.myObject;
+package com.ssafy.common.cumtomObject;
 
 /**
  * 게임 방 정보를 저장하는 객체 정의

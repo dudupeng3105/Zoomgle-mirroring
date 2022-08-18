@@ -1,7 +1,6 @@
 package com.ssafy.api.service;
 
-import com.ssafy.common.myObject.RoomInfoAndPhoto;
-import com.ssafy.common.myObject.RoomInfoInterface;
+import com.ssafy.common.cumtomObject.RoomInfoAndPhoto;
 import com.ssafy.db.entity.Player;
 import com.ssafy.db.entity.Room;
 

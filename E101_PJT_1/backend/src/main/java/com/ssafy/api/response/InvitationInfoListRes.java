@@ -1,8 +1,7 @@
 package com.ssafy.api.response;
 
 import com.ssafy.common.model.response.BaseResponseBody;
-import com.ssafy.common.myObject.InvitationInfo;
-import com.ssafy.db.entity.Invitation;
+import com.ssafy.common.cumtomObject.InvitationInfo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;

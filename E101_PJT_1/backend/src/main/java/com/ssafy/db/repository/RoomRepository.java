@@ -1,6 +1,6 @@
 package com.ssafy.db.repository;
 
-import com.ssafy.common.myObject.RoomInfoInterface;
+import com.ssafy.common.cumtomObject.RoomInfoInterface;
 import com.ssafy.db.entity.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

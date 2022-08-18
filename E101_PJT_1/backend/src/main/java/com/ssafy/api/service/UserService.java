@@ -1,7 +1,7 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.UserRegisterPostReq;
-import com.ssafy.common.myObject.UserGameInfo;
+import com.ssafy.common.cumtomObject.UserGameInfo;
 import com.ssafy.db.entity.User;
 
 import java.util.List;

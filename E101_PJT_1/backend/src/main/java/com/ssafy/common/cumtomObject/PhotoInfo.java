@@ -1,4 +1,4 @@
-package com.ssafy.common.myObject;
+package com.ssafy.common.cumtomObject;
 
 /**
  * 사진 URL를 저장하는 객체 정의

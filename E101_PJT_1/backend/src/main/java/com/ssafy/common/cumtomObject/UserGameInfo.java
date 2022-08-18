@@ -1,4 +1,4 @@
-package com.ssafy.common.myObject;
+package com.ssafy.common.cumtomObject;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,6 +1,6 @@
 package com.ssafy.db.repository;
 
-import com.ssafy.common.myObject.FriendInfoInterface;
+import com.ssafy.common.cumtomObject.FriendInfoInterface;
 import com.ssafy.db.entity.Friend;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

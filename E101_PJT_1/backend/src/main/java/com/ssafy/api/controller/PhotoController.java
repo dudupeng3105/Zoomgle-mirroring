@@ -2,11 +2,10 @@ package com.ssafy.api.controller;
 
 import com.ssafy.api.request.PhotoGetReq;
 import com.ssafy.api.request.PhotoListPostReq;
-import com.ssafy.api.request.PhotoPostReq;
 import com.ssafy.api.response.PhotoRes;
 import com.ssafy.api.service.PhotoService;
 import com.ssafy.api.service.RoomService;
-import com.ssafy.common.myObject.PhotoInfo;
+import com.ssafy.common.cumtomObject.PhotoInfo;
 import com.ssafy.common.util.S3Uploader;
 import com.ssafy.db.entity.Room;
 import io.swagger.annotations.*;

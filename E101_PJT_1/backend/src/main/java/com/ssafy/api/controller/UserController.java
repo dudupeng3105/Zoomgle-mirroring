@@ -1,7 +1,7 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.response.UserGameInfoRes;
-import com.ssafy.common.myObject.UserGameInfo;
+import com.ssafy.common.cumtomObject.UserGameInfo;
 import org.hibernate.PropertyValueException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,9 +20,6 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import springfox.documentation.annotations.ApiIgnore;
-
-import java.util.List;
-import java.util.Optional;
 
 /**
  * 유저 관련 API 요청 처리를 위한 컨트롤러 정의.

@@ -1,4 +1,4 @@
-package com.ssafy.common.myObject;
+package com.ssafy.common.cumtomObject;
 
 import com.ssafy.db.entity.Player;
 import lombok.AllArgsConstructor;

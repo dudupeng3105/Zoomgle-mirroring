@@ -1,4 +1,4 @@
-package com.ssafy.common.myObject;
+package com.ssafy.common.cumtomObject;
 
 public interface FriendInfoInterface {
     String getName();

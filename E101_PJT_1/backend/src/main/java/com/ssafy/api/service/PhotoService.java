@@ -1,6 +1,6 @@
 package com.ssafy.api.service;
 
-import com.ssafy.common.myObject.PhotoInfo;
+import com.ssafy.common.cumtomObject.PhotoInfo;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;

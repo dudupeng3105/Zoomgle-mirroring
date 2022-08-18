@@ -1,6 +1,6 @@
 package com.ssafy.api.service;
 
-import com.ssafy.common.myObject.FriendInfoInterface;
+import com.ssafy.common.cumtomObject.FriendInfoInterface;
 import com.ssafy.db.entity.Friend;
 import com.ssafy.db.repository.FriendRepository;
 import org.springframework.beans.factory.annotation.Autowired;

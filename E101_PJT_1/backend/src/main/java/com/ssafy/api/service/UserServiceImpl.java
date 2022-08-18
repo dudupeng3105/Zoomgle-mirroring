@@ -1,6 +1,6 @@
 package com.ssafy.api.service;
 
-import com.ssafy.common.myObject.UserGameInfo;
+import com.ssafy.common.cumtomObject.UserGameInfo;
 import com.ssafy.db.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.db.entity.User;
 import org.springframework.transaction.annotation.Transactional;
-import org.webjars.NotFoundException;
 
 import java.util.List;
 import java.util.Optional;

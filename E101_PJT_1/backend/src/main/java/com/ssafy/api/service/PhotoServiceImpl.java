@@ -1,6 +1,6 @@
 package com.ssafy.api.service;
 
-import com.ssafy.common.myObject.PhotoInfo;
+import com.ssafy.common.cumtomObject.PhotoInfo;
 import com.ssafy.common.util.S3Uploader;
 import com.ssafy.db.entity.Photo;
 import com.ssafy.db.entity.TempPhoto;

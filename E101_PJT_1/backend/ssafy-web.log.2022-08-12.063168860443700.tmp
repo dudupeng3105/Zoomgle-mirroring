@@ -1589,8 +1589,8 @@ java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '528-test100'
 2022-08-12 01:57:56.742  INFO 9320 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
 2022-08-12 01:57:56.746  INFO 9320 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
 2022-08-12 01:57:56.751  INFO 9320 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
-2022-08-12 10:18:46.085  INFO 12048 --- [restartedMain] com.ssafy.GroupCallApplication           : Starting GroupCallApplication using Java 1.8.0_192 on DESKTOP-KVCQHCD with PID 12048 (C:\Users\SSAFY\Desktop\S07P12E101\E101_PJT_1\backend\build\classes\java\main started by SSAFY in C:\Users\SSAFY\Desktop\S07P12E101\E101_PJT_1\backend)
-2022-08-12 10:18:46.088  INFO 12048 --- [restartedMain] com.ssafy.GroupCallApplication           : No active profile set, falling back to default profiles: default
+2022-08-12 10:18:46.085  INFO 12048 --- [restartedMain] com.ssafy.ZoomgleApplication           : Starting GroupCallApplication using Java 1.8.0_192 on DESKTOP-KVCQHCD with PID 12048 (C:\Users\SSAFY\Desktop\S07P12E101\E101_PJT_1\backend\build\classes\java\main started by SSAFY in C:\Users\SSAFY\Desktop\S07P12E101\E101_PJT_1\backend)
+2022-08-12 10:18:46.088  INFO 12048 --- [restartedMain] com.ssafy.ZoomgleApplication           : No active profile set, falling back to default profiles: default
 2022-08-12 10:18:46.149  INFO 12048 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
 2022-08-12 10:18:46.150  INFO 12048 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
 2022-08-12 10:18:47.831  INFO 12048 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
@@ -1626,7 +1626,7 @@ java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '528-test100'
 2022-08-12 10:18:53.691 DEBUG 12048 --- [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/resources/**, /swagger-ui.html, /webjars/**, /css/**, /fonts/**, /icons/**, /img/**, /js/**, /swagger-ui/**] in 'resourceHandlerMapping'
 2022-08-12 10:18:53.702 DEBUG 12048 --- [restartedMain] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
 2022-08-12 10:18:54.057  INFO 12048 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path '/api'
-2022-08-12 10:18:54.535  INFO 12048 --- [restartedMain] com.ssafy.GroupCallApplication           : Started GroupCallApplication in 8.965 seconds (JVM running for 10.906)
+2022-08-12 10:18:54.535  INFO 12048 --- [restartedMain] com.ssafy.ZoomgleApplication           : Started GroupCallApplication in 8.965 seconds (JVM running for 10.906)
 2022-08-12 10:18:55.268  INFO 12048 --- [RMI TCP Connection(1)-192.168.219.104] o.a.c.c.C.[Tomcat].[localhost].[/api]    : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2022-08-12 10:18:55.269  INFO 12048 --- [RMI TCP Connection(1)-192.168.219.104] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2022-08-12 10:18:55.269 DEBUG 12048 --- [RMI TCP Connection(1)-192.168.219.104] o.s.web.servlet.DispatcherServlet        : Detected StandardServletMultipartResolver
@@ -4212,8 +4212,8 @@ java.util.NoSuchElementException: No value present
 2022-08-12 19:52:13.951  INFO 12048 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
 2022-08-12 19:52:13.957  INFO 12048 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
 2022-08-12 19:52:13.968  INFO 12048 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
-2022-08-12 20:45:02.190  INFO 16216 --- [restartedMain] com.ssafy.GroupCallApplication           : Starting GroupCallApplication using Java 1.8.0_192 on DESKTOP-KVCQHCD with PID 16216 (C:\Users\SSAFY\Desktop\S07P12E101\E101_PJT_1\backend\build\classes\java\main started by SSAFY in C:\Users\SSAFY\Desktop\S07P12E101\E101_PJT_1\backend)
-2022-08-12 20:45:02.194  INFO 16216 --- [restartedMain] com.ssafy.GroupCallApplication           : No active profile set, falling back to default profiles: default
+2022-08-12 20:45:02.190  INFO 16216 --- [restartedMain] com.ssafy.ZoomgleApplication           : Starting GroupCallApplication using Java 1.8.0_192 on DESKTOP-KVCQHCD with PID 16216 (C:\Users\SSAFY\Desktop\S07P12E101\E101_PJT_1\backend\build\classes\java\main started by SSAFY in C:\Users\SSAFY\Desktop\S07P12E101\E101_PJT_1\backend)
+2022-08-12 20:45:02.194  INFO 16216 --- [restartedMain] com.ssafy.ZoomgleApplication           : No active profile set, falling back to default profiles: default
 2022-08-12 20:45:02.233  INFO 16216 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
 2022-08-12 20:45:02.233  INFO 16216 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
 2022-08-12 20:45:03.261  INFO 16216 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
@@ -4249,7 +4249,7 @@ java.util.NoSuchElementException: No value present
 2022-08-12 20:45:07.080 DEBUG 16216 --- [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/resources/**, /swagger-ui.html, /webjars/**, /css/**, /fonts/**, /icons/**, /img/**, /js/**, /swagger-ui/**] in 'resourceHandlerMapping'
 2022-08-12 20:45:07.088 DEBUG 16216 --- [restartedMain] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
 2022-08-12 20:45:07.284  INFO 16216 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path '/api'
-2022-08-12 20:45:07.523  INFO 16216 --- [restartedMain] com.ssafy.GroupCallApplication           : Started GroupCallApplication in 5.702 seconds (JVM running for 8.029)
+2022-08-12 20:45:07.523  INFO 16216 --- [restartedMain] com.ssafy.ZoomgleApplication           : Started GroupCallApplication in 5.702 seconds (JVM running for 8.029)
 2022-08-12 20:45:08.366  INFO 16216 --- [RMI TCP Connection(2)-192.168.219.104] o.a.c.c.C.[Tomcat].[localhost].[/api]    : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2022-08-12 20:45:08.366  INFO 16216 --- [RMI TCP Connection(2)-192.168.219.104] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2022-08-12 20:45:08.366 DEBUG 16216 --- [RMI TCP Connection(2)-192.168.219.104] o.s.web.servlet.DispatcherServlet        : Detected StandardServletMultipartResolver
@@ -4263,8 +4263,8 @@ java.util.NoSuchElementException: No value present
 2022-08-12 23:11:38.217  INFO 16216 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
 2022-08-12 23:11:38.222  INFO 16216 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
 2022-08-12 23:11:38.230  INFO 16216 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
-2022-08-12 23:12:32.720  INFO 5336 --- [restartedMain] com.ssafy.GroupCallApplication           : Starting GroupCallApplication using Java 1.8.0_192 on DESKTOP-KVCQHCD with PID 5336 (C:\Users\SSAFY\Desktop\S07P12E101\E101_PJT_1\backend\build\classes\java\main started by SSAFY in C:\Users\SSAFY\Desktop\S07P12E101\E101_PJT_1\backend)
-2022-08-12 23:12:32.723  INFO 5336 --- [restartedMain] com.ssafy.GroupCallApplication           : No active profile set, falling back to default profiles: default
+2022-08-12 23:12:32.720  INFO 5336 --- [restartedMain] com.ssafy.ZoomgleApplication           : Starting GroupCallApplication using Java 1.8.0_192 on DESKTOP-KVCQHCD with PID 5336 (C:\Users\SSAFY\Desktop\S07P12E101\E101_PJT_1\backend\build\classes\java\main started by SSAFY in C:\Users\SSAFY\Desktop\S07P12E101\E101_PJT_1\backend)
+2022-08-12 23:12:32.723  INFO 5336 --- [restartedMain] com.ssafy.ZoomgleApplication           : No active profile set, falling back to default profiles: default
 2022-08-12 23:12:32.760  INFO 5336 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
 2022-08-12 23:12:32.760  INFO 5336 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
 2022-08-12 23:12:33.985  INFO 5336 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
@@ -4300,7 +4300,7 @@ java.util.NoSuchElementException: No value present
 2022-08-12 23:12:38.383 DEBUG 5336 --- [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/resources/**, /swagger-ui.html, /webjars/**, /css/**, /fonts/**, /icons/**, /img/**, /js/**, /swagger-ui/**] in 'resourceHandlerMapping'
 2022-08-12 23:12:38.391 DEBUG 5336 --- [restartedMain] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
 2022-08-12 23:12:38.636  INFO 5336 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path '/api'
-2022-08-12 23:12:38.902  INFO 5336 --- [restartedMain] com.ssafy.GroupCallApplication           : Started GroupCallApplication in 6.504 seconds (JVM running for 7.511)
+2022-08-12 23:12:38.902  INFO 5336 --- [restartedMain] com.ssafy.ZoomgleApplication           : Started GroupCallApplication in 6.504 seconds (JVM running for 7.511)
 2022-08-12 23:12:39.448  INFO 5336 --- [RMI TCP Connection(2)-192.168.219.104] o.a.c.c.C.[Tomcat].[localhost].[/api]    : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2022-08-12 23:12:39.448  INFO 5336 --- [RMI TCP Connection(2)-192.168.219.104] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2022-08-12 23:12:39.448 DEBUG 5336 --- [RMI TCP Connection(2)-192.168.219.104] o.s.web.servlet.DispatcherServlet        : Detected StandardServletMultipartResolver

@@ -1,7 +1,7 @@
 package com.ssafy.api.response;
 
 import com.ssafy.common.model.response.BaseResponseBody;
-import com.ssafy.common.myObject.RoomInfoAndPhoto;
+import com.ssafy.common.cumtomObject.RoomInfoAndPhoto;
 import io.swagger.annotations.ApiModel;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,6 +1,6 @@
 package com.ssafy.db.repository;
 
-import com.ssafy.common.myObject.PhotoInfo;
+import com.ssafy.common.cumtomObject.PhotoInfo;
 import com.ssafy.db.entity.Photo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
