@@ -411,6 +411,7 @@ const MainUserVideoComponent = ({
   const minigameEndHandler = () => {
     const nextTurn = (myTurnNum + 1) % playerNum;
     const nextUserName = players[nextTurn];
+    let isPosChange = true;
     // go(1), back(-1)에 따라 자리조정
     let nextPosList = [...posList];
     if (voteResult === 1) {
@@ -448,6 +449,9 @@ const MainUserVideoComponent = ({
       // back
       const myPos = posList[myTurnNum];
       nextPosList[myTurnNum] = myPos - 1;
+    } else {
+      // emit
+      isPosChange = false;
     }
 
     // emit
@@ -457,6 +461,7 @@ const MainUserVideoComponent = ({
       data: JSON.stringify({
         // 미니게임이 끝나면 다음사람과, 다음턴, isRoll 다시 false처리
         // 투표는 조금 있다 넣을 예정
+        isPosChange: isPosChange,
         nextUserName: nextUserName, // 다음사람
         nextTurn: nextTurn, // 다음 턴
         nextIsRoll: !isRoll,
