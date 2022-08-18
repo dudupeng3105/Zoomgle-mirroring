@@ -36,7 +36,7 @@ const DiceRoller = ({
       value = value - 4;
     }
     // 테스트용 숫자(value 크게함)
-    // value = value + 3;
+    // value = value + 10;
     setDiceNum(value);
     const tempPosNum = (myPos + value) % 20;
 
@@ -53,7 +53,7 @@ const DiceRoller = ({
     let nowDate = new Date();
     let rand = Math.random() * 220;
     rand = (rand + nowDate.getSeconds()) * nowDate.getMinutes();
-    const nextMinigameType = Math.floor(rand % 220);
+    const nextMinigameType = (Math.floor(rand) + nowDate.getSeconds()) % 220;
 
     console.error(nextMinigameType);
     let sendData = {};
