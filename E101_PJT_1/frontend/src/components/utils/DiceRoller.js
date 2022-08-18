@@ -45,9 +45,15 @@ const DiceRoller = ({
     nextPosList[myTurnNum] = tempPosNum;
     // 미니게임 랜덤
     // const nextMinigameType = Math.floor(Math.random() * 220) // 0 ~ 219 랜덤
-    let rand = Math.random() * 100;
-    const random = (Math.random() * 220) * (Math.random() * rand);
-    const nextMinigameType = Math.floor(random % 220) // 0 ~ 219 랜덤
+    // let rand = Math.random() * 100;
+    // const random = (Math.random() * 220) * (Math.random() * rand);
+    // const nextMinigameType = Math.floor(random % 220) // 0 ~ 219 랜덤
+
+    // 시간값을 사용하자..?
+    let nowDate = new Date();
+    let rand = Math.random() * 220;
+    rand = (rand + nowDate.getSeconds()) * nowDate.getMinutes();
+    const nextMinigameType = Math.floor(rand % 220);
 
     console.error(nextMinigameType);
     let sendData = {};
