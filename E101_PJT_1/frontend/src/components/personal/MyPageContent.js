@@ -296,12 +296,12 @@ const BtnContainer = styled.div`
 const StartAdventureBtn = styled.div`
   position: absolute;
   background: url(${paperBtn});
-  background-size: 12vw 8vh;
-  right: 45vw;
-  bottom: 8vh;
+  background-size: 12vw 7vh;
+  right: 47vw;
+  bottom: 25vh;
   display: flex;
   width: 12vw;
-  height: 8vh;
+  height: 7vh;
   padding-top: 1vh;
   padding-left: 1vw;
   
