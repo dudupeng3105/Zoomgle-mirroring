@@ -12,7 +12,7 @@ import MvpPhaseComponent from './MvpPhaseComponent';
 import { useSelector } from 'react-redux';
 
 import playerEnterSound from '../../media/sounds/07_playerEnter.wav';
-import moveSound from '../../media/sounds/11_move.wav';
+import moveSound from '../../media/sounds/11_move.mp3';
 
 const OpenViduContainer = styled.div`
   width: 100vw;
@@ -227,12 +227,14 @@ const OpenViduBlock = ({
     // 미니게임 결과 동기화 ON
     mySession.on('MINIGAME_STATE_CHANGED', (data) => {
       console.warn('미니게임끝났다 받아라..');
-      const { nextTurn, nextIsRoll, nextUserName, nextPosList } = JSON.parse(
+      const { isPosChange, nextTurn, nextIsRoll, nextUserName, nextPosList } = JSON.parse(
         data.data,
       );
       setNextPlayer(nextUserName);
       setTurnNum(nextTurn);
-      setPosList(nextPosList); // 성공 실패에 따라 자리 재조정
+      if(isPosChange){ // stay일때는 포지션 변경 안함
+        setPosList(nextPosList); // go/back 에 따라 자리 재조정
+      }
       vote.length = 0;
       setVote(vote); // Vote 초기화
       setIsRoll(nextIsRoll); // isRoll이 다시 false 됐다는 것은 미니게임이 끝
