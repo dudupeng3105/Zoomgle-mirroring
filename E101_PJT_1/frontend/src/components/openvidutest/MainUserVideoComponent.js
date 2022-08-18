@@ -380,7 +380,12 @@ const MainUserVideoComponent = ({
     const roomSeq = mySessionIdValue;
     // dom to canvas
     const element = mainScreen.current;
-    const canvas = await html2canvas(element); // html to canvas
+    let canvas;
+    if(isGameDone){ // mvp phase일때 캡쳐
+      canvas = await html2canvas(document.body);
+    } else { // 게임 중 일때 캡쳐
+      canvas = await html2canvas(element); // html to canvas
+    }
     const dataUrl = canvas.toDataURL('image/png');
     console.log(dataUrl);
     const blobData = dataURItoBlob(dataUrl);
