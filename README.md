@@ -82,7 +82,7 @@
     <img src="https://bucket-e101-zoomgle.s3.ap-northeast-2.amazonaws.com/readme/10.PNG" width="80%" height="80%"><br>
     <img src="https://bucket-e101-zoomgle.s3.ap-northeast-2.amazonaws.com/readme/11.PNG" width="80%" height="80%"><br>
 
-<!-- ### 4. 백엔드 디렉토리 구조
+### 4. 백엔드 디렉토리 구조
 
 ```
 .
@@ -182,7 +182,119 @@
     │                   └── UserRepositorySupport.java
     └── resources
         └── application.properties /* 웹 리소스(서버 host/port, DB host/port/계정/패스워드), AWS S3 관련 설정 정의 */
-``` -->
-
+```
+### 5. 프론트엔드 디렉토리 구조
+```
+.
+├─ jsconfig.json
+├─ package-lock.json
+├─ package.json
+├─ public
+│  ├─ favicon.ico
+│  ├─ index.html
+│  ├─ logo192.png
+│  ├─ logo512.png
+│  ├─ manifest.json
+│  └─ robots.txt
+├─ src
+│  ├─ App.css
+│  ├─ App.js
+│  ├─ components
+│  │  ├─ auth
+│  │  │  ├─ AuthForm.js
+│  │  │  ├─ AuthTemplate.js
+│  │  │  ├─ ProfileContentModal.js
+│  │  │  └─ ProfileInfoBox.js
+│  │  ├─ common
+│  │  │  ├─ Button.js
+│  │  │  ├─ header.js
+│  │  │  ├─ headerMenu.js
+│  │  │  └─ PlannedGameList.js
+│  │  ├─ display
+│  │  │  ├─ StartPageModal.js
+│  │  │  └─ StartStoryBoardBlock.js
+│  │  ├─ openvidutest /* WebRTC 관련 컴포넌트 */
+│  │  │  ├─ MainUserVideoComponent.js
+│  │  │  ├─ minigameList.js
+│  │  │  ├─ MvpPhaseComponent.js
+│  │  │  ├─ OpenViduBlock.js
+│  │  │  ├─ OpenViduSession.js
+│  │  │  ├─ OvVideo.js
+│  │  │  ├─ UserVideoComponent.js
+│  │  │  └─ WaitingRoom.js
+│  │  ├─ personal
+│  │  │  ├─ FriendsContent.js
+│  │  │  ├─ MyPageContent.js
+│  │  │  ├─ PicturesContent.js
+│  │  │  ├─ PlanGameDetail.js
+│  │  │  └─ ProfileContent.js
+│  │  └─ utils
+│  │     ├─ CheckCloseModal.js
+│  │     ├─ CustomDatePicker.js
+│  │     ├─ DiceRoller.js
+│  │     ├─ GameNumCounter.js
+│  │     ├─ MyPageCalender.txt
+│  │     ├─ PersonNumCounter.js
+│  │     ├─ reactAudioPlayer.js
+│  │     └─ useIntervals.js
+│  ├─ containers
+│  │  └─ auth
+│  │     ├─ LoginForm.js
+│  │     └─ SignUpForm.js
+│  ├─ fonts
+│  │  └─ EastSeaDokdo-Regular.ttf
+│  ├─ index.css
+│  ├─ index.js
+│  ├─ media /* 프로젝트 이미지 및 소리 */
+│  │  ├─ back_long.jpg
+│  │  ├─ back_long1
+│  │  ├─ images /* 프로젝트 이미지들 (파일생략) */
+│  │  │  └─ images.png/jpeg
+│  │  └─ sounds /* 프로젝트 소리 */
+│  │     ├─ 01_firstpage.wav
+│  │     ├─ 02_loginPage.wav
+│  │     ├─ 03_homePage.wav
+│  │     ├─ 04_nextPage.wav
+│  │     ├─ 05_btn.wav
+│  │     ├─ 06_waitingRoom.wav
+│  │     ├─ 07_playerEnter.wav
+│  │     ├─ 08_gameStart.wav
+│  │     ├─ 09_gameBgm.wav
+│  │     ├─ 10_myTurn.wav
+│  │     ├─ 11_move.mp3
+│  │     ├─ 12_gameAlert.wav
+│  │     ├─ 13_countDown.wav
+│  │     ├─ 14_voteSuccess.wav
+│  │     ├─ 15_voteFail.wav
+│  │     ├─ 17_mvpBgm.wav
+│  │     ├─ 18_cameraSound.mp3
+│  │     └─ animal.wav
+│  ├─ pages /* 라우트와 관련된 컴포넌트 */
+│  │  ├─ FriendsPage.js
+│  │  ├─ JoinGamePage.js
+│  │  ├─ LoginPage.js
+│  │  ├─ MyPage.js
+│  │  ├─ OpenviduPage.js
+│  │  ├─ PicturesPage.js
+│  │  ├─ ProfilePage.js
+│  │  ├─ SignupPage.js
+│  │  └─  StartPage.js
+│  └─ store /* 리적스, 사가, 스토어, api관련 */
+│     ├─ api.js
+│     ├─ auth-slice.js
+│     ├─ authSagas.js
+│     ├─ customAxios.js
+│     ├─ friends-slice.js
+│     ├─ friendSagas.js
+│     ├─ gamePlan-slice.js
+│     ├─ gamePlanSagas.js
+│     ├─ gameRoom-slice.js
+│     ├─ gameRoomSagas.js
+│     ├─ index.js
+│     ├─ user-slice.txt
+│     └─ userSagas.txt
+├─ yarn.lock
+└─ 참조자료.txt
+```
 
 
