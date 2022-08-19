@@ -156,7 +156,7 @@ const PicturesContent = () => {
       </GameDayInfo>
       <GamePlayerInfo>
         <p>공략자: {gameDoneList[planIdx].mvp}</p>
-        <p>참여자 : {playerNames.join(', ')}</p>
+        <p>대원 : {playerNames.join(', ')}</p>
       </GamePlayerInfo>
       <GameDoneBoard>
         {gameDonePhoto.length === 0 ? (
