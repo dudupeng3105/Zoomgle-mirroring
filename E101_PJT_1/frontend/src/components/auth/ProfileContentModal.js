@@ -453,9 +453,9 @@ const ProfileContentModal = () => {
                   <div className="right">모험을 떠날 것이다.</div>
                   <div>
                     <div className="var-color">{propfileInfo.mvpCount}</div>번
-                    '공략자'
+                    '공략자'로
                   </div>
-                  <div className="right">로써 모험을 종료했다.</div>
+                  <div className="right"> 모험을 종료했다.</div>
                 </ProfileInfoSagaBox>
               </ProfileStoryContainer>
             </>
