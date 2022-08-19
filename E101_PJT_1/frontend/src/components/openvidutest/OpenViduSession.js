@@ -571,13 +571,13 @@ const OpenViduSession = ({
         urlSound={gameStartSound}
         isLoop={false}
         isPlaying={!backSoundPlay}
-        volumeNum={0.7}
+        volumeNum={0.4}
       ></ReactAudioPlayer>
       <ReactAudioPlayer
         urlSound={gameBgmSound}
         isLoop={true}
         isPlaying={backSoundPlay}
-        volumeNum={0.2}
+        volumeNum={0.15}
       ></ReactAudioPlayer>
       <TestContainer>
         <PlayerList>

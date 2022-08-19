@@ -213,6 +213,7 @@ const WaitingRoom = ({
         urlSound={waitingRoomSound}
         isLoop={true}
         isPlaying={true}
+        volumeNum={0.3}
       ></ReactAudioPlayer>
       <OpenViduSessionHeader>
         {mySessionIdValue}번 방
