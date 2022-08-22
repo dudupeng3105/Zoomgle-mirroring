@@ -8,10 +8,13 @@ import dice4 from '../../media/images/dice4.jpg';
 
 const DiceRollerBlock = styled.div`
   position: absolute;
-  width: 10vmin;
-  height: 10vmin;
-  top: 80vh;
-  left: 90vw;
+  width: 15vmin;
+  height: 15vmin;
+  top: 50vh;
+  left: 5vw;
+  &:hover {
+    transform: rotate(-10deg) scale(1.1);
+  }
   /* border: red 3px solid; */
 `;
 
@@ -103,7 +106,7 @@ const DiceRoller = ({
   return (
     <DiceRollerBlock>
       <Dice
-        size={80}
+        size={100}
         disabled={false}
         rollingTime={700}
         onRoll={(value) => {
