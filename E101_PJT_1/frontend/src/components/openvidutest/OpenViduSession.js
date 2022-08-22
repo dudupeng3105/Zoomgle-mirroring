@@ -116,10 +116,10 @@ const ShowDiceModal = styled.div`
   display: flex;
   position: absolute;
   z-index: 5;
-  width: 10vmin;
-  height: 10vmin;
-  top: 79vh;
-  left: 89vw;      
+  width: 15vmin;
+  height: 15vmin;
+  top: 50vh;
+  left: 5vw;      
   &.dice-1 {
     @keyframes leaves-1 {
       0% {

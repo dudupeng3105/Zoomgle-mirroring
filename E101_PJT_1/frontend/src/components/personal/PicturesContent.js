@@ -160,7 +160,7 @@ const PicturesContent = () => {
       </GamePlayerInfo>
       <GameDoneBoard>
         {gameDonePhoto.length === 0 ? (
-          <BlankPhotoText>찍은 사진이 없습니다.</BlankPhotoText>
+          <BlankPhotoText>해당 모험에서 찍은 사진이 없다.</BlankPhotoText>
         ) : (
           gameDonePhoto.map((photo, idx) => (
             <GameDoneImg
