@@ -190,15 +190,18 @@ const AddFriendModal = styled.div`
   align-items: center;
   h1 {
     margin: 0;
-    margin-top: 2vh;
+    margin-top: 1vh;
     display: inline;
-    font-size: 3rem;
+    font-size: 3.5rem;
+    font-weight: normal;
   }
   h2 {
     /* margin-bottom: 2px; */
     margin-bottom: 1vh;
     margin-top: 0;
     color: #432616;
+    font-weight: normal;
+    font-size: 2rem;
   }
   h3 {
     color: #432616;
