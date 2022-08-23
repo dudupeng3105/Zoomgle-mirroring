@@ -54,7 +54,7 @@ const ProfileBox = styled.div`
   }
   .profileImg2 {
     background: url(${profile3}) no-repeat center;
-    background-size: 20vmin 20vmin;
+    background-size: 15vmin 15vmin;
   }
   .profileImg3 {
     background: url(${profile4}) no-repeat center;
@@ -62,11 +62,11 @@ const ProfileBox = styled.div`
   }
   .profileImg4 {
     background: url(${profile5}) no-repeat center;
-    background-size: 20vmin 20vmin;
+    background-size: 15vmin 15vmin;
   }
   .profileImg5 {
     background: url(${profile6}) no-repeat center;
-    background-size: 20vmin 20vmin;
+    background-size: 15vmin 15vmin;
   }
 `;
 
