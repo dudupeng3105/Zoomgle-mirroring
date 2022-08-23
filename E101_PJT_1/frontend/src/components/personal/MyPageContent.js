@@ -382,6 +382,9 @@ const MyPageContent = () => {
       invitationSeq: Number(invitationSeq),
       join: decision,
     };
+    if (invitationIdx === myinvitationList.length - 1) {
+      setInvitationIdx(invitationIdx - 1);
+    }
     dispatch(gamePlanActions.checkInvitaionStart(invitationInfo));
   };
 
