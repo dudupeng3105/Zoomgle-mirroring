@@ -227,6 +227,7 @@ const StyledInput = styled.input`
     border: 3px solid white;
     ::placeholder {
       color: transparent;
+      font-family: 'East Sea Dokdo', cursive;
     }
   }
 `;

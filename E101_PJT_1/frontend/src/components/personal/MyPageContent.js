@@ -383,7 +383,7 @@ const MyPageContent = () => {
       join: decision,
     };
     if (invitationIdx === myinvitationList.length - 1) {
-      setInvitationIdx(invitationIdx - 1);
+      setInvitationIdx(0);
     }
     dispatch(gamePlanActions.checkInvitaionStart(invitationInfo));
   };

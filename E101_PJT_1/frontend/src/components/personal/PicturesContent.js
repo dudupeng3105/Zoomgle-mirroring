@@ -151,7 +151,7 @@ const PicturesContent = () => {
     gameDoneList.length ? (<PicturesContentBlock>
       <GameDayInfo>
         <ArrowBtn onClick={() => { onClickLeft(); btnClick(); }} backImg={arrowLeft}></ArrowBtn>
-        <p>{`${gameDoneList[planIdx].month}월 ${gameDoneList[planIdx].day}일 게임`}</p>
+        <p>{`${gameDoneList[planIdx].month}월 ${gameDoneList[planIdx].day}일 모험`}</p>
         <ArrowBtn onClick={() => { onClickRight(); btnClick(); }} backImg={arrowRight}></ArrowBtn>
       </GameDayInfo>
       <GamePlayerInfo>

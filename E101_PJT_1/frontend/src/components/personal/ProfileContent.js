@@ -26,11 +26,13 @@ const ProfileContentBlock = styled.div`
  height: 100%;
  ::placeholder {
    font-size: 1.2rem;    
+   font-family: 'East Sea Dokdo', cursive;
  }
  &:focus {
    border: 3px solid white;
    ::placeholder {
      color: transparent;
+     font-family: 'East Sea Dokdo', cursive;
    }
    /* border-bottom: 1px solid yellow; */
  }

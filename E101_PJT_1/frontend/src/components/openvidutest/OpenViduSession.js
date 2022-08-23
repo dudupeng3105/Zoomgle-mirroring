@@ -577,7 +577,7 @@ const OpenViduSession = ({
         urlSound={gameBgmSound}
         isLoop={true}
         isPlaying={backSoundPlay}
-        volumeNum={0.15}
+        volumeNum={0.1}
       ></ReactAudioPlayer>
       <TestContainer>
         <PlayerList>

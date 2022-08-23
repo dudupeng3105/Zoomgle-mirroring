@@ -413,9 +413,9 @@ const MvpPhaseComponent = ({
     <MvpPhaseComponentBlock>
       <ReactAudioPlayer
         urlSound={mvpBgmSound}
-        isLoop={true}
+        isLoop={false}
         isPlaying={!isMvpSpeechDone}
-        volumeNum={0.2}
+        volumeNum={0.3}
       ></ReactAudioPlayer>
       <ReactAudioPlayer
         urlSound={gameBgmSound}

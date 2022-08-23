@@ -151,14 +151,14 @@ const Header = () => {
           urlSound={nextPageSound}
           isLoop={false}
           isPlaying={nextPagePlay}
-          volumeNum={0.7}
+          volumeNum={0.4}
         >
         </ReactAudioPlayer>
         <ReactAudioPlayer
           urlSound={homePageSound}
           isLoop={true}
           isPlaying={true}
-          volumeNum={0.3}
+          volumeNum={0.1}
         >
         </ReactAudioPlayer>
         {logoutCheckModal ? (

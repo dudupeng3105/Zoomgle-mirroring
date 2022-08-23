@@ -283,6 +283,7 @@ const StyledInput = styled.input`
   height: 6vh;  
   ::placeholder {
     font-size: 2.5rem;
+    font-family: 'East Sea Dokdo', cursive;
   }  
   &.read-only-input {
     border: 0px    
